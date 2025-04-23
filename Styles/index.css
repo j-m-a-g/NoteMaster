@@ -58,8 +58,8 @@ button.appSection:active {
 }
 
 img.appSection {
-  margin-right: 5px;
-  width: 75%;
+  margin-right: 10px;
+  width: 32px;
   filter: grayscale(100%);
 }
 
