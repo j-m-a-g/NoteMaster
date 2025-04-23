@@ -6,19 +6,63 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>NotesMaster</title>
   <link rel="stylesheet" type="text/css" href="Styles/index.css">
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
 </head>
 
 <body>
   <nav id="appMenu">
-    <button class="menu">File</button>
-    <button class="menu">Edit</button>
+    <button
+      class="menu"
+      onmouseover="document.getElementById('fileMenu').hidden = false"
+      onmouseleave="document.getElementById('fileMenu').hidden = true">
+      File
+    </button>
+    <div hidden
+      id="fileMenu"
+      class="menu"
+      onclick="hideAllMenuDropdowns()"
+      onmouseover="document.getElementById('fileMenu').hidden = false"
+      onmouseleave="document.getElementById('fileMenu').hidden = true">
+      <button class="menuDropdown" 
+        onclick="hideAndShow('createOrOpenContainer', 'noteEditor')">
+        New
+      </button>
+      <button class="menuDropdown">Open...</button>
+      <button
+        class="menuDropdown"
+        onclick="hideAndShow('noteEditor', 'createOrOpenContainer')">
+        Close Note
+      </button>
+      <button class="menuDropdown">Exit</button>
+    </div>
+
+    <button
+      class="menu"
+      onmouseover="document.getElementById('editMenu').hidden = false"
+      onmouseleave="document.getElementById('editMenu').hidden = true">
+      Edit
+    </button>
+    <div hidden
+      style="margin-left: 45px"
+      id="editMenu"
+      class="menu"
+      onmouseover="document.getElementById('editMenu').hidden = false"
+      onmouseleave="document.getElementById('editMenu').hidden = true">
+      <button class="menuDropdown">Copy</button>
+      <button class="menuDropdown">Cut</button>
+      <button class="menuDropdown">Paste</button>
+    </div>
+
     <button class="menu">View</button>
     <button class="menu">Help</button>
   </nav>
 
+  <br>
   <table style="width: 100%; height: 100%">
     <tr>
+      <!-- Viewing section -->
       <td class="appSection">
+        <h1>Welcome</h1>
         <button class="appSection">
           <table>
             <tr>
@@ -46,24 +90,89 @@
           </table>
         </button>
         <button class="appSection">
-          <span class="buttonHeading">Word Document</span><br>
-          <span class="helperText">.doc, .docx</span>
+          <table>
+            <tr>
+              <td>
+                <img class="appSection" src="Assets/Images/cloud_7CA7D8.svg">
+              </td>
+              <td>
+                <span class="buttonHeading">File in the Cloud</span><br>
+                <span class="helperText">Google Drive, OneDrive, Dropbox</span>
+              </td>
+            </tr>
+          </table>
         </button>
-        <button class="appSection">
-          <span class="buttonHeading">Rich Text File</span><br>
-          <span class="helperText">.rtf</span>
-        </button>
-        <button class="appSection">
-          <span class="buttonHeading">Text File</span><br>
-          <span class="helperText">.txt</span>
-        </button>
-      </td>
-      <td class="appSection">
+        <table>
+          <tr>
+            <td>
+              <button class="appSection">
+                <table>
+                  <tr>
+                    <td>
+                      <img class="appSection" src="Assets/Images/description_789DE5.svg">
+                    </td>
+                    <td>
+                      <span class="buttonHeading">Document</span><br>
+                      <span class="helperText">.doc, .docx</span>
+                    </td>
+                  </tr>
+                </table>
+              </button>
+            </td>
+            <td>
+              <button class="appSection">
+                <table>
+                  <tr>
+                    <td>
+                      <img class="appSection" src="Assets/Images/description_789DE5.svg">
+                    </td>
+                    <td>
+                      <span class="buttonHeading">Spreadsheet</span><br>
+                      <span class="helperText">.xls, .xlsx</span>
+                    </td>
+                  </tr>
+                </table>
+              </button>
+            </td>
+            <td>
+              <button class="appSection">
+                <table>
+                  <tr>
+                    <td>
+                      <img class="appSection" src="Assets/Images/description_789DE5.svg">
+                    </td>
+                    <td>
+                      <span class="buttonHeading">Presentation</span><br>
+                      <span class="helperText">.ppt, .pptx</span>
+                    </td>
+                  </tr>
+                </table>
+              </button>
+            </td>
+          </tr>
+        </table>
         <button class="appSection">
           <table>
             <tr>
               <td>
-                <img class="appSection" src="Assets/Images/note_add_000000.svg">
+                <img class="appSection" src="Assets/Images/draft_80A4AE.svg">
+              </td>
+              <td>
+                <span class="buttonHeading">Text File</span><br>
+                <span class="helperText">.rtf, .txt</span>
+              </td>
+            </tr>
+          </table>
+        </button>
+      </td>
+
+      <!-- Editor section -->
+      <td id="createOrOpenContainer" class="appSection">
+        <button class="appSection" onclick="hideAndShow('createOrOpenContainer', 'noteEditor')">
+          <table>
+            <tr>
+              <td>
+                <img class="appSection reducedIntensity" src="Assets/Images/note_add_000000.svg">
               </td>
               <td>
                 <span class="buttonHeading">Create a New Note</span><br>
@@ -77,7 +186,7 @@
           <table>
             <tr>
               <td>
-                <img class="appSection" src="Assets/Images/file_open_000000.svg">
+                <img class="appSection reducedIntensity" src="Assets/Images/file_open_000000.svg">
               </td>
               <td>
                 <span class="buttonHeading">Open an Existing Note</span><br>
@@ -87,10 +196,21 @@
           </table>
         </button>
       </td>
+      <td hidden id="noteEditor" class="appSection">
+        <nav>
+          <button class="menu" title="Save">
+            <img class="reducedIntensity menu" src="Assets/Images/save_000000.svg">
+          </button>
+          <input id="noteName" type="text" placeholder="Untitled">
+        </nav>
+        <div id="editor"></div>
+      </td>
     </tr>
   </table>
 
+  <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
   <script src="Scripts/index.js"></script>
+  <script src="Scripts/editor.js"></script>
 </body>
 
 </html>
