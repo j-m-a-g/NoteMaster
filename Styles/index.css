@@ -49,6 +49,9 @@ button.appSection {
 }
 button.appSection:hover {
   background-color: var(--lightAccent200);
+  img.appSection {
+    filter: grayscale(0%);
+  }
 }
 button.appSection:active {
   background-color: var(--lightAccent300);
@@ -56,6 +59,8 @@ button.appSection:active {
 
 img.appSection {
   margin-right: 5px;
+  width: 75%;
+  filter: grayscale(100%);
 }
 
 .buttonHeading {
