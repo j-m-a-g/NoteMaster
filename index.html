@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,41 +12,28 @@
 
 <body>
   <nav id="appMenu">
-    <button
-      class="menu"
-      onmouseover="document.getElementById('fileMenu').hidden = false"
+    <button class="menu" onmouseover="document.getElementById('fileMenu').hidden = false"
       onmouseleave="document.getElementById('fileMenu').hidden = true">
       File
     </button>
-    <div hidden
-      id="fileMenu"
-      class="menu"
-      onclick="hideAllMenuDropdowns()"
+    <div hidden id="fileMenu" class="menu" onclick="hideAllMenuDropdowns()"
       onmouseover="document.getElementById('fileMenu').hidden = false"
       onmouseleave="document.getElementById('fileMenu').hidden = true">
-      <button class="menuDropdown" 
-        onclick="hideAndShow('createOrOpenContainer', 'noteEditor')">
+      <button class="menuDropdown" onclick="hideAndShow('createOrOpenContainer', 'noteEditor')">
         New
       </button>
       <button class="menuDropdown">Open...</button>
-      <button
-        class="menuDropdown"
-        onclick="hideAndShow('noteEditor', 'createOrOpenContainer')">
+      <button class="menuDropdown" onclick="hideAndShow('noteEditor', 'createOrOpenContainer')">
         Close Note
       </button>
       <button class="menuDropdown">Exit</button>
     </div>
 
-    <button
-      class="menu"
-      onmouseover="document.getElementById('editMenu').hidden = false"
+    <button class="menu" onmouseover="document.getElementById('editMenu').hidden = false"
       onmouseleave="document.getElementById('editMenu').hidden = true">
       Edit
     </button>
-    <div hidden
-      style="margin-left: 45px"
-      id="editMenu"
-      class="menu"
+    <div hidden style="margin-left: 45px" id="editMenu" class="menu" onclick="hideAllMenuDropdowns()"
       onmouseover="document.getElementById('editMenu').hidden = false"
       onmouseleave="document.getElementById('editMenu').hidden = true">
       <button class="menuDropdown">Copy</button>
@@ -54,7 +42,15 @@
     </div>
 
     <button class="menu">View</button>
-    <button class="menu">Help</button>
+    <button class="menu" onmouseover="document.getElementById('helpMenu').hidden = false"
+      onmouseleave="document.getElementById('helpMenu').hidden = true">
+      Help
+    </button>
+    <div hidden style="margin-left: 146px" id="helpMenu" class="menu" onclick="hideAllMenuDropdowns()"
+      onmouseover="document.getElementById('helpMenu').hidden = false"
+      onmouseleave="document.getElementById('helpMenu').hidden = true">
+      <button class="menuDropdown" onclick="toggleDialog(true, 'aboutDialog')">About</button>
+    </div>
   </nav>
 
   <br>
@@ -62,7 +58,8 @@
     <tr>
       <!-- Viewing section -->
       <td class="appSection">
-        <h1>Welcome</h1>
+        <h1 style="line-height: 20px">Welcome</h1>
+        <h3>What type of document will you view today?</h3>
         <button class="appSection">
           <table>
             <tr>
@@ -84,7 +81,7 @@
               </td>
               <td>
                 <span class="buttonHeading">Image</span><br>
-                <span class="helperText">.png, .jpg, .gif, .svg, .webp</div></span>      
+                <span class="helperText">.png, .jpg, .gif, .svg, .webp</div></span>
               </td>
             </tr>
           </table>
@@ -124,7 +121,7 @@
                 <table>
                   <tr>
                     <td>
-                      <img class="appSection" src="Assets/Images/description_789DE5.svg">
+                      <img class="appSection" src="Assets/Images/table_rows_9DC384.svg">
                     </td>
                     <td>
                       <span class="buttonHeading">Spreadsheet</span><br>
@@ -139,7 +136,7 @@
                 <table>
                   <tr>
                     <td>
-                      <img class="appSection" src="Assets/Images/description_789DE5.svg">
+                      <img class="appSection" src="Assets/Images/pie_chart_BD4C31.svg">
                     </td>
                     <td>
                       <span class="buttonHeading">Presentation</span><br>
@@ -198,6 +195,9 @@
       </td>
       <td hidden id="noteEditor" class="appSection">
         <nav>
+          <button class="menu" title="New">
+            <img style="filter: grayscale(100%)" class="menu" src="Assets/Images/draft_80A4AE.svg">
+          </button>
           <button class="menu" title="Save">
             <img class="reducedIntensity menu" src="Assets/Images/save_000000.svg">
           </button>
@@ -207,6 +207,42 @@
       </td>
     </tr>
   </table>
+
+  <div hidden class="saveBeforeClosing">
+    <div class="dialogOverlay">
+      <h1 class="saveBeforeClosing">Save Your Work?</h1>
+      <h3 class="saveBeforeClosing helperText">You are continuing onto another task and your current work has not been
+        saved.</h3>
+      <br>
+      <table style="width: 100%">
+        <tr>
+          <td style="width: 33%">
+            <button style="background-color: #e54304; color: white" class="saveBeforeClosing">Don't Save</button>
+          </td>
+          <td style="width: 33%">
+            <button class="saveBeforeClosing">Save</button>
+          </td>
+          <td style="width: 33%">
+            <button class="saveBeforeClosing">Resume Working</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div hidden id="dialogFocusBackground">
+    <div hidden id="aboutDialog" class="dialogOverlay">
+      <h1>About</h1>
+      <p style="line-height: 25px">
+        NotesMaster v25.05.x
+        <br>
+        Designed and developed by <a href="https://github.com/j-m-a-g" target="_blank">J. Maghamez</a>
+      </p>
+      <a class="hyperlinkButton" onclick="toggleDialog(false, 'aboutDialog')">
+        Close
+      </a>
+    </div>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
   <script src="Scripts/index.js"></script>

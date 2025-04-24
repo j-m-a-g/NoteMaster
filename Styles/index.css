@@ -13,9 +13,12 @@ html {
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
+  background-color: var(--lightAccent100);
 }
 
-h1 {
+h1,
+h2,
+h3 {
   font-weight: normal;
 }
 
@@ -34,15 +37,18 @@ button.menu {
   background-color: transparent;
   border-style: none;
 }
-  button.menu:hover {
-    background-color: var(--lightAccent300);
-  }
+
+button.menu:hover {
+  background-color: var(--lightAccent300);
+}
+
 div.menu {
   width: 20%;
   background-color: white;
   position: fixed;
   z-index: 1;
 }
+
 img.menu {
   width: 13px;
 }
@@ -60,9 +66,10 @@ button.menuDropdown {
   width: 100%;
   text-align: left;
 }
-  button.menuDropdown:hover {
-    background-color: var(--lightAccent200);
-  }
+
+button.menuDropdown:hover {
+  background-color: var(--lightAccent200);
+}
 
 td.appSection {
   padding: 10px;
@@ -82,15 +89,18 @@ button.appSection {
   width: 100%;
   border-radius: 5px;
 }
-  button.appSection:hover {
-    background-color: var(--lightAccent200);
-    img.appSection {
-      filter: grayscale(0%);
-    }
+
+button.appSection:hover {
+  background-color: var(--lightAccent200);
+
+  img.appSection {
+    filter: grayscale(0%);
   }
-  button.appSection:active {
-    background-color: var(--lightAccent300);
-  }
+}
+
+button.appSection:active {
+  background-color: var(--lightAccent300);
+}
 
 img.appSection {
   margin-right: 10px;
@@ -108,7 +118,32 @@ img.appSection {
 }
 
 img.reducedIntensity {
-  opacity: 50%;
+  opacity: 40%;
+}
+
+div.dialogOverlay {
+  box-shadow: 1px 1px 10px 1px rgba(0, 0, 0, 0.5);
+  padding: 15px;
+  position: fixed;
+  background-color: white;
+  z-index: 2;
+  overflow-x: none;
+  overflow-y: auto;
+  margin-left: 25%;
+  margin-right: 25%;
+  margin-top: 10%;
+  width: 50%;
+  height: 50%;
+  border-radius: 5px;
+}
+
+a.hyperlinkButton {
+  cursor: pointer;
+  color: cornflowerblue;
+}
+
+a.hyperlinkButton:hover {
+  text-decoration-line: underline;
 }
 
 #noteName {
@@ -121,12 +156,14 @@ img.reducedIntensity {
   border-bottom-width: 1px;
   border-color: var(--lightAccent400);
 }
-  #noteName:focus {
-    outline-style: none;
-  }
-  #noteName::placeholder {
-    color: opacity(25%);
-  }
+
+#noteName:focus {
+  outline-style: none;
+}
+
+#noteName::placeholder {
+  color: opacity(25%);
+}
 
 #editor {
   height: 65%;
@@ -135,4 +172,48 @@ img.reducedIntensity {
   word-break: break-all;
   margin-bottom: 5px;
   border-color: var(--lightAccent400);
+}
+
+div.saveBeforeClosing {
+  margin-top: -6%;
+  left: 0;
+  top: 0;
+  position: fixed;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+}
+
+h1.saveBeforeClosing,
+h3.saveBeforeClosing {
+  line-height: 25px;
+  text-align: center;
+}
+
+button.saveBeforeClosing {
+  width: 100%;
+  padding: 10px;
+  background-color: transparent;
+  border-radius: 5px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: var(--lightAccent200);
+}
+
+button.saveBeforeClosing:hover {
+  background-color: rgba(0, 0, 0, 0.025);
+}
+
+button.saveBeforeClosing:active {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+#dialogFocusBackground {
+  left: 0;
+  top: 0;
+  position: fixed;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
 }
