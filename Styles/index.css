@@ -58,7 +58,7 @@ button.menuDropdown {
   cursor: pointer;
   background-color: transparent;
   border-style: solid;
-  border-color: var(--lightAccent200);
+  border-color: var(--lightAccent100);
   border-top-width: 0;
   border-left-width: 0;
   border-right-width: 0;
