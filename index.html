@@ -24,8 +24,8 @@
         New
       </button>
       <button class="menuDropdown">Open...</button>
-      <button class="menuDropdown">Save</button>
-      <button class="menuDropdown">Download Note</button>
+      <button disabled id="save" class="menuDropdown" onclick="saveNoteProgress()">Save</button>
+      <button disabled id="downloadNote" class="menuDropdown">Download Note</button>
       <button disabled id="closeNote" class="menuDropdown" onclick="confirmSave()">
         Close Note
       </button>
@@ -41,7 +41,7 @@
       onmouseleave="document.getElementById('editMenu').hidden = true">
       <button class="menuDropdown">Copy <span class="helperText menuDropdown">Ctrl + C</span></button>
       <button class="menuDropdown">Cut <span class="helperText menuDropdown">Ctrl + X</span></button>
-      <button class="menuDropdown">Paste <span class="helperText menuDropdown">Ctrl + V</span></button>
+      <button class="menuDropdown" onclick="navigator.clipboard.readText();">Paste <span class="helperText menuDropdown">Ctrl + V</span></button>
       <hr class="menuDropdown">
       <button class="menuDropdown">Preferences</button>
     </div>
@@ -213,7 +213,7 @@
               </td>
               <td>
                 <span class="buttonHeading">Open an Existing Note</span><br>
-                <input hidden id="openNoteFileInput" type="file" accept="">
+                <input hidden id="openNoteFileInput" type="file" accept=".rtf, .txt">
                 <span class="helperText">Browse your computer for a note you were working on last time</span>
               </td>
             </tr>
@@ -225,7 +225,8 @@
           <button class="menu" title="New">
             <img style="filter: grayscale(100%)" class="menu" src="Assets/Images/draft_80A4AE.svg">
           </button>
-          <button class="menu" title="Save Progress" onclick="localStorage.setItem('noteProgress', quill.getSemanticHTML()); localStorage.setItem('noteTitle', document.getElementById('noteName').value)">
+          <button class="menu" title="Save Progress"
+            onclick="saveNoteProgress();">
             <img class="reducedIntensity menu" src="Assets/Images/save_000000.svg">
           </button>
           <input id="noteName" type="text" placeholder="Untitled">
@@ -245,12 +246,12 @@
         <tr>
           <td style="width: 33%">
             <button style="background-color: #e54304; color: white" class="saveBeforeClosing"
-              onclick="hideAndShow('noteEditor', 'createOrOpenContainer'); document.getElementById('closeNote').disabled = true">
+              onclick="hideAndShow('noteEditor', 'createOrOpenContainer'); alterMenuFunctions(true); localStorage">
               Don't Save
             </button>
           </td>
           <td style="width: 33%">
-            <button class="saveBeforeClosing">Save</button>
+            <button class="saveBeforeClosing">Download</button>
           </td>
           <td style="width: 33%">
             <button class="saveBeforeClosing">Resume Working</button>

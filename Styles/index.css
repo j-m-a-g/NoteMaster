@@ -201,7 +201,7 @@ a.hyperlinkButton:hover {
   height: 70%;
   overflow-x: hidden;
   overflow-y: auto;
-  word-break: normal;
+  word-break: break-word;
   margin-bottom: 5px;
   border-color: var(--lightAccent400);
 }

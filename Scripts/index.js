@@ -9,7 +9,7 @@ const toolbarOptions = [
   [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
   [{ 'direction': 'rtl' }],                         // text direction
 
-  [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+  [{ 'header': [1, 2, 3, 4, false, 5, 6] }],
 
   [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
   [{ 'font': [] }],
@@ -42,6 +42,7 @@ function onLoadTasks() {
     quill.clipboard.dangerouslyPasteHTML(localStorage.getItem("noteProgress"));
 
     noteName.value = localStorage.getItem('noteTitle');
+    alterMenuFunctions(false);
   }
 }
 
@@ -78,6 +79,12 @@ function toggleMenuDropdown(currentDropdown) {
   }
 }
 
+function alterMenuFunctions(isDisabled) {
+  document.getElementById("save").disabled = isDisabled;
+  document.getElementById("downloadNote").disabled = isDisabled;
+  document.getElementById("closeNote").disabled = isDisabled;
+}
+
 function initiateNote(createNote) {
   switch (createNote) {
     case true:
@@ -87,7 +94,7 @@ function initiateNote(createNote) {
       break;
   }
 
-  document.getElementById("closeNote").disabled = false;
+  alterMenuFunctions(false);
 }
 
 function confirmSave() {
@@ -105,6 +112,11 @@ function confirmSave() {
   }
   else {
     hideAndShow("noteEditor", "createOrOpenContainer");
-    document.getElementById("closeNote").disabled = true;
+    alterMenuFunctions(true);
   }
+}
+
+function saveNoteProgress() {
+  localStorage.setItem("noteProgress", quill.getSemanticHTML());
+  localStorage.setItem("noteTitle", document.getElementById("noteName").value)
 }
