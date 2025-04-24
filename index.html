@@ -7,10 +7,11 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>NotesMaster</title>
   <link rel="stylesheet" type="text/css" href="Styles/index.css">
-  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
 </head>
 
-<body>
+<body onload="onLoadTasks()" onunload="alert('hello')">
   <nav id="appMenu">
     <button class="menu" onmouseover="document.getElementById('fileMenu').hidden = false"
       onmouseleave="document.getElementById('fileMenu').hidden = true">
@@ -23,7 +24,9 @@
         New
       </button>
       <button class="menuDropdown">Open...</button>
-      <button class="menuDropdown" onclick="hideAndShow('noteEditor', 'createOrOpenContainer')">
+      <button class="menuDropdown">Save</button>
+      <button class="menuDropdown">Download Note</button>
+      <button disabled id="closeNote" class="menuDropdown" onclick="confirmSave()">
         Close Note
       </button>
       <button class="menuDropdown">Exit</button>
@@ -36,9 +39,11 @@
     <div hidden style="margin-left: 45px" id="editMenu" class="menu" onclick="hideAllMenuDropdowns()"
       onmouseover="document.getElementById('editMenu').hidden = false"
       onmouseleave="document.getElementById('editMenu').hidden = true">
-      <button class="menuDropdown">Copy</button>
-      <button class="menuDropdown">Cut</button>
-      <button class="menuDropdown">Paste</button>
+      <button class="menuDropdown">Copy <span class="helperText menuDropdown">Ctrl + C</span></button>
+      <button class="menuDropdown">Cut <span class="helperText menuDropdown">Ctrl + X</span></button>
+      <button class="menuDropdown">Paste <span class="helperText menuDropdown">Ctrl + V</span></button>
+      <hr class="menuDropdown">
+      <button class="menuDropdown">Preferences</button>
     </div>
 
     <button class="menu">View</button>
@@ -53,6 +58,7 @@
     </div>
   </nav>
 
+  <br>
   <br>
   <table style="width: 100%; height: 100%">
     <tr>
@@ -97,7 +103,7 @@
         <table>
           <tr>
             <td>
-              <button class="appSection">
+              <button class="appSection" onclick="toggleDialog(true, 'insertCloudURLDialog')">
                 <table>
                   <tr>
                     <td>
@@ -185,7 +191,7 @@
 
       <!-- Editor section -->
       <td id="createOrOpenContainer" class="appSection">
-        <button class="appSection" onclick="hideAndShow('createOrOpenContainer', 'noteEditor')">
+        <button class="appSection" onclick="initiateNote(true)">
           <table>
             <tr>
               <td>
@@ -199,7 +205,7 @@
           </table>
         </button>
         <br>
-        <button class="appSection">
+        <button class="appSection" onclick="document.getElementById('openNoteFileInput').click()">
           <table>
             <tr>
               <td>
@@ -207,6 +213,7 @@
               </td>
               <td>
                 <span class="buttonHeading">Open an Existing Note</span><br>
+                <input hidden id="openNoteFileInput" type="file" accept="">
                 <span class="helperText">Browse your computer for a note you were working on last time</span>
               </td>
             </tr>
@@ -214,11 +221,11 @@
         </button>
       </td>
       <td hidden id="noteEditor" class="appSection">
-        <nav>
+        <nav style="margin-bottom: 5px">
           <button class="menu" title="New">
             <img style="filter: grayscale(100%)" class="menu" src="Assets/Images/draft_80A4AE.svg">
           </button>
-          <button class="menu" title="Save">
+          <button class="menu" title="Save Progress" onclick="localStorage.setItem('noteProgress', quill.getSemanticHTML()); localStorage.setItem('noteTitle', document.getElementById('noteName').value)">
             <img class="reducedIntensity menu" src="Assets/Images/save_000000.svg">
           </button>
           <input id="noteName" type="text" placeholder="Untitled">
@@ -228,16 +235,19 @@
     </tr>
   </table>
 
-  <div hidden class="saveBeforeClosing">
+  <div hidden id="confirmSaveDialog" class="saveBeforeClosing">
     <div class="dialogOverlay">
-      <h1 class="saveBeforeClosing">Save Your Work?</h1>
+      <h1 class="saveBeforeClosing" id="saveDocumentHeading"></h1>
       <h3 class="saveBeforeClosing helperText">You are continuing onto another task and your current work has not been
         saved.</h3>
       <br>
-      <table style="width: 100%">
+      <table style="width: 100%" onclick="document.getElementById('confirmSaveDialog').hidden = true">
         <tr>
           <td style="width: 33%">
-            <button style="background-color: #e54304; color: white" class="saveBeforeClosing">Don't Save</button>
+            <button style="background-color: #e54304; color: white" class="saveBeforeClosing"
+              onclick="hideAndShow('noteEditor', 'createOrOpenContainer'); document.getElementById('closeNote').disabled = true">
+              Don't Save
+            </button>
           </td>
           <td style="width: 33%">
             <button class="saveBeforeClosing">Save</button>
@@ -251,6 +261,24 @@
   </div>
 
   <div hidden id="dialogFocusBackground">
+    <div hidden id="insertCloudURLDialog" class="dialogOverlay">
+      <img src="Assets/Images/cloud_7CA7D8.svg">
+      <h1>File in the Cloud</h1>
+      <h3 class="helperText">Paste the URL to your cloud document below</h3>
+      <table style="width: 100%; margin-bottom: 10px">
+        <tr>
+          <td style="width: 75%">
+            <input style="width: 94%" type="text" placeholder="https://example.com">
+          </td>
+          <td>
+            <button class="dialogOverlay">Open</button>
+          </td>
+        </tr>
+      </table>
+      <a class="hyperlinkButton" onclick="toggleDialog(false, 'aboutDialog')">
+        Close
+      </a>
+    </div>
     <div hidden id="aboutDialog" class="dialogOverlay">
       <h1>About</h1>
       <p style="line-height: 25px">
@@ -266,7 +294,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
   <script src="Scripts/index.js"></script>
-  <script src="Scripts/editor.js"></script>
 </body>
 
 </html>
