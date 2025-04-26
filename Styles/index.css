@@ -161,13 +161,13 @@ div.dialogOverlay {
   position: fixed;
   background-color: white;
   z-index: 2;
-  overflow-x: none;
+  overflow-x: hidden;
   overflow-y: auto;
   margin-left: 25%;
   margin-right: 25%;
   margin-top: 10%;
   width: 50%;
-  height: 50%;
+  height: 55%;
   border-radius: 5px;
 }
 

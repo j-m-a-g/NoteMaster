@@ -3,298 +3,316 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta content="ie=edge" http-equiv="X-UA-Compatible">
   <title>NotesMaster</title>
-  <link rel="stylesheet" type="text/css" href="Styles/index.css">
+  <link href="Styles/index.css" rel="stylesheet" type="text/css">
 
   <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
 </head>
 
 <body onload="onLoadTasks()" onunload="alert('hello')">
-  <nav id="appMenu">
-    <button class="menu" onmouseover="document.getElementById('fileMenu').hidden = false"
-      onmouseleave="document.getElementById('fileMenu').hidden = true">
-      File
+<nav id="appMenu">
+  <button class="menu" onmouseleave="document.getElementById('fileMenu').hidden = true"
+          onmouseover="document.getElementById('fileMenu').hidden = false">
+    File
+  </button>
+  <div class="menu" hidden id="fileMenu" onclick="hideAllMenuDropdowns()"
+       onmouseleave="document.getElementById('fileMenu').hidden = true"
+       onmouseover="document.getElementById('fileMenu').hidden = false">
+    <button class="menuDropdown" onclick="hideAndShow('createOrOpenContainer', 'noteEditor')">
+      New
     </button>
-    <div hidden id="fileMenu" class="menu" onclick="hideAllMenuDropdowns()"
-      onmouseover="document.getElementById('fileMenu').hidden = false"
-      onmouseleave="document.getElementById('fileMenu').hidden = true">
-      <button class="menuDropdown" onclick="hideAndShow('createOrOpenContainer', 'noteEditor')">
-        New
-      </button>
-      <button class="menuDropdown">Open...</button>
-      <button disabled id="save" class="menuDropdown" onclick="saveNoteProgress()">Save</button>
-      <button disabled id="downloadNote" class="menuDropdown">Download Note</button>
-      <button disabled id="closeNote" class="menuDropdown" onclick="confirmSave()">
-        Close Note
-      </button>
-      <button class="menuDropdown">Exit</button>
-    </div>
-
-    <button class="menu" onmouseover="document.getElementById('editMenu').hidden = false"
-      onmouseleave="document.getElementById('editMenu').hidden = true">
-      Edit
+    <button class="menuDropdown">Open...</button>
+    <button class="menuDropdown" disabled id="save" onclick="saveNoteProgress()">Save</button>
+    <button class="menuDropdown" disabled id="downloadNote">Download Note</button>
+    <button class="menuDropdown" disabled id="closeNote" onclick="confirmSave()">
+      Close Note
     </button>
-    <div hidden style="margin-left: 45px" id="editMenu" class="menu" onclick="hideAllMenuDropdowns()"
-      onmouseover="document.getElementById('editMenu').hidden = false"
-      onmouseleave="document.getElementById('editMenu').hidden = true">
-      <button class="menuDropdown">Copy <span class="helperText menuDropdown">Ctrl + C</span></button>
-      <button class="menuDropdown">Cut <span class="helperText menuDropdown">Ctrl + X</span></button>
-      <button class="menuDropdown" onclick="navigator.clipboard.readText();">Paste <span class="helperText menuDropdown">Ctrl + V</span></button>
-      <hr class="menuDropdown">
-      <button class="menuDropdown">Preferences</button>
-    </div>
+    <button class="menuDropdown">Exit</button>
+  </div>
 
-    <button class="menu">View</button>
-    <button class="menu" onmouseover="document.getElementById('helpMenu').hidden = false"
-      onmouseleave="document.getElementById('helpMenu').hidden = true">
-      Help
+  <button class="menu" onmouseleave="document.getElementById('editMenu').hidden = true"
+          onmouseover="document.getElementById('editMenu').hidden = false">
+    Edit
+  </button>
+  <div class="menu" hidden id="editMenu" onclick="hideAllMenuDropdowns()" onmouseleave="document.getElementById('editMenu').hidden = true"
+       onmouseover="document.getElementById('editMenu').hidden = false"
+       style="margin-left: 45px">
+    <button class="menuDropdown">Copy <span class="helperText menuDropdown">Ctrl + C</span></button>
+    <button class="menuDropdown">Cut <span class="helperText menuDropdown">Ctrl + X</span></button>
+    <button class="menuDropdown">Paste <span class="helperText menuDropdown">Ctrl + V</span>
     </button>
-    <div hidden style="margin-left: 146px" id="helpMenu" class="menu" onclick="hideAllMenuDropdowns()"
-      onmouseover="document.getElementById('helpMenu').hidden = false"
-      onmouseleave="document.getElementById('helpMenu').hidden = true">
-      <button class="menuDropdown" onclick="toggleDialog(true, 'aboutDialog')">About</button>
-    </div>
-  </nav>
+    <hr class="menuDropdown">
+    <button class="menuDropdown">Preferences</button>
+  </div>
 
-  <br>
-  <br>
-  <table style="width: 100%; height: 100%">
-    <tr>
-      <!-- Viewing section -->
-      <td class="appSection">
-        <h1 style="line-height: 20px">Welcome</h1>
-        <h3>What type of document will you view today?</h3>
-        <table>
-          <tr>
-            <td>
-              <button class="appSection">
-                <table>
-                  <tr>
-                    <td>
-                      <img class="appSection" src="Assets/Images/picture_as_pdf_D16D6A.svg">
-                    </td>
-                    <td>
-                      <span class="buttonHeading">PDF</span><br>
-                      <span class="helperText">Portable Document Format. .pdf</span>
-                    </td>
-                  </tr>
-                </table>
-              </button>
-            </td>
-            <td>
-              <button class="appSection">
-                <table>
-                  <tr>
-                    <td>
-                      <img class="appSection" src="Assets/Images/image_80A4AE.svg">
-                    </td>
-                    <td>
-                      <span class="buttonHeading">Image</span><br>
-                      <span class="helperText">.png, .jpg, .gif, .svg, .webp</div></span>
-                    </td>
-                  </tr>
-                </table>
-              </button>
-            </td>
-          </tr>
-        </table>
-        <table>
-          <tr>
-            <td>
-              <button class="appSection" onclick="toggleDialog(true, 'insertCloudURLDialog')">
-                <table>
-                  <tr>
-                    <td>
-                      <img class="appSection" src="Assets/Images/cloud_7CA7D8.svg">
-                    </td>
-                    <td>
-                      <span class="buttonHeading">File in the Cloud</span><br>
-                      <span class="helperText">Google Drive, OneDrive, Dropbox</span>
-                    </td>
-                  </tr>
-                </table>
-              </button>
-            </td>
-            <td>
-              <button class="appSection">
-                <table>
-                  <tr>
-                    <td>
-                      <img class="appSection" src="Assets/Images/draft_80A4AE.svg">
-                    </td>
-                    <td>
-                      <span class="buttonHeading">Text File</span><br>
-                      <span class="helperText">.rtf, .txt</span>
-                    </td>
-                  </tr>
-                </table>
-              </button>
-            </td>
-          </tr>
-        </table>
-        <table>
-          <tr>
-            <td>
-              <button class="appSection">
-                <table>
-                  <tr>
-                    <td>
-                      <img class="appSection" src="Assets/Images/description_789DE5.svg">
-                    </td>
-                    <td>
-                      <span class="buttonHeading">Document</span><br>
-                      <span class="helperText">.doc, .docx</span>
-                    </td>
-                  </tr>
-                </table>
-              </button>
-            </td>
-            <td>
-              <button class="appSection">
-                <table>
-                  <tr>
-                    <td>
-                      <img class="appSection" src="Assets/Images/table_rows_9DC384.svg">
-                    </td>
-                    <td>
-                      <span class="buttonHeading">Spreadsheet</span><br>
-                      <span class="helperText">.xls, .xlsx</span>
-                    </td>
-                  </tr>
-                </table>
-              </button>
-            </td>
-          </tr>
-        </table>
-        <table>
-          <tr>
-            <td>
-              <button class="appSection">
-                <table>
-                  <tr>
-                    <td>
-                      <img class="appSection" src="Assets/Images/pie_chart_BD4C31.svg">
-                    </td>
-                    <td>
-                      <span class="buttonHeading">Presentation</span><br>
-                      <span class="helperText">.ppt, .pptx</span>
-                    </td>
-                  </tr>
-                </table>
-              </button>
-            </td>
-          </tr>
-        </table>
-      </td>
+  <button class="menu">View</button>
+  <button class="menu" onmouseleave="document.getElementById('helpMenu').hidden = true"
+          onmouseover="document.getElementById('helpMenu').hidden = false">
+    Help
+  </button>
+  <div class="menu" hidden id="helpMenu" onclick="hideAllMenuDropdowns()" onmouseleave="document.getElementById('helpMenu').hidden = true"
+       onmouseover="document.getElementById('helpMenu').hidden = false"
+       style="margin-left: 146px">
+    <button class="menuDropdown" onclick="toggleDialog(true, 'aboutDialog')">About</button>
+  </div>
+</nav>
 
-      <!-- Editor section -->
-      <td id="createOrOpenContainer" class="appSection">
-        <button class="appSection" onclick="initiateNote(true)">
-          <table>
-            <tr>
-              <td>
-                <img class="appSection reducedIntensity" src="Assets/Images/note_add_000000.svg">
-              </td>
-              <td>
-                <span class="buttonHeading">Create a New Note</span><br>
-                <span class="helperText">Get started with a blank slate</span>
-              </td>
-            </tr>
-          </table>
-        </button>
-        <br>
-        <button class="appSection" onclick="document.getElementById('openNoteFileInput').click()">
-          <table>
-            <tr>
-              <td>
-                <img class="appSection reducedIntensity" src="Assets/Images/file_open_000000.svg">
-              </td>
-              <td>
-                <span class="buttonHeading">Open an Existing Note</span><br>
-                <input hidden id="openNoteFileInput" type="file" accept=".rtf, .txt">
-                <span class="helperText">Browse your computer for a note you were working on last time</span>
-              </td>
-            </tr>
-          </table>
-        </button>
-      </td>
-      <td hidden id="noteEditor" class="appSection">
-        <nav style="margin-bottom: 5px">
-          <button class="menu" title="New">
-            <img style="filter: grayscale(100%)" class="menu" src="Assets/Images/draft_80A4AE.svg">
-          </button>
-          <button class="menu" title="Save Progress"
-            onclick="saveNoteProgress();">
-            <img class="reducedIntensity menu" src="Assets/Images/save_000000.svg">
-          </button>
-          <input id="noteName" type="text" placeholder="Untitled">
-        </nav>
-        <div id="editor"></div>
-      </td>
-    </tr>
-  </table>
-
-  <div hidden id="confirmSaveDialog" class="saveBeforeClosing">
-    <div class="dialogOverlay">
-      <h1 class="saveBeforeClosing" id="saveDocumentHeading"></h1>
-      <h3 class="saveBeforeClosing helperText">You are continuing onto another task and your current work has not been
-        saved.</h3>
-      <br>
-      <table style="width: 100%" onclick="document.getElementById('confirmSaveDialog').hidden = true">
+<br>
+<br>
+<table style="width: 100%; height: 100%">
+  <tr>
+    <!-- Viewing section -->
+    <td class="appSection">
+      <h1 style="line-height: 20px">Welcome</h1>
+      <h3>What type of document will you view today?</h3>
+      <table>
         <tr>
-          <td style="width: 33%">
-            <button style="background-color: #e54304; color: white" class="saveBeforeClosing"
-              onclick="hideAndShow('noteEditor', 'createOrOpenContainer'); alterMenuFunctions(true); localStorage">
-              Don't Save
+          <td>
+            <button class="appSection">
+              <table>
+                <tr>
+                  <td>
+                    <img class="appSection" src="Assets/Images/picture_as_pdf_D16D6A.svg">
+                  </td>
+                  <td>
+                    <span class="buttonHeading">PDF</span><br>
+                    <span class="helperText">Portable Document Format. .pdf</span>
+                  </td>
+                </tr>
+              </table>
             </button>
           </td>
-          <td style="width: 33%">
-            <button class="saveBeforeClosing">Download</button>
-          </td>
-          <td style="width: 33%">
-            <button class="saveBeforeClosing">Resume Working</button>
+          <td>
+            <button class="appSection" onclick="document.getElementById('imageFileInput').click()">
+              <table>
+                <tr>
+                  <td>
+                    <img class="appSection" src="Assets/Images/image_80A4AE.svg">
+                  </td>
+                  <td>
+                    <span class="buttonHeading">Image</span><br>
+                    <input accept="image/*" hidden id="imageFileInput" type="file">
+                    <span class="helperText">.png, .jpg, .gif, .svg, .webp</span>
+                  </td>
+                </tr>
+              </table>
+            </button>
           </td>
         </tr>
       </table>
-    </div>
-  </div>
-
-  <div hidden id="dialogFocusBackground">
-    <div hidden id="insertCloudURLDialog" class="dialogOverlay">
-      <img src="Assets/Images/cloud_7CA7D8.svg">
-      <h1>File in the Cloud</h1>
-      <h3 class="helperText">Paste the URL to your cloud document below</h3>
-      <table style="width: 100%; margin-bottom: 10px">
+      <table>
         <tr>
-          <td style="width: 75%">
-            <input style="width: 94%" type="text" placeholder="https://example.com">
+          <td>
+            <button class="appSection" onclick="toggleDialog(true, 'insertCloudURLDialog')">
+              <table>
+                <tr>
+                  <td>
+                    <img class="appSection" src="Assets/Images/cloud_7CA7D8.svg">
+                  </td>
+                  <td>
+                    <span class="buttonHeading">File in the Cloud</span><br>
+                    <span class="helperText">Google Drive, OneDrive, Dropbox</span>
+                  </td>
+                </tr>
+              </table>
+            </button>
           </td>
           <td>
-            <button class="dialogOverlay">Open</button>
+            <button class="appSection">
+              <table>
+                <tr>
+                  <td>
+                    <img class="appSection" src="Assets/Images/draft_80A4AE.svg">
+                  </td>
+                  <td>
+                    <span class="buttonHeading">Text File</span><br>
+                    <span class="helperText">.rtf, .txt</span>
+                  </td>
+                </tr>
+              </table>
+            </button>
           </td>
         </tr>
       </table>
-      <a class="hyperlinkButton" onclick="toggleDialog(false, 'aboutDialog')">
-        Close
-      </a>
-    </div>
-    <div hidden id="aboutDialog" class="dialogOverlay">
-      <h1>About</h1>
-      <p style="line-height: 25px">
-        NotesMaster v25.05.x
-        <br>
-        Designed and developed by <a href="https://github.com/j-m-a-g" target="_blank">J. Maghamez</a>
-      </p>
-      <a class="hyperlinkButton" onclick="toggleDialog(false, 'aboutDialog')">
-        Close
-      </a>
-    </div>
-  </div>
+      <table>
+        <tr>
+          <td>
+            <button class="appSection">
+              <table>
+                <tr>
+                  <td>
+                    <img class="appSection" src="Assets/Images/description_789DE5.svg">
+                  </td>
+                  <td>
+                    <span class="buttonHeading">Document</span><br>
+                    <span class="helperText">.doc, .docx</span>
+                  </td>
+                </tr>
+              </table>
+            </button>
+          </td>
+          <td>
+            <button class="appSection">
+              <table>
+                <tr>
+                  <td>
+                    <img class="appSection" src="Assets/Images/table_rows_9DC384.svg">
+                  </td>
+                  <td>
+                    <span class="buttonHeading">Spreadsheet</span><br>
+                    <span class="helperText">.xls, .xlsx</span>
+                  </td>
+                </tr>
+              </table>
+            </button>
+          </td>
+        </tr>
+      </table>
+      <table>
+        <tr>
+          <td>
+            <button class="appSection">
+              <table>
+                <tr>
+                  <td>
+                    <img class="appSection" src="Assets/Images/pie_chart_BD4C31.svg">
+                  </td>
+                  <td>
+                    <span class="buttonHeading">Presentation</span><br>
+                    <span class="helperText">.ppt, .pptx</span>
+                  </td>
+                </tr>
+              </table>
+            </button>
+          </td>
+          <td>
+            <button class="appSection">
+              <table>
+                <tr>
+                  <td>
+                    <img class="appSection" src="Assets/Images/language_8B7DBE.svg">
+                  </td>
+                  <td>
+                    <span class="buttonHeading">Webpage</span><br>
+                    <span class="helperText">Not all websites might work</span>
+                  </td>
+                </tr>
+              </table>
+            </button>
+          </td>
+        </tr>
+      </table>
+    </td>
 
-  <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
-  <script src="Scripts/index.js"></script>
+    <!-- Editor section -->
+    <td class="appSection" id="createOrOpenContainer">
+      <button class="appSection" onclick="initiateNote(true)">
+        <table>
+          <tr>
+            <td>
+              <img class="appSection reducedIntensity" src="Assets/Images/note_add_000000.svg">
+            </td>
+            <td>
+              <span class="buttonHeading">Create a New Note</span><br>
+              <span class="helperText">Get started with a blank slate</span>
+            </td>
+          </tr>
+        </table>
+      </button>
+      <br>
+      <button class="appSection" onclick="document.getElementById('openNoteFileInput').click()">
+        <table>
+          <tr>
+            <td>
+              <img class="appSection reducedIntensity" src="Assets/Images/file_open_000000.svg">
+            </td>
+            <td>
+              <span class="buttonHeading">Open an Existing Note</span><br>
+              <input accept=".rtf, .txt" hidden id="openNoteFileInput" type="file">
+              <span class="helperText">Browse your computer for a note you were working on last time</span>
+            </td>
+          </tr>
+        </table>
+      </button>
+    </td>
+    <td class="appSection" hidden id="noteEditor">
+      <nav style="margin-bottom: 5px">
+        <button class="menu" title="New">
+          <img class="menu" src="Assets/Images/draft_80A4AE.svg" style="filter: grayscale(100%)">
+        </button>
+        <button class="menu" onclick="saveNoteProgress();"
+                title="Save Progress">
+          <img class="reducedIntensity menu" src="Assets/Images/save_000000.svg">
+        </button>
+        <input id="noteName" placeholder="Untitled" type="text">
+      </nav>
+      <div id="editor"></div>
+    </td>
+  </tr>
+</table>
+
+<div class="saveBeforeClosing" hidden id="confirmSaveDialog">
+  <div class="dialogOverlay">
+    <h1 class="saveBeforeClosing" id="saveDocumentHeading"></h1>
+    <h3 class="saveBeforeClosing helperText">You are continuing onto another task and your current work has not been
+      saved.</h3>
+    <br>
+    <br>
+    <table onclick="document.getElementById('confirmSaveDialog').hidden = true" style="width: 100%">
+      <tr>
+        <td style="width: 33%">
+          <button class="saveBeforeClosing" onclick="hideAndShow('noteEditor', 'createOrOpenContainer'); alterMenuFunctions(true); localStorage.setItem('noteProgress', '<p></p>')"
+                  style="background-color: #e54304; color: white">
+            Don't Save
+          </button>
+        </td>
+        <td style="width: 33%">
+          <button class="saveBeforeClosing">Download</button>
+        </td>
+        <td style="width: 33%">
+          <button class="saveBeforeClosing">Resume Working</button>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div hidden id="dialogFocusBackground">
+  <div class="dialogOverlay" hidden id="insertCloudURLDialog">
+    <img src="Assets/Images/cloud_7CA7D8.svg">
+    <h1>File in the Cloud</h1>
+    <h3 class="helperText">Paste the URL to your cloud document below</h3>
+    <table style="width: 100%; margin-bottom: 10px">
+      <tr>
+        <td style="width: 75%">
+          <input placeholder="https://example.com" style="width: 94%" type="text">
+        </td>
+        <td>
+          <button class="dialogOverlay">Open</button>
+        </td>
+      </tr>
+    </table>
+    <a class="hyperlinkButton" onclick="toggleDialog(false, 'aboutDialog')">
+      Close
+    </a>
+  </div>
+  <div class="dialogOverlay" hidden id="aboutDialog">
+    <h1>About</h1>
+    <p style="line-height: 25px">
+      NotesMaster v25.05.x
+      <br>
+      Designed and developed by <a href="https://github.com/j-m-a-g" target="_blank">J. Maghamez</a>
+    </p>
+    <a class="hyperlinkButton" onclick="toggleDialog(false, 'aboutDialog')">
+      Close
+    </a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+<script src="Scripts/index.js"></script>
 </body>
 
 </html>

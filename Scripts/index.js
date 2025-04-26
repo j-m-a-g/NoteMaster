@@ -1,21 +1,20 @@
 const toolbarOptions = [
-  ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+  ['bold', 'italic', 'underline', 'strike'],
   ['blockquote', 'code-block'],
   ['link', 'image', 'video', 'formula'],
 
-  [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-  [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'list': 'check' }],
-  [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
-  [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
-  [{ 'direction': 'rtl' }],                         // text direction
+  [{'list': 'ordered'}, {'list': 'bullet'}, {'list': 'check'}],
+  [{'script': 'sub'}, {'script': 'super'}],
+  [{'indent': '-1'}, {'indent': '+1'}],
+  [{'direction': 'rtl'}],
 
-  [{ 'header': [1, 2, 3, 4, false, 5, 6] }],
+  [{'header': [1, 2, 3, 4, false, 5, 6]}],
 
-  [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-  [{ 'font': [] }],
-  [{ 'align': [] }],
+  [{'color': []}, {'background': []}],
+  [{'font': []}],
+  [{'align': []}],
 
-  ['clean']                                         // remove formatting button
+  ['clean']
 ];
 
 const quill = new Quill('#editor', {
@@ -30,14 +29,13 @@ const fileMenu = document.getElementById("fileMenu");
 const editMenu = document.getElementById("editMenu");
 const helpMenu = document.getElementById("helpMenu");
 
-const editor = document.getElementById("editor");
 const noteName = document.getElementById("noteName");
 const confirmSaveDialog = document.getElementById("confirmSaveDialog");
 
 const dialogFocusBackground = document.getElementById("dialogFocusBackground");
 
 function onLoadTasks() {
-  if (localStorage.getItem("noteProgress") != "<p></p>") {
+  if (localStorage.getItem("noteProgress") !== "<p></p>") {
     hideAndShow("createOrOpenContainer", "noteEditor");
     quill.clipboard.dangerouslyPasteHTML(localStorage.getItem("noteProgress"));
 
@@ -70,15 +68,6 @@ function hideAllMenuDropdowns() {
   helpMenu.hidden = true;
 }
 
-function toggleMenuDropdown(currentDropdown) {
-  if (document.getElementById(currentDropdown).hidden) {
-    document.getElementById(currentDropdown).hidden = false;
-  }
-  else {
-    document.getElementById(currentDropdown).hidden = true;
-  }
-}
-
 function alterMenuFunctions(isDisabled) {
   document.getElementById("save").disabled = isDisabled;
   document.getElementById("downloadNote").disabled = isDisabled;
@@ -98,19 +87,17 @@ function initiateNote(createNote) {
 }
 
 function confirmSave() {
-  if (noteName.value != "") {
+  if (noteName.value !== "") {
     document.getElementById("saveDocumentHeading").innerHTML = "Save \'" + noteName.value + "\'?";
-  }
-  else {
+  } else {
     document.getElementById("saveDocumentHeading").innerHTML = "Save \'Untitled\'?";
   }
 
   // Determines whether the note editor is empty or the user
   // has inputted text
-  if (quill.getLength() != 1 || noteName.value != "") {
+  if (quill.getLength() !== 1 || noteName.value !== "") {
     confirmSaveDialog.hidden = false;
-  }
-  else {
+  } else {
     hideAndShow("noteEditor", "createOrOpenContainer");
     alterMenuFunctions(true);
   }
