@@ -68,10 +68,12 @@ function toggleDialog(isShown, currentDialog) {
   }
 }
 
-function hideAllMenuDropdowns() {
-  fileMenu.hidden = true;
-  editMenu.hidden = true;
-  helpMenu.hidden = true;
+function toggleMenuCheck(imageObject) {
+  if (document.getElementById(imageObject).src.includes("Assets/Images/check_000000.svg")) {
+    document.getElementById(imageObject).removeAttribute("src");
+  } else {
+    document.getElementById(imageObject).src = "Assets/Images/check_000000.svg"
+  }
 }
 
 function alterMenuFunctions(isDisabled) {

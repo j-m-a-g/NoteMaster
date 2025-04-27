@@ -9,7 +9,7 @@
   <link href="Styles/index.css" rel="stylesheet" type="text/css">
   <link href="Styles/fileViewers.css" rel="stylesheet" type="text/css">
 
-  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/quill/dist/quill.snow.min.css" rel="stylesheet">
 </head>
 
 <body onload="onLoadTasks()" onunload="alert('hello')">
@@ -18,7 +18,7 @@
           onmouseover="document.getElementById('fileMenu').hidden = false">
     File
   </button>
-  <div class="menu" hidden id="fileMenu" onclick="hideAllMenuDropdowns()"
+  <div class="menu" hidden id="fileMenu"
        onmouseleave="document.getElementById('fileMenu').hidden = true"
        onmouseover="document.getElementById('fileMenu').hidden = false">
     <button class="menuDropdown" onclick="hideAndShow('createOrOpenContainer', 'noteEditor')">New</button>
@@ -35,10 +35,10 @@
           onmouseover="document.getElementById('editMenu').hidden = false">
     Edit
   </button>
-  <div class="menu" hidden id="editMenu" onclick="hideAllMenuDropdowns()"
+  <div class="menu" hidden id="editMenu"
        onmouseleave="document.getElementById('editMenu').hidden = true"
        onmouseover="document.getElementById('editMenu').hidden = false"
-       style="margin-left: 45px">
+       style="margin-left: 46px">
     <button class="menuDropdown">Copy <span class="helperText menuDropdown">Ctrl + C</span></button>
     <button class="menuDropdown">Cut <span class="helperText menuDropdown">Ctrl + X</span></button>
     <button class="menuDropdown">Paste <span class="helperText menuDropdown">Ctrl + V</span>
@@ -47,12 +47,24 @@
     <button class="menuDropdown">Preferences</button>
   </div>
 
-  <button class="menu">View</button>
+  <button class="menu" onmouseleave="document.getElementById('viewMenu').hidden = true"
+          onmouseover="document.getElementById('viewMenu').hidden = false">
+    View
+  </button>
+  <div class="menu" hidden id="viewMenu"
+       onmouseleave="document.getElementById('viewMenu').hidden = true"
+       onmouseover="document.getElementById('viewMenu').hidden = false"
+       style="margin-left: 93px">
+    <button class="menuDropdown" onclick="toggleMenuCheck('showHTMLEditorCheck')">
+      <img class="menu" id="showHTMLEditorCheck">
+      Show HTML Note Editor
+    </button>
+  </div>
   <button class="menu" onmouseleave="document.getElementById('helpMenu').hidden = true"
           onmouseover="document.getElementById('helpMenu').hidden = false">
     Help
   </button>
-  <div class="menu" hidden id="helpMenu" onclick="hideAllMenuDropdowns()"
+  <div class="menu" hidden id="helpMenu"
        onmouseleave="document.getElementById('helpMenu').hidden = true"
        onmouseover="document.getElementById('helpMenu').hidden = false"
        style="margin-left: 146px">
@@ -337,7 +349,7 @@
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill/dist/quill.min.js"></script>
 <script src="Scripts/globalVarDeclarations.js"></script>
 <script src="Scripts/index.js"></script>
 <script src="Scripts/editorFunctions.js"></script>

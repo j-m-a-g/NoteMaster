@@ -3,18 +3,14 @@ function initiateNote(isOpen) {
   alterMenuFunctions(false);
 
   if (isOpen) {
-    openNoteFileInput.addEventListener("change",
-      function (event) {
-        const workingFile = event.target.files[0];
-        const fileReader = new FileReader();
-        fileReader.onload = function (e) {
-          const fileContents = e.target.result;
-          console.log(fileContents);
-          quill.clipboard.dangerouslyPasteHTML(fileContents);
-        }
-        fileReader.readAsText(workingFile);
-      }
-    );
+    const workingFile = event.target.files[0];
+    const fileReader = new FileReader();
+    fileReader.onload = () => {
+      const fileContents = fileReader.result;
+      console.log(fileContents);
+      quill.clipboard.dangerouslyPasteHTML(fileContents);
+    }
+    fileReader.readAsText(workingFile);
   }
 }
 
@@ -43,7 +39,11 @@ function saveNoteProgress() {
 function downloadNote() {
   const currentNoteHTML = quill.getSemanticHTML();
   const noteFile = new Blob([currentNoteHTML], {type: "text/html"});
-  noteDownloadLink.download = noteName.value;
+  if (noteName.value === "") {
+    noteDownloadLink.download = "Untitled";
+  } else {
+    noteDownloadLink.download = noteName.value;
+  }
   noteDownloadLink.href = URL.createObjectURL(noteFile);
   noteDownloadLink.click();
 }
