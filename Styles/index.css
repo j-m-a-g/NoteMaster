@@ -110,6 +110,7 @@ td.appSection {
   background-color: var(--lightAccent100);
   border-radius: 5px;
   width: 50%;
+  height: 425px;
 }
 
 button.appSection {

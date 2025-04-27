@@ -7,6 +7,7 @@
   <meta content="ie=edge" http-equiv="X-UA-Compatible">
   <title>NotesMaster</title>
   <link href="Styles/index.css" rel="stylesheet" type="text/css">
+  <link href="Styles/fileViewers.css" rel="stylesheet" type="text/css">
 
   <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
 </head>
@@ -20,15 +21,13 @@
   <div class="menu" hidden id="fileMenu" onclick="hideAllMenuDropdowns()"
        onmouseleave="document.getElementById('fileMenu').hidden = true"
        onmouseover="document.getElementById('fileMenu').hidden = false">
-    <button class="menuDropdown" onclick="hideAndShow('createOrOpenContainer', 'noteEditor')">
-      New
-    </button>
+    <button class="menuDropdown" onclick="hideAndShow('createOrOpenContainer', 'noteEditor')">New</button>
     <button class="menuDropdown">Open...</button>
-    <button class="menuDropdown" disabled id="save" onclick="saveNoteProgress()">Save</button>
-    <button class="menuDropdown" disabled id="downloadNote">Download Note</button>
-    <button class="menuDropdown" disabled id="closeNote" onclick="confirmSave()">
-      Close Note
-    </button>
+    <button class="menuDropdown" disabled id="save" onclick="saveNoteProgress()">Save <span
+        class="helperText menuDropdown">In-Browser</span></button>
+    <button class="menuDropdown" disabled id="downloadNote" onclick="downloadNote()">Download Note</button>
+    <button class="menuDropdown" disabled id="closeFile" onclick="closeCurrentFile()">Close File</button>
+    <button class="menuDropdown" disabled id="closeNote" onclick="confirmSave()">Close Note</button>
     <button class="menuDropdown">Exit</button>
   </div>
 
@@ -36,7 +35,8 @@
           onmouseover="document.getElementById('editMenu').hidden = false">
     Edit
   </button>
-  <div class="menu" hidden id="editMenu" onclick="hideAllMenuDropdowns()" onmouseleave="document.getElementById('editMenu').hidden = true"
+  <div class="menu" hidden id="editMenu" onclick="hideAllMenuDropdowns()"
+       onmouseleave="document.getElementById('editMenu').hidden = true"
        onmouseover="document.getElementById('editMenu').hidden = false"
        style="margin-left: 45px">
     <button class="menuDropdown">Copy <span class="helperText menuDropdown">Ctrl + C</span></button>
@@ -52,7 +52,8 @@
           onmouseover="document.getElementById('helpMenu').hidden = false">
     Help
   </button>
-  <div class="menu" hidden id="helpMenu" onclick="hideAllMenuDropdowns()" onmouseleave="document.getElementById('helpMenu').hidden = true"
+  <div class="menu" hidden id="helpMenu" onclick="hideAllMenuDropdowns()"
+       onmouseleave="document.getElementById('helpMenu').hidden = true"
        onmouseover="document.getElementById('helpMenu').hidden = false"
        style="margin-left: 146px">
     <button class="menuDropdown" onclick="toggleDialog(true, 'aboutDialog')">About</button>
@@ -64,7 +65,7 @@
 <table style="width: 100%; height: 100%">
   <tr>
     <!-- Viewing section -->
-    <td class="appSection">
+    <td class="appSection" id="chooseViewer">
       <h1 style="line-height: 20px">Welcome</h1>
       <h3>What type of document will you view today?</h3>
       <table>
@@ -85,7 +86,8 @@
             </button>
           </td>
           <td>
-            <button class="appSection" onclick="document.getElementById('imageFileInput').click()">
+            <button class="appSection"
+                    onclick="document.getElementById('imageFileInput').click(); toggleViewer(true, 'imageViewer')">
               <table>
                 <tr>
                   <td>
@@ -93,7 +95,9 @@
                   </td>
                   <td>
                     <span class="buttonHeading">Image</span><br>
-                    <input accept="image/*" hidden id="imageFileInput" type="file">
+                    <input accept="image/*" hidden id="imageFileInput"
+                           onchange="document.getElementById('imageView').src = window.URL.createObjectURL(this.files[0]); tasksOnceFileOpen()"
+                           type="file">
                     <span class="helperText">.png, .jpg, .gif, .svg, .webp</span>
                   </td>
                 </tr>
@@ -206,9 +210,24 @@
       </table>
     </td>
 
+    <td class="appSection" hidden id="viewersContainer">
+      <div id="noFileSelected">
+        <img class="reducedIntensity" src="Assets/Images/file_copy_off_000000.svg"
+             style="margin-left: 45%">
+        <h2 class="helperText" style="text-align: center">No file has been chosen... Yet</h2>
+        <button class="dialogOverlay" onclick="retryFileInput()" style="width: 100%">
+          <img class="menu" src="Assets/Images/restart_alt_000000.svg">
+          Retry
+        </button>
+      </div>
+      <div hidden id="imageViewer">
+        <img id="imageView">
+      </div>
+    </td>
+
     <!-- Editor section -->
     <td class="appSection" id="createOrOpenContainer">
-      <button class="appSection" onclick="initiateNote(true)">
+      <button class="appSection" onclick="initiateNote(false)">
         <table>
           <tr>
             <td>
@@ -230,7 +249,9 @@
             </td>
             <td>
               <span class="buttonHeading">Open an Existing Note</span><br>
-              <input accept=".rtf, .txt" hidden id="openNoteFileInput" type="file">
+              <input accept=".htm, .html" hidden id="openNoteFileInput"
+                     onchange="initiateNote(true)"
+                     type="file">
               <span class="helperText">Browse your computer for a note you were working on last time</span>
             </td>
           </tr>
@@ -249,6 +270,7 @@
         <input id="noteName" placeholder="Untitled" type="text">
       </nav>
       <div id="editor"></div>
+      <a hidden id="noteDownloadLink"></a>
     </td>
   </tr>
 </table>
@@ -263,13 +285,14 @@
     <table onclick="document.getElementById('confirmSaveDialog').hidden = true" style="width: 100%">
       <tr>
         <td style="width: 33%">
-          <button class="saveBeforeClosing" onclick="hideAndShow('noteEditor', 'createOrOpenContainer'); alterMenuFunctions(true); localStorage.setItem('noteProgress', '<p></p>')"
+          <button class="saveBeforeClosing"
+                  onclick="hideAndShow('noteEditor', 'createOrOpenContainer'); alterMenuFunctions(true); localStorage.setItem('noteProgress', '<p></p>')"
                   style="background-color: #e54304; color: white">
             Don't Save
           </button>
         </td>
         <td style="width: 33%">
-          <button class="saveBeforeClosing">Download</button>
+          <button class="saveBeforeClosing" onclick="downloadNote()">Download</button>
         </td>
         <td style="width: 33%">
           <button class="saveBeforeClosing">Resume Working</button>
@@ -304,6 +327,9 @@
       NotesMaster v25.05.x
       <br>
       Designed and developed by <a href="https://github.com/j-m-a-g" target="_blank">J. Maghamez</a>
+      <br>
+      <br>
+      Editor powered by <a href="https://quilljs.com" target="_blank">Quill.js</a>
     </p>
     <a class="hyperlinkButton" onclick="toggleDialog(false, 'aboutDialog')">
       Close
@@ -312,7 +338,10 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+<script src="Scripts/globalVarDeclarations.js"></script>
 <script src="Scripts/index.js"></script>
+<script src="Scripts/editorFunctions.js"></script>
+<script src="Scripts/fileViewing.js"></script>
 </body>
 
 </html>
