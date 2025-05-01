@@ -1,11 +1,15 @@
-function tasksOnceFileOpen() {
+function tasksOnceFileOpen(unhiddenView) {
   closeFile.disabled = false;
   noFileSelected.hidden = true;
-  
-  imageView.hidden = false;
+
+  document.getElementById(unhiddenView).hidden = false;
 }
 
 function closeCurrentFile() {
+  pdfViewer.hidden = true;
+  pdfView.hidden = true;
+  pdfView.src = "";
+
   imageViewer.hidden = true;
   imageView.hidden = true;
   imageView.src = "";
@@ -17,7 +21,9 @@ function closeCurrentFile() {
 }
 
 function retryFileInput() {
-  if (imageViewer.hidden === false) {
+  if (pdfViewer.hidden === false) {
+    pdfFileInput.click();
+  } else if (imageViewer.hidden === false) {
     imageFileInput.click();
   }
 }

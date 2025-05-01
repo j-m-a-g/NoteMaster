@@ -83,7 +83,8 @@
       <table>
         <tr>
           <td>
-            <button class="appSection">
+            <button class="appSection"
+                    onclick="document.getElementById('pdfFileInput').click(); toggleViewer(true, 'pdfViewer')">
               <table>
                 <tr>
                   <td>
@@ -91,6 +92,9 @@
                   </td>
                   <td>
                     <span class="buttonHeading">PDF</span><br>
+                    <input accept="application/pdf" hidden id="pdfFileInput"
+                           onchange="document.getElementById('pdfView').src = window.URL.createObjectURL(this.files[0]); tasksOnceFileOpen('pdfView')"
+                           type="file">
                     <span class="helperText">Portable Document Format. .pdf</span>
                   </td>
                 </tr>
@@ -108,7 +112,7 @@
                   <td>
                     <span class="buttonHeading">Image</span><br>
                     <input accept="image/*" hidden id="imageFileInput"
-                           onchange="document.getElementById('imageView').src = window.URL.createObjectURL(this.files[0]); tasksOnceFileOpen()"
+                           onchange="document.getElementById('imageView').src = window.URL.createObjectURL(this.files[0]); tasksOnceFileOpen('imageView')"
                            type="file">
                     <span class="helperText">.png, .jpg, .gif, .svg, .webp</span>
                   </td>
@@ -234,6 +238,9 @@
       </div>
       <div hidden id="imageViewer">
         <img id="imageView">
+      </div>
+      <div hidden id="pdfViewer">
+        <iframe hidden id="pdfView"></iframe>
       </div>
     </td>
 
