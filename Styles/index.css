@@ -51,6 +51,15 @@ input[type = text]::placeholder {
   filter: opacity(50%);
 }
 
+summary {
+  padding: 10px;
+  border-radius: 5px;
+}
+
+summary:hover {
+  background-color: var(--lightAccent200);
+}
+
 #appMenu {
   width: 100%;
   position: fixed;
@@ -105,8 +114,8 @@ button.menuDropdown:disabled:hover {
 }
 
 hr.menuDropdown {
-  margin-top: 0px;
-  margin-bottom: 0px;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 span.menuDropdown {
