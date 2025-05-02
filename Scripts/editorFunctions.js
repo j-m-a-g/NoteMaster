@@ -27,7 +27,6 @@ function confirmSave() {
   // has inputted text
   if (quill.getLength() !== 1 || noteName.value !== "") {
     confirmSaveDialog.hidden = false;
-    isOpeningAnotherNote = true;
   } else {
     hideAndShow("noteEditor", "createOrOpenContainer");
     alterMenuFunctions(true);
@@ -35,6 +34,25 @@ function confirmSave() {
 }
 
 function handleAnotherOpen() {
+  if (quill.getLength() !== 1 || noteName.value !== "") {
+    isOpeningAnotherNote = true;
+    if (noteName.value !== "") {
+      document.getElementById("saveDocumentHeading").innerHTML = "Save \'" + noteName.value + "\'?";
+    } else {
+      document.getElementById("saveDocumentHeading").innerHTML = "Save \'Untitled\'?";
+    }
+    
+    confirmSaveDialog.hidden = false;
+  } else {
+    openNoteFileInput.click();
+  }
+}
+
+function doNotSave() {
+  hideAndShow('noteEditor', 'createOrOpenContainer');
+  alterMenuFunctions(true);
+  localStorage.setItem('noteProgress', '<p></p>');
+
   if (isOpeningAnotherNote) {
     openNoteFileInput.click();
     isOpeningAnotherNote = false;

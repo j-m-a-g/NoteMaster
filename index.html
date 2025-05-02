@@ -22,7 +22,7 @@
        onmouseleave="document.getElementById('fileMenu').hidden = true"
        onmouseover="document.getElementById('fileMenu').hidden = false">
     <button class="menuDropdown" onclick="hideAndShow('createOrOpenContainer', 'noteEditor')">New</button>
-    <button class="menuDropdown" onclick="confirmSave()">Open Note...</button>
+    <button class="menuDropdown" id="openNote" onclick="handleAnotherOpen()">Open Note...</button>
     <button class="menuDropdown" disabled id="save" onclick="saveNoteProgress()">Save <span
         class="helperText menuDropdown">In-Browser</span></button>
     <button class="menuDropdown" disabled id="downloadNote" onclick="downloadNote()">Download Note</button>
@@ -30,7 +30,6 @@
     <button class="menuDropdown" disabled id="closeNote" onclick="confirmSave()">Close Note</button>
     <button class="menuDropdown">Exit</button>
   </div>
-
   <button class="menu" onmouseleave="document.getElementById('editMenu').hidden = true"
           onmouseover="document.getElementById('editMenu').hidden = false">
     Edit
@@ -46,7 +45,6 @@
     <hr class="menuDropdown">
     <button class="menuDropdown">Preferences</button>
   </div>
-
   <button class="menu" onmouseleave="document.getElementById('viewMenu').hidden = true"
           onmouseover="document.getElementById('viewMenu').hidden = false">
     View
@@ -55,9 +53,13 @@
        onmouseleave="document.getElementById('viewMenu').hidden = true"
        onmouseover="document.getElementById('viewMenu').hidden = false"
        style="margin-left: 93px">
-    <button class="menuDropdown" disabled onclick="toggleMenuCheck('showHTMLEditorCheck')">
+    <button class="menuDropdown" disabled id="showHTMLEditor" onclick="toggleMenuCheck('showHTMLEditorCheck')">
       <img class="menu" id="showHTMLEditorCheck">
       Show HTML Note Editor
+    </button>
+    <button class="menuDropdown" id="wordWrap" onclick="toggleMenuCheck('wordWrapCheck')">
+      <img class="menu" id="wordWrapCheck" src="Assets/Images/check_000000.svg">
+      Word Wrap
     </button>
   </div>
   <button class="menu" onmouseleave="document.getElementById('helpMenu').hidden = true"
@@ -311,7 +313,7 @@
               </td>
               <td>
                 <span class="buttonHeading">Open an Existing Note</span><br>
-                <input accept=".htm, .html" hidden id="openNoteFileInput"
+                <input accept="text/html" hidden id="openNoteFileInput"
                        onchange="initiateNote(true)"
                        type="file">
                 <span class="helperText">Browse your computer for a note you were working on last time</span>
@@ -321,21 +323,23 @@
         </button>
       </td>
       <td class="appSection" hidden id="noteEditor">
-        <nav style="margin-bottom: 5px">
-          <button class="menu" onclick="confirmSave()" title="New">
-            <img class="menu" src="Assets/Images/draft_80A4AE.svg" style="filter: grayscale(100%)">
-          </button>
-          <button class="menu" onclick="saveNoteProgress();"
-                  title="Save Progress">
-            <img class="reducedIntensity menu" src="Assets/Images/save_000000.svg">
-          </button>
-          <button class="menu" onclick="downloadNote()" title="Download Note">
-            <img class="reducedIntensity menu" src="Assets/Images/download_000000.svg">
-          </button>
-          <input id="noteName" placeholder="Untitled" type="text">
-        </nav>
-        <div id="editor"></div>
-        <a hidden id="noteDownloadLink"></a>
+        <div style="overflow-x: auto; height: 100%">
+          <nav style="margin-bottom: 5px">
+            <button class="menu" onclick="confirmSave()" title="New">
+              <img class="menu" src="Assets/Images/draft_80A4AE.svg" style="filter: grayscale(100%)">
+            </button>
+            <button class="menu" onclick="saveNoteProgress();"
+                    title="Save Progress">
+              <img class="reducedIntensity menu" src="Assets/Images/save_000000.svg">
+            </button>
+            <button class="menu" onclick="downloadNote()" title="Download Note">
+              <img class="reducedIntensity menu" src="Assets/Images/download_000000.svg">
+            </button>
+            <input id="noteName" placeholder="Untitled" type="text">
+          </nav>
+          <div id="editor"></div>
+          <a hidden id="noteDownloadLink"></a>
+        </div>
       </td>
     </tr>
   </table>
@@ -345,22 +349,24 @@
 <div class="saveBeforeClosing" hidden id="confirmSaveDialog">
   <div class="dialogOverlay">
     <h1 class="saveBeforeClosing" id="saveDocumentHeading"></h1>
-    <h3 class="saveBeforeClosing helperText">You are continuing onto another task and your current work has not been
-      saved.</h3>
+    <h3 class="saveBeforeClosing helperText">
+      You are continuing onto another task and your current work has not been saved.
+    </h3>
     <br>
     <br>
     <table onclick="confirmSaveDialog.hidden = true" style="width: 100%">
       <tr>
         <td style="width: 33%">
           <button class="saveBeforeClosing"
-                  onclick="hideAndShow('noteEditor', 'createOrOpenContainer'); alterMenuFunctions(true); localStorage.setItem('noteProgress', '<p></p>'); handleAnotherOpen()"
+                  onclick="doNotSave()"
                   style="background-color: #e54304; color: white">
             Don't Save
           </button>
         </td>
         <td style="width: 33%">
           <button class="saveBeforeClosing"
-                  onclick="downloadNote(); handleAnotherOpen()">Download
+                  onclick="downloadNote(); if (isOpeningAnotherNote) { openNoteFileInput.click() }">
+            Download
           </button>
         </td>
         <td style="width: 33%">

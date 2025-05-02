@@ -139,7 +139,7 @@ td.appSection {
   background-color: var(--lightAccent100);
   border-radius: 5px;
   width: 50%;
-  height: 475px;
+  height: 400px;
 }
 
 button.appSection {
@@ -230,7 +230,7 @@ a.hyperlinkButton:hover {
 }
 
 #editor {
-  height: 70%;
+  height: 62%;
   overflow-x: hidden;
   overflow-y: auto;
   word-break: break-word;
