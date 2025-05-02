@@ -7,10 +7,12 @@ function initiateNote(isOpen) {
     const fileReader = new FileReader();
     fileReader.onload = () => {
       const fileContents = fileReader.result;
-      console.log(fileContents);
       quill.clipboard.dangerouslyPasteHTML(fileContents);
     }
     fileReader.readAsText(workingFile);
+  } else {
+    // Resets the editor's state
+    quill.setContents();
   }
 }
 
@@ -38,7 +40,7 @@ function saveNoteProgress() {
 
 function downloadNote() {
   const currentNoteHTML = quill.getSemanticHTML();
-  const noteFile = new Blob([currentNoteHTML], {type: "text/html"});
+  const noteFile = new Blob([currentNoteHTML + "<style>body { font-family: sans-serif } .ql-font-serif { font-family: serif } .ql-font-monospace { font-family: monospace }</style>"], {type: "text/html"});
   if (noteName.value === "") {
     noteDownloadLink.download = "Untitled";
   } else {

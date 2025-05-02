@@ -22,7 +22,9 @@
        onmouseleave="document.getElementById('fileMenu').hidden = true"
        onmouseover="document.getElementById('fileMenu').hidden = false">
     <button class="menuDropdown" onclick="hideAndShow('createOrOpenContainer', 'noteEditor')">New</button>
-    <button class="menuDropdown">Open...</button>
+    <button class="menuDropdown" onclick="confirmSave(); document.getElementById('openNoteFileInput').click()">Open
+      Note...
+    </button>
     <button class="menuDropdown" disabled id="save" onclick="saveNoteProgress()">Save <span
         class="helperText menuDropdown">In-Browser</span></button>
     <button class="menuDropdown" disabled id="downloadNote" onclick="downloadNote()">Download Note</button>
