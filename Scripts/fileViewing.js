@@ -19,11 +19,3 @@ function closeCurrentFile() {
   chooseViewer.hidden = false;
   closeFile.disabled = true;
 }
-
-function retryFileInput() {
-  if (pdfViewer.hidden === false) {
-    pdfFileInput.click();
-  } else if (imageViewer.hidden === false) {
-    imageFileInput.click();
-  }
-}

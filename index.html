@@ -22,9 +22,7 @@
        onmouseleave="document.getElementById('fileMenu').hidden = true"
        onmouseover="document.getElementById('fileMenu').hidden = false">
     <button class="menuDropdown" onclick="hideAndShow('createOrOpenContainer', 'noteEditor')">New</button>
-    <button class="menuDropdown" onclick="confirmSave(); document.getElementById('openNoteFileInput').click()">Open
-      Note...
-    </button>
+    <button class="menuDropdown" onclick="confirmSave()">Open Note...</button>
     <button class="menuDropdown" disabled id="save" onclick="saveNoteProgress()">Save <span
         class="helperText menuDropdown">In-Browser</span></button>
     <button class="menuDropdown" disabled id="downloadNote" onclick="downloadNote()">Download Note</button>
@@ -57,7 +55,7 @@
        onmouseleave="document.getElementById('viewMenu').hidden = true"
        onmouseover="document.getElementById('viewMenu').hidden = false"
        style="margin-left: 93px">
-    <button class="menuDropdown" onclick="toggleMenuCheck('showHTMLEditorCheck')">
+    <button class="menuDropdown" disabled onclick="toggleMenuCheck('showHTMLEditorCheck')">
       <img class="menu" id="showHTMLEditorCheck">
       Show HTML Note Editor
     </button>
@@ -74,248 +72,276 @@
   </div>
 </nav>
 
-<br>
-<br>
-<table style="width: 100%; height: 100%">
-  <tr>
-    <!-- Viewing section -->
-    <td class="appSection" id="chooseViewer">
-      <h1 style="line-height: 20px">Welcome</h1>
-      <h3>What type of document will you view today?</h3>
-      <details>
-        <summary> Local</summary>
-        <table>
-          <tr>
-            <td>
-              <button class="appSection"
-                      onclick="document.getElementById('pdfFileInput').click(); toggleViewer(true, 'pdfViewer')">
-                <table>
-                  <tr>
-                    <td>
-                      <img class="appSection" src="Assets/Images/picture_as_pdf_D16D6A.svg">
-                    </td>
-                    <td>
-                      <span class="buttonHeading">PDF</span><br>
-                      <input accept="application/pdf" hidden id="pdfFileInput"
-                             onchange="document.getElementById('pdfView').src = window.URL.createObjectURL(this.files[0]); tasksOnceFileOpen('pdfView')"
-                             type="file">
-                      <span class="helperText">Portable Document Format. .pdf</span>
-                    </td>
-                  </tr>
-                </table>
-              </button>
-            </td>
-            <td>
-              <button class="appSection"
-                      onclick="document.getElementById('imageFileInput').click(); toggleViewer(true, 'imageViewer')">
-                <table>
-                  <tr>
-                    <td>
-                      <img class="appSection" src="Assets/Images/image_80A4AE.svg">
-                    </td>
-                    <td>
-                      <span class="buttonHeading">Image</span><br>
-                      <input accept="image/*" hidden id="imageFileInput"
-                             onchange="document.getElementById('imageView').src = window.URL.createObjectURL(this.files[0]); tasksOnceFileOpen('imageView')"
-                             type="file">
-                      <span class="helperText">.png, .jpg, .gif, .svg, .webp</span>
-                    </td>
-                  </tr>
-                </table>
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <button class="appSection">
-                <table>
-                  <tr>
-                    <td>
-                      <img class="appSection" src="Assets/Images/draft_80A4AE.svg">
-                    </td>
-                    <td>
-                      <span class="buttonHeading">Text File</span><br>
-                      <span class="helperText">.rtf, .txt</span>
-                    </td>
-                  </tr>
-                </table>
-              </button>
-            </td>
-            <td>
-              <button class="appSection">
-                <table>
-                  <tr>
-                    <td>
-                      <img class="appSection" src="Assets/Images/description_789DE5.svg">
-                    </td>
-                    <td>
-                      <span class="buttonHeading">Document</span><br>
-                      <span class="helperText">.doc, .docx</span>
-                    </td>
-                  </tr>
-                </table>
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <button class="appSection">
-                <table>
-                  <tr>
-                    <td>
-                      <img class="appSection" src="Assets/Images/table_rows_9DC384.svg">
-                    </td>
-                    <td>
-                      <span class="buttonHeading">Spreadsheet</span><br>
-                      <span class="helperText">.xls, .xlsx</span>
-                    </td>
-                  </tr>
-                </table>
-              </button>
-            </td>
-            <td>
-              <button class="appSection">
-                <table>
-                  <tr>
-                    <td>
-                      <img class="appSection" src="Assets/Images/pie_chart_BD4C31.svg">
-                    </td>
-                    <td>
-                      <span class="buttonHeading">Presentation</span><br>
-                      <span class="helperText">.ppt, .pptx</span>
-                    </td>
-                  </tr>
-                </table>
-              </button>
-            </td>
-          </tr>
-        </table>
-      </details>
-      <details>
-        <summary> Online</summary>
-        <table>
-          <tr>
-            <td>
-              <button class="appSection"
-                      onclick="toggleViewer(true, 'pdfViewer')">
-                <table>
-                  <tr>
-                    <td>
-                      <img class="appSection" src="Assets/Images/picture_as_pdf_D16D6A.svg">
-                    </td>
-                    <td>
-                      <span class="buttonHeading">Link to a PDF</span><br>
-                      <span class="helperText">Portable Document Format. .pdf</span>
-                    </td>
-                  </tr>
-                </table>
-              </button>
-            </td>
-            <td>
-              <button class="appSection" onclick="toggleDialog(true, 'insertCloudURLDialog')">
-                <table>
-                  <tr>
-                    <td>
-                      <img class="appSection" src="Assets/Images/cloud_7CA7D8.svg">
-                    </td>
-                    <td>
-                      <span class="buttonHeading">File in the Cloud</span><br>
-                      <span class="helperText">Google Drive, OneDrive, Dropbox</span>
-                    </td>
-                  </tr>
-                </table>
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <button class="appSection">
-                <table>
-                  <tr>
-                    <td>
-                      <img class="appSection" src="Assets/Images/language_8B7DBE.svg">
-                    </td>
-                    <td>
-                      <span class="buttonHeading">Webpage</span><br>
-                      <span class="helperText">Not all websites might work</span>
-                    </td>
-                  </tr>
-                </table>
-              </button>
-            </td>
-          </tr>
-        </table>
-      </details>
-    </td>
+<div style="padding-top: 34px">
+  <table style="width: 100%; height: 100%">
+    <tr>
+      <!-- Viewing section -->
+      <td class="appSection" id="chooseViewer">
+        <h1 style="line-height: 20px">Welcome</h1>
+        <h3>What type of document will you view today?</h3>
+        <details>
+          <summary> Local</summary>
+          <table>
+            <tr>
+              <td>
+                <button class="appSection"
+                        onclick="pdfFileInput.click(); toggleViewer(true, 'pdfViewer')">
+                  <table>
+                    <tr>
+                      <td>
+                        <img class="appSection" src="Assets/Images/picture_as_pdf_D16D6A.svg">
+                      </td>
+                      <td>
+                        <span class="buttonHeading">PDF</span><br>
+                        <input accept="application/pdf" hidden id="pdfFileInput"
+                               onchange="pdfView.src = window.URL.createObjectURL(this.files[0]); tasksOnceFileOpen('pdfView')"
+                               type="file">
+                        <span class="helperText">Portable Document Format. .pdf</span>
+                      </td>
+                    </tr>
+                  </table>
+                </button>
+              </td>
+              <td>
+                <button class="appSection"
+                        onclick="imageFileInput.click(); toggleViewer(true, 'imageViewer')">
+                  <table>
+                    <tr>
+                      <td>
+                        <img class="appSection" src="Assets/Images/image_80A4AE.svg">
+                      </td>
+                      <td>
+                        <span class="buttonHeading">Image</span><br>
+                        <input accept="image/*" hidden id="imageFileInput"
+                               onchange="imageView.src = window.URL.createObjectURL(this.files[0]); tasksOnceFileOpen('imageView')"
+                               type="file">
+                        <span class="helperText">.png, .jpg, .gif, .svg, .webp</span>
+                      </td>
+                    </tr>
+                  </table>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <button class="appSection">
+                  <table>
+                    <tr>
+                      <td>
+                        <img class="appSection" src="Assets/Images/draft_80A4AE.svg">
+                      </td>
+                      <td>
+                        <span class="buttonHeading">Text File</span><br>
+                        <input accept="text/plain" hidden id="textFileInput">
+                        <span class="helperText">.txt</span>
+                      </td>
+                    </tr>
+                  </table>
+                </button>
+              </td>
+              <td>
+                <button class="appSection">
+                  <table>
+                    <tr>
+                      <td>
+                        <img class="appSection" src="Assets/Images/description_789DE5.svg">
+                      </td>
+                      <td>
+                        <span class="buttonHeading">Document</span><br>
+                        <span class="helperText">.doc, .docx</span>
+                      </td>
+                    </tr>
+                  </table>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <button class="appSection">
+                  <table>
+                    <tr>
+                      <td>
+                        <img class="appSection" src="Assets/Images/table_rows_9DC384.svg">
+                      </td>
+                      <td>
+                        <span class="buttonHeading">Spreadsheet</span><br>
+                        <span class="helperText">.xls, .xlsx</span>
+                      </td>
+                    </tr>
+                  </table>
+                </button>
+              </td>
+              <td>
+                <button class="appSection">
+                  <table>
+                    <tr>
+                      <td>
+                        <img class="appSection" src="Assets/Images/pie_chart_BD4C31.svg">
+                      </td>
+                      <td>
+                        <span class="buttonHeading">Presentation</span><br>
+                        <span class="helperText">.ppt, .pptx</span>
+                      </td>
+                    </tr>
+                  </table>
+                </button>
+              </td>
+            </tr>
+          </table>
+        </details>
+        <details>
+          <summary> Online</summary>
+          <table>
+            <tr>
+              <td>
+                <button class="appSection"
+                        onclick="toggleDialog(true, 'linkToPDF')">
+                  <table>
+                    <tr>
+                      <td>
+                        <img class="appSection" src="Assets/Images/picture_as_pdf_D16D6A.svg">
+                        <br>
+                        <img class="reducedIntensity appSection" src="Assets/Images/link_000000.svg"
+                             style="margin-top: -20px; margin-left: 10px">
+                      </td>
+                      <td>
+                        <span class="buttonHeading">Link to a PDF</span>
+                      </td>
+                    </tr>
+                  </table>
+                </button>
+              </td>
+              <td>
+                <button class="appSection"
+                        onclick="toggleDialog(true, 'linkToImage')">
+                  <table>
+                    <tr>
+                      <td>
+                        <img class="appSection" src="Assets/Images/image_80A4AE.svg">
+                        <br>
+                        <img class="reducedIntensity appSection" src="Assets/Images/link_000000.svg"
+                             style="margin-top: -20px; margin-left: 10px">
+                      </td>
+                      <td>
+                        <span class="buttonHeading">Link to an Image</span>
+                      </td>
+                    </tr>
+                  </table>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <button class="appSection" onclick="toggleDialog(true, 'insertCloudURLDialog')">
+                  <table>
+                    <tr>
+                      <td>
+                        <img class="appSection" src="Assets/Images/cloud_7CA7D8.svg">
+                      </td>
+                      <td>
+                        <span class="buttonHeading">File in the Cloud</span><br>
+                        <span class="helperText">Google Drive, OneDrive</span>
+                      </td>
+                    </tr>
+                  </table>
+                </button>
+              </td>
+              <td>
+                <button class="appSection">
+                  <table>
+                    <tr>
+                      <td>
+                        <img class="appSection" src="Assets/Images/language_8B7DBE.svg">
+                      </td>
+                      <td>
+                        <span class="buttonHeading">Webpage</span><br>
+                        <span class="helperText">Not all websites might work</span>
+                      </td>
+                    </tr>
+                  </table>
+                </button>
+              </td>
+            </tr>
+          </table>
+        </details>
+      </td>
 
-    <td class="appSection" hidden id="viewersContainer">
-      <div id="noFileSelected">
-        <img class="reducedIntensity" src="Assets/Images/file_copy_off_000000.svg"
-             style="margin-left: 45%">
-        <h2 class="helperText" style="text-align: center">No file has been chosen... Yet</h2>
-        <button class="dialogOverlay" onclick="retryFileInput()" style="width: 100%">
-          <img class="menu" src="Assets/Images/restart_alt_000000.svg">
-          Retry
-        </button>
-      </div>
-      <div hidden id="imageViewer">
-        <img id="imageView">
-      </div>
-      <div hidden id="pdfViewer">
-        <iframe hidden id="pdfView"></iframe>
-      </div>
-    </td>
+      <td class="appSection" hidden id="viewersContainer">
+        <div id="noFileSelected">
+          <img class="reducedIntensity" src="Assets/Images/file_copy_off_000000.svg"
+               style="margin-left: 45%">
+          <h2 class="helperText" style="text-align: center">No file has been chosen... Yet</h2>
+          <button class="dialogOverlay" onclick="hideAndShow('viewersContainer', 'chooseViewer')" style="width: 100%">
+            <img class="menu" src="Assets/Images/home_000000.svg">
+            Return to Welcome
+          </button>
+        </div>
+        <div hidden id="pdfViewer">
+          <iframe hidden id="pdfView"></iframe>
+        </div>
+        <div hidden id="imageViewer">
+          <img id="imageView">
+        </div>
+        <div hidden id="textViewer">
+          <textarea id="textView" readonly></textarea>
+        </div>
+      </td>
 
-    <!-- Editor section -->
-    <td class="appSection" id="createOrOpenContainer">
-      <button class="appSection" onclick="initiateNote(false)">
-        <table>
-          <tr>
-            <td>
-              <img class="appSection reducedIntensity" src="Assets/Images/note_add_000000.svg">
-            </td>
-            <td>
-              <span class="buttonHeading">Create a New Note</span><br>
-              <span class="helperText">Get started with a blank slate</span>
-            </td>
-          </tr>
-        </table>
-      </button>
-      <br>
-      <button class="appSection" onclick="document.getElementById('openNoteFileInput').click()">
-        <table>
-          <tr>
-            <td>
-              <img class="appSection reducedIntensity" src="Assets/Images/file_open_000000.svg">
-            </td>
-            <td>
-              <span class="buttonHeading">Open an Existing Note</span><br>
-              <input accept=".htm, .html" hidden id="openNoteFileInput"
-                     onchange="initiateNote(true)"
-                     type="file">
-              <span class="helperText">Browse your computer for a note you were working on last time</span>
-            </td>
-          </tr>
-        </table>
-      </button>
-    </td>
-    <td class="appSection" hidden id="noteEditor">
-      <nav style="margin-bottom: 5px">
-        <button class="menu" title="New">
-          <img class="menu" src="Assets/Images/draft_80A4AE.svg" style="filter: grayscale(100%)">
+      <!-- Editor section -->
+      <td class="appSection" id="createOrOpenContainer">
+        <button class="appSection" onclick="initiateNote(false)">
+          <table>
+            <tr>
+              <td>
+                <img class="appSection reducedIntensity" src="Assets/Images/note_add_000000.svg">
+              </td>
+              <td>
+                <span class="buttonHeading">Create a New Note</span><br>
+                <span class="helperText">Get started with a blank slate</span>
+              </td>
+            </tr>
+          </table>
         </button>
-        <button class="menu" onclick="saveNoteProgress();"
-                title="Save Progress">
-          <img class="reducedIntensity menu" src="Assets/Images/save_000000.svg">
+        <br>
+        <button class="appSection" onclick="openNoteFileInput.click()">
+          <table>
+            <tr>
+              <td>
+                <img class="appSection reducedIntensity" src="Assets/Images/file_open_000000.svg">
+              </td>
+              <td>
+                <span class="buttonHeading">Open an Existing Note</span><br>
+                <input accept=".htm, .html" hidden id="openNoteFileInput"
+                       onchange="initiateNote(true)"
+                       type="file">
+                <span class="helperText">Browse your computer for a note you were working on last time</span>
+              </td>
+            </tr>
+          </table>
         </button>
-        <input id="noteName" placeholder="Untitled" type="text">
-      </nav>
-      <div id="editor"></div>
-      <a hidden id="noteDownloadLink"></a>
-    </td>
-  </tr>
-</table>
+      </td>
+      <td class="appSection" hidden id="noteEditor">
+        <nav style="margin-bottom: 5px">
+          <button class="menu" onclick="confirmSave()" title="New">
+            <img class="menu" src="Assets/Images/draft_80A4AE.svg" style="filter: grayscale(100%)">
+          </button>
+          <button class="menu" onclick="saveNoteProgress();"
+                  title="Save Progress">
+            <img class="reducedIntensity menu" src="Assets/Images/save_000000.svg">
+          </button>
+          <button class="menu" onclick="downloadNote()" title="Download Note">
+            <img class="reducedIntensity menu" src="Assets/Images/download_000000.svg">
+          </button>
+          <input id="noteName" placeholder="Untitled" type="text">
+        </nav>
+        <div id="editor"></div>
+        <a hidden id="noteDownloadLink"></a>
+      </td>
+    </tr>
+  </table>
+</div>
 
+<!-- Confirm Save Pop-up -->
 <div class="saveBeforeClosing" hidden id="confirmSaveDialog">
   <div class="dialogOverlay">
     <h1 class="saveBeforeClosing" id="saveDocumentHeading"></h1>
@@ -323,17 +349,19 @@
       saved.</h3>
     <br>
     <br>
-    <table onclick="document.getElementById('confirmSaveDialog').hidden = true" style="width: 100%">
+    <table onclick="confirmSaveDialog.hidden = true" style="width: 100%">
       <tr>
         <td style="width: 33%">
           <button class="saveBeforeClosing"
-                  onclick="hideAndShow('noteEditor', 'createOrOpenContainer'); alterMenuFunctions(true); localStorage.setItem('noteProgress', '<p></p>')"
+                  onclick="hideAndShow('noteEditor', 'createOrOpenContainer'); alterMenuFunctions(true); localStorage.setItem('noteProgress', '<p></p>'); handleAnotherOpen()"
                   style="background-color: #e54304; color: white">
             Don't Save
           </button>
         </td>
         <td style="width: 33%">
-          <button class="saveBeforeClosing" onclick="downloadNote()">Download</button>
+          <button class="saveBeforeClosing"
+                  onclick="downloadNote(); handleAnotherOpen()">Download
+          </button>
         </td>
         <td style="width: 33%">
           <button class="saveBeforeClosing">Resume Working</button>
@@ -343,7 +371,46 @@
   </div>
 </div>
 
+<!-- Dialogs with focus -->
 <div hidden id="dialogFocusBackground">
+  <div class="dialogOverlay" hidden id="linkToPDF">
+    <img src="Assets/Images/picture_as_pdf_D16D6A.svg">
+    <img class="reducedIntensity" src="Assets/Images/link_000000.svg">
+    <h1>Link to a PDF</h1>
+    <h3 class="helperText">Paste the URL to your PDF below</h3>
+    <table style="width: 100%; margin-bottom: 10px">
+      <tr>
+        <td style="width: 75%">
+          <input placeholder="https://example.com" style="width: 94%" type="text">
+        </td>
+        <td>
+          <button class="dialogOverlay">Open</button>
+        </td>
+      </tr>
+    </table>
+    <a class="hyperlinkButton" onclick="toggleDialog(false, 'linkToPDF')">
+      Close
+    </a>
+  </div>
+  <div class="dialogOverlay" hidden id="linkToImage">
+    <img src="Assets/Images/image_80A4AE.svg">
+    <img class="reducedIntensity" src="Assets/Images/link_000000.svg">
+    <h1>Link to an Image</h1>
+    <h3 class="helperText">Paste the URL to your image below</h3>
+    <table style="width: 100%; margin-bottom: 10px">
+      <tr>
+        <td style="width: 75%">
+          <input placeholder="https://example.com" style="width: 94%" type="text">
+        </td>
+        <td>
+          <button class="dialogOverlay">Open</button>
+        </td>
+      </tr>
+    </table>
+    <a class="hyperlinkButton" onclick="toggleDialog(false, 'linkToImage')">
+      Close
+    </a>
+  </div>
   <div class="dialogOverlay" hidden id="insertCloudURLDialog">
     <img src="Assets/Images/cloud_7CA7D8.svg">
     <h1>File in the Cloud</h1>
@@ -358,7 +425,7 @@
         </td>
       </tr>
     </table>
-    <a class="hyperlinkButton" onclick="toggleDialog(false, 'aboutDialog')">
+    <a class="hyperlinkButton" onclick="toggleDialog(false, 'insertCloudURLDialog')">
       Close
     </a>
   </div>

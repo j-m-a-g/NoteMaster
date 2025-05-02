@@ -27,9 +27,17 @@ function confirmSave() {
   // has inputted text
   if (quill.getLength() !== 1 || noteName.value !== "") {
     confirmSaveDialog.hidden = false;
+    isOpeningAnotherNote = true;
   } else {
     hideAndShow("noteEditor", "createOrOpenContainer");
     alterMenuFunctions(true);
+  }
+}
+
+function handleAnotherOpen() {
+  if (isOpeningAnotherNote) {
+    openNoteFileInput.click();
+    isOpeningAnotherNote = false;
   }
 }
 
