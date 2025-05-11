@@ -10,6 +10,7 @@
   <link href="Styles/fileViewers.css" rel="stylesheet" type="text/css">
 
   <link href="https://cdn.jsdelivr.net/npm/quill/dist/quill.snow.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/pretty-checkbox/dist/pretty-checkbox.min.css" rel="stylesheet">
 </head>
 
 <body onload="onLoadTasks()" onunload="alert('hello')">
@@ -21,7 +22,10 @@
   <div class="menu" hidden id="fileMenu"
        onmouseleave="document.getElementById('fileMenu').hidden = true"
        onmouseover="document.getElementById('fileMenu').hidden = false">
-    <button class="menuDropdown" onclick="hideAndShow('createOrOpenContainer', 'noteEditor')">New</button>
+    <button class="menuDropdown"
+            onclick="if (noteEditor.hidden) { hideAndShow('createOrOpenContainer', 'noteEditor') } else { confirmSave() }">
+      New
+    </button>
     <button class="menuDropdown" id="openNote" onclick="handleAnotherOpen()">Open Note...</button>
     <button class="menuDropdown" disabled id="save" onclick="saveNoteProgress()">Save <span
         class="helperText menuDropdown">In-Browser</span></button>
@@ -43,7 +47,7 @@
     <button class="menuDropdown">Paste <span class="helperText menuDropdown">Ctrl + V</span>
     </button>
     <hr class="menuDropdown">
-    <button class="menuDropdown">Preferences</button>
+    <button class="menuDropdown" onclick="toggleDialog(true, 'preferencesDialog')">Preferences</button>
   </div>
   <button class="menu" onmouseleave="document.getElementById('viewMenu').hidden = true"
           onmouseover="document.getElementById('viewMenu').hidden = false">
@@ -57,7 +61,8 @@
       <img class="menu" id="showHTMLEditorCheck">
       Show HTML Note Editor
     </button>
-    <button class="menuDropdown" id="wordWrap" onclick="toggleMenuCheck('wordWrapCheck')">
+    <button class="menuDropdown" id="wordWrap"
+            onclick="toggleMenuCheck('wordWrapCheck'); if (wordWrapCheck.src.includes(checkedImageSource)) { editor.style.wordBreak = 'break-word' } else { editor.style.wordBreak = 'normal' }">
       <img class="menu" id="wordWrapCheck" src="Assets/Images/check_000000.svg">
       Word Wrap
     </button>
@@ -383,14 +388,17 @@
     <img src="Assets/Images/picture_as_pdf_D16D6A.svg">
     <img class="reducedIntensity" src="Assets/Images/link_000000.svg">
     <h1>Link to a PDF</h1>
-    <h3 class="helperText">Paste the URL to your PDF below</h3>
+    <h3 class="helperText">Paste the URL to your PDF below<br>(And ensure it is correct)</h3>
     <table style="width: 100%; margin-bottom: 10px">
       <tr>
         <td style="width: 75%">
-          <input placeholder="https://example.com" style="width: 94%" type="text">
+          <input id="URLToPDFInput" placeholder="https://example.com/document.pdf" style="width: 94%" type="url">
         </td>
         <td>
-          <button class="dialogOverlay">Open</button>
+          <button class="dialogOverlay"
+                  onclick="toggleDialog(false, 'linkToPDF'); pdfView.src = document.getElementById('URLToPDFInput').value; toggleViewer(true, 'pdfViewer'); tasksOnceFileOpen('pdfView')">
+            Open
+          </button>
         </td>
       </tr>
     </table>
@@ -402,14 +410,17 @@
     <img src="Assets/Images/image_80A4AE.svg">
     <img class="reducedIntensity" src="Assets/Images/link_000000.svg">
     <h1>Link to an Image</h1>
-    <h3 class="helperText">Paste the URL to your image below</h3>
+    <h3 class="helperText">Paste the URL to your image below<br>(And ensure it is correct)</h3>
     <table style="width: 100%; margin-bottom: 10px">
       <tr>
         <td style="width: 75%">
-          <input placeholder="https://example.com" style="width: 94%" type="text">
+          <input id="URLToImageInput" placeholder="https://example.com/image.jpg" style="width: 94%" type="url">
         </td>
         <td>
-          <button class="dialogOverlay">Open</button>
+          <button class="dialogOverlay"
+                  onclick="toggleDialog(false, 'linkToImage'); imageView.src = document.getElementById('URLToImageInput').value; toggleViewer(true, 'imageViewer'); tasksOnceFileOpen('imageView')">
+            Open
+          </button>
         </td>
       </tr>
     </table>
@@ -434,6 +445,35 @@
     <a class="hyperlinkButton" onclick="toggleDialog(false, 'insertCloudURLDialog')">
       Close
     </a>
+  </div>
+  <div class="dialogOverlay" hidden id="preferencesDialog">
+    <h1>Preferences</h1>
+    <div class="pretty p-switch">
+      <input type="checkbox">
+      <div class="state">
+        <label>Dark mode</label>
+      </div>
+    </div>
+    <br>
+    <br>
+    <div class="pretty p-switch">
+      <input checked type="checkbox">
+      <div class="state">
+        <label>Show app animations</label>
+      </div>
+    </div>
+    <br>
+    <br>
+    <a class="hyperlinkButton" onclick="toggleDialog(false, 'preferencesDialog')">
+      Close
+    </a>
+    |
+    <div class="pretty p-default p-curve p-thick">
+      <input id="resetOnCloseCheckbox" type="checkbox">
+      <div class="state">
+        <label for="resetOnCloseCheckbox">Reset preferences on close</label>
+      </div>
+    </div>
   </div>
   <div class="dialogOverlay" hidden id="aboutDialog">
     <h1>About</h1>

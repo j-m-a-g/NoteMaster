@@ -5,6 +5,10 @@
   --lightAccent400: #dedede;
 }
 
+::selection {
+  background-color: var(--lightAccent400);
+}
+
 html {
   user-select: none;
   scroll-behavior: smooth;
@@ -37,7 +41,7 @@ img {
   -webkit-user-drag: none;
 }
 
-input[type=text] {
+input[type=text], input[type=url] {
   background-color: var(--lightAccent100);
   padding: 10px;
   border-style: solid;
@@ -48,12 +52,12 @@ input[type=text] {
   border-color: var(--lightAccent400);
 }
 
-input[type = text]:focus {
+input[type = text]:focus, input[type=url]:focus {
   outline-style: none;
   border-color: cornflowerblue;
 }
 
-input[type = text]::placeholder {
+input[type = text]::placeholder, input[type=url]::placeholder {
   filter: opacity(50%);
 }
 
@@ -68,6 +72,10 @@ summary {
 
 summary:hover {
   background-color: var(--lightAccent200);
+}
+
+summary:active {
+  border-color: cornflowerblue;
 }
 
 #appMenu {
@@ -139,6 +147,7 @@ td.appSection {
   background-color: var(--lightAccent100);
   border-radius: 5px;
   width: 50%;
+  max-width: 50%;
   height: 400px;
 }
 
@@ -164,6 +173,7 @@ button.appSection:hover {
 
 button.appSection:active {
   background-color: var(--lightAccent300);
+  border-color: cornflowerblue;
 }
 
 img.appSection {
@@ -218,6 +228,7 @@ button.dialogOverlay:hover {
 
 button.dialogOverlay:active {
   background-color: rgba(0, 0, 0, 0.05);
+  border-color: cornflowerblue;
 }
 
 a.hyperlinkButton {
@@ -236,6 +247,10 @@ a.hyperlinkButton:hover {
   word-break: break-word;
   margin-bottom: 5px;
   border-color: var(--lightAccent400);
+}
+
+#editor:active {
+  border-color: cornflowerblue;
 }
 
 div.saveBeforeClosing {
