@@ -32,7 +32,10 @@
     <button class="menuDropdown" disabled id="downloadNote" onclick="downloadNote()">Download Note</button>
     <button class="menuDropdown" disabled id="closeFile" onclick="closeCurrentFile()">Close File</button>
     <button class="menuDropdown" disabled id="closeNote" onclick="confirmSave()">Close Note</button>
-    <button class="menuDropdown">Exit</button>
+    <button class="menuDropdown"
+            onclick="isExiting = true; if (noteEditor.hidden) { window.close() } else { confirmSave() }">
+      Exit <span class="helperText menuDropdown">Ctrl + W</span>
+    </button>
   </div>
   <button class="menu" onmouseleave="document.getElementById('editMenu').hidden = true"
           onmouseover="document.getElementById('editMenu').hidden = false">
@@ -370,7 +373,7 @@
         </td>
         <td style="width: 33%">
           <button class="saveBeforeClosing"
-                  onclick="downloadNote(); if (isOpeningAnotherNote) { openNoteFileInput.click() }">
+                  onclick="downloadNote()">
             Download
           </button>
         </td>

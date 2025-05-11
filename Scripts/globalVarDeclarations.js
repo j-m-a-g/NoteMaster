@@ -18,3 +18,4 @@ let isOpeningAnotherNote = false;
 const checkedImageSource = "Assets/Images/check_000000.svg";
 const editor = document.getElementById("editor");
 const noteEditor = document.getElementById("noteEditor");
+let isExiting = false;

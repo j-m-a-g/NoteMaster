@@ -285,6 +285,7 @@ button.saveBeforeClosing:hover {
 
 button.saveBeforeClosing:active {
   background-color: rgba(0, 0, 0, 0.05);
+  border-color: cornflowerblue;
 }
 
 #dialogFocusBackground {

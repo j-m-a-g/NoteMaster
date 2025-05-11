@@ -41,7 +41,7 @@ function handleAnotherOpen() {
     } else {
       document.getElementById("saveDocumentHeading").innerHTML = "Save \'Untitled\'?";
     }
-    
+
     confirmSaveDialog.hidden = false;
   } else {
     openNoteFileInput.click();
@@ -56,6 +56,10 @@ function doNotSave() {
   if (isOpeningAnotherNote) {
     openNoteFileInput.click();
     isOpeningAnotherNote = false;
+  }
+
+  if (isExiting) {
+    window.close();
   }
 }
 
@@ -74,4 +78,11 @@ function downloadNote() {
   }
   noteDownloadLink.href = URL.createObjectURL(noteFile);
   noteDownloadLink.click();
+
+  if (isOpeningAnotherNote) {
+    openNoteFileInput.click();
+  }
+  if (isExiting) {
+    window.close();
+  }
 }
