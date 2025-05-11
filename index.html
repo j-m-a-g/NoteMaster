@@ -61,6 +61,8 @@
        onmouseleave="document.getElementById('viewMenu').hidden = true"
        onmouseover="document.getElementById('viewMenu').hidden = false"
        style="margin-left: 93px">
+    <button class="menuDropdown" onclick="window.location.reload()">Refresh <span class="helperText menuDropdown">F5 or Ctrl + R</span>
+    </button>
     <button class="menuDropdown" disabled id="showHTMLEditor" onclick="toggleMenuCheck('showHTMLEditorCheck')">
       <img class="menu" id="showHTMLEditorCheck">
       Show HTML Note Editor
@@ -91,7 +93,7 @@
         <h1 style="line-height: 20px">Welcome</h1>
         <h3>What type of document will you view today?</h3>
         <details>
-          <summary> Local</summary>
+          <summary> On Your Computer</summary>
           <table>
             <tr>
               <td>
@@ -439,7 +441,7 @@
     <table style="width: 100%; margin-bottom: 10px">
       <tr>
         <td style="width: 75%">
-          <input placeholder="https://example.com" style="width: 94%" type="text">
+          <input placeholder="https://example.com" style="width: 94%" type="url">
         </td>
         <td>
           <button class="dialogOverlay">Open</button>
