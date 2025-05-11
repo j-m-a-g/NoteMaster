@@ -53,11 +53,11 @@ function doNotSave() {
   alterMenuFunctions(true);
   localStorage.setItem('noteProgress', '<p></p>');
 
+  // Handles a pending task after the previous code has executed
   if (isOpeningAnotherNote) {
     openNoteFileInput.click();
     isOpeningAnotherNote = false;
   }
-
   if (isExiting) {
     window.close();
   }
@@ -79,6 +79,7 @@ function downloadNote() {
   noteDownloadLink.href = URL.createObjectURL(noteFile);
   noteDownloadLink.click();
 
+  // Handles a pending task after the previous code has executed
   if (isOpeningAnotherNote) {
     openNoteFileInput.click();
   }
