@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -16,26 +15,36 @@
 
 <body onload="onLoadTasks()" onunload="alert('hello')">
 <nav id="appMenu">
-  <button class="menu" onmouseleave="document.getElementById('fileMenu').hidden = true"
+  <button class="menu"
+          onmouseleave="document.getElementById('fileMenu').hidden = true"
           onmouseover="document.getElementById('fileMenu').hidden = false">
     File
   </button>
   <div class="menu" hidden id="fileMenu"
        onmouseleave="document.getElementById('fileMenu').hidden = true"
        onmouseover="document.getElementById('fileMenu').hidden = false">
-    <button class="menuDropdown"
+    <button accesskey="n"
+            class="menuDropdown"
             onclick="if (noteEditor.hidden) { hideAndShow('createOrOpenContainer', 'noteEditor') } else { confirmSave() }">
-      New
+      New <span class="helperText menuDropdown">Alt + N</span>
     </button>
-    <button class="menuDropdown" id="openNote" onclick="handleAnotherOpen()">Open Note...</button>
-    <button class="menuDropdown" disabled id="save" onclick="saveNoteProgress()">Save <span
-        class="helperText menuDropdown">In-Browser</span></button>
-    <button class="menuDropdown" disabled id="downloadNote" onclick="downloadNote()">Download Note</button>
-    <button class="menuDropdown" disabled id="closeFile" onclick="closeCurrentFile()">Close File</button>
-    <button class="menuDropdown" disabled id="closeNote" onclick="confirmSave()">Close Note</button>
-    <button class="menuDropdown"
-            onclick="isExiting = true; if (noteEditor.hidden) { window.close() } else { confirmSave() }">
-      Exit <span class="helperText menuDropdown">Ctrl + W</span>
+    <button accesskey="o" class="menuDropdown" id="openNote" onclick="handleAnotherOpen()">
+      Open Note... <span class="helperText menuDropdown">Alt + O</span></button>
+    <button accesskey="s" class="menuDropdown" disabled id="save" onclick="saveNoteProgress()">
+      Save <span class="helperText">(In-Browser)</span> <span class="helperText menuDropdown">Alt + S</span>
+    </button>
+    <button class="menuDropdown" onclick="toggleMenuCheck('autoSaveCheck')">
+      <img class="menu" id="autoSaveCheck">
+      Auto Save
+    </button>
+    <button accesskey="w" class="menuDropdown" disabled id="downloadNote" onclick="downloadNote()">
+      Download Note <span class="helperText menuDropdown">Alt + W</span>
+    </button>
+    <button accesskey="i" class="menuDropdown" disabled id="closeFile" onclick="closeCurrentFile()">
+      Close File <span class="helperText menuDropdown">Alt + I</span>
+    </button>
+    <button accesskey="t" class="menuDropdown" disabled id="closeNote" onclick="confirmSave()">
+      Close Note <span class="helperText menuDropdown">Alt + T</span>
     </button>
   </div>
   <button class="menu" onmouseleave="document.getElementById('editMenu').hidden = true"
@@ -46,7 +55,9 @@
        onmouseleave="document.getElementById('editMenu').hidden = true"
        onmouseover="document.getElementById('editMenu').hidden = false"
        style="margin-left: 46px">
-    <button class="menuDropdown">Copy <span class="helperText menuDropdown">Ctrl + C</span></button>
+    <button class="menuDropdown" onclick="navigator.clipboard.writeText(window.getSelection().toString())">
+      Copy <span class="helperText menuDropdown">Ctrl + C</span>
+    </button>
     <button class="menuDropdown">Cut <span class="helperText menuDropdown">Ctrl + X</span></button>
     <button class="menuDropdown">Paste <span class="helperText menuDropdown">Ctrl + V</span>
     </button>
@@ -67,7 +78,8 @@
       <img class="menu" id="showHTMLEditorCheck">
       Show HTML Note Editor
     </button>
-    <button class="menuDropdown" id="wordWrap" onclick="toggleMenuCheck('wordWrapCheck'); if (wordWrapCheck.src.includes(checkedImageSource)) { editor.style.wordBreak = 'break-word' } else { editor.style.wordBreak = 'normal' }"
+    <button class="menuDropdown" id="wordWrap"
+            onclick="toggleMenuCheck('wordWrapCheck'); if (wordWrapCheck.src.includes(checkedImageSource)) { editor.style.wordBreak = 'break-word' } else { editor.style.wordBreak = 'normal' }"
             title="May cause layout issues">
       <img class="menu" id="wordWrapCheck" src="Assets/Images/check_000000.svg">
       Word Wrap
@@ -93,7 +105,7 @@
         <h1 style="line-height: 20px">Welcome</h1>
         <h3>What type of document will you view today?</h3>
         <details>
-          <summary> On Your Computer</summary>
+          <summary accesskey="y"> On Your Computer <span class="helperText menuDropdown">Alt + Y</span></summary>
           <table>
             <tr>
               <td>
@@ -203,7 +215,7 @@
           </table>
         </details>
         <details>
-          <summary> Online</summary>
+          <summary accesskey="l"> Online <span class="helperText menuDropdown">Alt + L</span></summary>
           <table>
             <tr>
               <td>
@@ -308,8 +320,11 @@
               <td>
                 <img class="appSection reducedIntensity" src="Assets/Images/note_add_000000.svg">
               </td>
-              <td>
-                <span class="buttonHeading">Create a New Note</span><br>
+              <td style="width: 173px">
+                <span class="buttonHeading">
+                  Create a New Note <span class="helperText menuDropdown">Alt + N</span>
+                </span>
+                <br>
                 <span class="helperText">Get started with a blank slate</span>
               </td>
             </tr>
@@ -323,7 +338,8 @@
                 <img class="appSection reducedIntensity" src="Assets/Images/file_open_000000.svg">
               </td>
               <td>
-                <span class="buttonHeading">Open an Existing Note</span><br>
+                <span class="buttonHeading">Open an Existing Note <span
+                    class="helperText menuDropdown">Alt + O</span></span><br>
                 <input accept="text/html" hidden id="openNoteFileInput"
                        onchange="initiateNote(true)"
                        type="file">
@@ -336,14 +352,13 @@
       <td class="appSection" hidden id="noteEditor">
         <div style="overflow-x: auto; height: 100%">
           <nav style="margin-bottom: 5px">
-            <button class="menu" onclick="confirmSave()" title="New">
+            <button class="menu" onclick="confirmSave()" title="New (Alt + N)">
               <img class="menu" src="Assets/Images/draft_80A4AE.svg" style="filter: grayscale(100%)">
             </button>
-            <button class="menu" onclick="saveNoteProgress();"
-                    title="Save Progress">
+            <button class="menu" onclick="saveNoteProgress()" title="Save Progress (Alt + S)">
               <img class="reducedIntensity menu" src="Assets/Images/save_000000.svg">
             </button>
-            <button class="menu" onclick="downloadNote()" title="Download Note">
+            <button class="menu" onclick="downloadNote()" title="Download Note (Alt + W)">
               <img class="reducedIntensity menu" src="Assets/Images/download_000000.svg">
             </button>
             <input id="noteName" placeholder="Untitled" type="text">

@@ -58,9 +58,6 @@ function doNotSave() {
     openNoteFileInput.click();
     isOpeningAnotherNote = false;
   }
-  if (isExiting) {
-    window.close();
-  }
 }
 
 function saveNoteProgress() {
@@ -82,8 +79,5 @@ function downloadNote() {
   // Handles a pending task after the previous code has executed
   if (isOpeningAnotherNote) {
     openNoteFileInput.click();
-  }
-  if (isExiting) {
-    window.close();
   }
 }
