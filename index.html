@@ -371,7 +371,7 @@
           </table>
         </button>
         <span class="helperText" style="margin-left: 5px">
-          Don't know where to start? See an <a class="hyperlinkButton" onclick="launchExample()">example</a>
+          Don't know where to start? See an <a class="hyperlinkButton" onclick="launchExample()">example</a>.
         </span>
       </td>
       <td class="appSection" hidden id="noteEditor">
@@ -399,12 +399,11 @@
 
 <!-- Confirm Save Pop-up -->
 <div class="saveBeforeClosing" hidden id="confirmSaveDialog">
-  <div class="dialogOverlay">
+  <div class="dialogOverlay" style="padding-right: 10px">
     <h1 class="saveBeforeClosing" id="saveDocumentHeading"></h1>
     <h3 class="saveBeforeClosing helperText">
       You are continuing onto another task and your current work has not been saved.
     </h3>
-    <br>
     <br>
     <table onclick="confirmSaveDialog.hidden = true" style="width: 100%">
       <tr>
