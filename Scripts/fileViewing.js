@@ -18,8 +18,23 @@ function closeCurrentFile() {
   imageView.hidden = true;
   imageView.src = "";
 
+  textViewer.hidden = true;
+  textView.hidden = true;
+  textView.innerHTML = "";
+  textViewActions.hidden = true;
+
   noFileSelected.hidden = false;
   viewersContainer.hidden = true;
   chooseViewer.hidden = false;
   closeFile.disabled = true;
+}
+
+function readTextFile() {
+  const workingFile = event.target.files[0];
+  const fileReader = new FileReader();
+  fileReader.onload = () => {
+    const fileContents = fileReader.result;
+    textView.innerHTML = fileContents;
+  }
+  fileReader.readAsText(workingFile);
 }

@@ -149,7 +149,7 @@
             </tr>
             <tr>
               <td>
-                <button class="appSection">
+                <button class="appSection" onclick="textFileInput.click(); toggleViewer(true, 'textViewer')">
                   <table>
                     <tr>
                       <td>
@@ -157,7 +157,9 @@
                       </td>
                       <td>
                         <span class="buttonHeading">Text File</span><br>
-                        <input accept="text/plain" hidden id="textFileInput">
+                        <input accept="text/plain" hidden id="textFileInput"
+                               onchange="readTextFile(); textViewActions.hidden = false; textView.hidden = false; tasksOnceFileOpen('textViewer')"
+                               type="file">
                         <span class="helperText">.txt</span>
                       </td>
                     </tr>
@@ -308,7 +310,27 @@
           <img id="imageView">
         </div>
         <div hidden id="textViewer">
-          <textarea id="textView" readonly></textarea>
+          <nav hidden id="textViewActions">
+            <select id="textViewFont"
+                    onchange="if (textViewFont.value === 'monospace') { textView.style.fontFamily = 'monospace' } else if (textViewFont.value === 'serif') { textView.style.fontFamily = 'serif' } else { textView.style.fontFamily = 'sans-serif' }">
+              <option value="monospace">Monospace</option>
+              <option value="serif">Serif</option>
+              <option value="sans-serif">Sans Serif</option>
+            </select>
+            <button class="navButton" onclick="textViewFontSize += 1; textView.style.fontSize = textViewFontSize + 'px'"
+                    title="Increase font size">
+              <img class="reducedIntensity menu" src="Assets/Images/text_increase_000000.svg">
+            </button>
+            <button class="navButton" onclick="textViewFontSize -= 1; textView.style.fontSize = textViewFontSize + 'px'"
+                    title="Decrease font size">
+              <img class="reducedIntensity menu" src="Assets/Images/text_decrease_000000.svg">
+            </button>
+            <button class="navButton" onclick="textView.style.fontSize = '14px'"
+                    title="Reset font size">
+              <img class="reducedIntensity menu" src="Assets/Images/fullscreen_exit_000000.svg">
+            </button>
+          </nav>
+          <textarea hidden id="textView" readonly></textarea>
         </div>
       </td>
 
@@ -352,13 +374,13 @@
       <td class="appSection" hidden id="noteEditor">
         <div style="overflow-x: auto; height: 100%">
           <nav style="margin-bottom: 5px">
-            <button class="menu" onclick="confirmSave()" title="New (Alt + N)">
+            <button class="navButton" onclick="confirmSave()" title="New (Alt + N)">
               <img class="menu" src="Assets/Images/draft_80A4AE.svg" style="filter: grayscale(100%)">
             </button>
-            <button class="menu" onclick="saveNoteProgress()" title="Save Progress (Alt + S)">
+            <button class="navButton" onclick="saveNoteProgress()" title="Save Progress (Alt + S)">
               <img class="reducedIntensity menu" src="Assets/Images/save_000000.svg">
             </button>
-            <button class="menu" onclick="downloadNote()" title="Download Note (Alt + W)">
+            <button class="navButton" onclick="downloadNote()" title="Download Note (Alt + W)">
               <img class="reducedIntensity menu" src="Assets/Images/download_000000.svg">
             </button>
             <input id="noteName" placeholder="Untitled" type="text">
