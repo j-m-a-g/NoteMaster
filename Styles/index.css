@@ -340,6 +340,10 @@ button.saveBeforeClosing:active {
   background-color: white;
 }
 
+#noteName:focus {
+  width: 85%;
+}
+
 @keyframes initialFadeIn {
   from {
     opacity: 0;
