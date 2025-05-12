@@ -42,16 +42,16 @@ img {
 }
 
 input[type=text], input[type=url] {
-  background-color: var(--lightAccent100);
-  padding: 10px;
+  padding: 11px 10px 10px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   border-style: solid;
-  border-top-width: 0;
-  border-left-width: 0;
-  border-right-width: 0;
-  border-bottom-width: 1px;
-  border-color: var(--lightAccent300);
+  border-width: 1px;
+  border-top-color: var(--lightAccent300);
+  border-left-color: var(--lightAccent300);
+  border-right-color: var(--lightAccent300);
+  border-bottom-color: var(--lightAccent400);
+  background-color: white;
 }
 
 input[type = text]:focus, input[type=url]:focus {
@@ -224,6 +224,10 @@ img.appSection {
   opacity: 50%;
 }
 
+h4.helperText {
+  font-weight: normal;
+}
+
 img.reducedIntensity {
   opacity: 40%;
 }
@@ -330,14 +334,6 @@ button.saveBeforeClosing:active {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-}
-
-#noteName {
-  border-width: 1px;
-  border-top-color: var(--lightAccent300);
-  border-left-color: var(--lightAccent300);
-  border-right-color: var(--lightAccent300);
-  background-color: white;
 }
 
 #noteName:focus {

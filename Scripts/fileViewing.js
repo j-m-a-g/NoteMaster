@@ -23,6 +23,10 @@ function closeCurrentFile() {
   textView.innerHTML = "";
   textViewActions.hidden = true;
 
+  webpageViewer.hidden = true;
+  webpageView.hidden = true;
+  webpageURLBar.value = "";
+
   noFileSelected.hidden = false;
   viewersContainer.hidden = true;
   chooseViewer.hidden = false;

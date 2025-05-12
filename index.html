@@ -41,7 +41,7 @@
       Download Note <span class="helperText menuDropdown">Alt + W</span>
     </button>
     <button accesskey="i" class="menuDropdown" disabled id="closeFile" onclick="closeCurrentFile()">
-      Close File <span class="helperText menuDropdown">Alt + I</span>
+      Close Viewer <span class="helperText menuDropdown">Alt + I</span>
     </button>
     <button accesskey="t" class="menuDropdown" disabled id="closeNote" onclick="confirmSave()">
       Close Note <span class="helperText menuDropdown">Alt + T</span>
@@ -171,6 +171,24 @@
                   <table>
                     <tr>
                       <td>
+                        <img class="appSection" src="Assets/Images/play_arrow_8B7DBE.svg">
+                      </td>
+                      <td>
+                        <span class="buttonHeading">Video</span><br>
+                        <input accept="video/mpeg" hidden id="videoFileInput" type="file">
+                        <span class="helperText">.mp4</span>
+                      </td>
+                    </tr>
+                  </table>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <button class="appSection">
+                  <table>
+                    <tr>
+                      <td>
                         <img class="appSection" src="Assets/Images/description_789DE5.svg">
                       </td>
                       <td>
@@ -181,8 +199,6 @@
                   </table>
                 </button>
               </td>
-            </tr>
-            <tr>
               <td>
                 <button class="appSection">
                   <table>
@@ -198,6 +214,8 @@
                   </table>
                 </button>
               </td>
+            </tr>
+            <tr>
               <td>
                 <button class="appSection">
                   <table>
@@ -274,7 +292,8 @@
                 </button>
               </td>
               <td>
-                <button class="appSection">
+                <button class="appSection"
+                        onclick="toggleViewer(true, 'webpageViewer'); tasksOnceFileOpen('webpageView'); noFileSelected.hidden = true">
                   <table>
                     <tr>
                       <td>
@@ -332,6 +351,34 @@
           </nav>
           <textarea hidden id="textView" readonly></textarea>
         </div>
+        <div hidden id="webpageViewer">
+          <nav style="margin-bottom: 5px">
+            <table>
+              <tr>
+                <td>
+                  <button class="navButton"
+                          onclick="webpageView.src = lastViewedWebpages[lastViewedWebpages.length - 2]; webpageURLBar.value = lastViewedWebpages[lastViewedWebpages.length - 2]"
+                          title="Back">
+                    <img class="reducedIntensity menu" src="Assets/Images/arrow_back_000000.svg">
+                  </button>
+                </td>
+                <td style="width: 100%">
+                  <input id="webpageURLBar"
+                         placeholder="Type a website address here (including 'http://' or 'https://')"
+                         style="width: 95%" type="url">
+                </td>
+                <td>
+                  <button class="navButton"
+                          onclick="webpageView.src = webpageURLBar.value; lastViewedWebpages.push(webpageURLBar.value)"
+                          title="Search">
+                    <img class="reducedIntensity menu" src="Assets/Images/search_000000.svg">
+                  </button>
+                </td>
+              </tr>
+            </table>
+          </nav>
+          <iframe id="webpageView" src="Pages/noWebpageNavigated.html"></iframe>
+        </div>
       </td>
 
       <!-- Editor section -->
@@ -387,7 +434,7 @@
               <img class="reducedIntensity menu" src="Assets/Images/download_000000.svg">
             </button>
             <input id="noteName" placeholder="Untitled" type="text">
-            <span class="helperText">.htm</span>
+            <span class="helperText" style="font-size: 14px">.htm</span>
           </nav>
           <div id="editor"></div>
           <a hidden id="noteDownloadLink"></a>
@@ -494,7 +541,8 @@
   </div>
   <div class="dialogOverlay" hidden id="preferencesDialog">
     <h1>Preferences</h1>
-    <div class="pretty p-switch">
+    <h4 class="helperText" style="margin-top: -10px">PERSONALIZATION</h4>
+    <div class="pretty p-switch p-fill">
       <input type="checkbox">
       <div class="state">
         <label>Dark mode</label>
@@ -502,7 +550,7 @@
     </div>
     <br>
     <br>
-    <div class="pretty p-switch">
+    <div class="pretty p-switch p-fill">
       <input checked type="checkbox">
       <div class="state">
         <label>Show app animations</label>
@@ -510,10 +558,10 @@
     </div>
     <br>
     <br>
-    <a class="hyperlinkButton" onclick="toggleDialog(false, 'preferencesDialog')">
+    <a class="hyperlinkButton"
+       onclick="toggleDialog(false, 'preferencesDialog'); if (resetOnCloseCheckbox.checked) { localStorage.clear(); resetOnCloseCheckbox.checked = false }">
       Close
-    </a>
-    |
+    </a>|
     <div class="pretty p-default p-curve p-thick">
       <input id="resetOnCloseCheckbox" type="checkbox">
       <div class="state">
