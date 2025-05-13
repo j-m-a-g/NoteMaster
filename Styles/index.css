@@ -10,8 +10,8 @@
 }
 
 html {
-  user-select: none;
   scroll-behavior: smooth;
+  user-select: none;
 }
 
 body {
@@ -288,14 +288,6 @@ a.hyperlinkButton:hover {
 
 #mainEditor:active {
   border-color: cornflowerblue;
-}
-
-#anotherNoteView {
-  user-select: text;
-  overflow-y: auto;
-  overflow-x: hidden;
-  height: 482px;
-  border-color: var(--lightAccent400);
 }
 
 div.saveBeforeClosing {
