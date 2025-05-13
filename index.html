@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <meta content="ie=edge" http-equiv="X-UA-Compatible">
-  <title>NotesMaster</title>
+  <title>NoteMaster</title>
   <link href="Styles/index.css" rel="stylesheet" type="text/css">
   <link href="Styles/fileViewers.css" rel="stylesheet" type="text/css">
   <link href="manifest.json" rel="manifest">
@@ -26,43 +26,58 @@
     <button accesskey="n"
             class="menuDropdown"
             onclick="if (noteEditor.hidden) { hideAndShow('createOrOpenContainer', 'noteEditor') } else { confirmSave() }">
-      New <span class="helperText menuDropdown">Alt + N</span>
+      <img class="reducedIntensity menu" src="Assets/Images/note_add_000000.svg">
+      <u>N</u>ew <span class="helperText menuDropdown">Alt + N</span>
     </button>
     <button accesskey="o" class="menuDropdown" id="openNote" onclick="handleAnotherOpen()">
-      Open Note... <span class="helperText menuDropdown">Alt + O</span></button>
+      <img class="reducedIntensity menu" src="Assets/Images/file_open_000000.svg">
+      <u>O</u>pen Note... <span class="helperText menuDropdown">Alt + O</span></button>
     <button accesskey="s" class="menuDropdown" disabled id="save" onclick="saveNoteProgress()">
-      Save <span class="helperText">(In-Browser)</span> <span class="helperText menuDropdown">Alt + S</span>
+      <img class="reducedIntensity menu" src="Assets/Images/save_000000.svg">
+      <u>S</u>ave <span class="helperText">(In-Browser)</span> <span class="helperText menuDropdown">Alt + S</span>
     </button>
-    <button class="menuDropdown" onclick="toggleMenuCheck('autoSaveCheck')">
+    <button class="menuDropdown"
+            onclick="toggleMenuCheck('autoSaveCheck'); if (autoSaveCheck.src.includes(checkedImageSource)) { mainEditor.oninput = () => { saveNoteProgress() } } else { mainEditor.oninput = () => {} }">
       <img class="menu" id="autoSaveCheck">
       Auto Save
     </button>
+    <hr class="menuDropdown">
     <button accesskey="w" class="menuDropdown" disabled id="downloadNote" onclick="downloadNote()">
-      Download Note <span class="helperText menuDropdown">Alt + W</span>
+      <img class="reducedIntensity menu" src="Assets/Images/download_000000.svg">
+      Do<u>w</u>nload Note <span class="helperText menuDropdown">Alt + W</span>
     </button>
-    <button accesskey="i" class="menuDropdown" disabled id="closeFile" onclick="closeCurrentFile()">
-      Close Viewer <span class="helperText menuDropdown">Alt + I</span>
+    <button accesskey="i" class="menuDropdown" disabled id="closeFile" onclick="confirmViewerClose.hidden = false">
+      <img class="reducedIntensity menu" src="Assets/Images/home_000000.svg">
+      Close V<u>i</u>ewer <span class="helperText menuDropdown">Alt + I</span>
     </button>
     <button accesskey="t" class="menuDropdown" disabled id="closeNote" onclick="confirmSave()">
-      Close Note <span class="helperText menuDropdown">Alt + T</span>
-    </button>
-  </div>
-  <button class="menu" onmouseleave="document.getElementById('editMenu').hidden = true"
-          onmouseover="document.getElementById('editMenu').hidden = false">
-    Edit
-  </button>
-  <div class="menu" hidden id="editMenu"
-       onmouseleave="document.getElementById('editMenu').hidden = true"
-       onmouseover="document.getElementById('editMenu').hidden = false"
-       style="margin-left: 46px">
-    <button class="menuDropdown" onclick="navigator.clipboard.writeText(window.getSelection().toString())">
-      Copy <span class="helperText menuDropdown">Ctrl + C</span>
-    </button>
-    <button class="menuDropdown">Cut <span class="helperText menuDropdown">Ctrl + X</span></button>
-    <button class="menuDropdown">Paste <span class="helperText menuDropdown">Ctrl + V</span>
+      <img class="reducedIntensity menu" src="Assets/Images/close_000000.svg">
+      Close No<u>t</u>e <span class="helperText menuDropdown">Alt + T</span>
     </button>
     <hr class="menuDropdown">
-    <button class="menuDropdown" onclick="toggleDialog(true, 'preferencesDialog')">Preferences</button>
+    <button class="menuDropdown" onclick="toggleDialog(true, 'preferencesDialog')">
+      <img class="reducedIntensity menu" src="Assets/Images/settings_000000.svg">
+      Preferences
+    </button>
+  </div>
+  <button class="menu" onmouseleave="document.getElementById('insertMenu').hidden = true"
+          onmouseover="document.getElementById('insertMenu').hidden = false">
+    Insert
+  </button>
+  <div class="menu" hidden id="insertMenu"
+       onmouseleave="document.getElementById('insertMenu').hidden = true"
+       onmouseover="document.getElementById('insertMenu').hidden = false">
+    <button class="menuDropdown"
+            onclick="navigator.clipboard.writeText((currentDate.getMonth() + 1).toString() + '/' + currentDate.getDate().toString() + '/' + currentDate.getFullYear().toString())">
+      <img class="reducedIntensity menu" src="Assets/Images/today_000000.svg">
+      Copy Current Date
+    </button>
+    <button class="menuDropdown"
+            onclick="navigator.clipboard.writeText(currentDate.getHours().toString() + ':' + currentDate.getMinutes().toString() + ':' + currentDate.getSeconds().toString())">
+      <img class="reducedIntensity menu" src="Assets/Images/schedule_000000.svg">
+      Copy Current Time
+    </button>
+    <button class="menuDropdown">Shape</button>
   </div>
   <button class="menu" onmouseleave="document.getElementById('viewMenu').hidden = true"
           onmouseover="document.getElementById('viewMenu').hidden = false">
@@ -71,15 +86,17 @@
   <div class="menu" hidden id="viewMenu"
        onmouseleave="document.getElementById('viewMenu').hidden = true"
        onmouseover="document.getElementById('viewMenu').hidden = false"
-       style="margin-left: 93px">
-    <button class="menuDropdown" onclick="window.location.reload()">Refresh <span class="helperText menuDropdown">F5 or Ctrl + R</span>
+       style="margin-left: 46px">
+    <button class="menuDropdown" onclick="window.location.reload()">
+      <img class="reducedIntensity menu" src="Assets/Images/refresh_000000.svg">
+      Refresh <span class="helperText menuDropdown">F5 or Ctrl + R</span>
     </button>
     <button class="menuDropdown" disabled id="showHTMLEditor" onclick="toggleMenuCheck('showHTMLEditorCheck')">
       <img class="menu" id="showHTMLEditorCheck">
-      Show HTML Note Editor
+      Show Note As HTML
     </button>
     <button class="menuDropdown" id="wordWrap"
-            onclick="toggleMenuCheck('wordWrapCheck'); if (wordWrapCheck.src.includes(checkedImageSource)) { editor.style.wordBreak = 'break-word' } else { editor.style.wordBreak = 'normal' }"
+            onclick="toggleMenuCheck('wordWrapCheck'); if (wordWrapCheck.src.includes(checkedImageSource)) { mainEditor.style.wordBreak = 'break-word' } else { mainEditor.style.wordBreak = 'normal' }"
             title="May cause layout issues">
       <img class="menu" id="wordWrapCheck" src="Assets/Images/check_000000.svg">
       Word Wrap
@@ -92,8 +109,11 @@
   <div class="menu" hidden id="helpMenu"
        onmouseleave="document.getElementById('helpMenu').hidden = true"
        onmouseover="document.getElementById('helpMenu').hidden = false"
-       style="margin-left: 146px">
-    <button class="menuDropdown" onclick="toggleDialog(true, 'aboutDialog')">About</button>
+       style="margin-left: 104px">
+    <button class="menuDropdown" onclick="toggleDialog(true, 'aboutDialog')">
+      <img class="reducedIntensity menu" src="Assets/Images/info_000000.svg">
+      About
+    </button>
   </div>
 </nav>
 
@@ -105,7 +125,7 @@
         <h1 style="line-height: 20px">Welcome</h1>
         <h3>What type of document will you view today?</h3>
         <details>
-          <summary accesskey="y"> On Your Computer <span class="helperText menuDropdown">Alt + Y</span></summary>
+          <summary accesskey="y"> On <u>Y</u>our Computer <span class="helperText menuDropdown">Alt + Y</span></summary>
           <table>
             <tr>
               <td>
@@ -235,7 +255,7 @@
           </table>
         </details>
         <details>
-          <summary accesskey="l"> Online <span class="helperText menuDropdown">Alt + L</span></summary>
+          <summary accesskey="l"> On<u>l</u>ine <span class="helperText menuDropdown">Alt + L</span></summary>
           <table>
             <tr>
               <td>
@@ -310,6 +330,25 @@
             </tr>
           </table>
         </details>
+        <hr style="opacity: 25%; width: 95%; border-style: dotted">
+        <button class="appSection"
+                onclick="anotherNoteFileInput.click(); toggleViewer(true, 'anotherNoteViewer')">
+          <table>
+            <tr>
+              <td>
+                <img class="appSection reducedIntensity" src="Assets/Images/menu_book_000000.svg">
+              </td>
+              <td>
+                <span class="buttonHeading">Another Note</span>
+                <br>
+                <input accept="text/html" hidden id="anotherNoteFileInput"
+                       onchange="readHTMLNote(); anotherNoteView.hidden = false"
+                       type="file">
+                <span class="helperText">Have another note open on the side</span>
+              </td>
+            </tr>
+          </table>
+        </button>
       </td>
 
       <td class="appSection" hidden id="viewersContainer">
@@ -332,9 +371,9 @@
           <nav hidden id="textViewActions">
             <select id="textViewFont"
                     onchange="if (textViewFont.value === 'monospace') { textView.style.fontFamily = 'monospace' } else if (textViewFont.value === 'serif') { textView.style.fontFamily = 'serif' } else { textView.style.fontFamily = 'sans-serif' }">
-              <option value="monospace">Monospace</option>
-              <option value="serif">Serif</option>
               <option value="sans-serif">Sans Serif</option>
+              <option value="serif">Serif</option>
+              <option selected value="monospace">Monospace</option>
             </select>
             <button class="navButton" onclick="textViewFontSize += 1; textView.style.fontSize = textViewFontSize + 'px'"
                     title="Increase font size">
@@ -379,6 +418,9 @@
           </nav>
           <iframe id="webpageView" src="Pages/noWebpageNavigated.html"></iframe>
         </div>
+        <div hidden id="anotherNoteViewer">
+          <div hidden id="anotherNoteView"></div>
+        </div>
       </td>
 
       <!-- Editor section -->
@@ -391,7 +433,7 @@
               </td>
               <td style="width: 173px">
                 <span class="buttonHeading">
-                  Create a New Note <span class="helperText menuDropdown">Alt + N</span>
+                  Create a <u>N</u>ew Note <span class="helperText menuDropdown">Alt + N</span>
                 </span>
                 <br>
                 <span class="helperText">Get started with a blank slate</span>
@@ -407,7 +449,7 @@
                 <img class="appSection reducedIntensity" src="Assets/Images/file_open_000000.svg">
               </td>
               <td>
-                <span class="buttonHeading">Open an Existing Note <span
+                <span class="buttonHeading"><u>O</u>pen an Existing Note <span
                     class="helperText menuDropdown">Alt + O</span></span><br>
                 <input accept="text/html" hidden id="openNoteFileInput"
                        onchange="initiateNote(true)"
@@ -436,7 +478,7 @@
             <input id="noteName" placeholder="Untitled" type="text">
             <span class="helperText" style="font-size: 14px">.htm</span>
           </nav>
-          <div id="editor"></div>
+          <div id="mainEditor"></div>
           <a hidden id="noteDownloadLink"></a>
         </div>
       </td>
@@ -444,7 +486,7 @@
   </table>
 </div>
 
-<!-- Confirm Save Pop-up -->
+<!-- Confirm save pop-up -->
 <div class="saveBeforeClosing" hidden id="confirmSaveDialog">
   <div class="dialogOverlay" style="padding-right: 10px">
     <h1 class="saveBeforeClosing" id="saveDocumentHeading"></h1>
@@ -469,6 +511,30 @@
         </td>
         <td style="width: 33%">
           <button class="saveBeforeClosing">Resume Working</button>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<!-- Confirmation before closing a viewer -->
+<div class="saveBeforeClosing" hidden id="confirmViewerClose">
+  <div class="dialogOverlay" style="padding-right: 10px">
+    <h1 class="saveBeforeClosing">Are you sure you want to close this viewer?</h1>
+    <h3 class="saveBeforeClosing helperText">
+      By doing this, you will revert your view back to Welcome and be able to
+      select another document to view.
+    </h3>
+    <table onclick="confirmViewerClose.hidden = true" style="width: 100%">
+      <tr>
+        <td style="width: 50%">
+          <button class="saveBeforeClosing" onclick="closeCurrentFile()"
+                  style="background-color: #e54304; color: white">
+            Yes
+          </button>
+        </td>
+        <td style="width: 50%">
+          <button class="saveBeforeClosing">No</button>
         </td>
       </tr>
     </table>
@@ -565,14 +631,15 @@
     <div class="pretty p-default p-curve p-thick">
       <input id="resetOnCloseCheckbox" type="checkbox">
       <div class="state">
-        <label for="resetOnCloseCheckbox">Reset preferences on close</label>
+        <label for="resetOnCloseCheckbox">Reset preferences on close <span class="helperText menuDropdown">(Includes note progress)</span></label>
       </div>
     </div>
   </div>
   <div class="dialogOverlay" hidden id="aboutDialog">
+    <img class="reducedIntensity" src="Assets/Images/info_000000.svg">
     <h1>About</h1>
     <p style="line-height: 25px">
-      NotesMaster v25.05.x
+      NoteMaster v25.05.x
       <br>
       Designed and developed by <a href="https://github.com/j-m-a-g" target="_blank">J. Maghamez</a>
       <br>

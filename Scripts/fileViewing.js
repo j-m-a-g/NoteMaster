@@ -42,3 +42,15 @@ function readTextFile() {
   }
   fileReader.readAsText(workingFile);
 }
+
+function readHTMLNote() {
+  const workingFile = event.target.files[0];
+  const fileReader = new FileReader();
+  fileReader.onload = () => {
+    const fileContents = fileReader.result;
+    anotherNoteViewQuill.clipboard.dangerouslyPasteHTML(fileContents);
+  }
+  fileReader.readAsText(workingFile);
+
+  tasksOnceFileOpen("anotherNoteView");
+}

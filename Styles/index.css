@@ -181,7 +181,7 @@ td.appSection {
   border-radius: 5px;
   width: 50%;
   max-width: 50%;
-  height: 400px;
+  height: 482px;
 }
 
 button.appSection {
@@ -278,17 +278,24 @@ a.hyperlinkButton:hover {
   text-decoration-style: dotted;
 }
 
-#editor {
-  height: 62%;
+#mainEditor {
+  height: 70%;
   overflow-x: hidden;
   overflow-y: auto;
   word-break: break-word;
-  margin-bottom: 5px;
   border-color: var(--lightAccent400);
 }
 
-#editor:active {
+#mainEditor:active {
   border-color: cornflowerblue;
+}
+
+#anotherNoteView {
+  user-select: text;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 482px;
+  border-color: var(--lightAccent400);
 }
 
 div.saveBeforeClosing {
@@ -301,7 +308,11 @@ div.saveBeforeClosing {
   height: 100%;
 }
 
-h1.saveBeforeClosing,
+h1.saveBeforeClosing {
+  line-height: normal;
+  text-align: center;
+}
+
 h3.saveBeforeClosing {
   line-height: 25px;
   text-align: center;

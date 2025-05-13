@@ -17,12 +17,20 @@ const toolbarOptions = [
   ['clean']
 ];
 
-const quill = new Quill('#editor', {
+const quill = new Quill('#mainEditor', {
   modules: {
     toolbar: toolbarOptions
   },
   placeholder: "Start your note-taking here",
   theme: 'snow'
+});
+
+const anotherNoteViewQuill = new Quill("#anotherNoteView", {
+  readOnly: true,
+  modules: {
+    toolbar: null
+  },
+  theme: 'snow',
 });
 
 function onLoadTasks() {
