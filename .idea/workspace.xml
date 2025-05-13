@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f191740-30a6-480d-9797-fe5f00316180" name="Changes" comment="Updated README.md">
+    <list default="true" id="3f191740-30a6-480d-9797-fe5f00316180" name="Changes" comment="Updated stylesheet formatting">
+      <change beforePath="$PROJECT_DIR$/.idea/NoteMaster.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/NoteMaster.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Styles/fileViewers.css" beforeDir="false" afterPath="$PROJECT_DIR$/Styles/fileViewers.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Styles/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/Styles/index.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,6 +29,7 @@
   }
 }]]></component>
   <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "000000ff",
   "associatedIndex": 6
 }]]></component>
   <component name="ProjectId" id="2x1S9SqfUvw5xewnSfP22wioUa7" />
@@ -43,6 +46,10 @@
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "main",
     "last_opened_file_path": "C:/Users/Joseph/NoteMaster",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "configurable.group.editor",
     "vue.rearranger.settings.migration": "true"
@@ -63,7 +70,7 @@
       <option name="presentableId" value="Default" />
       <updated>1745669648845</updated>
       <workItem from="1745669649949" duration="283000" />
-      <workItem from="1747103937946" duration="187000" />
+      <workItem from="1747103937946" duration="349000" />
     </task>
     <task id="LOCAL-00001" summary="Updated README.md">
       <option name="closed" value="true" />
@@ -73,7 +80,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747104016036</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Updated stylesheet formatting">
+      <option name="closed" value="true" />
+      <created>1747104152418</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1747104152418</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -81,6 +96,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Updated README.md" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated README.md" />
+    <MESSAGE value="Updated stylesheet formatting" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated stylesheet formatting" />
   </component>
 </project>
