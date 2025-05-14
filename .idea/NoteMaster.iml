@@ -8,9 +8,5 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="quill" level="application" />
-    <orderEntry type="library" name="pretty-checkbox" level="application" />
-    <orderEntry type="library" name="quill" level="application" />
-    <orderEntry type="library" name="pretty-checkbox" level="application" />
   </component>
 </module>
