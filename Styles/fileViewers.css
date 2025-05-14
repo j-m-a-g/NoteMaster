@@ -32,6 +32,7 @@ iframe {
 #anotherNoteView {
   border-color: var(--lightAccent400);
   height: 482px;
+  word-break: break-word;
   overflow-x: hidden;
   overflow-y: auto;
   user-select: text;

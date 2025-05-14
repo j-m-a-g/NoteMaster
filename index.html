@@ -91,6 +91,10 @@
       <img class="reducedIntensity menu" src="Assets/Images/refresh_000000.svg">
       Refresh <span class="helperText menuDropdown">F5 or Ctrl + R</span>
     </button>
+    <button class="menuDropdown" onclick="adjustAppSectionSizes.hidden = false">
+      <img class="reducedIntensity menu" src="Assets/Images/width_normal_000000.svg">
+      Adjust App Section Sizes
+    </button>
     <button class="menuDropdown" disabled id="showHTMLEditor" onclick="toggleMenuCheck('showHTMLEditorCheck')">
       <img class="menu" id="showHTMLEditorCheck">
       Show Note As HTML
@@ -126,7 +130,7 @@
         <h3>What type of document will you view today?</h3>
         <details>
           <summary accesskey="y"> On <u>Y</u>our Computer <span class="helperText menuDropdown">Alt + Y</span></summary>
-          <table>
+          <table style="width: 100%">
             <tr>
               <td>
                 <button class="appSection"
@@ -256,7 +260,7 @@
         </details>
         <details>
           <summary accesskey="l"> On<u>l</u>ine <span class="helperText menuDropdown">Alt + L</span></summary>
-          <table>
+          <table style="width: 100%">
             <tr>
               <td>
                 <button class="appSection"
@@ -478,7 +482,10 @@
             <input id="noteName" placeholder="Untitled" type="text">
             <span class="helperText" style="font-size: 14px">.htm</span>
           </nav>
-          <div id="mainEditor"></div>
+          <div id="mainEditor" oninput="updateStatusBar()"></div>
+          <nav id="editorStatusBar">
+            <span id="characterCount">Characters <span class="helperText">(Including Spaces)</span>:<span class="menuDropdown">Pending Count</span></span>
+          </nav>
           <a hidden id="noteDownloadLink"></a>
         </div>
       </td>
@@ -538,6 +545,25 @@
         </td>
       </tr>
     </table>
+  </div>
+</div>
+
+<div class="saveBeforeClosing" hidden id="adjustAppSectionSizes">
+  <div class="dialogOverlay" style="padding-right: 10px">
+    <h1>Adjust App Section Sizes</h1>
+    <table style="width: 100%">
+      <tr>
+        <td style="width: 50%">
+          Viewing (%)
+          <input value="50" max="68" min="32" id="viewingSize" placeholder="50% (Default)" type="number" style="width: 90%; margin-top: 5px" oninput="adjustViewingAndEditorSizes()">
+        </td>
+        <td style="width: 50%">
+          Editor (%)
+          <input readonly value="50" id="editorSize" placeholder="50% (Default)" type="number" style="width: 90%; margin-top: 5px">
+        </td>
+      </tr>
+    </table>
+    <a class="hyperlinkButton" onclick="adjustAppSectionSizes.hidden = true">Close</a> | <a class="hyperlinkButton" onclick="viewingSize.value = 50; editorSize.value = 50; applyPercentageSizes(); localStorage.setItem('viewingSizeValue', viewingSize.value)">Reset</a>
   </div>
 </div>
 
@@ -625,7 +651,7 @@
     <br>
     <br>
     <a class="hyperlinkButton"
-       onclick="toggleDialog(false, 'preferencesDialog'); if (resetOnCloseCheckbox.checked) { localStorage.clear(); resetOnCloseCheckbox.checked = false }">
+       onclick="toggleDialog(false, 'preferencesDialog'); if (resetOnCloseCheckbox.checked) { localStorage.clear(); resetOnCloseCheckbox.checked = false; window.location.reload() }">
       Close
     </a>|
     <div class="pretty p-default p-curve p-thick">
