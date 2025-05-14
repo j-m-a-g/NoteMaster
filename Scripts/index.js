@@ -41,6 +41,14 @@ function onLoadTasks() {
     noteName.value = localStorage.getItem('noteTitle');
     alterMenuFunctions(false);
   }
+
+  // USER PREFERENCES
+
+  // Viewing and Editor Size
+  if (localStorage.getItem("viewingSizeValue") !== null) {
+    viewingSize.value = localStorage.getItem("viewingSizeValue");
+    adjustViewingAndEditorSizes();
+  }
 }
 
 function hideAndShow(hiddenContainer, shownContainer) {
@@ -89,4 +97,24 @@ function alterMenuFunctions(isDisabled) {
   document.getElementById("downloadNote").disabled = isDisabled;
   document.getElementById("save").disabled = isDisabled;
   document.getElementById('showHTMLEditor').disabled = isDisabled;
+}
+
+function applyPercentageSizes() {
+  chooseViewer.style.width = (viewingSize.value).toString() + '%';
+  viewersContainer.style.width = (viewingSize.value).toString() + '%';
+  createOrOpenContainer.style.width = (editorSize.value).toString() + '%';
+  noteEditor.style.width = (editorSize.value).toString() + '%';
+}
+
+function adjustViewingAndEditorSizes() {
+  // Disallows the user from manually surpassing the defined input limits
+  if (viewingSize.value > viewingSize.max) {
+    viewingSize.value = viewingSize.max;
+  } else if (viewingSize.value < viewingSize.min) {
+    viewingSize.value = viewingSize.min;
+  }
+
+  editorSize.value = 100 - viewingSize.value;
+  applyPercentageSizes();
+  localStorage.setItem('viewingSizeValue', viewingSize.value);
 }

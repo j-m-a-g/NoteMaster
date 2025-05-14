@@ -41,25 +41,22 @@ img {
   -webkit-user-drag: none;
 }
 
-input[type=text], input[type=url] {
-  padding: 11px 10px 10px;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
+input[type=text], input[type=url], input[type=number] {
+  background-color: white;
+  border-color: var(--lightAccent300);
+  border-radius: 5px;
   border-style: solid;
   border-width: 1px;
-  border-top-color: var(--lightAccent300);
-  border-left-color: var(--lightAccent300);
-  border-right-color: var(--lightAccent300);
-  border-bottom-color: var(--lightAccent400);
-  background-color: white;
+  height: 14px;
+  padding: 11px 10px 10px;
 }
 
-input[type = text]:focus, input[type=url]:focus {
+input[type = text]:focus, input[type=url]:focus, input[type=number]:focus {
   outline-style: none;
   border-color: cornflowerblue;
 }
 
-input[type = text]::placeholder, input[type=url]::placeholder {
+input[type = text]::placeholder, input[type=url]::placeholder, input[type=number]::placeholder {
   filter: opacity(50%);
 }
 
@@ -180,8 +177,7 @@ td.appSection {
   background-color: var(--lightAccent100);
   border-radius: 5px;
   width: 50%;
-  max-width: 50%;
-  height: 482px;
+  height: 516px;
 }
 
 button.appSection {
@@ -284,10 +280,23 @@ a.hyperlinkButton:hover {
   overflow-y: auto;
   word-break: break-word;
   border-color: var(--lightAccent400);
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
 #mainEditor:active {
   border-color: cornflowerblue;
+}
+
+#editorStatusBar {
+  border-style: solid;
+  border-width: 1px;
+  font-size: 12px;
+  border-color: var(--lightAccent300);
+  margin-top: 5px;
+  border-radius: 5px;
+  background-color: var(--lightAccent200);
+  padding: 5px;
 }
 
 div.saveBeforeClosing {
