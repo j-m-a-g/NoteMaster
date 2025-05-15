@@ -36,8 +36,8 @@
       <img class="reducedIntensity menu" src="Assets/Images/save_000000.svg">
       <u>S</u>ave <span class="helperText">(In-Browser)</span> <span class="helperText menuDropdown">Alt + S</span>
     </button>
-    <button class="menuDropdown"
-            onclick="toggleMenuCheck('autoSaveCheck'); if (autoSaveCheck.src.includes(checkedImageSource)) { mainEditor.oninput = () => { saveNoteProgress() } } else { mainEditor.oninput = () => {} }">
+    <button class="menuDropdown" id="autoSave"
+            onclick="toggleMenuCheck('autoSaveCheck'); if (autoSaveCheck.src.includes(checkedImageSource)) { localStorage.setItem('autoSaveEnabled', 'true'); mainEditor.oninput = () => { saveNoteProgress(); updateStatusBar() } } else { localStorage.setItem('autoSaveEnabled', 'false'); mainEditor.oninput = () => { updateStatusBar() } }">
       <img class="menu" id="autoSaveCheck">
       Auto Save
     </button>
@@ -70,12 +70,12 @@
     <button class="menuDropdown"
             onclick="navigator.clipboard.writeText((currentDate.getMonth() + 1).toString() + '/' + currentDate.getDate().toString() + '/' + currentDate.getFullYear().toString())">
       <img class="reducedIntensity menu" src="Assets/Images/today_000000.svg">
-      Copy Current Date
+      Copy Current Date <span class="helperText menuDropdown">m(m)/d(d)/yyyy</span>
     </button>
     <button class="menuDropdown"
-            onclick="navigator.clipboard.writeText(currentDate.getHours().toString() + ':' + currentDate.getMinutes().toString() + ':' + currentDate.getSeconds().toString())">
+            onclick="navigator.clipboard.writeText(currentDate.getHours().toString() + ':' + currentDate.getMinutes().toString())">
       <img class="reducedIntensity menu" src="Assets/Images/schedule_000000.svg">
-      Copy Current Time
+      Copy Current Time <span class="helperText menuDropdown">hh:mm</span>
     </button>
     <button class="menuDropdown">Shape</button>
   </div>
@@ -100,7 +100,7 @@
       Show Note As HTML
     </button>
     <button class="menuDropdown" id="wordWrap"
-            onclick="toggleMenuCheck('wordWrapCheck'); if (wordWrapCheck.src.includes(checkedImageSource)) { mainEditor.style.wordBreak = 'break-word' } else { mainEditor.style.wordBreak = 'normal' }"
+            onclick="toggleMenuCheck('wordWrapCheck'); if (wordWrapCheck.src.includes(checkedImageSource)) { localStorage.setItem('wordWrapEnabled', 'true'); mainEditor.style.wordBreak = 'break-word' } else { localStorage.setItem('wordWrapEnabled', 'false'); mainEditor.style.wordBreak = 'normal' }"
             title="May cause layout issues">
       <img class="menu" id="wordWrapCheck" src="Assets/Images/check_000000.svg">
       Word Wrap
@@ -209,14 +209,15 @@
             </tr>
             <tr>
               <td>
-                <button class="appSection">
+                <button class="appSection" onclick="documentFileInput.click(); toggleViewer(true, 'wordDocumentViewer')">
                   <table>
                     <tr>
                       <td>
                         <img class="appSection" src="Assets/Images/description_789DE5.svg">
                       </td>
                       <td>
-                        <span class="buttonHeading">Document</span><br>
+                        <span class="buttonHeading">Word Document</span><br>
+                        <input hidden accept=".doc, .docx" type="file" id="documentFileInput" onchange="readWordDocument(); tasksOnceFileOpen('wordDocumentView')">
                         <span class="helperText">.doc, .docx</span>
                       </td>
                     </tr>
@@ -394,6 +395,15 @@
           </nav>
           <textarea hidden id="textView" readonly></textarea>
         </div>
+        <div hidden id="wordDocumentViewer">
+          <nav>
+            <span class="helperText" style="width: 55%; padding-top: 0">Adjust Page Margins</span>
+            <input style="width: 15%" type="number" placeholder="Top">
+            <input style="width: 15%" type="number" placeholder="Left">
+            <input style="width: 15%" type="number" placeholder="Bottom">
+          </nav>
+          <div hidden id="wordDocumentView"></div>
+        </div>
         <div hidden id="webpageViewer">
           <nav style="margin-bottom: 5px">
             <table>
@@ -483,8 +493,17 @@
             <span class="helperText" style="font-size: 14px">.htm</span>
           </nav>
           <div id="mainEditor" oninput="updateStatusBar()"></div>
-          <nav id="editorStatusBar">
-            <span id="characterCount">Characters <span class="helperText">(Including Spaces)</span>:<span class="menuDropdown">Pending Count</span></span>
+          <nav class="statusBar" id="editorStatusBar">
+            <table style="width: 100%">
+              <tr>
+                <td>
+                  <span id="characterCount"></span>
+                </td>
+                <td>
+                  <span id="wordCount"></span>
+                </td>
+              </tr>
+            </table>
           </nav>
           <a hidden id="noteDownloadLink"></a>
         </div>
@@ -679,6 +698,8 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/quill/dist/quill.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.9.0/mammoth.browser.js" integrity="sha512-0wvefyQZJqGXiPxRPDb8rw4IrHizrbahWa+7wK/oywfMd0LZRwaTCDqN/c1jcir3CXgLydi25heF+kC05htYGQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <script src="Scripts/globalVarDeclarations.js"></script>
 <script src="Scripts/index.js"></script>
 <script src="Scripts/editorFunctions.js"></script>

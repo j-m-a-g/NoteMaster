@@ -44,6 +44,16 @@ function onLoadTasks() {
 
   // USER PREFERENCES
 
+  // Auto Save
+  if (localStorage.getItem("autoSaveEnabled") === "true") {
+    autoSave.click();
+  }
+
+  // Word Wrap
+  if (localStorage.getItem("wordWrapEnabled") === "true") {
+    wordWrap.click();
+  }
+
   // Viewing and Editor Size
   if (localStorage.getItem("viewingSizeValue") !== null) {
     viewingSize.value = localStorage.getItem("viewingSizeValue");

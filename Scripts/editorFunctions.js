@@ -15,12 +15,12 @@ function initiateNote(isOpen) {
     const trimFakePath = openNoteFileInput.value.replace("C:\\fakepath\\", "");
     const trimFileExtension = trimFakePath.replace(".htm", "");
     noteName.value = trimFileExtension.replace(".html", "");
-
-    updateStatusBar();
   } else {
     // Resets the editor's state
     quill.setContents();
   }
+
+  updateStatusBar();
 }
 
 function confirmSave() {
@@ -99,5 +99,15 @@ function launchExample() {
 }
 
 function updateStatusBar() {
-  characterCount.innerHTML = "Characters <span class='helperText'>(Including spaces)</span>: " + quill.getLength();
+  if (quill.getLength() === 1) {
+    characterCount.innerHTML = "<span class='helperText'>Characters (Including spaces)</span> 0";
+  } else {
+    characterCount.innerHTML = "<span class='helperText'>Characters (Including spaces)</span> " + quill.getLength();
+  }
+
+  if (quill.getText() === "\n") {
+    wordCount.innerHTML = "<span class='helperText'>Words</span> 0";
+  } else {
+    wordCount.innerHTML = "<span class='helperText'>Words</span> " + (quill.getText().split(/\s+/).length - 1);
+  }
 }

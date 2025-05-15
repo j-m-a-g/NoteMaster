@@ -10,27 +10,32 @@ function tasksOnceFileOpen(unhiddenView) {
 
 function closeCurrentFile() {
   // Resets the state of all the file viewers
-  pdfViewer.hidden = true;
   pdfView.hidden = true;
   pdfView.src = "";
+  pdfViewer.hidden = true;
 
-  imageViewer.hidden = true;
   imageView.hidden = true;
   imageView.src = "";
+  imageViewer.hidden = true;
 
-  textViewer.hidden = true;
   textView.hidden = true;
   textView.innerHTML = "";
   textViewActions.hidden = true;
+  textViewer.hidden = true;
 
-  webpageViewer.hidden = true;
-  webpageView.hidden = true;
+  wordDocumentView.hidden = true;
+  wordDocumentView.innerHTML = "";
+  wordDocumentViewer.hidden = true;
+
   webpageURLBar.value = "";
+  webpageView.hidden = true;
+  webpageView.src = "Pages/noWebpageNavigated.html";
+  webpageViewer.hidden = true;
 
-  noFileSelected.hidden = false;
-  viewersContainer.hidden = true;
   chooseViewer.hidden = false;
   closeFile.disabled = true;
+  noFileSelected.hidden = false;
+  viewersContainer.hidden = true;
 }
 
 function readTextFile() {
@@ -41,6 +46,17 @@ function readTextFile() {
     textView.innerHTML = fileContents;
   }
   fileReader.readAsText(workingFile);
+}
+
+function readWordDocument() {
+  const fileReader = new FileReader();
+  fileReader.onload = (event) => {
+    const arrayBuffer = event.target.result;
+    mammoth.convertToHtml({ arrayBuffer: arrayBuffer }).then((result)=> {
+        wordDocumentView.innerHTML = result.value;
+    })
+  }
+  fileReader.readAsArrayBuffer(event.target.files[0]);
 }
 
 function readHTMLNote() {
