@@ -1,3 +1,10 @@
+const mammothJSOptions = {
+  styleMap: [
+    "table => table[class='wordDocumentTable']",
+    "comment-reference => sup"
+  ]
+}
+
 function tasksOnceFileOpen(unhiddenView) {
   // Allows the user to have the option of closing the
   // viewed file and hides the "No File Selected" indication
@@ -32,6 +39,11 @@ function closeCurrentFile() {
   webpageView.src = "Pages/noWebpageNavigated.html";
   webpageViewer.hidden = true;
 
+  URLToTubeVideo.value = "";
+  tubeVideoView.hidden = true;
+  tubeVideoView.src = "";
+  tubeVideoViewer.hidden = true;
+
   chooseViewer.hidden = false;
   closeFile.disabled = true;
   noFileSelected.hidden = false;
@@ -52,9 +64,12 @@ function readWordDocument() {
   const fileReader = new FileReader();
   fileReader.onload = (event) => {
     const arrayBuffer = event.target.result;
-    mammoth.convertToHtml({ arrayBuffer: arrayBuffer }).then((result)=> {
-        wordDocumentView.innerHTML = result.value;
-    })
+    mammoth.convertToHtml({arrayBuffer: arrayBuffer}, mammothJSOptions).then((result) => {
+      wordDocumentView.innerHTML = result.value;
+    }).catch(() => {
+      throwAppError("The file you are trying to view does not seem like a Word document. Ensure the file extension is correct and try again.");
+      closeCurrentFile();
+    });
   }
   fileReader.readAsArrayBuffer(event.target.files[0]);
 }
@@ -69,4 +84,13 @@ function readHTMLNote() {
   fileReader.readAsText(workingFile);
 
   tasksOnceFileOpen("anotherNoteView");
+}
+
+function checkURLInput(URLInputObject) {
+  if (document.getElementById(URLInputObject).value === "") {
+    document.getElementById("noURLWarning").hidden = false;
+    return false
+  } else {
+    return true
+  }
 }

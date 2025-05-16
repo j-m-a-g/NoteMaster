@@ -33,6 +33,12 @@ const anotherNoteViewQuill = new Quill("#anotherNoteView", {
   theme: 'snow',
 });
 
+const noteHTMLCodeEditor = ace.edit("noteHTML");
+noteHTMLCodeEditor.setTheme("ace/theme/monokai");
+noteHTMLCodeEditor.session.setMode("ace/mode/html");
+noteHTMLCodeEditor.setReadOnly(true);
+noteHTMLCodeEditor.session.setUseWrapMode(true);
+
 function onLoadTasks() {
   if (localStorage.getItem("noteProgress") !== "<p></p>" && localStorage.getItem(("noteProgress")) !== null) {
     hideAndShow("createOrOpenContainer", "noteEditor");
@@ -127,4 +133,9 @@ function adjustViewingAndEditorSizes() {
   editorSize.value = 100 - viewingSize.value;
   applyPercentageSizes();
   localStorage.setItem('viewingSizeValue', viewingSize.value);
+}
+
+function throwAppError(messageText) {
+  toggleDialog(true, "applicationError");
+  errorMessage.innerHTML = messageText;
 }

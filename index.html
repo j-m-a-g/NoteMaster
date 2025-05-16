@@ -7,6 +7,7 @@
   <title>NoteMaster</title>
   <link href="Styles/index.css" rel="stylesheet" type="text/css">
   <link href="Styles/fileViewers.css" rel="stylesheet" type="text/css">
+  <link href="Styles/styleMapStyles.css" rel="stylesheet" type="text/css">
   <link href="manifest.json" rel="manifest">
 
   <link href="https://cdn.jsdelivr.net/npm/quill/dist/quill.snow.min.css" rel="stylesheet">
@@ -46,9 +47,9 @@
       <img class="reducedIntensity menu" src="Assets/Images/download_000000.svg">
       Do<u>w</u>nload Note <span class="helperText menuDropdown">Alt + W</span>
     </button>
-    <button accesskey="i" class="menuDropdown" disabled id="closeFile" onclick="confirmViewerClose.hidden = false">
+    <button accesskey="v" class="menuDropdown" disabled id="closeFile" onclick="confirmViewerClose.hidden = false">
       <img class="reducedIntensity menu" src="Assets/Images/home_000000.svg">
-      Close V<u>i</u>ewer <span class="helperText menuDropdown">Alt + I</span>
+      Close <u>V</u>iewer <span class="helperText menuDropdown">Alt + V</span>
     </button>
     <button accesskey="t" class="menuDropdown" disabled id="closeNote" onclick="confirmSave()">
       <img class="reducedIntensity menu" src="Assets/Images/close_000000.svg">
@@ -95,9 +96,10 @@
       <img class="reducedIntensity menu" src="Assets/Images/width_normal_000000.svg">
       Adjust App Section Sizes
     </button>
-    <button class="menuDropdown" disabled id="showHTMLEditor" onclick="toggleMenuCheck('showHTMLEditorCheck')">
-      <img class="menu" id="showHTMLEditorCheck">
-      Show Note As HTML
+    <button class="menuDropdown" disabled id="showHTMLEditor"
+            onclick="toggleDialog(true, 'noteAsHTML'); noteHTMLCodeEditor.session.setValue(quill.getSemanticHTML())">
+      <img class="reducedIntensity menu" src="Assets/Images/integration_instructions_000000.svg">
+      Show Note HTML Markup
     </button>
     <button class="menuDropdown" id="wordWrap"
             onclick="toggleMenuCheck('wordWrapCheck'); if (wordWrapCheck.src.includes(checkedImageSource)) { localStorage.setItem('wordWrapEnabled', 'true'); mainEditor.style.wordBreak = 'break-word' } else { localStorage.setItem('wordWrapEnabled', 'false'); mainEditor.style.wordBreak = 'normal' }"
@@ -128,8 +130,11 @@
       <td class="appSection" id="chooseViewer">
         <h1 style="line-height: 20px">Welcome</h1>
         <h3>What type of document will you view today?</h3>
-        <details>
-          <summary accesskey="y"> On <u>Y</u>our Computer <span class="helperText menuDropdown">Alt + Y</span></summary>
+        <details id="localDocuments">
+          <summary accesskey="y" onclick="onlineDocuments.open = false">
+            <img class="reducedIntensity menu" src="Assets/Images/sync_saved_locally_000000.svg">
+            On <u>Y</u>our Computer
+            <span class="helperText menuDropdown">Alt + Y</span></summary>
           <table style="width: 100%">
             <tr>
               <td>
@@ -209,7 +214,7 @@
             </tr>
             <tr>
               <td>
-                <button class="appSection" onclick="documentFileInput.click(); toggleViewer(true, 'wordDocumentViewer')">
+                <button class="appSection" onclick="wordFileInput.click(); toggleViewer(true, 'wordDocumentViewer')">
                   <table>
                     <tr>
                       <td>
@@ -217,40 +222,9 @@
                       </td>
                       <td>
                         <span class="buttonHeading">Word Document</span><br>
-                        <input hidden accept=".doc, .docx" type="file" id="documentFileInput" onchange="readWordDocument(); tasksOnceFileOpen('wordDocumentView')">
+                        <input accept=".doc, .docx, .xml, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" hidden id="wordFileInput" onchange="readWordDocument(); tasksOnceFileOpen('wordDocumentView'); incorrectWordFormatting.hidden = false"
+                               type="file">
                         <span class="helperText">.doc, .docx</span>
-                      </td>
-                    </tr>
-                  </table>
-                </button>
-              </td>
-              <td>
-                <button class="appSection">
-                  <table>
-                    <tr>
-                      <td>
-                        <img class="appSection" src="Assets/Images/table_rows_9DC384.svg">
-                      </td>
-                      <td>
-                        <span class="buttonHeading">Spreadsheet</span><br>
-                        <span class="helperText">.xls, .xlsx</span>
-                      </td>
-                    </tr>
-                  </table>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <button class="appSection">
-                  <table>
-                    <tr>
-                      <td>
-                        <img class="appSection" src="Assets/Images/pie_chart_BD4C31.svg">
-                      </td>
-                      <td>
-                        <span class="buttonHeading">Presentation</span><br>
-                        <span class="helperText">.ppt, .pptx</span>
                       </td>
                     </tr>
                   </table>
@@ -259,8 +233,12 @@
             </tr>
           </table>
         </details>
-        <details>
-          <summary accesskey="l"> On<u>l</u>ine <span class="helperText menuDropdown">Alt + L</span></summary>
+        <details id="onlineDocuments">
+          <summary accesskey="l" onclick="localDocuments.open = false">
+            <img class="reducedIntensity menu" src="Assets/Images/rss_feed_000000.svg">
+            On<u>l</u>ine
+            <span class="helperText menuDropdown">Alt + L</span>
+          </summary>
           <table style="width: 100%">
             <tr>
               <td>
@@ -333,6 +311,23 @@
                 </button>
               </td>
             </tr>
+            <tr>
+              <td>
+                <button class="appSection" onclick="toggleDialog(true, 'linkToTubeVideo')">
+                  <table>
+                    <tr>
+                      <td>
+                        <img class="appSection" src="Assets/Images/youtube_activity_BB271A.svg">
+                      </td>
+                      <td>
+                        <span class="buttonHeading">YouTube Video</span><br>
+                        <span class="helperText">youtube.com</span>
+                      </td>
+                    </tr>
+                  </table>
+                </button>
+              </td>
+            </tr>
           </table>
         </details>
         <hr style="opacity: 25%; border-style: dotted">
@@ -396,12 +391,20 @@
           <textarea hidden id="textView" readonly></textarea>
         </div>
         <div hidden id="wordDocumentViewer">
-          <nav>
-            <span class="helperText" style="width: 55%; padding-top: 0">Adjust Page Margins</span>
-            <input style="width: 15%" type="number" placeholder="Top">
-            <input style="width: 15%" type="number" placeholder="Left">
-            <input style="width: 15%" type="number" placeholder="Bottom">
-          </nav>
+          <div class="warningBanner" hidden id="incorrectWordFormatting">
+            <table>
+              <tr>
+                <td style="width: 5%"><img class="reducedIntensity menu" src="Assets/Images/warning_000000.svg"></td>
+                <td style="width: 90%">Some formatting may not correctly display</td>
+                <td style="width: 5%">
+                  <button class="warningBanner" onclick="incorrectWordFormatting.hidden = true"
+                          title="Dismiss">
+                    <img class="reducedIntensity menu" src="Assets/Images/close_000000.svg">
+                  </button>
+                </td>
+              </tr>
+            </table>
+          </div>
           <div hidden id="wordDocumentView"></div>
         </div>
         <div hidden id="webpageViewer">
@@ -431,6 +434,9 @@
             </table>
           </nav>
           <iframe id="webpageView" src="Pages/noWebpageNavigated.html"></iframe>
+        </div>
+        <div hidden id="tubeVideoViewer">
+          <iframe id="tubeVideoView" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
         <div hidden id="anotherNoteViewer">
           <div hidden id="anotherNoteView"></div>
@@ -574,20 +580,44 @@
       <tr>
         <td style="width: 50%">
           Viewing (%)
-          <input value="50" max="68" min="32" id="viewingSize" placeholder="50% (Default)" type="number" style="width: 90%; margin-top: 5px" oninput="adjustViewingAndEditorSizes()">
+          <input id="viewingSize" max="68" min="32" oninput="adjustViewingAndEditorSizes()" placeholder="50% (Default)" style="width: 90%; margin-top: 5px"
+                 type="number" value="50">
         </td>
         <td style="width: 50%">
           Editor (%)
-          <input readonly value="50" id="editorSize" placeholder="50% (Default)" type="number" style="width: 90%; margin-top: 5px">
+          <input id="editorSize" placeholder="50% (Default)" readonly style="width: 90%; margin-top: 5px" type="number"
+                 value="50">
         </td>
       </tr>
     </table>
-    <a class="hyperlinkButton" onclick="adjustAppSectionSizes.hidden = true">Close</a> | <a class="hyperlinkButton" onclick="viewingSize.value = 50; editorSize.value = 50; applyPercentageSizes(); localStorage.setItem('viewingSizeValue', viewingSize.value)">Reset</a>
+    <a class="hyperlinkButton" onclick="adjustAppSectionSizes.hidden = true">Close</a> |
+    <a class="hyperlinkButton" onclick="viewingSize.value = 50; editorSize.value = 50; applyPercentageSizes(); localStorage.setItem('viewingSizeValue', viewingSize.value)">Reset</a>
   </div>
 </div>
 
 <!-- Dialogs with focus -->
 <div hidden id="dialogFocusBackground">
+  <div hidden id="noURLWarning" class="warningBanner">
+    <table>
+      <tr>
+        <td style="width: 5%"><img class="reducedIntensity menu" src="Assets/Images/warning_000000.svg"></td>
+        <td style="width: 92%">Please enter a URL</td>
+        <td style="width: 5%">
+          <button class="warningBanner" onclick="document.getElementById('noURLWarning').hidden = true"
+                  title="Dismiss">
+            <img class="reducedIntensity menu" src="Assets/Images/close_000000.svg">
+          </button>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <!-- Error -->
+  <div class="dialogOverlay" hidden id="applicationError">
+    <h1>An Error Occurred</h1>
+    <h3 class="helperText" id="errorMessage"></h3>
+    <button class="dialogOverlay" onclick="toggleDialog(false, 'applicationError')" style="width: 100%">OK</button>
+  </div>
+  <!-- Link to PDF -->
   <div class="dialogOverlay" hidden id="linkToPDF">
     <img src="Assets/Images/picture_as_pdf_D16D6A.svg">
     <img class="reducedIntensity" src="Assets/Images/link_000000.svg">
@@ -600,7 +630,7 @@
         </td>
         <td>
           <button class="dialogOverlay"
-                  onclick="toggleDialog(false, 'linkToPDF'); pdfView.src = document.getElementById('URLToPDFInput').value; toggleViewer(true, 'pdfViewer'); tasksOnceFileOpen('pdfView')">
+                  onclick="if (checkURLInput('URLToPDFInput')) { toggleDialog(false, 'linkToPDF'); pdfView.src = document.getElementById('URLToPDFInput').value; toggleViewer(true, 'pdfViewer'); tasksOnceFileOpen('pdfView') }">
             Open
           </button>
         </td>
@@ -610,6 +640,7 @@
       Close
     </a>
   </div>
+  <!-- Link to an Image -->
   <div class="dialogOverlay" hidden id="linkToImage">
     <img src="Assets/Images/image_80A4AE.svg">
     <img class="reducedIntensity" src="Assets/Images/link_000000.svg">
@@ -622,7 +653,7 @@
         </td>
         <td>
           <button class="dialogOverlay"
-                  onclick="toggleDialog(false, 'linkToImage'); imageView.src = document.getElementById('URLToImageInput').value; toggleViewer(true, 'imageViewer'); tasksOnceFileOpen('imageView')">
+                  onclick="if (checkURLInput('URLToImageInput')) { toggleDialog(false, 'linkToImage'); imageView.src = document.getElementById('URLToImageInput').value; toggleViewer(true, 'imageViewer'); tasksOnceFileOpen('imageView') }">
             Open
           </button>
         </td>
@@ -632,10 +663,11 @@
       Close
     </a>
   </div>
+  <!-- Cloud file -->
   <div class="dialogOverlay" hidden id="insertCloudURLDialog">
     <img src="Assets/Images/cloud_7CA7D8.svg">
     <h1>File in the Cloud</h1>
-    <h3 class="helperText">Paste the URL to your cloud document below</h3>
+    <h3 class="helperText">Paste the URL to your cloud document below<br>(And ensure it is correct)</h3>
     <table style="width: 100%; margin-bottom: 10px">
       <tr>
         <td style="width: 75%">
@@ -650,6 +682,25 @@
       Close
     </a>
   </div>
+  <div class="dialogOverlay" hidden id="linkToTubeVideo">
+    <img src="Assets/Images/youtube_activity_BB271A.svg">
+    <h1>YouTube Video</h1>
+    <h3 class="helperText">Paste the URL to your YouTube below<br>(And ensure it is correct)</h3>
+    <table style="width: 100%; margin-bottom: 10px">
+      <tr>
+        <td style="width: 75%">
+          <input id="URLToTubeVideo" placeholder="https://www.youtube.com/watch?v=jNQXAC9IVRw" style="width: 94%" type="url">
+        </td>
+        <td>
+          <button class="dialogOverlay" onclick="if (checkURLInput('URLToTubeVideo')) { tubeVideoView.src = 'https://www.youtube.com/embed/' + (URLToTubeVideo.value.replaceAll('https://www.youtube.com/watch?v=', '')).replaceAll('https://youtu.be/', ''); toggleDialog(false, 'linkToTubeVideo'); toggleViewer(true, 'tubeVideoViewer'); tasksOnceFileOpen('tubeVideoView') }">Open</button>
+        </td>
+      </tr>
+    </table>
+    <a class="hyperlinkButton" onclick="toggleDialog(false, 'linkToTubeVideo')">
+      Close
+    </a>
+  </div>
+  <!-- Preferences -->
   <div class="dialogOverlay" hidden id="preferencesDialog">
     <h1>Preferences</h1>
     <h4 class="helperText" style="margin-top: -10px">PERSONALIZATION</h4>
@@ -680,6 +731,15 @@
       </div>
     </div>
   </div>
+  <div class="dialogOverlay" hidden id="noteAsHTML" style="height: 75%; margin-top: 5%">
+    <h1>Show Note HTML Markup</h1>
+    <h3 class="helperText">See your note as HTML markup to be used within other applications</h3>
+    <div id="noteHTML"></div>
+    <a class="hyperlinkButton" onclick="toggleDialog(false, 'noteAsHTML')">
+      Close
+    </a>
+    <button class="dialogOverlay" onclick="navigator.clipboard.writeText(noteHTMLCodeEditor.getValue())">Copy</button>
+  </div>
   <div class="dialogOverlay" hidden id="aboutDialog">
     <img class="reducedIntensity" src="Assets/Images/info_000000.svg">
     <h1>About</h1>
@@ -689,8 +749,25 @@
       Designed and developed by <a href="https://github.com/j-m-a-g" target="_blank">J. Maghamez</a>
       <br>
       <br>
-      Editor powered by <a href="https://quilljs.com" target="_blank">Quill.js</a>
+      Built with Open-Source Software
     </p>
+    <table style="width: 100%">
+      <tr>
+        <td>
+          <a href="https://quilljs.com" target="_blank">Quill.js</a>
+        </td>
+        <td>
+          <a href="https://github.com/lokesh-coder/pretty-checkbox" target="_blank">pretty-checkbox</a>
+        </td>
+        <td>
+          <a href="https://github.com/mwilliamson/mammoth.js" target="_blank">mammoth.js</a>
+        </td>
+        <td>
+          <a href="https://ace.c9.io" target="_blank">ace</a>
+        </td>
+      </tr>
+    </table>
+    <br>
     <a class="hyperlinkButton" onclick="toggleDialog(false, 'aboutDialog')">
       Close
     </a>
@@ -698,7 +775,10 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/quill/dist/quill.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.9.0/mammoth.browser.js" integrity="sha512-0wvefyQZJqGXiPxRPDb8rw4IrHizrbahWa+7wK/oywfMd0LZRwaTCDqN/c1jcir3CXgLydi25heF+kC05htYGQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script crossorigin="anonymous"
+        integrity="sha512-0wvefyQZJqGXiPxRPDb8rw4IrHizrbahWa+7wK/oywfMd0LZRwaTCDqN/c1jcir3CXgLydi25heF+kC05htYGQ=="
+        referrerpolicy="no-referrer" src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.9.0/mammoth.browser.js"></script>
+<script charset="utf-8" src="Assets/ace-builds/src/ace.js" type="text/javascript"></script>
 
 <script src="Scripts/globalVarDeclarations.js"></script>
 <script src="Scripts/index.js"></script>
