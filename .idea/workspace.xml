@@ -4,513 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f191740-30a6-480d-9797-fe5f00316180" name="Changes" comment="Implemented Word Document viewing support as well as the ability to view a note's character and word counts">
-      <change afterPath="$PROJECT_DIR$/Assets/Images/integration_instructions_000000.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Images/rss_feed_000000.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Images/sync_saved_locally_000000.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Images/warning_000000.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/ace.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/ext-beautify.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/ext-code_lens.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/ext-command_bar.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/ext-elastic_tabstops_lite.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/ext-emmet.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/ext-error_marker.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/ext-hardwrap.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/ext-inline_autocomplete.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/ext-keybinding_menu.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/ext-language_tools.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/ext-linking.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/ext-modelist.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/ext-options.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/ext-prompt.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/ext-rtl.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/ext-searchbox.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/ext-settings_menu.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/ext-simple_tokenizer.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/ext-spellcheck.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/ext-split.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/ext-static_highlight.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/ext-statusbar.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/ext-textarea.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/ext-themelist.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/ext-whitespace.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/keybinding-emacs.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/keybinding-sublime.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/keybinding-vim.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/keybinding-vscode.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-abap.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-abc.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-actionscript.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-ada.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-alda.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-apache_conf.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-apex.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-applescript.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-aql.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-asciidoc.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-asl.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-assembly_arm32.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-assembly_x86.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-astro.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-autohotkey.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-basic.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-batchfile.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-bibtex.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-c9search.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-c_cpp.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-cirru.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-clojure.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-cobol.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-coffee.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-coldfusion.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-crystal.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-csharp.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-csound_document.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-csound_orchestra.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-csound_score.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-csp.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-css.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-csv.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-curly.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-cuttlefish.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-d.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-dart.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-diff.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-django.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-dockerfile.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-dot.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-drools.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-edifact.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-eiffel.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-ejs.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-elixir.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-elm.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-erlang.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-flix.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-forth.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-fortran.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-fsharp.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-fsl.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-ftl.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-gcode.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-gherkin.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-gitignore.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-glsl.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-gobstones.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-golang.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-graphqlschema.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-groovy.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-haml.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-handlebars.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-haskell.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-haskell_cabal.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-haxe.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-hjson.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-html.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-html_elixir.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-html_ruby.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-ini.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-io.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-ion.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-jack.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-jade.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-java.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-javascript.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-jexl.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-json.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-json5.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-jsoniq.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-jsp.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-jssm.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-jsx.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-julia.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-kotlin.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-latex.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-latte.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-less.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-liquid.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-lisp.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-livescript.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-logiql.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-logtalk.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-lsl.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-lua.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-luapage.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-lucene.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-makefile.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-markdown.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-mask.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-matlab.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-maze.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-mediawiki.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-mel.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-mips.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-mixal.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-mushcode.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-mysql.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-nasal.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-nginx.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-nim.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-nix.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-nsis.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-nunjucks.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-objectivec.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-ocaml.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-odin.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-partiql.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-pascal.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-perl.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-pgsql.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-php.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-php_laravel_blade.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-pig.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-plain_text.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-plsql.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-powershell.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-praat.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-prisma.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-prolog.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-properties.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-protobuf.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-prql.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-puppet.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-python.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-qml.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-r.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-raku.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-razor.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-rdoc.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-red.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-redshift.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-rhtml.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-robot.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-rst.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-ruby.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-rust.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-sac.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-sass.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-scad.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-scala.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-scheme.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-scrypt.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-scss.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-sh.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-sjs.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-slim.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-smarty.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-smithy.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-snippets.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-soy_template.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-space.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-sparql.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-sql.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-sqlserver.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-stylus.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-svg.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-swift.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-tcl.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-terraform.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-tex.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-text.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-textile.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-toml.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-tsv.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-tsx.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-turtle.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-twig.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-typescript.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-vala.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-vbscript.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-velocity.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-verilog.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-vhdl.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-visualforce.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-vue.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-wollok.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-xml.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-xquery.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-yaml.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-zeek.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/mode-zig.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/abap.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/abc.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/actionscript.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/ada.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/alda.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/apache_conf.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/apex.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/applescript.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/aql.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/asciidoc.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/asl.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/assembly_arm32.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/assembly_x86.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/astro.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/autohotkey.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/basic.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/batchfile.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/bibtex.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/c9search.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/c_cpp.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/cirru.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/clojure.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/cobol.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/coffee.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/coldfusion.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/crystal.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/csharp.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/csound_document.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/csound_orchestra.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/csound_score.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/csp.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/css.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/csv.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/curly.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/cuttlefish.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/d.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/dart.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/diff.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/django.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/dockerfile.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/dot.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/drools.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/edifact.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/eiffel.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/ejs.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/elixir.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/elm.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/erlang.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/flix.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/forth.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/fortran.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/fsharp.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/fsl.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/ftl.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/gcode.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/gherkin.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/gitignore.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/glsl.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/gobstones.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/golang.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/graphqlschema.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/groovy.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/haml.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/handlebars.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/haskell.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/haskell_cabal.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/haxe.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/hjson.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/html.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/html_elixir.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/html_ruby.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/ini.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/io.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/ion.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/jack.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/jade.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/java.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/javascript.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/jexl.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/json.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/json5.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/jsoniq.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/jsp.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/jssm.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/jsx.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/julia.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/kotlin.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/latex.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/latte.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/less.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/liquid.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/lisp.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/livescript.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/logiql.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/logtalk.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/lsl.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/lua.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/luapage.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/lucene.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/makefile.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/markdown.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/mask.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/matlab.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/maze.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/mediawiki.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/mel.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/mips.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/mixal.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/mushcode.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/mysql.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/nasal.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/nginx.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/nim.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/nix.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/nsis.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/nunjucks.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/objectivec.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/ocaml.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/odin.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/partiql.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/pascal.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/perl.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/pgsql.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/php.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/php_laravel_blade.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/pig.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/plain_text.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/plsql.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/powershell.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/praat.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/prisma.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/prolog.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/properties.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/protobuf.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/prql.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/puppet.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/python.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/qml.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/r.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/raku.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/razor.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/rdoc.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/red.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/redshift.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/rhtml.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/robot.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/rst.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/ruby.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/rust.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/sac.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/sass.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/scad.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/scala.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/scheme.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/scrypt.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/scss.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/sh.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/sjs.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/slim.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/smarty.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/smithy.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/snippets.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/soy_template.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/space.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/sparql.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/sql.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/sqlserver.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/stylus.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/svg.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/swift.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/tcl.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/terraform.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/tex.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/text.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/textile.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/toml.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/tsv.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/tsx.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/turtle.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/twig.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/typescript.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/vala.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/vbscript.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/velocity.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/verilog.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/vhdl.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/visualforce.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/vue.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/wollok.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/xml.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/xquery.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/yaml.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/zeek.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/snippets/zig.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-ambiance.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-chaos.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-chrome.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-cloud9_day.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-cloud9_night.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-cloud9_night_low_color.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-cloud_editor.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-cloud_editor_dark.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-clouds.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-clouds_midnight.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-cobalt.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-crimson_editor.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-dawn.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-dracula.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-dreamweaver.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-eclipse.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-github.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-github_dark.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-github_light_default.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-gob.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-gruvbox.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-gruvbox_dark_hard.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-gruvbox_light_hard.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-idle_fingers.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-iplastic.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-katzenmilch.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-kr_theme.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-kuroir.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-merbivore.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-merbivore_soft.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-mono_industrial.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-monokai.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-nord_dark.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-one_dark.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-pastel_on_dark.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-solarized_dark.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-solarized_light.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-sqlserver.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-terminal.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-textmate.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-tomorrow.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-tomorrow_night.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-tomorrow_night_blue.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-tomorrow_night_bright.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-tomorrow_night_eighties.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-twilight.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-vibrant_ink.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/theme-xcode.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/worker-base.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/worker-coffee.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/worker-css.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/worker-html.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/worker-javascript.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/worker-json.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/worker-lua.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/worker-php.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/worker-xml.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/worker-xquery.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ace-builds/src/worker-yaml.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Styles/styleMapStyles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/NoteMaster.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/NoteMaster.iml" afterDir="false" />
+    <list default="true" id="3f191740-30a6-480d-9797-fe5f00316180" name="Changes" comment="-Implemented Word document table formatting for distinction from the rest of a document&#10;-Added YouTube video viewing support&#10;-Completed the, &quot;Show Note HTML Markup&quot; feature&#10;-Added warning banners for catching exceptions and notifying the user">
+      <change afterPath="$PROJECT_DIR$/Assets/Images/history_000000.svg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Images/arrow_back_000000.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Images/arrow_back_000000.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Images/close_000000.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Images/close_000000.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Images/fullscreen_exit_000000.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Images/fullscreen_exit_000000.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Images/info_000000.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Images/info_000000.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Images/menu_book_000000.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Images/menu_book_000000.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Images/play_arrow_8B7DBE.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Images/play_arrow_8B7DBE.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Images/refresh_000000.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Images/refresh_000000.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Images/schedule_000000.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Images/schedule_000000.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Images/search_000000.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Images/search_000000.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Images/select_window_off_000000.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Images/select_window_off_000000.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Images/settings_000000.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Images/settings_000000.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Images/text_decrease_000000.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Images/text_decrease_000000.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Images/text_increase_000000.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Images/text_increase_000000.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Images/today_000000.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Images/today_000000.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Images/width_normal_000000.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Images/width_normal_000000.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Images/youtube_activity_BB271A.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Images/youtube_activity_BB271A.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/editorFunctions.js" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/editorFunctions.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Scripts/fileViewing.js" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/fileViewing.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Scripts/globalVarDeclarations.js" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/globalVarDeclarations.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Scripts/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Styles/fileViewers.css" beforeDir="false" afterPath="$PROJECT_DIR$/Styles/fileViewers.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Styles/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/Styles/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Styles/styleMapStyles.css" beforeDir="false" afterPath="$PROJECT_DIR$/Styles/styleMapStyles.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -540,6 +43,9 @@
     &quot;accountId&quot;: &quot;444909d0-8423-470e-aa5f-fe1213208bf7&quot;
   }
 }</component>
+  <component name="MaliciousPackageCheckinHandlerState">
+    <option name="packageCheck" value="true" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;000000ff&quot;,
   &quot;associatedIndex&quot;: 6
@@ -598,7 +104,7 @@
       <workItem from="1745669649949" duration="283000" />
       <workItem from="1747103937946" duration="349000" />
       <workItem from="1747258246561" duration="11827000" />
-      <workItem from="1747335182077" duration="20162000" />
+      <workItem from="1747335182077" duration="35441000" />
     </task>
     <task id="LOCAL-00001" summary="Updated README.md">
       <option name="closed" value="true" />
@@ -624,11 +130,22 @@
       <option name="project" value="LOCAL" />
       <updated>1747278828604</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="-Implemented Word document table formatting for distinction from the rest of a document&#10;-Added YouTube video viewing support&#10;-Completed the, &quot;Show Note HTML Markup&quot; feature&#10;-Added warning banners for catching exceptions and notifying the user">
+      <option name="closed" value="true" />
+      <created>1747391025985</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1747391025985</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="UpdateCopyrightCheckinHandler">
+    <option name="UPDATE_COPYRIGHT" value="true" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -642,9 +159,15 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_CODE_CLEANUP_BEFORE_PROJECT_COMMIT" value="true" />
     <MESSAGE value="Updated README.md" />
     <MESSAGE value="Updated stylesheet formatting" />
     <MESSAGE value="Implemented Word Document viewing support as well as the ability to view a note's character and word counts" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implemented Word Document viewing support as well as the ability to view a note's character and word counts" />
+    <MESSAGE value="-Implemented Word document table formatting for distinction from the rest of a document&#10;-Added YouTube video viewing support&#10;-Completed the, &quot;Show Note HTML Markup&quot; feature&#10;-Added warning banners for catching exceptions and notifying the user" />
+    <option name="LAST_COMMIT_MESSAGE" value="-Implemented Word document table formatting for distinction from the rest of a document&#10;-Added YouTube video viewing support&#10;-Completed the, &quot;Show Note HTML Markup&quot; feature&#10;-Added warning banners for catching exceptions and notifying the user" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
 </project>

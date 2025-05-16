@@ -55,11 +55,6 @@
       <img class="reducedIntensity menu" src="Assets/Images/close_000000.svg">
       Close No<u>t</u>e <span class="helperText menuDropdown">Alt + T</span>
     </button>
-    <hr class="menuDropdown">
-    <button class="menuDropdown" onclick="toggleDialog(true, 'preferencesDialog')">
-      <img class="reducedIntensity menu" src="Assets/Images/settings_000000.svg">
-      Preferences
-    </button>
   </div>
   <button class="menu" onmouseleave="document.getElementById('insertMenu').hidden = true"
           onmouseover="document.getElementById('insertMenu').hidden = false">
@@ -74,9 +69,9 @@
       Copy Current Date <span class="helperText menuDropdown">m(m)/d(d)/yyyy</span>
     </button>
     <button class="menuDropdown"
-            onclick="navigator.clipboard.writeText(currentDate.getHours().toString() + ':' + currentDate.getMinutes().toString())">
+            onclick="navigator.clipboard.writeText(get12HourTime())">
       <img class="reducedIntensity menu" src="Assets/Images/schedule_000000.svg">
-      Copy Current Time <span class="helperText menuDropdown">hh:mm</span>
+      Copy Current Time <span class="helperText menuDropdown">(h)h:mm</span>
     </button>
     <button class="menuDropdown">Shape</button>
   </div>
@@ -116,6 +111,10 @@
        onmouseleave="document.getElementById('helpMenu').hidden = true"
        onmouseover="document.getElementById('helpMenu').hidden = false"
        style="margin-left: 104px">
+    <button class="menuDropdown" onclick="toggleDialog(true, 'preferencesDialog')">
+      <img class="reducedIntensity menu" src="Assets/Images/settings_000000.svg">
+      Preferences
+    </button>
     <button class="menuDropdown" onclick="toggleDialog(true, 'aboutDialog')">
       <img class="reducedIntensity menu" src="Assets/Images/info_000000.svg">
       About
@@ -148,7 +147,7 @@
                       <td>
                         <span class="buttonHeading">PDF</span><br>
                         <input accept="application/pdf" hidden id="pdfFileInput"
-                               onchange="pdfView.src = window.URL.createObjectURL(this.files[0]); tasksOnceFileOpen('pdfView')"
+                               onchange="pdfView.src = window.URL.createObjectURL(this.files[0]); tasksOnceFileOpen('pdfView', 'pdfFileInput')"
                                type="file">
                         <span class="helperText">Portable Document Format. .pdf</span>
                       </td>
@@ -167,7 +166,7 @@
                       <td>
                         <span class="buttonHeading">Image</span><br>
                         <input accept="image/*" hidden id="imageFileInput"
-                               onchange="imageView.src = window.URL.createObjectURL(this.files[0]); tasksOnceFileOpen('imageView')"
+                               onchange="imageView.src = window.URL.createObjectURL(this.files[0]); tasksOnceFileOpen('imageView', 'imageFileInput')"
                                type="file">
                         <span class="helperText">.png, .jpg, .gif, .svg, .webp</span>
                       </td>
@@ -187,7 +186,7 @@
                       <td>
                         <span class="buttonHeading">Text File</span><br>
                         <input accept="text/plain" hidden id="textFileInput"
-                               onchange="readTextFile(); textViewActions.hidden = false; textView.hidden = false; tasksOnceFileOpen('textViewer')"
+                               onchange="readTextFile(); textViewActions.hidden = false; textView.hidden = false; tasksOnceFileOpen('textViewer', 'textFileInput')"
                                type="file">
                         <span class="helperText">.txt</span>
                       </td>
@@ -196,7 +195,7 @@
                 </button>
               </td>
               <td>
-                <button class="appSection">
+                <button class="appSection" onclick="videoFileInput.click(); toggleViewer(true, 'videoViewer')">
                   <table>
                     <tr>
                       <td>
@@ -204,7 +203,8 @@
                       </td>
                       <td>
                         <span class="buttonHeading">Video</span><br>
-                        <input accept="video/mpeg" hidden id="videoFileInput" type="file">
+                        <input accept="video/*" hidden id="videoFileInput" onchange="videoView.src = window.URL.createObjectURL(this.files[0]); tasksOnceFileOpen('videoView', 'videoFileInput')"
+                               type="file">
                         <span class="helperText">.mp4</span>
                       </td>
                     </tr>
@@ -222,7 +222,10 @@
                       </td>
                       <td>
                         <span class="buttonHeading">Word Document</span><br>
-                        <input accept=".doc, .docx, .xml, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" hidden id="wordFileInput" onchange="readWordDocument(); tasksOnceFileOpen('wordDocumentView'); incorrectWordFormatting.hidden = false"
+                        <input
+                            accept=".doc, .docx, .xml, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                            hidden id="wordFileInput"
+                            onchange="readWordDocument(); tasksOnceFileOpen('wordDocumentView', 'wordFileInput'); incorrectWordFormatting.hidden = false"
                                type="file">
                         <span class="helperText">.doc, .docx</span>
                       </td>
@@ -296,7 +299,7 @@
               </td>
               <td>
                 <button class="appSection"
-                        onclick="toggleViewer(true, 'webpageViewer'); tasksOnceFileOpen('webpageView'); noFileSelected.hidden = true">
+                        onclick="toggleViewer(true, 'webpageViewer'); tasksOnceFileOpen('webpageView', null); noFileSelected.hidden = true">
                   <table>
                     <tr>
                       <td>
@@ -352,7 +355,31 @@
       </td>
 
       <td class="appSection" hidden id="viewersContainer">
-        <div id="noFileSelected">
+        <nav class="statusBar" id="viewerStatusBar" style="margin-top: 0; margin-bottom: 5px">
+          <table style="width: 100%">
+            <tr>
+              <td>
+                <span class="helperText">File Name</span>
+                <span id="fileName">---</span>
+              </td>
+              <td>
+                <span class="helperText">Size</span>
+                <span id="fileSize">---</span>
+              </td>
+              <td>
+                <span class="helperText">Last Modified</span>
+                <span id="fileLastModified">---</span>
+              </td>
+              <td style="width: 5%">
+                <button class="warningBanner" onclick="toggleDialog(true,  'viewingHistory'); appendViewingHistory()"
+                        title="Show viewing history">
+                  <img class="reducedIntensity menu" src="Assets/Images/history_000000.svg">
+                </button>
+              </td>
+            </tr>
+          </table>
+        </nav>
+        <div id="noFileSelected" style="height: calc(var(--appSectionHeight) - 175px); margin-top: 25%">
           <img class="reducedIntensity" src="Assets/Images/file_copy_off_000000.svg"
                style="margin-left: 45%">
           <h2 class="helperText" style="text-align: center">No file has been chosen... Yet</h2>
@@ -390,6 +417,9 @@
           </nav>
           <textarea hidden id="textView" readonly></textarea>
         </div>
+        <div hidden id="videoViewer">
+          <video autoplay controls hidden id="videoView"></video>
+        </div>
         <div hidden id="wordDocumentViewer">
           <div class="warningBanner" hidden id="incorrectWordFormatting">
             <table>
@@ -425,7 +455,7 @@
                 </td>
                 <td>
                   <button class="navButton"
-                          onclick="webpageView.src = webpageURLBar.value; lastViewedWebpages.push(webpageURLBar.value)"
+                          onclick="if (webpageURLBar.value.includes('https://') === false || !webpageURLBar.value.includes('http://') === false) { webpageURLBar.value = 'https://' + webpageURLBar.value } webpageView.src = webpageURLBar.value; lastViewedWebpages.push(webpageURLBar.value); fileViewingHistoryNames.push(webpageURLBar.value); fileViewingHistoryTimes.push(get12HourTime())"
                           title="Search">
                     <img class="reducedIntensity menu" src="Assets/Images/search_000000.svg">
                   </button>
@@ -480,7 +510,7 @@
           </table>
         </button>
         <span class="helperText" style="margin-left: 5px">
-          Don't know where to start? See an <a class="hyperlinkButton" onclick="launchExample()">example</a>.
+          Don't know where to start? See an <a class="hyperlinkButton" onclick="launchExample()">example</a>
         </span>
       </td>
       <td class="appSection" hidden id="noteEditor">
@@ -579,18 +609,31 @@
     <table style="width: 100%">
       <tr>
         <td style="width: 50%">
-          Viewing (%)
+          <table style="width: 100%">
+            <tr>
+              <td>Viewing (%)</td>
+              <td>
+                <a class="hyperlinkButton" onclick="viewingSize.value = viewingSize.min; adjustViewingAndEditorSizes()">Min</a>
+                | <a class="hyperlinkButton"
+                     onclick="viewingSize.value = viewingSize.max; adjustViewingAndEditorSizes()">Max</a>
+              </td>
+            </tr>
+          </table>
           <input id="viewingSize" max="68" min="32" oninput="adjustViewingAndEditorSizes()" placeholder="50% (Default)" style="width: 90%; margin-top: 5px"
                  type="number" value="50">
         </td>
         <td style="width: 50%">
-          Editor (%)
+          <table style="width: 100%">
+            <tr>
+              <td>Editor (%)</td>
+            </tr>
+          </table>
           <input id="editorSize" placeholder="50% (Default)" readonly style="width: 90%; margin-top: 5px" type="number"
                  value="50">
         </td>
       </tr>
     </table>
-    <a class="hyperlinkButton" onclick="adjustAppSectionSizes.hidden = true">Close</a> |
+    <a class="hyperlinkButton" onclick="adjustAppSectionSizes.hidden = true">Close</a>|
     <a class="hyperlinkButton" onclick="viewingSize.value = 50; editorSize.value = 50; applyPercentageSizes(); localStorage.setItem('viewingSizeValue', viewingSize.value)">Reset</a>
   </div>
 </div>
@@ -617,6 +660,24 @@
     <h3 class="helperText" id="errorMessage"></h3>
     <button class="dialogOverlay" onclick="toggleDialog(false, 'applicationError')" style="width: 100%">OK</button>
   </div>
+  <div class="dialogOverlay" hidden id="viewingHistory">
+    <h1>Viewing History</h1>
+    <h3 class="helperText">View, manage, and add the documents you have viewed to your notes</h3>
+    <div id="historyTableContainer">
+      <table id="viewingHistoryTable"></table>
+    </div>
+    <br>
+    <a class="hyperlinkButton" onclick="toggleDialog(false, 'viewingHistory')">
+      Close
+    </a>|
+    <a class="hyperlinkButton"
+       onclick="document.getElementById('copyHistoryEditor').hidden = false; copyHistoryQuill.clipboard.dangerouslyPasteHTML(historyTableContainer.innerHTML)">
+      Copy History
+    </a>
+    <br>
+    <br>
+    <div hidden id="copyHistoryEditor" style="user-select: text"></div>
+  </div>
   <!-- Link to PDF -->
   <div class="dialogOverlay" hidden id="linkToPDF">
     <img src="Assets/Images/picture_as_pdf_D16D6A.svg">
@@ -630,7 +691,7 @@
         </td>
         <td>
           <button class="dialogOverlay"
-                  onclick="if (checkURLInput('URLToPDFInput')) { toggleDialog(false, 'linkToPDF'); pdfView.src = document.getElementById('URLToPDFInput').value; toggleViewer(true, 'pdfViewer'); tasksOnceFileOpen('pdfView') }">
+                  onclick="if (checkURLInput('URLToPDFInput')) { toggleDialog(false, 'linkToPDF'); pdfView.src = document.getElementById('URLToPDFInput').value; toggleViewer(true, 'pdfViewer'); tasksOnceFileOpen('pdfView', null) }">
             Open
           </button>
         </td>
@@ -668,6 +729,30 @@
     <img src="Assets/Images/cloud_7CA7D8.svg">
     <h1>File in the Cloud</h1>
     <h3 class="helperText">Paste the URL to your cloud document below<br>(And ensure it is correct)</h3>
+    <table style="width: 100%">
+      <tr>
+        <td>
+          <span class="helperText">Document Origin:</span>
+        </td>
+        <td>
+          <div class="pretty p-default p-curve p-thick">
+            <input name="documentOrigin" type="radio">
+            <div class="state">
+              <label>OneDrive</label>
+            </div>
+          </div>
+        </td>
+        <td>
+          <div class="pretty p-default p-curve p-thick">
+            <input name="documentOrigin" type="radio">
+            <div class="state">
+              <label>Google Drive</label>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <br>
     <table style="width: 100%; margin-bottom: 10px">
       <tr>
         <td style="width: 75%">
@@ -685,7 +770,7 @@
   <div class="dialogOverlay" hidden id="linkToTubeVideo">
     <img src="Assets/Images/youtube_activity_BB271A.svg">
     <h1>YouTube Video</h1>
-    <h3 class="helperText">Paste the URL to your YouTube below<br>(And ensure it is correct)</h3>
+    <h3 class="helperText">Paste the URL to your YouTube video below<br>(And ensure it is correct)</h3>
     <table style="width: 100%; margin-bottom: 10px">
       <tr>
         <td style="width: 75%">

@@ -33,6 +33,14 @@ const anotherNoteViewQuill = new Quill("#anotherNoteView", {
   theme: 'snow',
 });
 
+const copyHistoryQuill = new Quill("#copyHistoryEditor", {
+  readOnly: true,
+  modules: {
+    toolbar: null
+  },
+  theme: 'snow',
+});
+
 const noteHTMLCodeEditor = ace.edit("noteHTML");
 noteHTMLCodeEditor.setTheme("ace/theme/monokai");
 noteHTMLCodeEditor.session.setMode("ace/mode/html");
@@ -135,7 +143,65 @@ function adjustViewingAndEditorSizes() {
   localStorage.setItem('viewingSizeValue', viewingSize.value);
 }
 
+function appendViewingHistory() {
+  // Resets the table's state to prevent duplication
+  viewingHistoryTable.innerHTML = "";
+
+  const headRow = document.createElement("tr");
+  const timeHead = document.createElement("td");
+  const nameHead = document.createElement("td");
+  timeHead.innerHTML = "TIME";
+  nameHead.innerHTML = "DOCUMENT NAME";
+
+  headRow.appendChild(timeHead);
+  headRow.appendChild(nameHead);
+  viewingHistoryTable.appendChild(headRow);
+
+  // Iterates through the history-storing arrays and adds their values to the table
+  for (let a = 0; a < fileViewingHistoryNames.length; a++) {
+    const historyRow = document.createElement("tr");
+    const historyTime = document.createElement("td");
+    const historyName = document.createElement("td");
+
+    historyTime.innerHTML = fileViewingHistoryTimes[a];
+    historyName.innerHTML = fileViewingHistoryNames[a];
+
+    historyRow.appendChild(historyTime);
+    historyRow.appendChild(historyName);
+    viewingHistoryTable.appendChild(historyRow);
+  }
+}
+
 function throwAppError(messageText) {
   toggleDialog(true, "applicationError");
   errorMessage.innerHTML = messageText;
+}
+
+function get12HourTime() {
+  let hour = "";
+  let minute = "";
+  let suffix = "";
+
+  // Removes the standard 24-hour format
+  if (currentDate.getHours() > 12) {
+    hour = currentDate.getHours() - 12;
+  } else {
+    hour = currentDate.getHours().toString().replace("0", "");
+  }
+
+  // Accounts for minutes 1-9
+  if (currentDate.getMinutes() < 10) {
+    minute = "0" + currentDate.getMinutes();
+  } else {
+    minute = currentDate.getMinutes();
+  }
+
+  // Adds, "AM" or "PM"
+  if (currentDate.getTime() >= 12) {
+    suffix = " PM";
+  } else {
+    suffix = " AM";
+  }
+
+  return hour + ":" + minute + suffix;
 }
