@@ -68,10 +68,6 @@ function onLoadTasks() {
     alterMenuFunctions(false);
   }
 
-  if (window.innerWidth <= 600) {
-    window.location.replace("Pages/mobileSizeIndication.html");
-  }
-
   // USER PREFERENCES
 
   // Auto Save
@@ -159,6 +155,11 @@ function adjustViewingAndEditorSizes() {
   localStorage.setItem('viewingSizeValue', viewingSize.value);
 }
 
+function addHistoryEntry(valueObject) {
+  fileViewingHistoryNames.push(document.getElementById(valueObject).value);
+  fileViewingHistoryTimes.push(get12HourTime());
+}
+
 function appendViewingHistory() {
   // Resets the table's state to prevent duplication
   viewingHistoryTable.innerHTML = "";
@@ -201,8 +202,10 @@ function get12HourTime() {
   // Removes the standard 24-hour format
   if (currentDate.getHours() > 12) {
     hour = currentDate.getHours() - 12;
-  } else {
+  } else if (currentDate.getHours() < 10) {
     hour = currentDate.getHours().toString().replace("0", "");
+  } else {
+    hour = currentDate.getHours();
   }
 
   // Accounts for minutes 1-9

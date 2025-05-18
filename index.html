@@ -14,7 +14,7 @@
   <link href="https://cdn.jsdelivr.net/npm/pretty-checkbox/dist/pretty-checkbox.min.css" rel="stylesheet">
 </head>
 
-<body onload="onLoadTasks()" onunload="alert('hello')">
+<body onload="onLoadTasks()" onresize="" onunload="alert('hello')">
 <nav id="appMenu">
   <button class="menu"
           onmouseleave="document.getElementById('fileMenu').hidden = true"
@@ -480,7 +480,7 @@
                 </td>
                 <td>
                   <button class="navButton"
-                          onclick="if (webpageURLBar.value.includes('https://') === false || !webpageURLBar.value.includes('http://') === false) { webpageURLBar.value = 'https://' + webpageURLBar.value } webpageView.src = webpageURLBar.value; lastViewedWebpages.push(webpageURLBar.value); fileViewingHistoryNames.push(webpageURLBar.value); fileViewingHistoryTimes.push(get12HourTime())"
+                          onclick="if (webpageURLBar.value.includes('https://') === false || !webpageURLBar.value.includes('http://') === false) { webpageURLBar.value = 'https://' + webpageURLBar.value } webpageView.src = webpageURLBar.value; lastViewedWebpages.push(webpageURLBar.value); addHistoryEntry('webpageURLBar')"
                           title="Search">
                     <img class="reducedIntensity menu" src="Assets/Images/search_000000.svg">
                   </button>
@@ -605,6 +605,15 @@
   </div>
 </div>
 
+<div class="saveBeforeClosing" id="mobileSizeIndication">
+  <div class="dialogOverlay" style="padding: 20px; text-align: center">
+    <img class="reducedIntensity" src="Assets/Images/fit_width_000000.svg">
+    <h1>Looks Like You're Out of Screen Real-Estate!</h1>
+    <h3 class="helperText">For NoteMaster to be effectively usable, your viewing area must be wider than 600 pixels.
+      Please widen your window</h3>
+  </div>
+</div>
+
 <!-- Confirmation before closing a viewer -->
 <div class="saveBeforeClosing" hidden id="confirmViewerClose">
   <div class="dialogOverlay">
@@ -635,7 +644,7 @@
 </div>
 
 <div class="saveBeforeClosing" hidden id="adjustAppSectionSizes">
-  <div class="dialogOverlay" id="appSectionSizesContainer">
+  <div class="dialogOverlay" id="appSectionSizesContainer" style="height: 35%">
     <h1>Adjust App Section Sizes</h1>
     <table style="width: 100%">
       <tr>
@@ -652,7 +661,7 @@
           </table>
           <input id="viewingSize" max="68" min="32"
                  oninput="adjustViewingAndEditorSizes()"
-                 onmousedown="appSectionSizesContainer.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';"
+                 onmousedown="appSectionSizesContainer.style.backgroundColor = 'rgba(255, 255, 255, 0.75)'; appSectionSizesContainer.style.backdropFilter = 'blur(1px)'"
                  onmouseup="setTimeout(() => { appSectionSizesContainer.style.backgroundColor = 'white' }, 2000);" placeholder="50% (Default)" style="width: 90%; margin-top: 5px"
                  type="number" value="50">
         </td>
@@ -753,7 +762,7 @@
         </td>
         <td>
           <button class="dialogOverlay"
-                  onclick="if (checkURLInput('URLToPDFInput')) { toggleDialog(false, 'linkToPDF'); pdfView.src = document.getElementById('URLToPDFInput').value; toggleViewer(true, 'pdfViewer'); tasksOnceFileOpen('pdfView', null) }">
+                  onclick="if (checkURLInput('URLToPDFInput')) { toggleDialog(false, 'linkToPDF'); pdfView.src = document.getElementById('URLToPDFInput').value; toggleViewer(true, 'pdfViewer'); tasksOnceFileOpen('pdfView', null); addHistoryEntry('URLToPDFInput')}">
             Open
           </button>
         </td>
@@ -776,7 +785,7 @@
         </td>
         <td>
           <button class="dialogOverlay"
-                  onclick="if (checkURLInput('URLToImageInput')) { toggleDialog(false, 'linkToImage'); imageView.src = document.getElementById('URLToImageInput').value; toggleViewer(true, 'imageViewer'); tasksOnceFileOpen('imageView') }">
+                  onclick="if (checkURLInput('URLToImageInput')) { toggleDialog(false, 'linkToImage'); imageView.src = document.getElementById('URLToImageInput').value; toggleViewer(true, 'imageViewer'); tasksOnceFileOpen('imageView', null); addHistoryEntry('URLToImageInput') }">
             Open
           </button>
         </td>
@@ -839,7 +848,10 @@
           <input id="URLToTubeVideo" placeholder="https://www.youtube.com/watch?v=jNQXAC9IVRw" style="width: 94%" type="url">
         </td>
         <td>
-          <button class="dialogOverlay" onclick="if (checkURLInput('URLToTubeVideo')) { tubeVideoView.src = 'https://www.youtube.com/embed/' + (URLToTubeVideo.value.replaceAll('https://www.youtube.com/watch?v=', '')).replaceAll('https://youtu.be/', ''); toggleDialog(false, 'linkToTubeVideo'); toggleViewer(true, 'tubeVideoViewer'); tasksOnceFileOpen('tubeVideoView') }">Open</button>
+          <button class="dialogOverlay"
+                  onclick="if (checkURLInput('URLToTubeVideo')) { tubeVideoView.src = 'https://www.youtube.com/embed/' + (URLToTubeVideo.value.replaceAll('https://www.youtube.com/watch?v=', '')).replaceAll('https://youtu.be/', ''); toggleDialog(false, 'linkToTubeVideo'); toggleViewer(true, 'tubeVideoViewer'); tasksOnceFileOpen('tubeVideoView', null); addHistoryEntry('URLToTubeVideo') }">
+            Open
+          </button>
         </td>
       </tr>
     </table>

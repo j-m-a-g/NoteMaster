@@ -4,14 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f191740-30a6-480d-9797-fe5f00316180" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Images/code_9DC384.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Images/table_000000.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pages/mobileSizeIndication.html" afterDir="false" />
+    <list default="true" id="3f191740-30a6-480d-9797-fe5f00316180" name="Changes" comment="Implemented a table-inserting function as well as a check based on a user's screen width to determine if the site will be usable">
+      <change afterPath="$PROJECT_DIR$/Assets/Images/fit_width_000000.svg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pages/noWebpageNavigated.html" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/noWebpageNavigated.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/editorFunctions.js" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/editorFunctions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/globalVarDeclarations.js" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/globalVarDeclarations.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/mobileSizeIndication.html" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Scripts/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Styles/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/Styles/index.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
@@ -107,7 +103,7 @@
       <workItem from="1747103937946" duration="349000" />
       <workItem from="1747258246561" duration="11827000" />
       <workItem from="1747335182077" duration="35695000" />
-      <workItem from="1747506065690" duration="13466000" />
+      <workItem from="1747506065690" duration="17674000" />
     </task>
     <task id="LOCAL-00001" summary="Updated README.md">
       <option name="closed" value="true" />
@@ -149,7 +145,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747433793141</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Implemented a table-inserting function as well as a check based on a user's screen width to determine if the site will be usable">
+      <option name="closed" value="true" />
+      <created>1747534371458</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1747534371458</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -177,7 +181,8 @@
     <MESSAGE value="Implemented Word Document viewing support as well as the ability to view a note's character and word counts" />
     <MESSAGE value="-Implemented Word document table formatting for distinction from the rest of a document&#10;-Added YouTube video viewing support&#10;-Completed the, &quot;Show Note HTML Markup&quot; feature&#10;-Added warning banners for catching exceptions and notifying the user" />
     <MESSAGE value="-Implemented the ability for the user to see what documents they have previously viewed and copy the table produced from this for use in their note&#10;-Added local video-viewing support" />
-    <option name="LAST_COMMIT_MESSAGE" value="-Implemented the ability for the user to see what documents they have previously viewed and copy the table produced from this for use in their note&#10;-Added local video-viewing support" />
+    <MESSAGE value="Implemented a table-inserting function as well as a check based on a user's screen width to determine if the site will be usable" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implemented a table-inserting function as well as a check based on a user's screen width to determine if the site will be usable" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
