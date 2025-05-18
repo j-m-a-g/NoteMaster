@@ -98,12 +98,9 @@ select:focus {
   border-color: cornflowerblue;
 }
 
-th {
+.tableHead {
+  font-weight: bold;
   padding-bottom: 5px;
-  text-align: left;
-  border-bottom-color: black;
-  border-bottom-style: dotted;
-  border-bottom-width: 1px;
 }
 
 #appMenu {

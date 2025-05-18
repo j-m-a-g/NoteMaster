@@ -26,7 +26,7 @@
        onmouseover="document.getElementById('fileMenu').hidden = false">
     <button accesskey="n"
             class="menuDropdown"
-            onclick="if (noteEditor.hidden) { hideAndShow('createOrOpenContainer', 'noteEditor') } else { confirmSave() }">
+            onclick="if (noteEditor.hidden) { initiateNote(false) } else { confirmSave() }">
       <img class="reducedIntensity menu" src="Assets/Images/note_add_000000.svg">
       <u>N</u>ew <span class="helperText menuDropdown">Alt + N</span>
     </button>
@@ -63,6 +63,10 @@
   <div class="menu" hidden id="insertMenu"
        onmouseleave="document.getElementById('insertMenu').hidden = true"
        onmouseover="document.getElementById('insertMenu').hidden = false">
+    <button class="menuDropdown" onclick="insertTable.hidden = false">
+      <img class="reducedIntensity menu" src="Assets/Images/table_000000.svg">
+      Table
+    </button>
     <button class="menuDropdown"
             onclick="navigator.clipboard.writeText((currentDate.getMonth() + 1).toString() + '/' + currentDate.getDate().toString() + '/' + currentDate.getFullYear().toString())">
       <img class="reducedIntensity menu" src="Assets/Images/today_000000.svg">
@@ -95,6 +99,10 @@
             onclick="toggleDialog(true, 'noteAsHTML'); noteHTMLCodeEditor.session.setValue(quill.getSemanticHTML())">
       <img class="reducedIntensity menu" src="Assets/Images/integration_instructions_000000.svg">
       Show Note HTML Markup
+    </button>
+    <button accesskey="h" class="menuDropdown" onclick="toggleDialog(true, 'viewingHistory'); appendViewingHistory()">
+      <img class="reducedIntensity menu" src="Assets/Images/history_000000.svg">
+      Viewing <u>H</u>istory <span class="helperText menuDropdown">Alt + H</span>
     </button>
     <button class="menuDropdown" id="wordWrap"
             onclick="toggleMenuCheck('wordWrapCheck'); if (wordWrapCheck.src.includes(checkedImageSource)) { localStorage.setItem('wordWrapEnabled', 'true'); mainEditor.style.wordBreak = 'break-word' } else { localStorage.setItem('wordWrapEnabled', 'false'); mainEditor.style.wordBreak = 'normal' }"
@@ -231,6 +239,23 @@
                       </td>
                     </tr>
                   </table>
+                </button>
+              </td>
+              <td>
+                <button class="appSection"
+                ">
+                <table>
+                  <tr>
+                    <td>
+                      <img class="appSection" src="Assets/Images/code_9DC384.svg">
+                    </td>
+                    <td>
+                      <span class="buttonHeading">Code File</span><br>
+                      <input hidden id="codeFileInput" type="file">
+                      <span class="helperText">.py, .html, .css, .js, .java</span>
+                    </td>
+                  </tr>
+                </table>
                 </button>
               </td>
             </tr>
@@ -525,7 +550,8 @@
             <button class="navButton" onclick="downloadNote()" title="Download Note (Alt + W)">
               <img class="reducedIntensity menu" src="Assets/Images/download_000000.svg">
             </button>
-            <input id="noteName" placeholder="Untitled" type="text">
+            <input id="noteName" oninput="noteName.value = noteName.value.replaceAll('.', '')" placeholder="Untitled"
+                   type="text">
             <span class="helperText" style="font-size: 14px">.htm</span>
           </nav>
           <div id="mainEditor" oninput="updateStatusBar()"></div>
@@ -550,7 +576,7 @@
 
 <!-- Confirm save pop-up -->
 <div class="saveBeforeClosing" hidden id="confirmSaveDialog">
-  <div class="dialogOverlay" style="padding-right: 10px">
+  <div class="dialogOverlay">
     <h1 class="saveBeforeClosing" id="saveDocumentHeading"></h1>
     <h3 class="saveBeforeClosing helperText">
       You are continuing onto another task and your current work has not been saved.
@@ -581,7 +607,7 @@
 
 <!-- Confirmation before closing a viewer -->
 <div class="saveBeforeClosing" hidden id="confirmViewerClose">
-  <div class="dialogOverlay" style="padding-right: 10px">
+  <div class="dialogOverlay">
     <h1 class="saveBeforeClosing">Are you sure you want to close this viewer?</h1>
     <h3 class="saveBeforeClosing helperText">
       By doing this, you will revert your view back to Welcome and be able to
@@ -600,11 +626,16 @@
         </td>
       </tr>
     </table>
+    <br>
+    <a class="hyperlinkButton" onclick="toggleDialog(true, 'viewingHistory'); appendViewingHistory()">
+      <img class="reducedIntensity menu" src="Assets/Images/history_000000.svg">
+      See your Viewing History
+    </a>
   </div>
 </div>
 
 <div class="saveBeforeClosing" hidden id="adjustAppSectionSizes">
-  <div class="dialogOverlay" style="padding-right: 10px">
+  <div class="dialogOverlay" id="appSectionSizesContainer">
     <h1>Adjust App Section Sizes</h1>
     <table style="width: 100%">
       <tr>
@@ -619,7 +650,10 @@
               </td>
             </tr>
           </table>
-          <input id="viewingSize" max="68" min="32" oninput="adjustViewingAndEditorSizes()" placeholder="50% (Default)" style="width: 90%; margin-top: 5px"
+          <input id="viewingSize" max="68" min="32"
+                 oninput="adjustViewingAndEditorSizes()"
+                 onmousedown="appSectionSizesContainer.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';"
+                 onmouseup="setTimeout(() => { appSectionSizesContainer.style.backgroundColor = 'white' }, 2000);" placeholder="50% (Default)" style="width: 90%; margin-top: 5px"
                  type="number" value="50">
         </td>
         <td style="width: 50%">
@@ -635,6 +669,34 @@
     </table>
     <a class="hyperlinkButton" onclick="adjustAppSectionSizes.hidden = true">Close</a>|
     <a class="hyperlinkButton" onclick="viewingSize.value = 50; editorSize.value = 50; applyPercentageSizes(); localStorage.setItem('viewingSizeValue', viewingSize.value)">Reset</a>
+  </div>
+</div>
+
+<div class="saveBeforeClosing" hidden id="insertTable">
+  <div class="dialogOverlay" style="height: 80%">
+    <h1>Insert a Table</h1>
+    <h3 class="helperText">Select the number of rows and columns you'd like to have. Note that this cannot be changed
+      later for the same table</h3>
+    <table style="width: 100%">
+      <tr>
+        <td style="width: 40%">
+          <input id="tableRows" max="32" min="1"
+                 oninput="if (tableRows.value > tableRows.max) { tableRows.value = tableRows.max }" placeholder="Rows" style="width: 90%" type="number">
+        </td>
+        <td style="width: 40%">
+          <input id="tableColumns" max="32"
+                 min="1" oninput="if (tableColumns.value > tableColumns.max) { tableColumns.value = tableColumns.max }" placeholder="Columns" style="width: 90%" type="number">
+        </td>
+        <td style="width: 20%">
+          <button class="dialogOverlay" onclick="createTable()" style="width: 100%">Create</button>
+        </td>
+      </tr>
+    </table>
+    <div id="insertTableEditor" style="user-select: all; margin-top: 5px; margin-bottom: 5px"></div>
+    <a class="hyperlinkButton" onclick="insertTable.hidden = true; insertTableQuill.setContents()">Close</a>
+    <div hidden id="tableSourceHTML">
+      <table id="createdTable"></table>
+    </div>
   </div>
 </div>
 
@@ -676,7 +738,7 @@
     </a>
     <br>
     <br>
-    <div hidden id="copyHistoryEditor" style="user-select: text"></div>
+    <div hidden id="copyHistoryEditor" style="user-select: all"></div>
   </div>
   <!-- Link to PDF -->
   <div class="dialogOverlay" hidden id="linkToPDF">
@@ -822,8 +884,8 @@
     <div id="noteHTML"></div>
     <a class="hyperlinkButton" onclick="toggleDialog(false, 'noteAsHTML')">
       Close
-    </a>
-    <button class="dialogOverlay" onclick="navigator.clipboard.writeText(noteHTMLCodeEditor.getValue())">Copy</button>
+    </a>|
+    <a class="hyperlinkButton" onclick="navigator.clipboard.writeText(noteHTMLCodeEditor.getValue())">Copy</a>
   </div>
   <div class="dialogOverlay" hidden id="aboutDialog">
     <img class="reducedIntensity" src="Assets/Images/info_000000.svg">

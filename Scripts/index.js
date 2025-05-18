@@ -17,28 +17,40 @@ const toolbarOptions = [
   ['clean']
 ];
 
+// Note editor on the right side
 const quill = new Quill('#mainEditor', {
   modules: {
     toolbar: toolbarOptions
   },
   placeholder: "Start your note-taking here",
-  theme: 'snow'
+  theme: "snow"
 });
 
+// Editor on the right side for viewing notes
 const anotherNoteViewQuill = new Quill("#anotherNoteView", {
   readOnly: true,
   modules: {
     toolbar: null
   },
-  theme: 'snow',
+  theme: "snow"
 });
 
+// Displays the user their Viewing History as a table to be copied
 const copyHistoryQuill = new Quill("#copyHistoryEditor", {
   readOnly: true,
   modules: {
     toolbar: null
   },
-  theme: 'snow',
+  theme: "snow"
+});
+
+const insertTableQuill = new Quill("#insertTableEditor", {
+  readOnly: true,
+  modules: {
+    toolbar: null
+  },
+  placeholder: "You haven't created a table yet",
+  theme: "snow"
 });
 
 const noteHTMLCodeEditor = ace.edit("noteHTML");
@@ -54,6 +66,10 @@ function onLoadTasks() {
 
     noteName.value = localStorage.getItem('noteTitle');
     alterMenuFunctions(false);
+  }
+
+  if (window.innerWidth <= 600) {
+    window.location.replace("Pages/mobileSizeIndication.html");
   }
 
   // USER PREFERENCES
@@ -150,8 +166,8 @@ function appendViewingHistory() {
   const headRow = document.createElement("tr");
   const timeHead = document.createElement("td");
   const nameHead = document.createElement("td");
-  timeHead.innerHTML = "TIME";
-  nameHead.innerHTML = "DOCUMENT NAME";
+  timeHead.innerHTML = "<span class='tableHead'>Time</span>";
+  nameHead.innerHTML = "<span class='tableHead'>Document Name</span>";
 
   headRow.appendChild(timeHead);
   headRow.appendChild(nameHead);
@@ -204,4 +220,24 @@ function get12HourTime() {
   }
 
   return hour + ":" + minute + suffix;
+}
+
+function createTable() {
+  createdTable.innerHTML = "";
+  for (let rows = 0; rows < tableRows.value; rows++) {
+    const currentRow = document.createElement("tr");
+    for (let columns = 0; columns < tableColumns.value; columns++) {
+      const currentColumn = document.createElement("td");
+
+      // Accounts for the fact that the last cell must contain text to be copied
+      if (columns === tableColumns.value - 1 && rows === tableRows.value - 1) {
+        currentColumn.innerHTML = "ㅤ";
+      }
+
+      currentRow.appendChild(currentColumn);
+    }
+    createdTable.appendChild(currentRow);
+  }
+
+  insertTableQuill.clipboard.dangerouslyPasteHTML(tableSourceHTML.innerHTML);
 }

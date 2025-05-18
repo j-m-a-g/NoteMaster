@@ -9,10 +9,11 @@ function initiateNote(isOpen) {
     }
     fileReader.readAsText(event.target.files[0]);
 
-    // Removes the "C:\fakepath\" prefix and ".htm" or ".html" suffix
+    // Removes the "C:\fakepath\" prefix and ".htm" or ".html" suffix as
+    // well as periods
     const trimFakePath = openNoteFileInput.value.replace("C:\\fakepath\\", "");
     const trimFileExtension = trimFakePath.replace(".htm", "");
-    noteName.value = trimFileExtension.replace(".html", "");
+    noteName.value = (trimFileExtension.replace(".html", "")).replace(".", "");
   } else {
     // Resets the editor's state
     quill.setContents();
