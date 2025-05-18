@@ -36,26 +36,38 @@ function closeCurrentFile() {
   tubeVideoView.hidden = true;
   tubeVideoView.src = "";
   tubeVideoViewer.hidden = true;
+
   anotherNoteView.hidden = true;
   anotherNoteViewQuill.setContents();
   anotherNoteViewer.hidden = true;
+
   imageView.hidden = true;
   imageView.src = "";
   imageViewer.hidden = true;
+
+  onlineDesignView.hidden = true;
+  onlineDesignView.src = "";
+  onlineDesignViewer.hidden = true;
+
   pdfView.hidden = true;
   pdfView.src = "";
   pdfViewer.hidden = true;
+
   textView.hidden = true;
   textView.innerHTML = "";
   textViewActions.hidden = true;
   textViewer.hidden = true;
+
   videoView.hidden = true;
   videoView.src = "";
   videoViewer.hidden = true;
+  additionalVideoControls.hidden = true;
+
   webpageURLBar.value = "";
   webpageView.hidden = true;
   webpageView.src = "Pages/noWebpageNavigated.html";
   webpageViewer.hidden = true;
+
   wordDocumentView.hidden = true;
   wordDocumentView.innerHTML = "";
   wordDocumentViewer.hidden = true;

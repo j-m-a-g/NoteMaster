@@ -141,7 +141,8 @@
           <summary accesskey="y" onclick="onlineDocuments.open = false">
             <img class="reducedIntensity menu" src="Assets/Images/sync_saved_locally_000000.svg">
             On <u>Y</u>our Computer
-            <span class="helperText menuDropdown">Alt + Y</span></summary>
+            <span class="helperText menuDropdown">Alt + Y</span>
+          </summary>
           <table style="width: 100%">
             <tr>
               <td>
@@ -153,7 +154,8 @@
                         <img class="appSection" src="Assets/Images/picture_as_pdf_D16D6A.svg">
                       </td>
                       <td>
-                        <span class="buttonHeading">PDF</span><br>
+                        <span class="buttonHeading">PDF</span>
+                        <br>
                         <input accept="application/pdf" hidden id="pdfFileInput"
                                onchange="pdfView.src = window.URL.createObjectURL(this.files[0]); tasksOnceFileOpen('pdfView', 'pdfFileInput')"
                                type="file">
@@ -172,11 +174,12 @@
                         <img class="appSection" src="Assets/Images/image_80A4AE.svg">
                       </td>
                       <td>
-                        <span class="buttonHeading">Image</span><br>
+                        <span class="buttonHeading">Image</span>
+                        <br>
                         <input accept="image/*" hidden id="imageFileInput"
                                onchange="imageView.src = window.URL.createObjectURL(this.files[0]); tasksOnceFileOpen('imageView', 'imageFileInput')"
                                type="file">
-                        <span class="helperText">.png, .jpg, .gif, .svg, .webp</span>
+                        <span class="helperText">e.x: .png, .jpg, .gif, .svg, .webp</span>
                       </td>
                     </tr>
                   </table>
@@ -192,11 +195,12 @@
                         <img class="appSection" src="Assets/Images/draft_80A4AE.svg">
                       </td>
                       <td>
-                        <span class="buttonHeading">Text File</span><br>
-                        <input accept="text/plain" hidden id="textFileInput"
+                        <span class="buttonHeading">Plain Text</span>
+                        <br>
+                        <input hidden id="textFileInput"
                                onchange="readTextFile(); textViewActions.hidden = false; textView.hidden = false; tasksOnceFileOpen('textViewer', 'textFileInput')"
                                type="file">
-                        <span class="helperText">.txt</span>
+                        <span class="helperText">View any file in plain text</span>
                       </td>
                     </tr>
                   </table>
@@ -210,10 +214,12 @@
                         <img class="appSection" src="Assets/Images/play_arrow_8B7DBE.svg">
                       </td>
                       <td>
-                        <span class="buttonHeading">Video</span><br>
-                        <input accept="video/*" hidden id="videoFileInput" onchange="videoView.src = window.URL.createObjectURL(this.files[0]); tasksOnceFileOpen('videoView', 'videoFileInput')"
+                        <span class="buttonHeading">Audio/Video</span>
+                        <br>
+                        <input accept="audio/*, video/*" hidden id="videoFileInput"
+                               onchange="videoView.src = window.URL.createObjectURL(this.files[0]); tasksOnceFileOpen('videoView', 'videoFileInput'); additionalVideoControls.hidden = false"
                                type="file">
-                        <span class="helperText">.mp4</span>
+                        <span class="helperText">e.x: .mp3, .wav, .mp4</span>
                       </td>
                     </tr>
                   </table>
@@ -229,12 +235,13 @@
                         <img class="appSection" src="Assets/Images/description_789DE5.svg">
                       </td>
                       <td>
-                        <span class="buttonHeading">Word Document</span><br>
+                        <span class="buttonHeading">Word Document</span>
+                        <br>
                         <input
                             accept=".doc, .docx, .xml, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                             hidden id="wordFileInput"
                             onchange="readWordDocument(); tasksOnceFileOpen('wordDocumentView', 'wordFileInput'); incorrectWordFormatting.hidden = false"
-                               type="file">
+                            type="file">
                         <span class="helperText">.doc, .docx</span>
                       </td>
                     </tr>
@@ -242,20 +249,20 @@
                 </button>
               </td>
               <td>
-                <button class="appSection"
-                ">
-                <table>
-                  <tr>
-                    <td>
-                      <img class="appSection" src="Assets/Images/code_9DC384.svg">
-                    </td>
-                    <td>
-                      <span class="buttonHeading">Code File</span><br>
-                      <input hidden id="codeFileInput" type="file">
-                      <span class="helperText">.py, .html, .css, .js, .java</span>
-                    </td>
-                  </tr>
-                </table>
+                <button class="appSection">
+                  <table>
+                    <tr>
+                      <td>
+                        <img class="appSection" src="Assets/Images/code_9DC384.svg">
+                      </td>
+                      <td>
+                        <span class="buttonHeading">Code File</span>
+                        <br>
+                        <input hidden id="codeFileInput" type="file">
+                        <span class="helperText">e.x: .py, .html, .css, .js</span>
+                      </td>
+                    </tr>
+                  </table>
                 </button>
               </td>
             </tr>
@@ -340,6 +347,21 @@
               </td>
             </tr>
             <tr>
+              <td>
+                <button class="appSection" onclick="toggleDialog(true, 'linkToOnlineDesign')">
+                  <table>
+                    <tr>
+                      <td>
+                        <img class="appSection" src="Assets/Images/wall_art_80A4AE.svg">
+                      </td>
+                      <td>
+                        <span class="buttonHeading">Canva Design</span><br>
+                        <span class="helperText">View your online design</span>
+                      </td>
+                    </tr>
+                  </table>
+                </button>
+              </td>
               <td>
                 <button class="appSection" onclick="toggleDialog(true, 'linkToTubeVideo')">
                   <table>
@@ -444,6 +466,14 @@
         </div>
         <div hidden id="videoViewer">
           <video autoplay controls hidden id="videoView"></video>
+          <nav class="statusBar" hidden id="additionalVideoControls">
+            <div class="pretty p-default p-curve p-thick">
+              <input oninput="videoView.loop = !!this.checked;" type="checkbox">
+              <div class="state">
+                <label>Loop</label>
+              </div>
+            </div>
+          </nav>
         </div>
         <div hidden id="wordDocumentViewer">
           <div class="warningBanner" hidden id="incorrectWordFormatting">
@@ -490,8 +520,13 @@
           </nav>
           <iframe id="webpageView" src="Pages/noWebpageNavigated.html"></iframe>
         </div>
+        <div hidden id="onlineDesignViewer">
+          <iframe allowfullscreen id="onlineDesignView"></iframe>
+        </div>
         <div hidden id="tubeVideoViewer">
-          <iframe id="tubeVideoView" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          <iframe
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen id="tubeVideoView" referrerpolicy="strict-origin-when-cross-origin"></iframe>
         </div>
         <div hidden id="anotherNoteViewer">
           <div hidden id="anotherNoteView"></div>
@@ -662,7 +697,8 @@
           <input id="viewingSize" max="68" min="32"
                  oninput="adjustViewingAndEditorSizes()"
                  onmousedown="appSectionSizesContainer.style.backgroundColor = 'rgba(255, 255, 255, 0.75)'; appSectionSizesContainer.style.backdropFilter = 'blur(1px)'"
-                 onmouseup="setTimeout(() => { appSectionSizesContainer.style.backgroundColor = 'white' }, 2000);" placeholder="50% (Default)" style="width: 90%; margin-top: 5px"
+                 onmouseup="setTimeout(() => { appSectionSizesContainer.style.backgroundColor = 'white' }, 2000);"
+                 placeholder="50% (Default)" style="width: 90%; margin-top: 5px"
                  type="number" value="50">
         </td>
         <td style="width: 50%">
@@ -677,7 +713,8 @@
       </tr>
     </table>
     <a class="hyperlinkButton" onclick="adjustAppSectionSizes.hidden = true">Close</a>|
-    <a class="hyperlinkButton" onclick="viewingSize.value = 50; editorSize.value = 50; applyPercentageSizes(); localStorage.setItem('viewingSizeValue', viewingSize.value)">Reset</a>
+    <a class="hyperlinkButton"
+       onclick="viewingSize.value = 50; editorSize.value = 50; applyPercentageSizes(); localStorage.setItem('viewingSizeValue', viewingSize.value)">Reset</a>
   </div>
 </div>
 
@@ -690,11 +727,13 @@
       <tr>
         <td style="width: 40%">
           <input id="tableRows" max="32" min="1"
-                 oninput="if (tableRows.value > tableRows.max) { tableRows.value = tableRows.max }" placeholder="Rows" style="width: 90%" type="number">
+                 oninput="if (tableRows.value > tableRows.max) { tableRows.value = tableRows.max }" placeholder="Rows"
+                 style="width: 90%" type="number">
         </td>
         <td style="width: 40%">
           <input id="tableColumns" max="32"
-                 min="1" oninput="if (tableColumns.value > tableColumns.max) { tableColumns.value = tableColumns.max }" placeholder="Columns" style="width: 90%" type="number">
+                 min="1" oninput="if (tableColumns.value > tableColumns.max) { tableColumns.value = tableColumns.max }"
+                 placeholder="Columns" style="width: 90%" type="number">
         </td>
         <td style="width: 20%">
           <button class="dialogOverlay" onclick="createTable()" style="width: 100%">Create</button>
@@ -711,7 +750,7 @@
 
 <!-- Dialogs with focus -->
 <div hidden id="dialogFocusBackground">
-  <div hidden id="noURLWarning" class="warningBanner">
+  <div class="warningBanner" hidden id="noURLWarning">
     <table>
       <tr>
         <td style="width: 5%"><img class="reducedIntensity menu" src="Assets/Images/warning_000000.svg"></td>
@@ -838,6 +877,28 @@
       Close
     </a>
   </div>
+  <div class="dialogOverlay" hidden id="linkToOnlineDesign">
+    <img src="Assets/Images/wall_art_80A4AE.svg">
+    <h1>Canva Design</h1>
+    <h3 class="helperText">Paste the URL to your Canva design below<br>(And ensure it is correct)</h3>
+    <table style="width: 100%; margin-bottom: 10px">
+      <tr>
+        <td style="width: 75%">
+          <input id="URLToOnlineDesign" placeholder="https://example.com" style="width: 94%"
+                 type="url">
+        </td>
+        <td>
+          <button class="dialogOverlay"
+                  onclick="if (checkURLInput('URLToOnlineDesign')) { onlineDesignView.src = URLToOnlineDesign.value.replace('edit', 'view') + '?embed'; toggleDialog(false, 'linkToOnlineDesign'); toggleViewer(true,  'onlineDesignViewer'); tasksOnceFileOpen('onlineDesignView', null); addHistoryEntry('URLToOnlineDesign') }">
+            Open
+          </button>
+        </td>
+      </tr>
+    </table>
+    <a class="hyperlinkButton" onclick="toggleDialog(false, 'linkToOnlineDesign')">
+      Close
+    </a>
+  </div>
   <div class="dialogOverlay" hidden id="linkToTubeVideo">
     <img src="Assets/Images/youtube_activity_BB271A.svg">
     <h1>YouTube Video</h1>
@@ -845,7 +906,8 @@
     <table style="width: 100%; margin-bottom: 10px">
       <tr>
         <td style="width: 75%">
-          <input id="URLToTubeVideo" placeholder="https://www.youtube.com/watch?v=jNQXAC9IVRw" style="width: 94%" type="url">
+          <input id="URLToTubeVideo" placeholder="https://www.youtube.com/watch?v=jNQXAC9IVRw" style="width: 94%"
+                 type="url">
         </td>
         <td>
           <button class="dialogOverlay"
@@ -936,7 +998,8 @@
 <script src="https://cdn.jsdelivr.net/npm/quill/dist/quill.min.js"></script>
 <script crossorigin="anonymous"
         integrity="sha512-0wvefyQZJqGXiPxRPDb8rw4IrHizrbahWa+7wK/oywfMd0LZRwaTCDqN/c1jcir3CXgLydi25heF+kC05htYGQ=="
-        referrerpolicy="no-referrer" src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.9.0/mammoth.browser.js"></script>
+        referrerpolicy="no-referrer"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.9.0/mammoth.browser.js"></script>
 <script charset="utf-8" src="Assets/ace-builds/src/ace.js" type="text/javascript"></script>
 
 <script src="Scripts/globalVarDeclarations.js"></script>
