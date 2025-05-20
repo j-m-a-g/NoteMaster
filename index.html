@@ -14,7 +14,7 @@
   <link href="https://cdn.jsdelivr.net/npm/pretty-checkbox/dist/pretty-checkbox.min.css" rel="stylesheet">
 </head>
 
-<body onload="onLoadTasks()" onresize="" onunload="alert('hello')">
+<body onload="onLoadTasks()" onresize="dynamicallySetHeight()" onunload="alert('hello')">
 <nav id="appMenu">
   <button class="menu"
           onmouseleave="document.getElementById('fileMenu').hidden = true"
@@ -131,7 +131,7 @@
 </nav>
 
 <div style="padding-top: 34px">
-  <table style="width: 100%; height: 100%">
+  <table id="appSectionsTable" style="width: 100%; height: 100%">
     <tr>
       <!-- Viewing section -->
       <td class="appSection" id="chooseViewer">
@@ -620,20 +620,15 @@
     <table onclick="confirmSaveDialog.hidden = true" style="width: 100%">
       <tr>
         <td style="width: 33%">
-          <button class="saveBeforeClosing"
-                  onclick="doNotSave()"
-                  style="background-color: #e54304; color: white">
-            Don't Save
+          <button class="saveBeforeClosing" onclick="doNotSave()" style="background-color: #e54304; color: white">Don't
+            Save
           </button>
         </td>
         <td style="width: 33%">
-          <button class="saveBeforeClosing"
-                  onclick="downloadNote()">
-            Download
-          </button>
+          <button class="saveBeforeClosing" onclick="downloadNote()">Download</button>
         </td>
         <td style="width: 33%">
-          <button class="saveBeforeClosing">Resume Working</button>
+          <button class="saveBeforeClosing">Continue Working</button>
         </td>
       </tr>
     </table>

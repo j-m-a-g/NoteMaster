@@ -5,14 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3f191740-30a6-480d-9797-fe5f00316180" name="Changes" comment="Updated the screen width check to be implemented within the same page">
-      <change afterPath="$PROJECT_DIR$/Assets/Images/wall_art_80A4AE.svg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Images/pie_chart_BD4C31.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Images/rss_feed_000000.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Images/rss_feed_000000.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Images/sync_saved_locally_000000.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Images/sync_saved_locally_000000.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Images/table_rows_9DC384.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/fileViewing.js" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/fileViewing.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Scripts/globalVarDeclarations.js" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/globalVarDeclarations.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Styles/fileViewers.css" beforeDir="false" afterPath="$PROJECT_DIR$/Styles/fileViewers.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Styles/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/Styles/index.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -37,12 +34,12 @@
     &quot;assignee&quot;: &quot;j-m-a-g&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/j-m-a-g/NoteMaster.git&quot;,
-    &quot;accountId&quot;: &quot;444909d0-8423-470e-aa5f-fe1213208bf7&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/j-m-a-g/NoteMaster.git",
+    "accountId": "09d421ab-75e6-4a0b-ba3a-4550aab4228b"
   }
-}</component>
+}]]></component>
   <component name="MaliciousPackageCheckinHandlerState">
     <option name="packageCheck" value="true" />
   </component>
@@ -60,25 +57,25 @@
     <option name="showLibraryContents" value="true" />
     <option name="showMembers" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "DefaultHtmlFileTemplate": "HTML File",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/Users/Joseph/NoteMaster/Assets/Images",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "editor.preferences.fonts.default",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Joseph/NoteMaster/Assets/Images&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.fonts.default&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Joseph\NoteMaster\Assets\Images" />
@@ -107,6 +104,7 @@
       <workItem from="1747258246561" duration="11827000" />
       <workItem from="1747335182077" duration="35695000" />
       <workItem from="1747506065690" duration="23616000" />
+      <workItem from="1747747496514" duration="3546000" />
     </task>
     <task id="LOCAL-00001" summary="Updated README.md">
       <option name="closed" value="true" />

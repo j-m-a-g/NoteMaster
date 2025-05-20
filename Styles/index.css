@@ -5,8 +5,6 @@
   --lightAccent400: #dedede;
 
   --orangeAccent100: #ffddb0;
-
-  --appSectionHeight: 516px;
 }
 
 ::selection {
@@ -186,7 +184,7 @@ td.appSection {
   background-color: var(--lightAccent100);
   border-radius: 5px;
   width: 50%;
-  height: var(--appSectionHeight);
+  height: 100%;
 }
 
 button.appSection {
@@ -285,8 +283,8 @@ a.hyperlinkButton:hover {
   text-decoration: none;
 }
 
+/* Height dynamically set within index.js */
 #mainEditor {
-  height: 70%;
   overflow-x: hidden;
   overflow-y: auto;
   word-break: break-word;

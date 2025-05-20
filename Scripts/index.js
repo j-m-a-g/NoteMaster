@@ -68,8 +68,9 @@ function onLoadTasks() {
     alterMenuFunctions(false);
   }
 
-  // USER PREFERENCES
+  dynamicallySetHeight();
 
+  // USER PREFERENCES
   // Auto Save
   if (localStorage.getItem("autoSaveEnabled") === "true") {
     autoSave.click();
@@ -84,6 +85,19 @@ function onLoadTasks() {
   if (localStorage.getItem("viewingSizeValue") !== null) {
     viewingSize.value = localStorage.getItem("viewingSizeValue");
     adjustViewingAndEditorSizes();
+  }
+}
+
+// Sets the height of certain elements dependent on the height
+// of a user's browser window
+function dynamicallySetHeight() {
+  appSectionsTable.style.height = window.innerHeight + "px";
+  anotherNoteView.style.height = window.innerHeight + "px";
+  wordDocumentView.style.height = window.innerHeight + "px";
+  noteEditor.style.height = window.innerHeight + "px";
+
+  for (let iframe = 0; iframe < iframes.length; iframe++) {
+    iframes[iframe].style.height = window.innerHeight + "px";
   }
 }
 
