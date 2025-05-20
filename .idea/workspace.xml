@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3f191740-30a6-480d-9797-fe5f00316180" name="Changes" comment="Updated the, &quot;Insert a Table&quot; dialog UI">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -33,7 +32,7 @@
   <component name="GithubPullRequestsUISettings"><![CDATA[{
   "selectedUrlAndAccountId": {
     "url": "https://github.com/j-m-a-g/NoteMaster.git",
-    "accountId": "09d421ab-75e6-4a0b-ba3a-4550aab4228b"
+    "accountId": "444909d0-8423-470e-aa5f-fe1213208bf7"
   }
 }]]></component>
   <component name="MaliciousPackageCheckinHandlerState">
@@ -84,7 +83,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-6a121458b545-JavaScript-WS-251.25410.117" />
+        <option value="bundled-js-predefined-d6986cc7102b-43a09073042e-JavaScript-WS-252.13776.71" />
       </set>
     </attachedChunks>
   </component>
@@ -101,6 +100,7 @@
       <workItem from="1747335182077" duration="35695000" />
       <workItem from="1747506065690" duration="23616000" />
       <workItem from="1747747496514" duration="5090000" />
+      <workItem from="1747780319974" duration="76000" />
     </task>
     <task id="LOCAL-00001" summary="Updated README.md">
       <option name="closed" value="true" />
