@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f191740-30a6-480d-9797-fe5f00316180" name="Changes" comment="Implemented feature to dynamically adjust the entire height of the app's appSectionsTable">
+    <list default="true" id="3f191740-30a6-480d-9797-fe5f00316180" name="Changes" comment="Updated the, &quot;Insert a Table&quot; dialog UI">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
     </list>
@@ -100,7 +100,7 @@
       <workItem from="1747258246561" duration="11827000" />
       <workItem from="1747335182077" duration="35695000" />
       <workItem from="1747506065690" duration="23616000" />
-      <workItem from="1747747496514" duration="4256000" />
+      <workItem from="1747747496514" duration="5090000" />
     </task>
     <task id="LOCAL-00001" summary="Updated README.md">
       <option name="closed" value="true" />
@@ -166,7 +166,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747768325268</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Updated the, &quot;Insert a Table&quot; dialog UI">
+      <option name="closed" value="true" />
+      <created>1747775350509</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1747775350509</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -197,7 +205,8 @@
     <MESSAGE value="Implemented a table-inserting function as well as a check based on a user's screen width to determine if the site will be usable" />
     <MESSAGE value="Updated the screen width check to be implemented within the same page" />
     <MESSAGE value="Implemented feature to dynamically adjust the entire height of the app's appSectionsTable" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implemented feature to dynamically adjust the entire height of the app's appSectionsTable" />
+    <MESSAGE value="Updated the, &quot;Insert a Table&quot; dialog UI" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated the, &quot;Insert a Table&quot; dialog UI" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />

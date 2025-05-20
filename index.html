@@ -426,7 +426,7 @@
             </tr>
           </table>
         </nav>
-        <div id="noFileSelected" style="margin-top: 25%">
+        <div id="noFileSelected" style="margin-top: 15%">
           <img class="reducedIntensity" src="Assets/Images/file_copy_off_000000.svg"
                style="margin-left: 45%">
           <h2 class="helperText" style="text-align: center">No file has been chosen... Yet</h2>
@@ -498,7 +498,7 @@
               <tr>
                 <td>
                   <button class="navButton"
-                          onclick="webpageView.src = lastViewedWebpages[lastViewedWebpages.length - 2]; webpageURLBar.value = lastViewedWebpages[lastViewedWebpages.length - 2]"
+                          onclick="if (lastViewedWebpages.length > 1) { webpageView.src = lastViewedWebpages[lastViewedWebpages.length - 2]; webpageURLBar.value = lastViewedWebpages[lastViewedWebpages.length - 2] }"
                           title="Back">
                     <img class="reducedIntensity menu" src="Assets/Images/arrow_back_000000.svg">
                   </button>
