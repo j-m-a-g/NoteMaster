@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f191740-30a6-480d-9797-fe5f00316180" name="Changes" comment="Updated the screen width check to be implemented within the same page">
+    <list default="true" id="3f191740-30a6-480d-9797-fe5f00316180" name="Changes" comment="Implemented feature to dynamically adjust the entire height of the app's appSectionsTable">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/globalVarDeclarations.js" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/globalVarDeclarations.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Styles/fileViewers.css" beforeDir="false" afterPath="$PROJECT_DIR$/Styles/fileViewers.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Styles/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/Styles/index.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -104,7 +100,7 @@
       <workItem from="1747258246561" duration="11827000" />
       <workItem from="1747335182077" duration="35695000" />
       <workItem from="1747506065690" duration="23616000" />
-      <workItem from="1747747496514" duration="3546000" />
+      <workItem from="1747747496514" duration="4256000" />
     </task>
     <task id="LOCAL-00001" summary="Updated README.md">
       <option name="closed" value="true" />
@@ -162,7 +158,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747578445064</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Implemented feature to dynamically adjust the entire height of the app's appSectionsTable">
+      <option name="closed" value="true" />
+      <created>1747768325268</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1747768325268</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -192,7 +196,8 @@
     <MESSAGE value="-Implemented the ability for the user to see what documents they have previously viewed and copy the table produced from this for use in their note&#10;-Added local video-viewing support" />
     <MESSAGE value="Implemented a table-inserting function as well as a check based on a user's screen width to determine if the site will be usable" />
     <MESSAGE value="Updated the screen width check to be implemented within the same page" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated the screen width check to be implemented within the same page" />
+    <MESSAGE value="Implemented feature to dynamically adjust the entire height of the app's appSectionsTable" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implemented feature to dynamically adjust the entire height of the app's appSectionsTable" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />

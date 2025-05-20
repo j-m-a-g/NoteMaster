@@ -426,7 +426,7 @@
             </tr>
           </table>
         </nav>
-        <div id="noFileSelected" style="height: calc(var(--appSectionHeight) - 175px); margin-top: 25%">
+        <div id="noFileSelected" style="margin-top: 25%">
           <img class="reducedIntensity" src="Assets/Images/file_copy_off_000000.svg"
                style="margin-left: 45%">
           <h2 class="helperText" style="text-align: center">No file has been chosen... Yet</h2>
@@ -725,6 +725,7 @@
                  oninput="if (tableRows.value > tableRows.max) { tableRows.value = tableRows.max }" placeholder="Rows"
                  style="width: 90%" type="number">
         </td>
+        <td style="padding-left: 5px; padding-right: 5px; padding-bottom: 6px">x</td>
         <td style="width: 40%">
           <input id="tableColumns" max="32"
                  min="1" oninput="if (tableColumns.value > tableColumns.max) { tableColumns.value = tableColumns.max }"
