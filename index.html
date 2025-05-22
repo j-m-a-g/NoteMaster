@@ -16,7 +16,10 @@
   <link href="https://cdn.jsdelivr.net/npm/pretty-checkbox/dist/pretty-checkbox.min.css" rel="stylesheet">
 </head>
 
-<body onload="onLoadTasks()" onresize="dynamicallySetHeight()" onbeforeunload="if (quill.getLength() !== 1 || noteName.value !== '') { event.preventDefault(); event.returnValue = '' }">
+<body
+    onbeforeunload="if (quill.getLength() !== 1 || noteName.value !== '') { event.preventDefault(); event.returnValue = '' }"
+    onload="onLoadTasks()"
+    onresize="dynamicallySetHeight()">
 <nav id="appMenu">
   <button class="menu"
           onmouseleave="document.getElementById('fileMenu').hidden = true"
@@ -251,7 +254,7 @@
                 </button>
               </td>
               <td>
-                <button class="appSection">
+                <button class="appSection" onclick="codeFileInput.click(); toggleViewer(true, 'codeFileViewer')">
                   <table>
                     <tr>
                       <td>
@@ -260,7 +263,7 @@
                       <td>
                         <span class="buttonHeading">Code File</span>
                         <br>
-                        <input hidden id="codeFileInput" type="file">
+                        <input hidden id="codeFileInput" onchange="viewCodeFile()" type="file">
                         <span class="helperText">e.x: .py, .html, .css, .js</span>
                       </td>
                     </tr>
@@ -446,7 +449,7 @@
         <div hidden id="textViewer">
           <nav hidden id="textViewActions">
             <select id="textViewFont"
-                    onchange="if (textViewFont.value === 'monospace') { textView.style.fontFamily = 'monospace' } else if (textViewFont.value === 'serif') { textView.style.fontFamily = 'serif' } else { textView.style.fontFamily = 'sans-serif' }">
+                    onchange="textView.style.fontFamily = textViewFont.value">
               <option value="sans-serif">Sans Serif</option>
               <option value="serif">Serif</option>
               <option selected value="monospace">Monospace</option>
@@ -495,7 +498,126 @@
           <div hidden id="wordDocumentView"></div>
         </div>
         <div hidden id="codeFileViewer">
-
+          <pre></pre>
+          <div hidden id="codeFileView"></div>
+          <nav class="statusBar" hidden id="codeFileViewerStatusBar">
+            <span class="helperText">Language</span>
+            <select id="programmingLanguageMode" onchange="codeFileViewCodeEditor.session.setMode('ace/mode/html');">
+              <option value="plain_text">None</option>
+              <optgroup label="A">
+                <option value="actionscript">ActionScript</option>
+                <option value="ada">Ada</option>
+                <option value="apache_conf">Apache Config</option>
+                <option value="assembly_arm32">Assembly (Arm32)</option>
+                <option value="assembly_x86">Assembly (x86)</option>
+                <option value="autohotkey">AutoHotkey</option>
+              </optgroup>
+              <optgroup label="B">
+                <option value="basic">Basic</option>
+                <option value="batchfile">Batch</option>
+              </optgroup>
+              <optgroup label="C">
+                <option value="c_cpp">C/C++</option>
+                <option value="clojure">Clojure</option>
+                <option value="cobol">Cobol</option>
+                <option value="coffee">Coffee</option>
+                <option value="csharp">C#</option>
+                <option value="css">CSS</option>
+                <option value="csv">CSV</option>
+              </optgroup>
+              <optgroup label="D">
+                <option value="dart">Dart</option>
+                <option value="diff">Diff</option>
+                <option value="django">Django</option>
+                <option value="dockerfile">Dockerfile</option>
+              </optgroup>
+              <optgroup label="E">
+                <option value="elixir">Elixir</option>
+                <option value="elm">Elm</option>
+                <option value="erlang">Erlang</option>
+              </optgroup>
+              <optgroup label="F">
+                <option value="fortran">Fortran</option>
+                <option value="fsharp">F#</option>
+              </optgroup>
+              <optgroup label="G">
+                <option value="golang">Go</option>
+                <option value="groovy">Groovy</option>
+              </optgroup>
+              <optgroup label="H">
+                <option value="haskell">Haskell</option>
+                <option value="html">HTML</option>
+              </optgroup>
+              <optgroup label="J">
+                <option value="java">Java</option>
+                <option value="javascript">JavaScript</option>
+                <option value="json">JSON</option>
+                <option value="jsx">JSX</option>
+                <option value="julia">Julia</option>
+              </optgroup>
+              <optgroup label="K">
+                <option value="kotlin">Kotlin</option>
+              </optgroup>
+              <optgroup label="L">
+                <option value="less">Less</option>
+                <option value="lisp">Lisp</option>
+                <option value="lua">Lua</option>
+              </optgroup>
+              <optgroup label="M">
+                <option value="makefile">Makefile</option>
+                <option value="markdown">Markdown</option>
+                <option value="matlab">Matlab</option>
+              </optgroup>
+              <optgroup label="N">
+                <option value="nim">Nim</option>
+                <option value="nix">Nix</option>
+              </optgroup>
+              <optgroup label="O">
+                <option value="objectivec">Objective-C</option>
+                <option value="ocaml">OCaml</option>
+              </optgroup>
+              <optgroup label="P">
+                <option value="pascal">Pascal</option>
+                <option value="perl">Perl</option>
+                <option value="php">PHP</option>
+                <option value="powershell">Powershell</option>
+                <option value="prolog">Prolog</option>
+                <option value="python">Python</option>
+              </optgroup>
+              <optgroup label="R">
+                <option value="r">R</option>
+                <option value="razor">Razor</option>
+                <option value="ruby">Ruby</option>
+                <option value="rust">Rust</option>
+              </optgroup>
+              <optgroup label="S">
+                <option value="sass">Sass</option>
+                <option value="scala">Scala</option>
+                <option value="scheme">Scheme</option>
+                <option value="scss">SCSS</option>
+                <option value="sql">SQL</option>
+                <option value="svg">SVG</option>
+                <option value="swift">Swift</option>
+              </optgroup>
+              <optgroup label="T">
+                <option value="toml">Toml</option>
+                <option value="tsx">TSX</option>
+                <option value="typescript">TypeScript</option>
+              </optgroup>
+              <optgroup label="V">
+                <option value="vbscript">VB Script</option>
+              </optgroup>
+              <optgroup label="X">
+                <option value="xml">XML</option>
+              </optgroup>
+              <optgroup label="Y">
+                <option value="yaml">YAML</option>
+              </optgroup>
+              <optgroup label="Z">
+                <option value="zig">Zig</option>
+              </optgroup>
+            </select>
+          </nav>
         </div>
         <div hidden id="webpageViewer">
           <nav style="margin-bottom: 5px">
@@ -640,7 +762,7 @@
   </div>
 </div>
 
-<div class="saveBeforeClosing" id="mobileSizeIndication">
+<div class="saveBeforeClosing" id="mobileSizeIndication" style="z-index: 2">
   <div class="dialogOverlay" style="padding: 20px; text-align: center">
     <img class="reducedIntensity" src="Assets/Images/fit_width_000000.svg">
     <h1>Looks Like You're Out of Screen Real-Estate!</h1>
@@ -726,13 +848,15 @@
       <tr>
         <td style="width: 40%">
           <input id="tableRows" max="32" min="1"
-                 oninput="if (tableRows.value > tableRows.max) { tableRows.value = tableRows.max }" placeholder="Rows"
+                 onchange="if (tableRows.value <= 9 && tableRows.value >= 1) { tableRows.value = '0' + tableRows.value } if (tableRows.value > tableRows.max) { tableRows.value = tableRows.max }"
+                 placeholder="Rows"
                  style="width: 90%" type="number">
         </td>
-        <td style="padding-left: 5px; padding-right: 5px; padding-bottom: 6px">x</td>
+        <td class="helperText" style="padding-left: 5px; padding-right: 5px; padding-bottom: 6px">x</td>
         <td style="width: 40%">
           <input id="tableColumns" max="32"
-                 min="1" oninput="if (tableColumns.value > tableColumns.max) { tableColumns.value = tableColumns.max }"
+                 min="1"
+                 onchange="if (tableColumns.value <= 9 && tableColumns.value >= 1) { tableColumns.value = '0' + tableColumns.value } if (tableColumns.value > tableColumns.max) { tableColumns.value = tableColumns.max }"
                  placeholder="Columns" style="width: 90%" type="number">
         </td>
         <td style="width: 20%">
@@ -966,6 +1090,7 @@
   </div>
   <div class="dialogOverlay" hidden id="aboutDialog">
     <img class="reducedIntensity" src="Assets/Images/info_000000.svg">
+    <img src="notemasterIcon.svg" style="width: 48px">
     <h1>About</h1>
     <p style="line-height: 25px">
       NoteMaster v25.05.x

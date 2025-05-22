@@ -151,7 +151,7 @@ button.menuDropdown {
 }
 
 button.menuDropdown:hover {
-  background-color: var(--blueAccent50);
+  background-color: var(--lightAccent200);
 }
 
 button.menuDropdown:disabled:hover {
@@ -371,8 +371,7 @@ h3.saveBeforeClosing {
 
 #noteHTML {
   margin-bottom: 5px;
-  max-width: 100%;
-  min-width: 100%;
+  width: 100%;
   height: 100%;
 }
 

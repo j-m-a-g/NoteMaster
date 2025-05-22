@@ -72,6 +72,10 @@ function closeCurrentFile() {
   wordDocumentView.innerHTML = "";
   wordDocumentViewer.hidden = true;
 
+  codeFileViewer.hidden = true;
+  codeFileView.hidden = true;
+  codeFileViewerStatusBar.hidden = true;
+
   chooseViewer.hidden = false;
   closeFile.disabled = true;
   noFileSelected.hidden = false;
@@ -113,6 +117,17 @@ function readHTMLNote() {
   fileReader.readAsText(event.target.files[0]);
 
   tasksOnceFileOpen("anotherNoteView", 'anotherNoteFileInput');
+}
+
+function viewCodeFile() {
+  const fileReader = new FileReader();
+  fileReader.onload = () => {
+    codeFileViewCodeEditor.session.setValue(fileReader.result);
+  }
+  fileReader.readAsText(event.target.files[0]);
+
+  codeFileViewerStatusBar.hidden = false;
+  tasksOnceFileOpen("codeFileView", "codeFileInput");
 }
 
 function checkURLInput(URLInputObject) {

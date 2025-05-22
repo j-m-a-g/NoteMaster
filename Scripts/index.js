@@ -59,6 +59,12 @@ noteHTMLCodeEditor.session.setMode("ace/mode/html");
 noteHTMLCodeEditor.setReadOnly(true);
 noteHTMLCodeEditor.session.setUseWrapMode(true);
 
+const codeFileViewCodeEditor = ace.edit("codeFileView");
+codeFileViewCodeEditor.setTheme("ace/theme/github");
+codeFileViewCodeEditor.session.setMode("ace/mode/plain_text");
+codeFileViewCodeEditor.setReadOnly(true);
+codeFileViewCodeEditor.session.setUseWrapMode(true);
+
 function onLoadTasks() {
   if (localStorage.getItem("noteProgress") !== "<p></p>" && localStorage.getItem(("noteProgress")) !== null) {
     hideAndShow("createOrOpenContainer", "noteEditor");
