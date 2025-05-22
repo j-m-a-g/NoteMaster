@@ -4,11 +4,15 @@
   --lightAccent300: #f0f0f0;
   --lightAccent400: #dedede;
 
-  --orangeAccent100: #ffddb0;
+  --blueAccent50: #e2f1ff;
+  --blueAccent100: #b9dcff;
+  --blueAccent500: #008eff;
+  --blueAccent600: #0080ff;
+  --blueAccent700: #146dea;
 }
 
 ::selection {
-  background-color: var(--lightAccent400);
+  background-color: var(--blueAccent50);
 }
 
 html {
@@ -55,7 +59,7 @@ input[type=text], input[type=url], input[type=number] {
 
 input[type = text]:focus, input[type=url]:focus, input[type=number]:focus {
   outline-style: none;
-  border-color: cornflowerblue;
+  border-color: var(--blueAccent500);
 }
 
 input[type = text]::placeholder, input[type=url]::placeholder, input[type=number]::placeholder {
@@ -76,7 +80,7 @@ summary:hover {
 }
 
 summary:active {
-  border-color: cornflowerblue;
+  border-color: var(--blueAccent500);
 }
 
 select {
@@ -93,7 +97,7 @@ select:hover {
 select:focus {
   outline-style: none;
   border-style: solid;
-  border-color: cornflowerblue;
+  border-color: var(--blueAccent500);
 }
 
 .tableHead {
@@ -118,7 +122,7 @@ button.menu {
 }
 
 button.menu:hover {
-  background-color: var(--lightAccent300);
+  background-color: var(--blueAccent50);
 }
 
 div.menu {
@@ -147,7 +151,7 @@ button.menuDropdown {
 }
 
 button.menuDropdown:hover {
-  background-color: var(--lightAccent200);
+  background-color: var(--blueAccent50);
 }
 
 button.menuDropdown:disabled:hover {
@@ -209,7 +213,7 @@ button.appSection:hover {
 
 button.appSection:active {
   background-color: var(--lightAccent300);
-  border-color: cornflowerblue;
+  border-color: var(--blueAccent500);
 }
 
 img.appSection {
@@ -253,9 +257,32 @@ div.dialogOverlay {
   animation-duration: 0.25s;
 }
 
-button.dialogOverlay {
+.primaryButton {
+  width: 100%;
+  height: 37px;
   padding: 10px;
-  background-color: var(--lightAccent200);
+  border-radius: 5px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: var(--blueAccent500);
+  background-color: var(--blueAccent500);
+  color: white
+}
+
+.primaryButton:hover {
+  background-color: var(--blueAccent600);
+}
+
+.primaryButton:active {
+  background-color: #146dea;
+  border-color: var(--blueAccent700);
+}
+
+button.dialogOverlay {
+  width: 100%;
+  height: 37px;
+  padding: 10px;
+  background-color: transparent;
   border-radius: 5px;
   border-style: solid;
   border-width: 1px;
@@ -268,18 +295,18 @@ button.dialogOverlay:hover {
 
 button.dialogOverlay:active {
   background-color: rgba(0, 0, 0, 0.05);
-  border-color: cornflowerblue;
+  border-color: var(--blueAccent500);
 }
 
 a.hyperlinkButton {
   padding-left: 5px;
   padding-right: 5px;
   cursor: pointer;
-  color: cornflowerblue;
+  color: var(--blueAccent500);
 }
 
 a.hyperlinkButton:hover {
-  background-color: rgba(100, 149, 237, 0.1);
+  background-color: #008eff10;
   text-decoration: none;
 }
 
@@ -294,7 +321,7 @@ a.hyperlinkButton:hover {
 }
 
 #mainEditor:active {
-  border-color: cornflowerblue;
+  border-color: var(--blueAccent500);
 }
 
 nav.statusBar {
@@ -326,25 +353,6 @@ h1.saveBeforeClosing {
 h3.saveBeforeClosing {
   line-height: 25px;
   text-align: center;
-}
-
-button.saveBeforeClosing {
-  width: 100%;
-  padding: 10px;
-  background-color: transparent;
-  border-radius: 5px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: var(--lightAccent200);
-}
-
-button.saveBeforeClosing:hover {
-  background-color: rgba(0, 0, 0, 0.025);
-}
-
-button.saveBeforeClosing:active {
-  background-color: rgba(0, 0, 0, 0.05);
-  border-color: cornflowerblue;
 }
 
 #dialogFocusBackground {
@@ -383,7 +391,7 @@ div.warningBanner {
   width: 100%;
   padding: 10px;
   border-radius: 5px;
-  background-color: var(--orangeAccent100);
+  background-color: var(--blueAccent100);
 }
 
 button.warningBanner {

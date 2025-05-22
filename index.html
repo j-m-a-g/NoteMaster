@@ -8,6 +8,8 @@
   <link href="Styles/index.css" rel="stylesheet">
   <link href="Styles/fileViewers.css" rel="stylesheet">
   <link href="Styles/styleMapStyles.css" rel="stylesheet">
+
+  <link href="notemasterIcon.svg" rel="icon">
   <link href="manifest.json" rel="manifest">
 
   <link href="https://cdn.jsdelivr.net/npm/quill/dist/quill.snow.min.css" rel="stylesheet">
@@ -492,6 +494,9 @@
           </div>
           <div hidden id="wordDocumentView"></div>
         </div>
+        <div hidden id="codeFileViewer">
+
+        </div>
         <div hidden id="webpageViewer">
           <nav style="margin-bottom: 5px">
             <table>
@@ -620,15 +625,15 @@
     <table onclick="confirmSaveDialog.hidden = true" style="width: 100%">
       <tr>
         <td style="width: 33%">
-          <button class="saveBeforeClosing" onclick="doNotSave()" style="background-color: #e54304; color: white">Don't
-            Save
+          <button class="primaryButton" onclick="doNotSave()">
+            Don't Save
           </button>
         </td>
         <td style="width: 33%">
-          <button class="saveBeforeClosing" onclick="downloadNote()">Download</button>
+          <button class="dialogOverlay" onclick="downloadNote()">Download</button>
         </td>
         <td style="width: 33%">
-          <button class="saveBeforeClosing">Continue Working</button>
+          <button class="dialogOverlay">Continue Working</button>
         </td>
       </tr>
     </table>
@@ -655,13 +660,12 @@
     <table onclick="confirmViewerClose.hidden = true" style="width: 100%">
       <tr>
         <td style="width: 50%">
-          <button class="saveBeforeClosing" onclick="closeCurrentFile()"
-                  style="background-color: #e54304; color: white">
+          <button class="primaryButton" onclick="closeCurrentFile()">
             Yes
           </button>
         </td>
         <td style="width: 50%">
-          <button class="saveBeforeClosing">No</button>
+          <button class="dialogOverlay">No</button>
         </td>
       </tr>
     </table>
@@ -732,7 +736,7 @@
                  placeholder="Columns" style="width: 90%" type="number">
         </td>
         <td style="width: 20%">
-          <button class="dialogOverlay" onclick="createTable()" style="width: 100%">Create</button>
+          <button class="primaryButton" onclick="createTable()" style="width: 100%">Create</button>
         </td>
       </tr>
     </table>
@@ -796,7 +800,7 @@
           <input id="URLToPDFInput" placeholder="https://example.com/document.pdf" style="width: 94%" type="url">
         </td>
         <td>
-          <button class="dialogOverlay"
+          <button class="primaryButton"
                   onclick="if (checkURLInput('URLToPDFInput')) { toggleDialog(false, 'linkToPDF'); pdfView.src = document.getElementById('URLToPDFInput').value; toggleViewer(true, 'pdfViewer'); tasksOnceFileOpen('pdfView', null); addHistoryEntry('URLToPDFInput')}">
             Open
           </button>
@@ -819,7 +823,7 @@
           <input id="URLToImageInput" placeholder="https://example.com/image.jpg" style="width: 94%" type="url">
         </td>
         <td>
-          <button class="dialogOverlay"
+          <button class="primaryButton"
                   onclick="if (checkURLInput('URLToImageInput')) { toggleDialog(false, 'linkToImage'); imageView.src = document.getElementById('URLToImageInput').value; toggleViewer(true, 'imageViewer'); tasksOnceFileOpen('imageView', null); addHistoryEntry('URLToImageInput') }">
             Open
           </button>
@@ -865,7 +869,7 @@
           <input placeholder="https://example.com" style="width: 94%" type="url">
         </td>
         <td>
-          <button class="dialogOverlay">Open</button>
+          <button class="primaryButton">Open</button>
         </td>
       </tr>
     </table>
@@ -887,7 +891,7 @@
                  type="url">
         </td>
         <td>
-          <button class="dialogOverlay"
+          <button class="primaryButton"
                   onclick="if (checkURLInput('URLToOnlineDesign')) { onlineDesignView.src = URLToOnlineDesign.value.replace('edit', 'view') + '?embed'; toggleDialog(false, 'linkToOnlineDesign'); toggleViewer(true,  'onlineDesignViewer'); tasksOnceFileOpen('onlineDesignView', null); addHistoryEntry('URLToOnlineDesign') }">
             Open
           </button>
@@ -909,7 +913,7 @@
                  type="url">
         </td>
         <td>
-          <button class="dialogOverlay"
+          <button class="primaryButton"
                   onclick="if (checkURLInput('URLToTubeVideo')) { tubeVideoView.src = 'https://www.youtube.com/embed/' + (URLToTubeVideo.value.replaceAll('https://www.youtube.com/watch?v=', '')).replaceAll('https://youtu.be/', ''); toggleDialog(false, 'linkToTubeVideo'); toggleViewer(true, 'tubeVideoViewer'); tasksOnceFileOpen('tubeVideoView', null); addHistoryEntry('URLToTubeVideo') }">
             Open
           </button>
