@@ -14,7 +14,7 @@
   <link href="https://cdn.jsdelivr.net/npm/pretty-checkbox/dist/pretty-checkbox.min.css" rel="stylesheet">
 </head>
 
-<body onload="onLoadTasks()" onresize="dynamicallySetHeight()" onunload="alert('hello')">
+<body onload="onLoadTasks()" onresize="dynamicallySetHeight()" onbeforeunload="if (quill.getLength() !== 1 || noteName.value !== '') { event.preventDefault(); event.returnValue = '' }">
 <nav id="appMenu">
   <button class="menu"
           onmouseleave="document.getElementById('fileMenu').hidden = true"
