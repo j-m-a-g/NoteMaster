@@ -68,6 +68,7 @@ function closeCurrentFile() {
   webpageView.src = "Pages/noWebpageNavigated.html";
   webpageViewer.hidden = true;
 
+  incorrectWordFormatting.hidden = true;
   wordDocumentView.hidden = true;
   wordDocumentView.innerHTML = "";
   wordDocumentViewer.hidden = true;
@@ -76,8 +77,12 @@ function closeCurrentFile() {
   codeFileView.hidden = true;
   codeFileViewerStatusBar.hidden = true;
 
-  chooseViewer.hidden = false;
+  cloudFileView.hidden = true;
+  cloudFileView.src = "";
+  cloudFileViewer.hidden = true;
+
   closeFile.disabled = true;
+  chooseViewer.hidden = false;
   noFileSelected.hidden = false;
   viewerStatusBar.hidden = false;
   viewersContainer.hidden = true;
@@ -136,5 +141,70 @@ function checkURLInput(URLInputObject) {
     return false
   } else {
     return true
+  }
+}
+
+function parseCloudDocumentURL() {
+  if (checkURLInput('URLToCloudFile')) {
+    if (onedriveOrigin.checked) {
+      const DriveURLArray = URLToCloudFile.value.split("");
+      let resultingURL = "";
+
+      // Removes the URL arguments that come after the path to
+      // the document (i.e. after "&action")
+      for (let a = 0; a < DriveURLArray.length; a++) {
+        if (DriveURLArray[a] === "&" && DriveURLArray[a + 1] === "a" && DriveURLArray[a + 2] === "c" && DriveURLArray[a + 3] === "t" && DriveURLArray[a + 4] === "i" && DriveURLArray[a + 5] === "o" && DriveURLArray[a + 6] === "n") {
+          while (true) {
+            if (a !== DriveURLArray.length) {
+              DriveURLArray[a] = "";
+              a++;
+            } else {
+              break;
+            }
+          }
+        }
+      }
+
+      for (let c = 0; c < DriveURLArray.length; c++) {
+        resultingURL += DriveURLArray[c];
+      }
+
+      toggleDialog(false, "insertCloudURLDialog");
+      cloudFileView.src = resultingURL + "&action=embedview";
+    } else {
+      const GoogleURLArray = URLToCloudFile.value.replace("https://docs.google.com/", "").replace("https://drive.google.com", "").split("");
+      let documentID = "";
+
+      // Parses the URL to retrieve the document ID
+      for (let b = 0; b < GoogleURLArray.length; b++) {
+        if (GoogleURLArray[b - 1] === "/" && GoogleURLArray[b] === "d" && GoogleURLArray[b + 1] === "/") {
+          while (true) {
+            if (GoogleURLArray[b + 2] !== "/") {
+              documentID += GoogleURLArray[b];
+              b++;
+            } else {
+              documentID += GoogleURLArray[b];
+              documentID += GoogleURLArray[b + 1];
+              break;
+            }
+          }
+        }
+      }
+
+      // Throws an error if documentID has not been changed from
+      // its original declaration
+      if (documentID === "") {
+        toggleDialog(false, "insertCloudURLDialog");
+        throwAppError("This Google Drive document URL is invalid. Please ensure you are copying the link to it from your browser's address bar and try again");
+        closeCurrentFile();
+      } else {
+        toggleDialog(false, "insertCloudURLDialog");
+        cloudFileView.src = "https://docs.google.com/viewer?srcid=" + documentID.replace("d/", "") + "&pid=explorer&efh=false&a=v&chrome=false&embedded=true";
+      }
+    }
+
+    toggleViewer(true, "cloudFileViewer");
+    tasksOnceFileOpen("cloudFileView", null);
+    addHistoryEntry("URLToCloudFile");
   }
 }

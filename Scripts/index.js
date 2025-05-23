@@ -54,7 +54,6 @@ const insertTableQuill = new Quill("#insertTableEditor", {
 });
 
 const noteHTMLCodeEditor = ace.edit("noteHTML");
-noteHTMLCodeEditor.setTheme("ace/theme/monokai");
 noteHTMLCodeEditor.session.setMode("ace/mode/html");
 noteHTMLCodeEditor.setReadOnly(true);
 noteHTMLCodeEditor.session.setUseWrapMode(true);

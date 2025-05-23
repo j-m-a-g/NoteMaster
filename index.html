@@ -383,6 +383,24 @@
                 </button>
               </td>
             </tr>
+            <tr>
+              <td>
+                <button class="appSection"
+                ">
+                <table>
+                  <tr>
+                    <td>
+                      <img class="appSection" src="Assets/Images/youtube_activity_BB271A.svg">
+                    </td>
+                    <td>
+                      <span class="buttonHeading">Custom Embed</span><br>
+                      <span class="helperText">Bring your own embedded document</span>
+                    </td>
+                  </tr>
+                </table>
+                </button>
+              </td>
+            </tr>
           </table>
         </details>
         <hr style="opacity: 25%; border-style: dotted">
@@ -502,7 +520,8 @@
           <div hidden id="codeFileView"></div>
           <nav class="statusBar" hidden id="codeFileViewerStatusBar">
             <span class="helperText">Language</span>
-            <select id="programmingLanguageMode" onchange="codeFileViewCodeEditor.session.setMode('ace/mode/html');">
+            <select id="programmingLanguageMode"
+                    onchange="const editorMode = 'ace/mode/html' + programmingLanguageMode.value; codeFileViewCodeEditor.session.setMode(editorMode);">
               <option value="plain_text">None</option>
               <optgroup label="A">
                 <option value="actionscript">ActionScript</option>
@@ -618,6 +637,9 @@
               </optgroup>
             </select>
           </nav>
+        </div>
+        <div hidden id="cloudFileViewer">
+          <iframe allowfullscreen hidden id="cloudFileView"></iframe>
         </div>
         <div hidden id="webpageViewer">
           <nav style="margin-bottom: 5px">
@@ -889,7 +911,7 @@
     </table>
   </div>
   <!-- Error -->
-  <div class="dialogOverlay" hidden id="applicationError">
+  <div class="dialogOverlay" hidden id="applicationError" style="z-index: 3">
     <h1>An Error Occurred</h1>
     <h3 class="helperText" id="errorMessage"></h3>
     <button class="dialogOverlay" onclick="toggleDialog(false, 'applicationError')" style="width: 100%">OK</button>
@@ -970,7 +992,7 @@
         </td>
         <td>
           <div class="pretty p-default p-curve p-thick">
-            <input name="documentOrigin" type="radio">
+            <input id="onedriveOrigin" name="documentOrigin" type="radio">
             <div class="state">
               <label>OneDrive</label>
             </div>
@@ -978,7 +1000,7 @@
         </td>
         <td>
           <div class="pretty p-default p-curve p-thick">
-            <input name="documentOrigin" type="radio">
+            <input id="googleDriveOrigin" name="documentOrigin" type="radio">
             <div class="state">
               <label>Google Drive</label>
             </div>
@@ -990,10 +1012,10 @@
     <table style="width: 100%; margin-bottom: 10px">
       <tr>
         <td style="width: 75%">
-          <input placeholder="https://example.com" style="width: 94%" type="url">
+          <input id="URLToCloudFile" placeholder="https://example.com" style="width: 94%" type="url">
         </td>
         <td>
-          <button class="primaryButton">Open</button>
+          <button class="primaryButton" onclick="parseCloudDocumentURL()">Open</button>
         </td>
       </tr>
     </table>
@@ -1011,7 +1033,8 @@
     <table style="width: 100%; margin-bottom: 10px">
       <tr>
         <td style="width: 75%">
-          <input id="URLToOnlineDesign" placeholder="https://example.com" style="width: 94%"
+          <input id="URLToOnlineDesign"
+                 placeholder="https://www.canva.com/design/DAFtggAaSbw/SzSJMmE_NBWoxEPNDkNjbQ/edit" style="width: 94%"
                  type="url">
         </td>
         <td>
