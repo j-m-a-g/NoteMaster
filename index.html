@@ -138,9 +138,92 @@
 <div style="padding-top: 34px">
   <table id="appSectionsTable" style="width: 100%; height: 100%">
     <tr>
+      <!-- Editor section -->
+      <td class="appSection" id="createOrOpenContainer">
+        <h1 style="line-height: 20px">Welcome</h1>
+        <button class="appSection" onclick="initiateNote(false)">
+          <table>
+            <tr>
+              <td>
+                <img class="appSection reducedIntensity" src="Assets/Images/note_add_000000.svg">
+              </td>
+              <td style="width: 173px">
+                <span class="buttonHeading">
+                  Create a <u>N</u>ew Note <span class="helperText menuDropdown">Alt + N</span>
+                </span>
+                <br>
+                <span class="helperText">Get started with a blank slate</span>
+              </td>
+            </tr>
+          </table>
+        </button>
+        <br>
+        <button class="appSection" onclick="openNoteFileInput.click()">
+          <table>
+            <tr>
+              <td>
+                <img class="appSection reducedIntensity" src="Assets/Images/file_open_000000.svg">
+              </td>
+              <td>
+                <span class="buttonHeading"><u>O</u>pen an Existing Note <span
+                    class="helperText menuDropdown">Alt + O</span></span><br>
+                <input accept="text/html" hidden id="openNoteFileInput"
+                       onchange="initiateNote(true)"
+                       type="file">
+                <span class="helperText">Browse your computer for a note you were working on last time</span>
+              </td>
+            </tr>
+          </table>
+        </button>
+        <span class="helperText" style="margin-left: 5px">
+          Don't know where to start? See an <a class="hyperlinkButton" onclick="launchExample()">example</a>
+        </span>
+      </td>
+      <td class="appSection" hidden id="noteEditor">
+        <div style="overflow-x: auto; height: 100%">
+          <nav style="margin-bottom: 5px">
+            <button class="navButton" onclick="confirmSave()" title="New (Alt + N)">
+              <img class="menu" src="Assets/Images/draft_80A4AE.svg" style="filter: grayscale(100%)">
+            </button>
+            <button class="navButton" onclick="saveNoteProgress()" title="Save Progress (Alt + S)">
+              <img class="reducedIntensity menu" src="Assets/Images/save_000000.svg">
+            </button>
+            <button class="navButton" onclick="downloadNote()" title="Download Note (Alt + W)">
+              <img class="reducedIntensity menu" src="Assets/Images/download_000000.svg">
+            </button>
+            <button class="navButton" onclick="mainEditorFontSize += 1; mainEditor.style.fontSize = mainEditorFontSize + 'px'; updateStatusBar()"
+                    title="Zoom In">
+              <img class="reducedIntensity menu" src="Assets/Images/zoom_in_000000.svg">
+            </button>
+            <button class="navButton" onclick="mainEditorFontSize -= 1; mainEditor.style.fontSize = mainEditorFontSize + 'px'; updateStatusBar()"
+                    title="Zoom Out">
+              <img class="reducedIntensity menu" src="Assets/Images/zoom_out_000000.svg">
+            </button>
+            <input id="noteName" oninput="noteName.value = noteName.value.replaceAll('.', '')" placeholder="Untitled"
+                   type="text">
+            <span class="helperText" style="font-size: 14px">.htm</span>
+          </nav>
+          <div id="mainEditor" oninput="updateStatusBar()"></div>
+          <nav class="statusBar" id="editorStatusBar">
+            <table style="width: 100%">
+              <tr>
+                <td>
+                  <span id="characterCount"></span>
+                </td>
+                <td>
+                  <span id="wordCount"></span>
+                </td>
+                <td>
+                  <span id="mainEditorZoom"></span>
+                </td>
+              </tr>
+            </table>
+          </nav>
+          <a hidden id="noteDownloadLink"></a>
+        </div>
+      </td>
       <!-- Viewing section -->
       <td class="appSection" id="chooseViewer">
-        <h1 style="line-height: 20px">Welcome</h1>
         <h3>What type of document will you view today?</h3>
         <details id="localDocuments">
           <summary accesskey="y" onclick="onlineDocuments.open = false">
@@ -422,11 +505,16 @@
           </table>
         </button>
       </td>
-
       <td class="appSection" hidden id="viewersContainer">
         <nav class="statusBar" id="viewerStatusBar" style="margin-top: 0; margin-bottom: 5px">
           <table style="width: 100%">
             <tr>
+              <td style="width: 5%">
+                <button class="warningBanner" onclick="toggleDialog(true,  'viewingHistory'); appendViewingHistory()"
+                        title="Show viewing history">
+                  <img class="reducedIntensity menu" src="Assets/Images/history_000000.svg">
+                </button>
+              </td>
               <td>
                 <span class="helperText">File Name</span>
                 <span id="fileName">---</span>
@@ -438,12 +526,6 @@
               <td>
                 <span class="helperText">Last Modified</span>
                 <span id="fileLastModified">---</span>
-              </td>
-              <td style="width: 5%">
-                <button class="warningBanner" onclick="toggleDialog(true,  'viewingHistory'); appendViewingHistory()"
-                        title="Show viewing history">
-                  <img class="reducedIntensity menu" src="Assets/Images/history_000000.svg">
-                </button>
               </td>
             </tr>
           </table>
@@ -516,7 +598,7 @@
         </div>
         <div hidden id="codeFileViewer">
           <nav class="statusBar" hidden id="codeFileViewerStatusBar">
-            <span class="helperText">Language</span>
+            <span class="helperText">Syntax</span>
             <select id="programmingLanguageMode"
                     onchange="const editorMode = 'ace/mode/' + programmingLanguageMode.value; codeFileViewCodeEditor.session.setMode(editorMode);">
               <option value="plain_text">None</option>
@@ -633,6 +715,19 @@
                 <option value="zig">Zig</option>
               </optgroup>
             </select>
+            <button class="navButton"
+                    onclick="codeFileViewFontSize += 1; codeFileView.style.fontSize = codeFileViewFontSize + 'px'"
+                    title="Increase font size">
+              <img class="reducedIntensity menu" src="Assets/Images/text_increase_000000.svg">
+            </button>
+            <button class="navButton"
+                    onclick="codeFileViewFontSize -= 1; codeFileView.style.fontSize = codeFileViewFontSize + 'px'"
+                    title="Decrease font size">
+              <img class="reducedIntensity menu" src="Assets/Images/text_decrease_000000.svg">
+            </button>
+            <button class="navButton" onclick="codeFileView.style.fontSize = '12px'" title="Reset font size">
+              <img class="reducedIntensity menu" src="Assets/Images/fullscreen_exit_000000.svg">
+            </button>
           </nav>
           <div hidden id="codeFileView"></div>
         </div>
@@ -677,79 +772,6 @@
         </div>
         <div hidden id="anotherNoteViewer">
           <div hidden id="anotherNoteView"></div>
-        </div>
-      </td>
-
-      <!-- Editor section -->
-      <td class="appSection" id="createOrOpenContainer">
-        <button class="appSection" onclick="initiateNote(false)">
-          <table>
-            <tr>
-              <td>
-                <img class="appSection reducedIntensity" src="Assets/Images/note_add_000000.svg">
-              </td>
-              <td style="width: 173px">
-                <span class="buttonHeading">
-                  Create a <u>N</u>ew Note <span class="helperText menuDropdown">Alt + N</span>
-                </span>
-                <br>
-                <span class="helperText">Get started with a blank slate</span>
-              </td>
-            </tr>
-          </table>
-        </button>
-        <br>
-        <button class="appSection" onclick="openNoteFileInput.click()">
-          <table>
-            <tr>
-              <td>
-                <img class="appSection reducedIntensity" src="Assets/Images/file_open_000000.svg">
-              </td>
-              <td>
-                <span class="buttonHeading"><u>O</u>pen an Existing Note <span
-                    class="helperText menuDropdown">Alt + O</span></span><br>
-                <input accept="text/html" hidden id="openNoteFileInput"
-                       onchange="initiateNote(true)"
-                       type="file">
-                <span class="helperText">Browse your computer for a note you were working on last time</span>
-              </td>
-            </tr>
-          </table>
-        </button>
-        <span class="helperText" style="margin-left: 5px">
-          Don't know where to start? See an <a class="hyperlinkButton" onclick="launchExample()">example</a>
-        </span>
-      </td>
-      <td class="appSection" hidden id="noteEditor">
-        <div style="overflow-x: auto; height: 100%">
-          <nav style="margin-bottom: 5px">
-            <button class="navButton" onclick="confirmSave()" title="New (Alt + N)">
-              <img class="menu" src="Assets/Images/draft_80A4AE.svg" style="filter: grayscale(100%)">
-            </button>
-            <button class="navButton" onclick="saveNoteProgress()" title="Save Progress (Alt + S)">
-              <img class="reducedIntensity menu" src="Assets/Images/save_000000.svg">
-            </button>
-            <button class="navButton" onclick="downloadNote()" title="Download Note (Alt + W)">
-              <img class="reducedIntensity menu" src="Assets/Images/download_000000.svg">
-            </button>
-            <input id="noteName" oninput="noteName.value = noteName.value.replaceAll('.', '')" placeholder="Untitled"
-                   type="text">
-            <span class="helperText" style="font-size: 14px">.htm</span>
-          </nav>
-          <div id="mainEditor" oninput="updateStatusBar()"></div>
-          <nav class="statusBar" id="editorStatusBar">
-            <table style="width: 100%">
-              <tr>
-                <td>
-                  <span id="characterCount"></span>
-                </td>
-                <td>
-                  <span id="wordCount"></span>
-                </td>
-              </tr>
-            </table>
-          </nav>
-          <a hidden id="noteDownloadLink"></a>
         </div>
       </td>
     </tr>
@@ -829,8 +851,9 @@
               <td>Viewing (%)</td>
               <td>
                 <a class="hyperlinkButton" onclick="viewingSize.value = viewingSize.min; adjustViewingAndEditorSizes()">Min</a>
-                | <a class="hyperlinkButton"
-                     onclick="viewingSize.value = viewingSize.max; adjustViewingAndEditorSizes()">Max</a>
+                or
+                <a class="hyperlinkButton"
+                   onclick="viewingSize.value = viewingSize.max; adjustViewingAndEditorSizes()">Max</a>
               </td>
             </tr>
           </table>

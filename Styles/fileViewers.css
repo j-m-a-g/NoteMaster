@@ -52,6 +52,7 @@ iframe {
 
 /* Height dynamically set within index.js */
 #codeFileView {
+  z-index: 0;
   margin-top: 5px;
   width: 100%;
 }

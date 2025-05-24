@@ -98,14 +98,16 @@ function launchExample() {
 
 function updateStatusBar() {
   if (quill.getLength() === 1) {
-    characterCount.innerHTML = "<span class='helperText'>Characters (Including spaces)</span> 0";
+    characterCount.innerHTML = "<span class='helperText'>Characters (Including spaces) </span> 0";
   } else {
-    characterCount.innerHTML = "<span class='helperText'>Characters (Including spaces)</span> " + quill.getLength();
+    characterCount.innerHTML = "<span class='helperText'>Characters (Including spaces) </span> " + quill.getLength();
   }
 
   if (quill.getText() === "\n") {
-    wordCount.innerHTML = "<span class='helperText'>Words</span> 0";
+    wordCount.innerHTML = "<span class='helperText'>Words </span> 0";
   } else {
-    wordCount.innerHTML = "<span class='helperText'>Words</span> " + (quill.getText().split(/\s+/).length - 1);
+    wordCount.innerHTML = "<span class='helperText'>Words </span> " + (quill.getText().split(/\s+/).length - 1);
   }
+
+  mainEditorZoom.innerHTML = "<span class='helperText'>Zoom </span>" + Math.floor((mainEditorFontSize / 13) * 100) + "%";
 }

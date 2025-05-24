@@ -1,6 +1,7 @@
 const URLToCloudFile = document.getElementById("URLToCloudFile");
 const URLToOnlineDesign = document.getElementById("URLToOnlineDesign");
 const URLToTubeVideo = document.getElementById("URLToTubeVideo");
+const appMenu = document.getElementById("appMenu");
 const additionalVideoControls = document.getElementById("additionalVideoControls");
 const adjustAppSectionSizes = document.getElementById("adjustAppSectionSizes");
 const anotherNoteFileInput = document.getElementById("anotherNoteFileInput");
@@ -85,4 +86,7 @@ const wordFileInput = document.getElementById("wordFileInput");
 const wordWrap = document.getElementById("wordWrap");
 const wordWrapCheck = document.getElementById("wordWrapCheck");
 let isOpeningAnotherNote = false;
+const mainEditorZoom = document.getElementById("mainEditorZoom");
 let textViewFontSize = 14;
+let codeFileViewFontSize = 12;
+let mainEditorFontSize = 13;
