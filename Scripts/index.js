@@ -59,7 +59,6 @@ noteHTMLCodeEditor.setReadOnly(true);
 noteHTMLCodeEditor.session.setUseWrapMode(true);
 
 const codeFileViewCodeEditor = ace.edit("codeFileView");
-codeFileViewCodeEditor.setTheme("ace/theme/github");
 codeFileViewCodeEditor.session.setMode("ace/mode/plain_text");
 codeFileViewCodeEditor.setReadOnly(true);
 codeFileViewCodeEditor.session.setUseWrapMode(true);
@@ -100,6 +99,7 @@ function dynamicallySetHeight() {
   anotherNoteView.style.height = window.innerHeight + "px";
   wordDocumentView.style.height = window.innerHeight + "px";
   noteEditor.style.height = window.innerHeight + "px";
+  codeFileView.style.height = window.innerHeight + "px";
 
   for (let iframe = 0; iframe < iframes.length; iframe++) {
     iframes[iframe].style.height = window.innerHeight + "px";

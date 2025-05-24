@@ -127,7 +127,7 @@ function readHTMLNote() {
 function viewCodeFile() {
   const fileReader = new FileReader();
   fileReader.onload = () => {
-    codeFileViewCodeEditor.session.setValue(fileReader.result);
+    codeFileViewCodeEditor.session.setValue(event.target.result);
   }
   fileReader.readAsText(event.target.files[0]);
 

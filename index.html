@@ -515,12 +515,10 @@
           <div hidden id="wordDocumentView"></div>
         </div>
         <div hidden id="codeFileViewer">
-          <pre></pre>
-          <div hidden id="codeFileView"></div>
           <nav class="statusBar" hidden id="codeFileViewerStatusBar">
             <span class="helperText">Language</span>
             <select id="programmingLanguageMode"
-                    onchange="const editorMode = 'ace/mode/html' + programmingLanguageMode.value; codeFileViewCodeEditor.session.setMode(editorMode);">
+                    onchange="const editorMode = 'ace/mode/' + programmingLanguageMode.value; codeFileViewCodeEditor.session.setMode(editorMode);">
               <option value="plain_text">None</option>
               <optgroup label="A">
                 <option value="actionscript">ActionScript</option>
@@ -636,6 +634,7 @@
               </optgroup>
             </select>
           </nav>
+          <div hidden id="codeFileView"></div>
         </div>
         <div hidden id="cloudFileViewer">
           <iframe allowfullscreen hidden id="cloudFileView"></iframe>
