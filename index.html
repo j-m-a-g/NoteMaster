@@ -385,19 +385,18 @@
             </tr>
             <tr>
               <td>
-                <button class="appSection"
-                ">
-                <table>
-                  <tr>
-                    <td>
-                      <img class="appSection" src="Assets/Images/youtube_activity_BB271A.svg">
-                    </td>
-                    <td>
-                      <span class="buttonHeading">Custom Embed</span><br>
-                      <span class="helperText">Bring your own embedded document</span>
-                    </td>
-                  </tr>
-                </table>
+                <button class="appSection">
+                  <table>
+                    <tr>
+                      <td>
+                        <img class="reducedIntensity appSection" src="Assets/Images/frame_source_000000.svg">
+                      </td>
+                      <td>
+                        <span class="buttonHeading">Custom Embed</span><br>
+                        <span class="helperText">Bring your own embedded document</span>
+                      </td>
+                    </tr>
+                  </table>
                 </button>
               </td>
             </tr>
@@ -765,7 +764,6 @@
     <h3 class="saveBeforeClosing helperText">
       You are continuing onto another task and your current work has not been saved.
     </h3>
-    <br>
     <table onclick="confirmSaveDialog.hidden = true" style="width: 100%">
       <tr>
         <td style="width: 33%">
@@ -822,7 +820,7 @@
 </div>
 
 <div class="saveBeforeClosing" hidden id="adjustAppSectionSizes">
-  <div class="dialogOverlay" id="appSectionSizesContainer" style="height: 35%">
+  <div class="dialogOverlay" id="appSectionSizesContainer">
     <h1>Adjust App Section Sizes</h1>
     <table style="width: 100%">
       <tr>
@@ -857,12 +855,14 @@
     </table>
     <a class="hyperlinkButton" onclick="adjustAppSectionSizes.hidden = true">Close</a>|
     <a class="hyperlinkButton"
-       onclick="viewingSize.value = 50; editorSize.value = 50; applyPercentageSizes(); localStorage.setItem('viewingSizeValue', viewingSize.value)">Reset</a>
+       onclick="viewingSize.value = 50; editorSize.value = 50; applyPercentageSizes(); localStorage.setItem('viewingSizeValue', viewingSize.value)">
+      Reset
+    </a>
   </div>
 </div>
 
 <div class="saveBeforeClosing" hidden id="insertTable">
-  <div class="dialogOverlay" style="height: 80%">
+  <div class="dialogOverlay" style="height: 75%">
     <h1>Insert a Table</h1>
     <h3 class="helperText">Select the number of rows and columns you'd like to have. Note that this cannot be changed
       later for the same table</h3>
@@ -916,10 +916,10 @@
     <h3 class="helperText" id="errorMessage"></h3>
     <button class="dialogOverlay" onclick="toggleDialog(false, 'applicationError')" style="width: 100%">OK</button>
   </div>
-  <div class="dialogOverlay" hidden id="viewingHistory">
+  <div class="dialogOverlay" hidden id="viewingHistory" style="height: 75%">
     <h1>Viewing History</h1>
     <h3 class="helperText">View, manage, and add the documents you have viewed to your notes</h3>
-    <div id="historyTableContainer">
+    <div id="historyTableContainer" style="overflow-x: auto">
       <table id="viewingHistoryTable"></table>
     </div>
     <br>
@@ -939,11 +939,11 @@
     <img src="Assets/Images/picture_as_pdf_D16D6A.svg">
     <img class="reducedIntensity" src="Assets/Images/link_000000.svg">
     <h1>Link to a PDF</h1>
-    <h3 class="helperText">Paste the URL to your PDF below<br>(And ensure it is correct)</h3>
+    <h3 class="helperText">Paste the URL to your PDF below</h3>
     <table style="width: 100%; margin-bottom: 10px">
       <tr>
         <td style="width: 75%">
-          <input id="URLToPDFInput" placeholder="https://example.com/document.pdf" style="width: 94%" type="url">
+          <input id="URLToPDFInput" placeholder="e.x: https://example.com/document.pdf" style="width: 94%" type="url">
         </td>
         <td>
           <button class="primaryButton"
@@ -962,11 +962,11 @@
     <img src="Assets/Images/image_80A4AE.svg">
     <img class="reducedIntensity" src="Assets/Images/link_000000.svg">
     <h1>Link to an Image</h1>
-    <h3 class="helperText">Paste the URL to your image below<br>(And ensure it is correct)</h3>
+    <h3 class="helperText">Paste the URL to your image below</h3>
     <table style="width: 100%; margin-bottom: 10px">
       <tr>
         <td style="width: 75%">
-          <input id="URLToImageInput" placeholder="https://example.com/image.jpg" style="width: 94%" type="url">
+          <input id="URLToImageInput" placeholder="e.x: https://example.com/image.jpg" style="width: 94%" type="url">
         </td>
         <td>
           <button class="primaryButton"
@@ -981,18 +981,19 @@
     </a>
   </div>
   <!-- Cloud file -->
-  <div class="dialogOverlay" hidden id="insertCloudURLDialog">
+  <div class="dialogOverlay" hidden id="insertCloudURLDialog" style="margin-top: 5%">
     <img src="Assets/Images/cloud_7CA7D8.svg">
+    <img src="Assets/Images/article_789DE5.svg">
+    <img src="Assets/Images/dataset_9DC384.svg">
+    <img src="Assets/Images/insert_chart_D08370.svg">
     <h1>File in the Cloud</h1>
-    <h3 class="helperText">Paste the URL to your cloud document below<br>(And ensure it is correct)</h3>
-    <table style="width: 100%">
+    <h3 class="helperText">Paste the URL to your cloud document below from your browser's address bar</h3>
+    <span class="helperText">Cloud Storage Service</span>
+    <table style="width: 100%; margin-top: 10px; margin-bottom: 10px">
       <tr>
         <td>
-          <span class="helperText">Document Origin:</span>
-        </td>
-        <td>
           <div class="pretty p-default p-curve p-thick">
-            <input id="onedriveOrigin" name="documentOrigin" type="radio">
+            <input checked id="onedriveOrigin" name="documentOrigin" type="radio">
             <div class="state">
               <label>OneDrive</label>
             </div>
@@ -1008,11 +1009,12 @@
         </td>
       </tr>
     </table>
-    <br>
     <table style="width: 100%; margin-bottom: 10px">
       <tr>
         <td style="width: 75%">
-          <input id="URLToCloudFile" placeholder="https://example.com" style="width: 94%" type="url">
+          <input id="URLToCloudFile"
+                 placeholder="e.x: https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit?gid=0#gid=0"
+                 style="width: 94%" type="url">
         </td>
         <td>
           <button class="primaryButton" onclick="parseCloudDocumentURL()">Open</button>
@@ -1034,7 +1036,8 @@
       <tr>
         <td style="width: 75%">
           <input id="URLToOnlineDesign"
-                 placeholder="https://www.canva.com/design/DAFtggAaSbw/SzSJMmE_NBWoxEPNDkNjbQ/edit" style="width: 94%"
+                 placeholder="e.x: https://www.canva.com/design/DAFtggAaSbw/SzSJMmE_NBWoxEPNDkNjbQ/edit"
+                 style="width: 94%"
                  type="url">
         </td>
         <td>
@@ -1052,11 +1055,11 @@
   <div class="dialogOverlay" hidden id="linkToTubeVideo">
     <img src="Assets/Images/youtube_activity_BB271A.svg">
     <h1>YouTube Video</h1>
-    <h3 class="helperText">Paste the URL to your YouTube video below<br>(And ensure it is correct)</h3>
+    <h3 class="helperText">Paste the URL to your YouTube video below</h3>
     <table style="width: 100%; margin-bottom: 10px">
       <tr>
         <td style="width: 75%">
-          <input id="URLToTubeVideo" placeholder="https://www.youtube.com/watch?v=jNQXAC9IVRw" style="width: 94%"
+          <input id="URLToTubeVideo" placeholder="e.x: https://www.youtube.com/watch?v=jNQXAC9IVRw" style="width: 94%"
                  type="url">
         </td>
         <td>
@@ -1121,7 +1124,7 @@
       Designed and developed by <a href="https://github.com/j-m-a-g" target="_blank">J. Maghamez</a>
       <br>
       <br>
-      Built with Open-Source Software
+      Built with open-source software
     </p>
     <table style="width: 100%">
       <tr>

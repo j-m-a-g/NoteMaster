@@ -147,16 +147,16 @@ function checkURLInput(URLInputObject) {
 function parseCloudDocumentURL() {
   if (checkURLInput('URLToCloudFile')) {
     if (onedriveOrigin.checked) {
-      const DriveURLArray = URLToCloudFile.value.split("");
+      const ODriveURLArray = URLToCloudFile.value.split("");
       let resultingURL = "";
 
       // Removes the URL arguments that come after the path to
       // the document (i.e. after "&action")
-      for (let a = 0; a < DriveURLArray.length; a++) {
-        if (DriveURLArray[a] === "&" && DriveURLArray[a + 1] === "a" && DriveURLArray[a + 2] === "c" && DriveURLArray[a + 3] === "t" && DriveURLArray[a + 4] === "i" && DriveURLArray[a + 5] === "o" && DriveURLArray[a + 6] === "n") {
+      for (let a = 0; a < ODriveURLArray.length; a++) {
+        if (ODriveURLArray[a] === "&" && ODriveURLArray[a + 1] === "a" && ODriveURLArray[a + 2] === "c" && ODriveURLArray[a + 3] === "t" && ODriveURLArray[a + 4] === "i" && ODriveURLArray[a + 5] === "o" && ODriveURLArray[a + 6] === "n") {
           while (true) {
-            if (a !== DriveURLArray.length) {
-              DriveURLArray[a] = "";
+            if (a !== ODriveURLArray.length) {
+              ODriveURLArray[a] = "";
               a++;
             } else {
               break;
@@ -165,26 +165,26 @@ function parseCloudDocumentURL() {
         }
       }
 
-      for (let c = 0; c < DriveURLArray.length; c++) {
-        resultingURL += DriveURLArray[c];
+      for (let c = 0; c < ODriveURLArray.length; c++) {
+        resultingURL += ODriveURLArray[c];
       }
 
       toggleDialog(false, "insertCloudURLDialog");
       cloudFileView.src = resultingURL + "&action=embedview";
     } else {
-      const GoogleURLArray = URLToCloudFile.value.replace("https://docs.google.com/", "").replace("https://drive.google.com", "").split("");
+      const GDriveURLArray = URLToCloudFile.value.replace("https://docs.google.com/", "").replace("https://drive.google.com", "").split("");
       let documentID = "";
 
       // Parses the URL to retrieve the document ID
-      for (let b = 0; b < GoogleURLArray.length; b++) {
-        if (GoogleURLArray[b - 1] === "/" && GoogleURLArray[b] === "d" && GoogleURLArray[b + 1] === "/") {
+      for (let b = 0; b < GDriveURLArray.length; b++) {
+        if (GDriveURLArray[b - 1] === "/" && GDriveURLArray[b] === "d" && GDriveURLArray[b + 1] === "/") {
           while (true) {
-            if (GoogleURLArray[b + 2] !== "/") {
-              documentID += GoogleURLArray[b];
+            if (GDriveURLArray[b + 2] !== "/") {
+              documentID += GDriveURLArray[b];
               b++;
             } else {
-              documentID += GoogleURLArray[b];
-              documentID += GoogleURLArray[b + 1];
+              documentID += GDriveURLArray[b];
+              documentID += GDriveURLArray[b + 1];
               break;
             }
           }
