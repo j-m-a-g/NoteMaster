@@ -10,10 +10,11 @@
   <link href="Styles/styleMapStyles.css" rel="stylesheet">
 
   <link href="notemasterIcon.svg" rel="icon">
-  <link href="manifest.json" rel="manifest">
+  <link crossorigin="use-credentials" href="manifest.json" rel="manifest">
 
   <link href="https://cdn.jsdelivr.net/npm/quill/dist/quill.snow.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/pretty-checkbox/dist/pretty-checkbox.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css" rel="stylesheet">
 </head>
 
 <body
@@ -183,7 +184,7 @@
         <div style="overflow-x: auto; height: 100%">
           <nav style="margin-bottom: 5px">
             <button class="navButton" onclick="confirmSave()" title="New (Alt + N)">
-              <img class="menu" src="Assets/Images/draft_80A4AE.svg" style="filter: grayscale(100%)">
+              <img class="menu" src="Assets/Images/draft_80A4AE.svg" style="filter: grayscale(100%); opacity: 50%">
             </button>
             <button class="navButton" onclick="saveNoteProgress()" title="Save Progress (Alt + S)">
               <img class="reducedIntensity menu" src="Assets/Images/save_000000.svg">
@@ -199,7 +200,8 @@
                     title="Zoom Out">
               <img class="reducedIntensity menu" src="Assets/Images/zoom_out_000000.svg">
             </button>
-            <input id="noteName" oninput="noteName.value = noteName.value.replaceAll('.', '')" placeholder="Untitled"
+            <input id="noteName" oninput="noteName.value = noteName.value.replaceAll('.', ''); alterWindowTitle(false)"
+                   placeholder="Untitled"
                    type="text">
             <span class="helperText" style="font-size: 14px">.htm</span>
           </nav>
@@ -573,7 +575,7 @@
           <nav class="statusBar" hidden id="additionalVideoControls">
             <div class="pretty p-default p-curve p-thick">
               <input oninput="videoView.loop = !!this.checked;" type="checkbox">
-              <div class="state">
+              <div class="state p-primary p-primary-o">
                 <label>Loop</label>
               </div>
             </div>
@@ -617,7 +619,7 @@
               <optgroup label="C">
                 <option value="c_cpp">C/C++</option>
                 <option value="clojure">Clojure</option>
-                <option value="cobol">Cobol</option>
+                <option value="cobol">COBOL</option>
                 <option value="coffee">Coffee</option>
                 <option value="csharp">C#</option>
                 <option value="css">CSS</option>
@@ -657,14 +659,14 @@
                 <option value="kotlin">Kotlin</option>
               </optgroup>
               <optgroup label="L">
-                <option value="less">Less</option>
+                <option value="less">LESS</option>
                 <option value="lisp">Lisp</option>
                 <option value="lua">Lua</option>
               </optgroup>
               <optgroup label="M">
                 <option value="makefile">Makefile</option>
                 <option value="markdown">Markdown</option>
-                <option value="matlab">Matlab</option>
+                <option value="matlab">MATLAB</option>
               </optgroup>
               <optgroup label="N">
                 <option value="nim">Nim</option>
@@ -689,7 +691,7 @@
                 <option value="rust">Rust</option>
               </optgroup>
               <optgroup label="S">
-                <option value="sass">Sass</option>
+                <option value="sass">SASS</option>
                 <option value="scala">Scala</option>
                 <option value="scheme">Scheme</option>
                 <option value="scss">SCSS</option>
@@ -794,7 +796,7 @@
           <button class="dialogOverlay" onclick="downloadNote()">Download</button>
         </td>
         <td style="width: 33%">
-          <button class="primaryButton" onclick="doNotSave()">
+          <button class="primaryButton" onclick="doNotSave(); alterWindowTitle(true);">
             Don't Save
           </button>
         </td>
@@ -1016,7 +1018,7 @@
         <td>
           <div class="pretty p-default p-curve p-thick">
             <input checked id="onedriveOrigin" name="documentOrigin" type="radio">
-            <div class="state">
+            <div class="state p-primary p-primary-o">
               <label>OneDrive</label>
             </div>
           </div>
@@ -1024,7 +1026,7 @@
         <td>
           <div class="pretty p-default p-curve p-thick">
             <input id="googleDriveOrigin" name="documentOrigin" type="radio">
-            <div class="state">
+            <div class="state p-primary p-primary-o">
               <label>Google Drive</label>
             </div>
           </div>
@@ -1102,7 +1104,7 @@
     <h4 class="helperText" style="margin-top: -10px">PERSONALIZATION</h4>
     <div class="pretty p-switch p-fill">
       <input type="checkbox">
-      <div class="state">
+      <div class="state p-primary">
         <label>Dark mode</label>
       </div>
     </div>
@@ -1110,7 +1112,7 @@
     <br>
     <div class="pretty p-switch p-fill">
       <input checked type="checkbox">
-      <div class="state">
+      <div class="state p-primary">
         <label>Show app animations</label>
       </div>
     </div>
@@ -1122,7 +1124,7 @@
     </a>|
     <div class="pretty p-default p-curve p-thick">
       <input id="resetOnCloseCheckbox" type="checkbox">
-      <div class="state">
+      <div class="state p-primary p-primary-o">
         <label for="resetOnCloseCheckbox">Reset preferences on close <span class="helperText menuDropdown">(Includes note progress)</span></label>
       </div>
     </div>
@@ -1163,6 +1165,11 @@
           <a href="https://ace.c9.io" target="_blank">ace</a>
         </td>
       </tr>
+      <tr>
+        <td>
+          <a href="https://katex.org" target="_blank">KaTex</a>
+        </td>
+      </tr>
     </table>
     <br>
     <a class="hyperlinkButton" onclick="toggleDialog(false, 'aboutDialog')">
@@ -1173,6 +1180,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/quill/dist/quill.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.9.0/mammoth.browser.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.js"></script>
 <script src="Assets/ace-builds/src/ace.js"></script>
 
 <script src="Scripts/globalVarDeclarations.js"></script>

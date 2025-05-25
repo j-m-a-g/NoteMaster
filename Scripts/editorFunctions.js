@@ -20,6 +20,7 @@ function initiateNote(isOpen) {
   }
 
   updateStatusBar();
+  alterWindowTitle(false);
 }
 
 function confirmSave() {

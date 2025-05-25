@@ -112,6 +112,21 @@ function hideAndShow(hiddenContainer, shownContainer) {
   document.getElementById(shownContainer).hidden = false;
 }
 
+function alterWindowTitle(isNoteClosed) {
+  switch (isNoteClosed) {
+    case true:
+      document.title = "NoteMaster";
+      break;
+    case false:
+      if (noteName.value === "") {
+        document.title = "Untitled - NoteMaster";
+      } else {
+        document.title = noteName.value + " - NoteMaster";
+      }
+      break;
+  }
+}
+
 function toggleViewer(isShown, currentViewer) {
   switch (isShown) {
     case true:

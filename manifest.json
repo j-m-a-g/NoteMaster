@@ -1,5 +1,18 @@
 {
   "name": "NoteMaster",
+  "short_name": "NoteMaster",
+  "description": "A lightweight note-taking app for the web",
+  "icons": [
+    {
+      "src": "notemasterIcon.png",
+      "sizes": "960x960",
+      "type": "image/png"
+    }
+  ],
   "start_url": "/",
-  "display": "standalone"
+  "display": "standalone",
+  "theme_color": "#fafafa",
+  "note_taking": {
+    "new_note_url": "/index.html"
+  }
 }

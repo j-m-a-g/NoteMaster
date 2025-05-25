@@ -61,7 +61,6 @@ iframe {
 #anotherNoteView {
   border-color: var(--lightAccent400);
   word-break: break-word;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: auto;
   user-select: text;
 }
