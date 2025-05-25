@@ -202,8 +202,8 @@ function appendViewingHistory() {
   const headRow = document.createElement("tr");
   const timeHead = document.createElement("td");
   const nameHead = document.createElement("td");
-  timeHead.innerHTML = "<span class='tableHead'>Time</span>";
-  nameHead.innerHTML = "<span class='tableHead'>Document</span>";
+  timeHead.innerHTML = "<b>Time</b>";
+  nameHead.innerHTML = "<b>Document</b>";
 
   headRow.appendChild(timeHead);
   headRow.appendChild(nameHead);
