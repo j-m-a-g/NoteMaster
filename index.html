@@ -97,16 +97,17 @@
       <img class="reducedIntensity menu" src="Assets/Images/refresh_000000.svg">
       Refresh <span class="helperText menuDropdown">F5 or Ctrl + R</span>
     </button>
-    <button class="menuDropdown" onclick="adjustAppSectionSizes.hidden = false">
+    <button accesskey="p" class="menuDropdown" onclick="adjustAppSectionSizes.hidden = false">
       <img class="reducedIntensity menu" src="Assets/Images/width_normal_000000.svg">
-      Adjust App Section Sizes
+      Adjust <u>P</u>anel Sizes <span class="helperText menuDropdown">Alt + P</span>
     </button>
     <button class="menuDropdown" disabled id="showHTMLEditor"
-            onclick="toggleDialog(true, 'noteAsHTML'); noteHTMLCodeEditor.session.setValue(quill.getSemanticHTML())">
+            onclick="toggleDialog(true, 'noteAsHTML', null); noteHTMLCodeEditor.session.setValue(quill.getSemanticHTML())">
       <img class="reducedIntensity menu" src="Assets/Images/integration_instructions_000000.svg">
       Show Note HTML Markup
     </button>
-    <button accesskey="h" class="menuDropdown" onclick="toggleDialog(true, 'viewingHistory'); appendViewingHistory()">
+    <button accesskey="h" class="menuDropdown"
+            onclick="toggleDialog(true, 'viewingHistory', null); appendViewingHistory()">
       <img class="reducedIntensity menu" src="Assets/Images/history_000000.svg">
       Viewing <u>H</u>istory <span class="helperText menuDropdown">Alt + H</span>
     </button>
@@ -125,11 +126,11 @@
        onmouseleave="document.getElementById('helpMenu').hidden = true"
        onmouseover="document.getElementById('helpMenu').hidden = false"
        style="margin-left: 104px">
-    <button class="menuDropdown" onclick="toggleDialog(true, 'preferencesDialog')">
+    <button class="menuDropdown" onclick="toggleDialog(true, 'preferencesDialog', null)">
       <img class="reducedIntensity menu" src="Assets/Images/settings_000000.svg">
       Preferences
     </button>
-    <button class="menuDropdown" onclick="toggleDialog(true, 'aboutDialog')">
+    <button class="menuDropdown" onclick="toggleDialog(true, 'aboutDialog', null)">
       <img class="reducedIntensity menu" src="Assets/Images/info_000000.svg">
       About
     </button>
@@ -368,7 +369,7 @@
             <tr>
               <td>
                 <button class="appSection"
-                        onclick="toggleDialog(true, 'linkToPDF')">
+                        onclick="toggleDialog(true, 'linkToPDF', 'URLToPDFInput')">
                   <table>
                     <tr>
                       <td>
@@ -386,7 +387,7 @@
               </td>
               <td>
                 <button class="appSection"
-                        onclick="toggleDialog(true, 'linkToImage')">
+                        onclick="toggleDialog(true, 'linkToImage', 'URLToImageInput')">
                   <table>
                     <tr>
                       <td>
@@ -405,7 +406,7 @@
             </tr>
             <tr>
               <td>
-                <button class="appSection" onclick="toggleDialog(true, 'insertCloudURLDialog')">
+                <button class="appSection" onclick="toggleDialog(true, 'insertCloudURLDialog', 'URLToCloudFile')">
                   <table>
                     <tr>
                       <td>
@@ -421,7 +422,7 @@
               </td>
               <td>
                 <button class="appSection"
-                        onclick="toggleViewer(true, 'webpageViewer'); tasksOnceFileOpen('webpageView', null); noFileSelected.hidden = true">
+                        onclick="toggleViewer(true, 'webpageViewer'); tasksOnceFileOpen('webpageView', null); noFileSelected.hidden = true; webpageURLBar.focus()">
                   <table>
                     <tr>
                       <td>
@@ -438,7 +439,7 @@
             </tr>
             <tr>
               <td>
-                <button class="appSection" onclick="toggleDialog(true, 'linkToOnlineDesign')">
+                <button class="appSection" onclick="toggleDialog(true, 'linkToOnlineDesign', 'URLToOnlineDesign')">
                   <table>
                     <tr>
                       <td>
@@ -453,7 +454,7 @@
                 </button>
               </td>
               <td>
-                <button class="appSection" onclick="toggleDialog(true, 'linkToTubeVideo')">
+                <button class="appSection" onclick="toggleDialog(true, 'linkToTubeVideo', 'URLToTubeVideo')">
                   <table>
                     <tr>
                       <td>
@@ -470,7 +471,7 @@
             </tr>
             <tr>
               <td>
-                <button class="appSection" onclick="toggleDialog(true, 'customEmbedDialog')">
+                <button class="appSection" onclick="toggleDialog(true, 'customEmbed', 'embeddedCode')">
                   <table>
                     <tr>
                       <td>
@@ -512,26 +513,43 @@
           <table style="width: 100%">
             <tr>
               <td style="width: 5%">
-                <button class="warningBanner" onclick="toggleDialog(true,  'viewingHistory'); appendViewingHistory()"
+                <button class="warningBanner"
+                        onclick="toggleDialog(true,  'viewingHistory', null); appendViewingHistory()"
                         title="Show viewing history">
                   <img class="reducedIntensity menu" src="Assets/Images/history_000000.svg">
                 </button>
               </td>
               <td>
                 <span class="helperText">File Name</span>
-                <span id="fileName" title="Copy the file name" onclick="navigator.clipboard.writeText(this.innerHTML)">---</span>
+                <span class="copyOnClick" id="fileName" onclick="navigator.clipboard.writeText(this.innerHTML); copiedToClipboard.hidden = false"
+                      title="Copy the file's name">---</span>
               </td>
               <td>
                 <span class="helperText">Size</span>
-                <span id="fileSize">---</span>
+                <span class="copyOnClick" id="fileSize" onclick="navigator.clipboard.writeText(this.innerHTML); copiedToClipboard.hidden = false"
+                      title="Copy the file's size">---</span>
               </td>
               <td>
                 <span class="helperText">Last Modified</span>
-                <span id="fileLastModified">---</span>
+                <span class="copyOnClick" id="fileLastModified" onclick="navigator.clipboard.writeText(this.innerHTML); copiedToClipboard.hidden = false"
+                      title="Copy the file's last modified date">---</span>
               </td>
             </tr>
           </table>
         </nav>
+        <div class="warningBanner" hidden id="copiedToClipboard">
+          <table>
+            <tr>
+              <td>Copied to clipboard!</td>
+              <td>
+                <button class="warningBanner" onclick="copiedToClipboard.hidden = true">
+                  <img class="reducedIntensity menu" src="Assets/Images/close_000000.svg">
+                  <span class="helperText">Dismiss</span>
+                </button>
+              </td>
+            </tr>
+          </table>
+        </div>
         <div id="noFileSelected" style="margin-top: 15%">
           <img class="reducedIntensity" src="Assets/Images/file_copy_off_000000.svg"
                style="margin-left: 45%">
@@ -576,7 +594,7 @@
             <div class="pretty p-default p-curve p-thick">
               <input oninput="videoView.loop = !!this.checked;" type="checkbox">
               <div class="state p-primary p-primary-o">
-                <label>Loop</label>
+                <label>Enable Loop</label>
               </div>
             </div>
           </nav>
@@ -585,12 +603,14 @@
           <div class="warningBanner" hidden id="incorrectWordFormatting">
             <table>
               <tr>
-                <td style="width: 5%"><img class="reducedIntensity menu" src="Assets/Images/warning_000000.svg"></td>
-                <td style="width: 90%">Some formatting may not correctly display</td>
                 <td style="width: 5%">
-                  <button class="warningBanner" onclick="incorrectWordFormatting.hidden = true"
-                          title="Dismiss">
+                  <img class="reducedIntensity menu" src="Assets/Images/warning_000000.svg">
+                </td>
+                <td>Some formatting may not correctly display</td>
+                <td>
+                  <button class="warningBanner" onclick="incorrectWordFormatting.hidden = true">
                     <img class="reducedIntensity menu" src="Assets/Images/close_000000.svg">
+                    <span class="helperText">Dismiss</span>
                   </button>
                 </td>
               </tr>
@@ -772,6 +792,7 @@
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowfullscreen id="tubeVideoView" referrerpolicy="strict-origin-when-cross-origin"></iframe>
         </div>
+        <div hidden id="customEmbedViewer"></div>
         <div hidden id="anotherNoteViewer">
           <div hidden id="anotherNoteView"></div>
         </div>
@@ -809,8 +830,10 @@
   <div class="dialogOverlay" style="padding: 20px; text-align: center">
     <img class="reducedIntensity" src="Assets/Images/fit_width_000000.svg">
     <h1>Looks Like You're Out of Screen Real-Estate!</h1>
-    <h3 class="helperText">For NoteMaster to be effectively usable, your viewing area must be wider than 600 pixels.
-      Please widen your window</h3>
+    <h3 class="helperText">
+      For NoteMaster to be effectively usable, your viewing area must be wider than 600 pixels.
+      Please widen your window
+    </h3>
   </div>
 </div>
 
@@ -835,7 +858,7 @@
       </tr>
     </table>
     <br>
-    <a class="hyperlinkButton" onclick="toggleDialog(true, 'viewingHistory'); appendViewingHistory()">
+    <a class="hyperlinkButton" onclick="toggleDialog(true, 'viewingHistory', null); appendViewingHistory()">
       <img class="reducedIntensity menu" src="Assets/Images/history_000000.svg">
       See your Viewing History
     </a>
@@ -843,8 +866,9 @@
 </div>
 
 <div class="saveBeforeClosing" hidden id="adjustAppSectionSizes">
-  <div class="dialogOverlay" id="appSectionSizesContainer">
-    <h1>Adjust App Section Sizes</h1>
+  <div class="dialogOverlay" id="appSectionSizesContainer" style="backdrop-filter: blur(1px); margin-top: 1%">
+    <h1>Adjust Panel Sizes</h1>
+    <h3 class="helperText">Use your arrow keys or type in a specific value to adjust the size of each panel</h3>
     <table style="width: 100%">
       <tr>
         <td style="width: 50%">
@@ -861,7 +885,9 @@
           </table>
           <input id="viewingSize" max="68" min="32"
                  oninput="adjustViewingAndEditorSizes()"
-                 onmousedown="appSectionSizesContainer.style.backgroundColor = 'rgba(255, 255, 255, 0.75)'; appSectionSizesContainer.style.backdropFilter = 'blur(1px)'"
+                 onkeydown="appSectionSizesContainer.style.backgroundColor = 'rgba(255, 255, 255, 0.5)'"
+                 onkeyup="setTimeout(() => { appSectionSizesContainer.style.backgroundColor = 'white' }, 2000);"
+                 onmousedown="appSectionSizesContainer.style.backgroundColor = 'rgba(255, 255, 255, 0.5)'"
                  onmouseup="setTimeout(() => { appSectionSizesContainer.style.backgroundColor = 'white' }, 2000);"
                  placeholder="50% (Default)" style="width: 90%; margin-top: 5px"
                  type="number" value="50">
@@ -926,9 +952,9 @@
         <td style="width: 5%"><img class="reducedIntensity menu" src="Assets/Images/warning_000000.svg"></td>
         <td style="width: 92%">Please enter a URL</td>
         <td style="width: 5%">
-          <button class="warningBanner" onclick="document.getElementById('noURLWarning').hidden = true"
-                  title="Dismiss">
+          <button class="warningBanner" onclick="noURLWarning.hidden = true">
             <img class="reducedIntensity menu" src="Assets/Images/close_000000.svg">
+            <span class="helperText">Dismiss</span>
           </button>
         </td>
       </tr>
@@ -938,7 +964,8 @@
   <div class="dialogOverlay" hidden id="applicationError" style="z-index: 3">
     <h1>An Error Occurred</h1>
     <h3 class="helperText" id="errorMessage"></h3>
-    <button class="dialogOverlay" onclick="toggleDialog(false, 'applicationError')" style="width: 100%">OK</button>
+    <button class="dialogOverlay" onclick="toggleDialog(false, 'applicationError', null)" style="width: 100%">OK
+    </button>
   </div>
   <div class="dialogOverlay" hidden id="viewingHistory" style="height: 75%">
     <h1>Viewing History</h1>
@@ -947,7 +974,7 @@
       <table id="viewingHistoryTable"></table>
     </div>
     <br>
-    <a class="hyperlinkButton" onclick="toggleDialog(false, 'viewingHistory')">
+    <a class="hyperlinkButton" onclick="toggleDialog(false, 'viewingHistory', null)">
       Close
     </a>|
     <a class="hyperlinkButton"
@@ -971,13 +998,13 @@
         </td>
         <td>
           <button class="primaryButton"
-                  onclick="if (checkURLInput('URLToPDFInput')) { toggleDialog(false, 'linkToPDF'); pdfView.src = document.getElementById('URLToPDFInput').value; toggleViewer(true, 'pdfViewer'); tasksOnceFileOpen('pdfView', null); addHistoryEntry('URLToPDFInput')}">
+                  onclick="if (checkURLInput('URLToPDFInput')) { toggleDialog(false, 'linkToPDF', null); pdfView.src = document.getElementById('URLToPDFInput').value; toggleViewer(true, 'pdfViewer'); tasksOnceFileOpen('pdfView', null); addHistoryEntry('URLToPDFInput')}">
             Open
           </button>
         </td>
       </tr>
     </table>
-    <a class="hyperlinkButton" onclick="toggleDialog(false, 'linkToPDF')">
+    <a class="hyperlinkButton" onclick="toggleDialog(false, 'linkToPDF', null)">
       Close
     </a>
   </div>
@@ -994,13 +1021,13 @@
         </td>
         <td>
           <button class="primaryButton"
-                  onclick="if (checkURLInput('URLToImageInput')) { toggleDialog(false, 'linkToImage'); imageView.src = document.getElementById('URLToImageInput').value; toggleViewer(true, 'imageViewer'); tasksOnceFileOpen('imageView', null); addHistoryEntry('URLToImageInput') }">
+                  onclick="if (checkURLInput('URLToImageInput')) { toggleDialog(false, 'linkToImage', null); imageView.src = document.getElementById('URLToImageInput').value; toggleViewer(true, 'imageViewer'); tasksOnceFileOpen('imageView', null); addHistoryEntry('URLToImageInput') }">
             Open
           </button>
         </td>
       </tr>
     </table>
-    <a class="hyperlinkButton" onclick="toggleDialog(false, 'linkToImage')">
+    <a class="hyperlinkButton" onclick="toggleDialog(false, 'linkToImage', null)">
       Close
     </a>
   </div>
@@ -1045,7 +1072,7 @@
         </td>
       </tr>
     </table>
-    <a class="hyperlinkButton" onclick="toggleDialog(false, 'insertCloudURLDialog')">
+    <a class="hyperlinkButton" onclick="toggleDialog(false, 'insertCloudURLDialog', null)">
       Close
     </a>
   </div>
@@ -1066,13 +1093,13 @@
         </td>
         <td>
           <button class="primaryButton"
-                  onclick="if (checkURLInput('URLToOnlineDesign')) { onlineDesignView.src = URLToOnlineDesign.value.replace('edit', 'view') + '?embed'; toggleDialog(false, 'linkToOnlineDesign'); toggleViewer(true,  'onlineDesignViewer'); tasksOnceFileOpen('onlineDesignView', null); addHistoryEntry('URLToOnlineDesign') }">
+                  onclick="if (checkURLInput('URLToOnlineDesign')) { onlineDesignView.src = URLToOnlineDesign.value.replace('edit', 'view') + '?embed'; toggleDialog(false, 'linkToOnlineDesign', null); toggleViewer(true,  'onlineDesignViewer'); tasksOnceFileOpen('onlineDesignView', null); addHistoryEntry('URLToOnlineDesign') }">
             Open
           </button>
         </td>
       </tr>
     </table>
-    <a class="hyperlinkButton" onclick="toggleDialog(false, 'linkToOnlineDesign')">
+    <a class="hyperlinkButton" onclick="toggleDialog(false, 'linkToOnlineDesign', null)">
       Close
     </a>
   </div>
@@ -1088,31 +1115,32 @@
         </td>
         <td>
           <button class="primaryButton"
-                  onclick="if (checkURLInput('URLToTubeVideo')) { tubeVideoView.src = 'https://www.youtube.com/embed/' + (URLToTubeVideo.value.replaceAll('https://www.youtube.com/watch?v=', '')).replaceAll('https://youtu.be/', ''); toggleDialog(false, 'linkToTubeVideo'); toggleViewer(true, 'tubeVideoViewer'); tasksOnceFileOpen('tubeVideoView', null); addHistoryEntry('URLToTubeVideo') }">
+                  onclick="if (checkURLInput('URLToTubeVideo')) { tubeVideoView.src = 'https://www.youtube.com/embed/' + (URLToTubeVideo.value.replaceAll('https://www.youtube.com/watch?v=', '')).replaceAll('https://youtu.be/', ''); toggleDialog(false, 'linkToTubeVideo', null); toggleViewer(true, 'tubeVideoViewer'); tasksOnceFileOpen('tubeVideoView', null); addHistoryEntry('URLToTubeVideo') }">
             Open
           </button>
         </td>
       </tr>
     </table>
-    <a class="hyperlinkButton" onclick="toggleDialog(false, 'linkToTubeVideo')">
+    <a class="hyperlinkButton" onclick="toggleDialog(false, 'linkToTubeVideo', null)">
       Close
     </a>
   </div>
-  <div hidden class="dialogOverlay" id="customEmbedDialog">
+  <div class="dialogOverlay" hidden id="customEmbed">
     <img class="reducedIntensity" src="Assets/Images/frame_source_000000.svg">
     <h1>Custom Embed</h1>
-    <h3 class="helperText">Paste your own iframe code to view it in the Viewing Panel</h3>
+    <h3 class="helperText">Paste your own IFRAME code to view it in the Viewing Panel</h3>
     <table style="width: 100%; height: 150px">
       <tr>
         <td style="width: 75%">
           <textarea placeholder="Paste your code here" id="embeddedCode"></textarea>
         </td>
         <td style="width: 25%">
-          <button class="primaryButton">Open</button>
+          <button class="primaryButton" onclick="verifyIfiFrameInEmbed()">Open</button>
         </td>
       </tr>
     </table>
-    <a class="hyperlinkButton" onclick="toggleDialog(false, 'customEmbedDialog')">
+    <br>
+    <a class="hyperlinkButton" onclick="toggleDialog(false, 'customEmbed', null)">
       Close
     </a>
   </div>
@@ -1137,7 +1165,7 @@
     <br>
     <br>
     <a class="hyperlinkButton"
-       onclick="toggleDialog(false, 'preferencesDialog'); if (resetOnCloseCheckbox.checked) { localStorage.clear(); resetOnCloseCheckbox.checked = false; window.location.reload() }">
+       onclick="toggleDialog(false, 'preferencesDialog', null); if (resetOnCloseCheckbox.checked) { localStorage.clear(); resetOnCloseCheckbox.checked = false; window.location.reload() }">
       Close
     </a>|
     <div class="pretty p-default p-curve p-thick">
@@ -1151,7 +1179,7 @@
     <h1>Show Note HTML Markup</h1>
     <h3 class="helperText">See your note as HTML markup to be used within other applications</h3>
     <div id="noteHTML"></div>
-    <a class="hyperlinkButton" onclick="toggleDialog(false, 'noteAsHTML')">
+    <a class="hyperlinkButton" onclick="toggleDialog(false, 'noteAsHTML', null)">
       Close
     </a>|
     <a class="hyperlinkButton" onclick="navigator.clipboard.writeText(noteHTMLCodeEditor.getValue())">Copy</a>
@@ -1190,7 +1218,7 @@
       </tr>
     </table>
     <br>
-    <a class="hyperlinkButton" onclick="toggleDialog(false, 'aboutDialog')">
+    <a class="hyperlinkButton" onclick="toggleDialog(false, 'aboutDialog', null)">
       Close
     </a>
   </div>

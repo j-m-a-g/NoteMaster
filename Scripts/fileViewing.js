@@ -169,7 +169,7 @@ function parseCloudDocumentURL() {
         resultingURL += ODriveURLArray[c];
       }
 
-      toggleDialog(false, "insertCloudURLDialog");
+      toggleDialog(false, "insertCloudURLDialog", null);
       cloudFileView.src = resultingURL + "&action=embedview";
     } else {
       const GDriveURLArray = URLToCloudFile.value.replace("https://docs.google.com/", "").replace("https://drive.google.com", "").split("");
@@ -194,11 +194,11 @@ function parseCloudDocumentURL() {
       // Throws an error if documentID has not been changed from
       // its original declaration
       if (documentID === "") {
-        toggleDialog(false, "insertCloudURLDialog");
-        throwAppError("This Google Drive document URL is invalid. Please ensure you are copying the link to it from your browser's address bar and try again");
+        toggleDialog(false, "insertCloudURLDialog", null);
+        throwAppError("This Google Drive document URL is invalid. Please ensure you are copying the link to it from your browser's address bar and try again.");
         closeCurrentFile();
       } else {
-        toggleDialog(false, "insertCloudURLDialog");
+        toggleDialog(false, "insertCloudURLDialog", null);
         cloudFileView.src = "https://docs.google.com/viewer?srcid=" + documentID.replace("d/", "") + "&pid=explorer&efh=false&a=v&chrome=false&embedded=true";
       }
     }
@@ -206,5 +206,18 @@ function parseCloudDocumentURL() {
     toggleViewer(true, "cloudFileViewer");
     tasksOnceFileOpen("cloudFileView", null);
     addHistoryEntry("URLToCloudFile");
+  }
+}
+
+function verifyIfiFrameInEmbed() {
+  if (embeddedCode.value.includes("</iframe>")) {
+    customEmbedViewer.innerHTML = embeddedCode.value;
+    noFileSelected.hidden = true;
+    viewerStatusBar.hidden = true;
+    toggleDialog(false, 'customEmbed', null);
+    toggleViewer(true, 'customEmbedViewer');
+    dynamicallySetHeight();
+  } else {
+    throwAppError("The pasted code does not seem to be an IFRAME element. Please ensure the content you are trying to embed is within an element of this type.");
   }
 }

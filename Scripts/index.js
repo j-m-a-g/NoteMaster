@@ -142,7 +142,7 @@ function toggleViewer(isShown, currentViewer) {
   }
 }
 
-function toggleDialog(isShown, currentDialog) {
+function toggleDialog(isShown, currentDialog, focusedElement) {
   switch (isShown) {
     case true:
       dialogFocusBackground.hidden = false;
@@ -152,6 +152,10 @@ function toggleDialog(isShown, currentDialog) {
       dialogFocusBackground.hidden = true;
       document.getElementById(currentDialog).hidden = true;
       break;
+  }
+
+  if (focusedElement !== null) {
+    document.getElementById(focusedElement).focus();
   }
 }
 
@@ -225,7 +229,7 @@ function appendViewingHistory() {
 }
 
 function throwAppError(messageText) {
-  toggleDialog(true, "applicationError");
+  toggleDialog(true, "applicationError", null);
   errorMessage.innerHTML = messageText;
 }
 

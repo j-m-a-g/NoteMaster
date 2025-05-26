@@ -103,8 +103,9 @@ select:focus {
   width: 100%;
   position: fixed;
   z-index: 1;
-  border-bottom-width: 10px;
-  border-color: black;
+  border-bottom-width: 1px;
+  border-style: solid;
+  border-color: var(--lightAccent300);
   background-color: var(--lightAccent100);
 }
 
@@ -120,6 +121,9 @@ button.menu:hover {
 }
 
 div.menu {
+  border-style: solid;
+  border-color: var(--lightAccent300);
+  border-width: 1px;
   width: 22%;
   background-color: white;
   position: fixed;
@@ -146,6 +150,11 @@ button.menuDropdown {
 
 button.menuDropdown:hover {
   background-color: var(--lightAccent200);
+  border-color: var(--lightAccent200);
+}
+
+button.menuDropdown:active {
+  background-color: var(--lightAccent300);
 }
 
 button.menuDropdown:disabled:hover {
@@ -255,7 +264,7 @@ div.dialogOverlay {
   animation-duration: 0.25s;
 }
 
-.primaryButton {
+button.primaryButton {
   width: 100%;
   height: 37px;
   padding: 10px;
@@ -267,12 +276,13 @@ div.dialogOverlay {
   color: white
 }
 
-.primaryButton:hover {
+button.primaryButton:hover {
   background-color: var(--blueAccent600);
+  border-color: var(--blueAccent600);
 }
 
-.primaryButton:active {
-  background-color: #146dea;
+button.primaryButton:active {
+  background-color: var(--blueAccent700);
   border-color: var(--blueAccent700);
 }
 
@@ -296,8 +306,8 @@ button.dialogOverlay:active {
 }
 
 a.hyperlinkButton {
-  padding-left: 5px;
-  padding-right: 5px;
+  padding: 3px;
+  border-radius: 5px;
   cursor: pointer;
   color: var(--blueAccent500);
 }
@@ -305,6 +315,15 @@ a.hyperlinkButton {
 a.hyperlinkButton:hover {
   background-color: #008eff10;
   text-decoration: none;
+}
+
+span.copyOnClick:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+span.copyOnClick:active {
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 #mainEditor {
@@ -382,7 +401,7 @@ h3.saveBeforeClosing {
 
 div.warningBanner {
   margin-bottom: 5px;
-  width: 100%;
+  width: 96%;
   padding: 10px;
   border-radius: 5px;
   background-color: var(--blueAccent100);
@@ -403,6 +422,7 @@ button.warningBanner {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   width: 95%;
   height: 100%;
+  padding: 5px;
   border-radius: 5px;
   border-style: solid;
   resize: none;
