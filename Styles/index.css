@@ -70,7 +70,7 @@ summary {
   padding: 10px;
   border-radius: 5px;
   border-style: solid;
-  border-color: var(--lightAccent200);
+  border-color: var(--lightAccent300);
   border-width: 1px;
   margin-bottom: 5px;
 }
@@ -193,7 +193,7 @@ button.appSection {
   text-align: left;
   background-color: transparent;
   border-style: solid;
-  border-color: var(--lightAccent200);
+  border-color: var(--lightAccent300);
   border-width: 1px;
   margin-bottom: 5px;
   padding: 10px;
@@ -397,6 +397,22 @@ button.warningBanner {
 #mobileSizeIndication {
   backdrop-filter: blur(10px);
   display: none
+}
+
+#embeddedCode {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  width: 95%;
+  height: 100%;
+  border-radius: 5px;
+  border-style: solid;
+  resize: none;
+  word-wrap: normal;
+  border-color: var(--lightAccent300);
+}
+
+#embeddedCode:focus {
+  outline: none;
+  border-color: var(--blueAccent500);
 }
 
 @keyframes initialFadeIn {

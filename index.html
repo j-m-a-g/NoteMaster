@@ -470,7 +470,7 @@
             </tr>
             <tr>
               <td>
-                <button class="appSection">
+                <button class="appSection" onclick="toggleDialog(true, 'customEmbedDialog')">
                   <table>
                     <tr>
                       <td>
@@ -519,7 +519,7 @@
               </td>
               <td>
                 <span class="helperText">File Name</span>
-                <span id="fileName">---</span>
+                <span id="fileName" title="Copy the file name" onclick="navigator.clipboard.writeText(this.innerHTML)">---</span>
               </td>
               <td>
                 <span class="helperText">Size</span>
@@ -1095,6 +1095,24 @@
       </tr>
     </table>
     <a class="hyperlinkButton" onclick="toggleDialog(false, 'linkToTubeVideo')">
+      Close
+    </a>
+  </div>
+  <div hidden class="dialogOverlay" id="customEmbedDialog">
+    <img class="reducedIntensity" src="Assets/Images/frame_source_000000.svg">
+    <h1>Custom Embed</h1>
+    <h3 class="helperText">Paste your own iframe code to view it in the Viewing Panel</h3>
+    <table style="width: 100%; height: 150px">
+      <tr>
+        <td style="width: 75%">
+          <textarea placeholder="Paste your code here" id="embeddedCode"></textarea>
+        </td>
+        <td style="width: 25%">
+          <button class="primaryButton">Open</button>
+        </td>
+      </tr>
+    </table>
+    <a class="hyperlinkButton" onclick="toggleDialog(false, 'customEmbedDialog')">
       Close
     </a>
   </div>
