@@ -168,6 +168,8 @@ function toggleMenuCheck(imageObject) {
 }
 
 function alterMenuFunctions(isDisabled) {
+  document.getElementById("quillUndo").disabled = isDisabled;
+  document.getElementById("quillRedo").disabled = isDisabled;
   document.getElementById("closeNote").disabled = isDisabled;
   document.getElementById("downloadNote").disabled = isDisabled;
   document.getElementById("save").disabled = isDisabled;

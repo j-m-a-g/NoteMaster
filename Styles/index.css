@@ -103,6 +103,9 @@ select:focus {
   width: 100%;
   position: fixed;
   z-index: 1;
+  border-top-width: 0;
+  border-left-width: 0;
+  border-right-width: 0;
   border-bottom-width: 1px;
   border-style: solid;
   border-color: var(--lightAccent300);
@@ -118,6 +121,12 @@ button.menu {
 
 button.menu:hover {
   background-color: var(--blueAccent50);
+}
+
+button.menu:disabled, button.menu:disabled:hover {
+  opacity: 25%;
+  cursor: default;
+  background-color: transparent;
 }
 
 div.menu {
@@ -306,7 +315,9 @@ button.dialogOverlay:active {
 }
 
 a.hyperlinkButton {
-  padding: 3px;
+  padding-left: 3px;
+  padding-right: 3px;
+  padding-bottom: 3px;
   border-radius: 5px;
   cursor: pointer;
   color: var(--blueAccent500);

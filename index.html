@@ -22,6 +22,12 @@
     onload="onLoadTasks()"
     onresize="dynamicallySetHeight()">
 <nav id="appMenu">
+  <button class="menu" disabled id="quillUndo" onclick="quill.history.undo()" title="Undo change (Ctrl + Z)">
+    <img class="menu" src="Assets/Images/undo_000000.svg">
+  </button>
+  <button class="menu" disabled id="quillRedo" onclick="quill.history.redo()" title="Redo change (Ctrl + Y)">
+    <img class="menu" src="Assets/Images/redo_000000.svg">
+  </button>
   <button class="menu"
           onmouseleave="document.getElementById('fileMenu').hidden = true"
           onmouseover="document.getElementById('fileMenu').hidden = false">
