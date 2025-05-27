@@ -95,7 +95,7 @@ function onLoadTasks() {
 // Sets the height of certain elements dependent on the height
 // of a user's browser window
 function dynamicallySetHeight() {
-  const adjustedHeight = (window.innerHeight - appMenu.style.height).toString() + "px";
+  const adjustedHeight = (window.innerHeight - 34).toString() + "px";
   appSectionsTable.style.height = adjustedHeight;
   anotherNoteView.style.height = adjustedHeight;
   wordDocumentView.style.height = adjustedHeight;

@@ -229,7 +229,7 @@ img.appSection {
   filter: grayscale(100%);
 }
 
-.buttonHeading {
+span.buttonHeading {
   font-size: 16px;
 }
 
@@ -401,10 +401,10 @@ h3.saveBeforeClosing {
 
 div.warningBanner {
   margin-bottom: 5px;
-  width: 96%;
+  width: 100%;
   padding: 10px;
   border-radius: 5px;
-  background-color: var(--blueAccent100);
+  background-color: var(--blueAccent50);
 }
 
 button.warningBanner {

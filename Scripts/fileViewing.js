@@ -218,6 +218,6 @@ function verifyIfiFrameInEmbed() {
     toggleViewer(true, 'customEmbedViewer');
     dynamicallySetHeight();
   } else {
-    throwAppError("The pasted code does not seem to be an IFRAME element. Please ensure the content you are trying to embed is within an element of this type.");
+    throwAppError("The pasted code does not seem to be an iFrame element. Please ensure the content you are trying to embed is within an element of this type.");
   }
 }

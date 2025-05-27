@@ -139,8 +139,8 @@
 
 <div style="padding-top: 34px">
   <table id="appSectionsTable" style="width: 100%; height: 100%">
-    <tr>
-      <!-- Editor section -->
+    <tr id="appSectionsTableRow">
+      <!-- Editing Panel -->
       <td class="appSection" id="createOrOpenContainer">
         <h1 style="line-height: 20px">Welcome</h1>
         <button class="appSection" onclick="initiateNote(false)">
@@ -225,7 +225,7 @@
           <a hidden id="noteDownloadLink"></a>
         </div>
       </td>
-      <!-- Viewing section -->
+      <!-- Viewing Panel -->
       <td class="appSection" id="chooseViewer">
         <h3>What type of document will you view today?</h3>
         <details id="localDocuments">
@@ -769,7 +769,7 @@
                 </td>
                 <td style="width: 100%">
                   <input id="webpageURLBar"
-                         placeholder="Type a website address here (including 'http://' or 'https://')"
+                         placeholder="Type a website address here"
                          style="width: 95%" type="url">
                 </td>
                 <td>
@@ -1128,7 +1128,7 @@
   <div class="dialogOverlay" hidden id="customEmbed">
     <img class="reducedIntensity" src="Assets/Images/frame_source_000000.svg">
     <h1>Custom Embed</h1>
-    <h3 class="helperText">Paste your own IFRAME code to view it in the Viewing Panel</h3>
+    <h3 class="helperText">Paste your own iFrame code to view it in the Viewing Panel</h3>
     <table style="width: 100%; height: 150px">
       <tr>
         <td style="width: 75%">
