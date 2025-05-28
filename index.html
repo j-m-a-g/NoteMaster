@@ -199,11 +199,13 @@
             <button class="navButton" onclick="downloadNote()" title="Download Note (Alt + W)">
               <img class="reducedIntensity menu" src="Assets/Images/download_000000.svg">
             </button>
-            <button class="navButton" onclick="mainEditorFontSize += 1; mainEditor.style.fontSize = mainEditorFontSize + 'px'; updateStatusBar()"
+            <button class="navButton"
+                    onclick="mainEditorFontSize += 1; mainEditor.style.fontSize = mainEditorFontSize + 'px'; updateStatusBar()"
                     title="Zoom In">
               <img class="reducedIntensity menu" src="Assets/Images/zoom_in_000000.svg">
             </button>
-            <button class="navButton" onclick="mainEditorFontSize -= 1; mainEditor.style.fontSize = mainEditorFontSize + 'px'; updateStatusBar()"
+            <button class="navButton"
+                    onclick="mainEditorFontSize -= 1; mainEditor.style.fontSize = mainEditorFontSize + 'px'; updateStatusBar()"
                     title="Zoom Out">
               <img class="reducedIntensity menu" src="Assets/Images/zoom_out_000000.svg">
             </button>
@@ -527,17 +529,20 @@
               </td>
               <td>
                 <span class="helperText">File Name</span>
-                <span class="copyOnClick" id="fileName" onclick="navigator.clipboard.writeText(this.innerHTML); copiedToClipboard.hidden = false"
+                <span class="copyOnClick" id="fileName"
+                      onclick="navigator.clipboard.writeText(this.innerHTML); copiedToClipboard.hidden = false"
                       title="Copy the file's name">---</span>
               </td>
               <td>
                 <span class="helperText">Size</span>
-                <span class="copyOnClick" id="fileSize" onclick="navigator.clipboard.writeText(this.innerHTML); copiedToClipboard.hidden = false"
+                <span class="copyOnClick" id="fileSize"
+                      onclick="navigator.clipboard.writeText(this.innerHTML); copiedToClipboard.hidden = false"
                       title="Copy the file's size">---</span>
               </td>
               <td>
                 <span class="helperText">Last Modified</span>
-                <span class="copyOnClick" id="fileLastModified" onclick="navigator.clipboard.writeText(this.innerHTML); copiedToClipboard.hidden = false"
+                <span class="copyOnClick" id="fileLastModified"
+                      onclick="navigator.clipboard.writeText(this.innerHTML); copiedToClipboard.hidden = false"
                       title="Copy the file's last modified date">---</span>
               </td>
             </tr>
