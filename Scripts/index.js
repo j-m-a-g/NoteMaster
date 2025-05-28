@@ -236,9 +236,9 @@ function throwAppError(messageText) {
 }
 
 function get12HourTime() {
-  let hour = "";
-  let minute = "";
-  let suffix = "";
+  let hour;
+  let minute;
+  let suffix;
 
   // Removes the standard 24-hour format
   if (currentDate.getHours() > 12) {
