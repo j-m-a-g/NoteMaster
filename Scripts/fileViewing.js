@@ -82,6 +82,8 @@ function closeCurrentFile() {
   cloudFileView.src = "";
   cloudFileViewer.hidden = true;
 
+  customEmbedViewer.hidden = true;
+
   closeFile.disabled = true;
   chooseViewer.hidden = false;
   noFileSelected.hidden = false;
@@ -220,6 +222,7 @@ function verifyIfiFrameInEmbed() {
     toggleDialog(false, 'customEmbed', null);
     toggleViewer(true, 'customEmbedViewer');
     dynamicallySetHeight();
+    tasksOnceFileOpen(null, null);
   } else {
     throwAppError("The pasted code does not seem to be an iFrame element. Please ensure the content you are trying to embed is within an element of this type.");
   }

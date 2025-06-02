@@ -75,7 +75,8 @@
   </button>
   <div class="menu" hidden id="insertMenu"
        onmouseleave="document.getElementById('insertMenu').hidden = true"
-       onmouseover="document.getElementById('insertMenu').hidden = false">
+       onmouseover="document.getElementById('insertMenu').hidden = false"
+       style="margin-left: 120px">
     <button class="menuDropdown" onclick="insertTable.hidden = false">
       <img class="reducedIntensity menu" src="Assets/Images/table_000000.svg">
       Table
@@ -99,7 +100,7 @@
   <div class="menu" hidden id="viewMenu"
        onmouseleave="document.getElementById('viewMenu').hidden = true"
        onmouseover="document.getElementById('viewMenu').hidden = false"
-       style="margin-left: 46px">
+       style="margin-left: 178px">
     <button class="menuDropdown" onclick="window.location.reload()">
       <img class="reducedIntensity menu" src="Assets/Images/refresh_000000.svg">
       Refresh <span class="helperText menuDropdown">F5 or Ctrl + R</span>
@@ -132,7 +133,7 @@
   <div class="menu" hidden id="helpMenu"
        onmouseleave="document.getElementById('helpMenu').hidden = true"
        onmouseover="document.getElementById('helpMenu').hidden = false"
-       style="margin-left: 104px">
+       style="margin-left: 231px">
     <button class="menuDropdown" onclick="toggleDialog(true, 'preferencesDialog', null)">
       <img class="reducedIntensity menu" src="Assets/Images/settings_000000.svg">
       Preferences
