@@ -27,6 +27,7 @@ function tasksOnceFileOpen(unhiddenView, fileInputObject) {
   if (fileName.innerHTML !== "---") {
     fileViewingHistoryNames.push(fileName.innerHTML);
   }
+
   fileViewingHistoryTimes.push(get12HourTime());
 }
 
@@ -98,6 +99,7 @@ function readTextFile() {
   fileReader.onload = () => {
     textView.innerHTML = fileReader.result;
   }
+
   fileReader.readAsText(event.target.files[0]);
 }
 
@@ -111,6 +113,7 @@ function readWordDocument() {
       closeCurrentFile();
     });
   }
+
   fileReader.readAsArrayBuffer(event.target.files[0]);
 }
 
@@ -119,8 +122,8 @@ function readHTMLNote() {
   fileReader.onload = () => {
     anotherNoteViewQuill.clipboard.dangerouslyPasteHTML(fileReader.result);
   }
-  fileReader.readAsText(event.target.files[0]);
 
+  fileReader.readAsText(event.target.files[0]);
   tasksOnceFileOpen("anotherNoteView", 'anotherNoteFileInput');
 }
 
@@ -129,8 +132,8 @@ function viewCodeFile() {
   fileReader.onload = () => {
     codeFileViewCodeEditor.session.setValue(fileReader.result);
   }
-  fileReader.readAsText(event.target.files[0]);
 
+  fileReader.readAsText(event.target.files[0]);
   codeFileViewerStatusBar.hidden = false;
   tasksOnceFileOpen("codeFileView", "codeFileInput");
 }

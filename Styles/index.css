@@ -199,6 +199,10 @@ button.navButton:active {
   border-color: var(--blueAccent500);
 }
 
+button.navSeparation {
+  margin-right: 10px;
+}
+
 td.appSection {
   padding: 10px;
   background-color: var(--lightAccent100);

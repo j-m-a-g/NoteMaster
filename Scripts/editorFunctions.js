@@ -2,21 +2,24 @@ function initiateNote(isOpen) {
   hideAndShow("createOrOpenContainer", "noteEditor");
   alterMenuFunctions(false);
 
-  if (isOpen) {
-    const fileReader = new FileReader();
-    fileReader.onload = () => {
-      quill.clipboard.dangerouslyPasteHTML(fileReader.result);
-    }
-    fileReader.readAsText(event.target.files[0]);
+  switch (isOpen) {
+    case true:
+      const fileReader = new FileReader();
+      fileReader.onload = () => {
+        quill.clipboard.dangerouslyPasteHTML(fileReader.result);
+      }
+      fileReader.readAsText(event.target.files[0]);
 
-    // Removes the "C:\fakepath\" prefix and ".htm" or ".html" suffix as
-    // well as periods
-    const trimFakePath = openNoteFileInput.value.replace("C:\\fakepath\\", "");
-    const trimFileExtension = trimFakePath.replace(".htm", "");
-    noteName.value = (trimFileExtension.replace(".html", "")).replace(".", "");
-  } else {
-    // Resets the editor's state
-    quill.setContents();
+      // Removes the "C:\fakepath\" prefix and ".htm" or ".html" suffix as
+      // well as periods
+      const trimFakePath = openNoteFileInput.value.replace("C:\\fakepath\\", "");
+      const trimFileExtension = trimFakePath.replace(".htm", "");
+      noteName.value = (trimFileExtension.replace(".html", "")).replace(".", "");
+      break;
+    case false:
+      // Resets the editor's state
+      quill.setContents();
+      break;
   }
 
   updateStatusBar();
@@ -58,8 +61,9 @@ function handleAnotherOpen() {
 function doNotSave() {
   hideAndShow('noteEditor', 'createOrOpenContainer');
   alterMenuFunctions(true);
-  localStorage.setItem('noteProgress', '<p></p>');
+  alterWindowTitle(true);
 
+  localStorage.setItem('noteProgress', '<p></p>');
   noteName.value = "";
 
   // Handles a pending task after the previous code has executed
@@ -88,6 +92,34 @@ function downloadNote() {
   if (isOpeningAnotherNote) {
     openNoteFileInput.click();
   }
+}
+
+function convertWordToNote() {
+  const fileReader = new FileReader();
+  fileReader.onload = async (event) => {
+    mammoth.convertToHtml({arrayBuffer: event.target.result}, mammothJSOptions).then((result) => {
+      convertedFileOutput = result.value;
+      console.log(convertedFileOutput);
+    }).catch(() => {
+      throwAppError("The file you are trying to view does not seem like a Word document. Ensure the file extension is correct and try again.");
+      closeCurrentFile();
+    });
+  }
+
+  fileReader.readAsArrayBuffer(event.target.files[0]);
+  downloadConvertedNote.hidden = false;
+}
+
+// Executes after the convertWordToNote function as the fileReader.onload event is
+// asynchronous
+function downloadConversion() {
+  const convertedFileOutputBlob = new Blob([convertedFileOutput.toString() + "<style>body { font-family: sans-serif } .ql-font-serif { font-family: serif } .ql-font-monospace { font-family: monospace }</style>"], {type: "text/html"});
+  noteDownloadLink.download = convertWordToNoteInput.value.replaceAll("C:\\fakepath\\", "").replaceAll(".doc", "").replaceAll(".docx", "");
+  noteDownloadLink.href = URL.createObjectURL(convertedFileOutputBlob);
+  noteDownloadLink.click();
+
+  downloadConvertedNote.hidden = true;
+  wordDocumentToNoteButton.disabled = false;
 }
 
 function launchExample() {

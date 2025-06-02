@@ -34,6 +34,7 @@
     File
   </button>
   <div class="menu" hidden id="fileMenu"
+       style="margin-left: 75px"
        onmouseleave="document.getElementById('fileMenu').hidden = true"
        onmouseover="document.getElementById('fileMenu').hidden = false">
     <button accesskey="n"
@@ -155,7 +156,7 @@
               <td>
                 <img class="appSection reducedIntensity" src="Assets/Images/note_add_000000.svg">
               </td>
-              <td style="width: 173px">
+              <td style="width: 100%">
                 <span class="buttonHeading">
                   Create a <u>N</u>ew Note <span class="helperText menuDropdown">Alt + N</span>
                 </span>
@@ -183,6 +184,30 @@
             </tr>
           </table>
         </button>
+        <button class="appSection" id="wordDocumentToNoteButton" onclick="convertWordToNoteInput.click()">
+          <table>
+            <tr>
+              <td>
+                <img class="appSection reducedIntensity" src="Assets/Images/convert_to_text_000000.svg">
+              </td>
+              <td>
+                <span class="buttonHeading">Convert a Word Document to a Note</span>
+                <br>
+                <input
+                    accept=".xml, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                    hidden id="convertWordToNoteInput"
+                    onchange="convertWordToNote(); wordDocumentToNoteButton.disabled = true"
+                    type="file">
+                <span class="helperText">Markup your Word document as a note</span>
+              </td>
+            </tr>
+          </table>
+        </button>
+        <button class="dialogOverlay" hidden id="downloadConvertedNote" onclick="downloadConversion()"
+                style="margin-bottom: 5px">
+          <img class="reducedIntensity menu" src="Assets/Images/download_000000.svg">
+          Download Converted Note
+        </button>
         <span class="helperText" style="margin-left: 5px">
           Don't know where to start? See an <a class="hyperlinkButton" onclick="launchExample()">example</a>
         </span>
@@ -196,7 +221,7 @@
             <button class="navButton" onclick="saveNoteProgress()" title="Save Progress (Alt + S)">
               <img class="reducedIntensity menu" src="Assets/Images/save_000000.svg">
             </button>
-            <button class="navButton" onclick="downloadNote()" title="Download Note (Alt + W)">
+            <button class="navButton navSeparation" onclick="downloadNote()" title="Download Note (Alt + W)">
               <img class="reducedIntensity menu" src="Assets/Images/download_000000.svg">
             </button>
             <button class="navButton"
@@ -204,7 +229,7 @@
                     title="Zoom In">
               <img class="reducedIntensity menu" src="Assets/Images/zoom_in_000000.svg">
             </button>
-            <button class="navButton"
+            <button class="navButton navSeparation"
                     onclick="mainEditorFontSize -= 1; mainEditor.style.fontSize = mainEditorFontSize + 'px'; updateStatusBar()"
                     title="Zoom Out">
               <img class="reducedIntensity menu" src="Assets/Images/zoom_out_000000.svg">
@@ -337,7 +362,7 @@
                         <span class="buttonHeading">Word Document</span>
                         <br>
                         <input
-                            accept=".doc, .docx, .xml, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                            accept=".xml, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                             hidden id="wordFileInput"
                             onchange="readWordDocument(); tasksOnceFileOpen('wordDocumentView', 'wordFileInput'); incorrectWordFormatting.hidden = false"
                             type="file">
@@ -496,7 +521,6 @@
             </tr>
           </table>
         </details>
-        <hr style="opacity: 25%; border-style: dotted">
         <button class="appSection"
                 onclick="anotherNoteFileInput.click(); toggleViewer(true, 'anotherNoteViewer')">
           <table>
@@ -592,7 +616,7 @@
                     title="Decrease font size">
               <img class="reducedIntensity menu" src="Assets/Images/text_decrease_000000.svg">
             </button>
-            <button class="navButton" onclick="textView.style.fontSize = '14px'"
+            <button class="navButton" onclick="textView.style.fontSize = '14px'; textViewFontSize = 14"
                     title="Reset font size">
               <img class="reducedIntensity menu" src="Assets/Images/fullscreen_exit_000000.svg">
             </button>
@@ -758,7 +782,8 @@
                     title="Decrease font size">
               <img class="reducedIntensity menu" src="Assets/Images/text_decrease_000000.svg">
             </button>
-            <button class="navButton" onclick="codeFileView.style.fontSize = '12px'" title="Reset font size">
+            <button class="navButton" onclick="codeFileView.style.fontSize = '12px'; codeFileViewFontSize = 12"
+                    title="Reset font size">
               <img class="reducedIntensity menu" src="Assets/Images/fullscreen_exit_000000.svg">
             </button>
           </nav>
@@ -828,7 +853,7 @@
           <button class="dialogOverlay" onclick="downloadNote()">Download</button>
         </td>
         <td style="width: 33%">
-          <button class="primaryButton" onclick="doNotSave(); alterWindowTitle(true);">
+          <button class="primaryButton" onclick="doNotSave()">
             Don't Save
           </button>
         </td>
@@ -1143,7 +1168,7 @@
     <table style="width: 100%; height: 150px">
       <tr>
         <td style="width: 75%">
-          <textarea placeholder="Paste your code here" id="embeddedCode"></textarea>
+          <textarea id="embeddedCode" placeholder="Paste your code here"></textarea>
         </td>
         <td style="width: 25%">
           <button class="primaryButton" onclick="verifyIfiFrameInEmbed()">Open</button>
