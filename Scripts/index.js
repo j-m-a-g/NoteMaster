@@ -235,6 +235,13 @@ function throwAppError(messageText) {
   errorMessage.innerHTML = messageText;
 }
 
+function displaySnackbar(snackbarText) {
+  snackbar.style.display = "flex";
+  snackbarMessage.innerHTML = snackbarText;
+
+  setTimeout(() => snackbar.style.display = "none", 7500);
+}
+
 function get12HourTime() {
   let hour;
   let minute;

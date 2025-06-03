@@ -8,13 +8,14 @@ function initiateNote(isOpen) {
       fileReader.onload = () => {
         quill.clipboard.dangerouslyPasteHTML(fileReader.result);
       }
+
       fileReader.readAsText(event.target.files[0]);
 
       // Removes the "C:\fakepath\" prefix and ".htm" or ".html" suffix as
       // well as periods
-      const trimFakePath = openNoteFileInput.value.replace("C:\\fakepath\\", "");
-      const trimFileExtension = trimFakePath.replace(".htm", "");
-      noteName.value = (trimFileExtension.replace(".html", "")).replace(".", "");
+      const trimFakePath = openNoteFileInput.value.replaceAll("C:\\fakepath\\", "");
+      const trimFileExtension = trimFakePath.replaceAll(".htm", "");
+      noteName.value = (trimFileExtension.replaceAll(".html", "")).replaceAll(".", "");
       break;
     case false:
       // Resets the editor's state
@@ -99,15 +100,15 @@ function convertWordToNote() {
   fileReader.onload = async (event) => {
     mammoth.convertToHtml({arrayBuffer: event.target.result}, mammothJSOptions).then((result) => {
       convertedFileOutput = result.value;
-      console.log(convertedFileOutput);
+      downloadConvertedNote.hidden = false;
     }).catch(() => {
       throwAppError("The file you are trying to view does not seem like a Word document. Ensure the file extension is correct and try again.");
       closeCurrentFile();
+      wordDocumentToNoteButton.disabled = false;
     });
   }
 
   fileReader.readAsArrayBuffer(event.target.files[0]);
-  downloadConvertedNote.hidden = false;
 }
 
 // Executes after the convertWordToNote function as the fileReader.onload event is

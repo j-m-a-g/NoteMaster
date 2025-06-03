@@ -21,6 +21,14 @@
     onbeforeunload="if (quill.getLength() !== 1 || noteName.value !== '') { event.preventDefault(); event.returnValue = '' }"
     onload="onLoadTasks()"
     onresize="dynamicallySetHeight()">
+<!-- Global Snackbar -->
+<div id="snackbar">
+  <img class="primaryButton menu navSeparation" src="Assets/Images/info_000000.svg">
+  <span class="navSeparation" id="snackbarMessage"></span>
+  <button class="warningBanner" onclick="snackbar.style.display = 'none'" title="Dismiss">
+    <img class="primaryButton menu" src="Assets/Images/close_000000.svg">
+  </button>
+</div>
 <nav id="appMenu">
   <button class="menu" disabled id="quillUndo" onclick="quill.history.undo()" title="Undo change (Ctrl + Z)">
     <img class="menu" src="Assets/Images/undo_000000.svg">
@@ -112,8 +120,9 @@
     <button class="menuDropdown" disabled id="showHTMLEditor"
             onclick="toggleDialog(true, 'noteAsHTML', null); noteHTMLCodeEditor.session.setValue(quill.getSemanticHTML())">
       <img class="reducedIntensity menu" src="Assets/Images/integration_instructions_000000.svg">
-      Show Note HTML Markup
+      Show Note as HTML Markup
     </button>
+    <hr class="menuDropdown">
     <button accesskey="h" class="menuDropdown"
             onclick="toggleDialog(true, 'viewingHistory', null); appendViewingHistory()">
       <img class="reducedIntensity menu" src="Assets/Images/history_000000.svg">
@@ -204,9 +213,9 @@
             </tr>
           </table>
         </button>
-        <button class="dialogOverlay" hidden id="downloadConvertedNote" onclick="downloadConversion()"
+        <button class="primaryButton" hidden id="downloadConvertedNote" onclick="downloadConversion()"
                 style="margin-bottom: 5px">
-          <img class="reducedIntensity menu" src="Assets/Images/download_000000.svg">
+          <img class="primaryButton menu" src="Assets/Images/download_000000.svg">
           Download Converted Note
         </button>
         <span class="helperText" style="margin-left: 5px">
@@ -216,14 +225,10 @@
       <td class="appSection" hidden id="noteEditor">
         <div style="overflow-x: auto; height: 100%">
           <nav style="margin-bottom: 5px">
-            <button class="navButton" onclick="confirmSave()" title="New (Alt + N)">
-              <img class="menu" src="Assets/Images/draft_80A4AE.svg" style="filter: grayscale(100%); opacity: 50%">
-            </button>
-            <button class="navButton" onclick="saveNoteProgress()" title="Save Progress (Alt + S)">
-              <img class="reducedIntensity menu" src="Assets/Images/save_000000.svg">
-            </button>
-            <button class="navButton navSeparation" onclick="downloadNote()" title="Download Note (Alt + W)">
-              <img class="reducedIntensity menu" src="Assets/Images/download_000000.svg">
+            <button class="primaryButton navSeparation" onclick="toggleDialog(true, 'shareCopyOfNote', 'shareCopyLink')"
+                    style="width: 125px">
+              <img class="primaryButton menu" src="Assets/Images/share_000000.svg">
+              Share a Copy
             </button>
             <button class="navButton"
                     onclick="mainEditorFontSize += 1; mainEditor.style.fontSize = mainEditorFontSize + 'px'; updateStatusBar()"
@@ -365,7 +370,7 @@
                         <input
                             accept=".xml, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                             hidden id="wordFileInput"
-                            onchange="readWordDocument(); tasksOnceFileOpen('wordDocumentView', 'wordFileInput'); incorrectWordFormatting.hidden = false"
+                            onchange="readWordDocument(); tasksOnceFileOpen('wordDocumentView', 'wordFileInput')"
                             type="file">
                         <span class="helperText">.doc, .docx</span>
                       </td>
@@ -603,7 +608,7 @@
         </div>
         <div hidden id="textViewer">
           <nav hidden id="textViewActions">
-            <select id="textViewFont"
+            <select class="navSeparation" id="textViewFont"
                     onchange="textView.style.fontFamily = textViewFont.value">
               <option value="sans-serif">Sans Serif</option>
               <option value="serif">Serif</option>
@@ -636,28 +641,12 @@
           </nav>
         </div>
         <div hidden id="wordDocumentViewer">
-          <div class="warningBanner" hidden id="incorrectWordFormatting">
-            <table>
-              <tr>
-                <td style="width: 5%">
-                  <img class="reducedIntensity menu" src="Assets/Images/warning_000000.svg">
-                </td>
-                <td>Some formatting may not correctly display</td>
-                <td>
-                  <button class="warningBanner" onclick="incorrectWordFormatting.hidden = true">
-                    <img class="reducedIntensity menu" src="Assets/Images/close_000000.svg">
-                    <span class="helperText">Dismiss</span>
-                  </button>
-                </td>
-              </tr>
-            </table>
-          </div>
           <div hidden id="wordDocumentView"></div>
         </div>
         <div hidden id="codeFileViewer">
           <nav class="statusBar" hidden id="codeFileViewerStatusBar">
-            <span class="helperText">Syntax</span>
-            <select id="programmingLanguageMode"
+            <span class="helperText navSeparation">Syntax</span>
+            <select class="navSeparation" id="programmingLanguageMode"
                     onchange="const editorMode = 'ace/mode/' + programmingLanguageMode.value; codeFileViewCodeEditor.session.setMode(editorMode);">
               <option value="plain_text">None</option>
               <optgroup label="A">
@@ -848,13 +837,20 @@
     <table onclick="confirmSaveDialog.hidden = true" style="width: 100%">
       <tr>
         <td style="width: 33%">
-          <button class="dialogOverlay">Continue Working</button>
+          <button class="dialogOverlay">
+            <img class="reducedIntensity menu" src="Assets/Images/edit_note_000000.svg">
+            Continue Working
+          </button>
         </td>
         <td style="width: 33%">
-          <button class="dialogOverlay" onclick="downloadNote()">Download</button>
+          <button class="dialogOverlay" onclick="downloadNote()">
+            <img class="reducedIntensity menu" src="Assets/Images/download_000000.svg">
+            Download
+          </button>
         </td>
         <td style="width: 33%">
           <button class="primaryButton" onclick="doNotSave()">
+            <img class="primaryButton menu" src="Assets/Images/delete_000000.svg">
             Don't Save
           </button>
         </td>
@@ -983,20 +979,6 @@
 
 <!-- Dialogs with focus -->
 <div hidden id="dialogFocusBackground">
-  <div class="warningBanner" hidden id="noURLWarning">
-    <table>
-      <tr>
-        <td style="width: 5%"><img class="reducedIntensity menu" src="Assets/Images/warning_000000.svg"></td>
-        <td style="width: 92%">Please enter a URL</td>
-        <td style="width: 5%">
-          <button class="warningBanner" onclick="noURLWarning.hidden = true">
-            <img class="reducedIntensity menu" src="Assets/Images/close_000000.svg">
-            <span class="helperText">Dismiss</span>
-          </button>
-        </td>
-      </tr>
-    </table>
-  </div>
   <!-- Error -->
   <div class="dialogOverlay" hidden id="applicationError" style="z-index: 3">
     <h1>An Error Occurred</h1>
@@ -1140,6 +1122,7 @@
       Close
     </a>
   </div>
+  <!-- Link to a Video -->
   <div class="dialogOverlay" hidden id="linkToTubeVideo">
     <img src="Assets/Images/youtube_activity_BB271A.svg">
     <h1>YouTube Video</h1>
@@ -1162,6 +1145,7 @@
       Close
     </a>
   </div>
+  <!-- Custom iFrame -->
   <div class="dialogOverlay" hidden id="customEmbed">
     <img class="reducedIntensity" src="Assets/Images/frame_source_000000.svg">
     <h1>Custom Embed</h1>
@@ -1212,8 +1196,22 @@
       </div>
     </div>
   </div>
+  <div class="dialogOverlay" hidden id="shareCopyOfNote">
+    <h1>Share a Copy</h1>
+    <h3 class="helperText">Send a copy of your note another person to view and edit</h3>
+    <input id="shareCopyLink" readonly style="width: 95%" type="url">
+    <br>
+    <br>
+    <button class="primaryButton" onclick="displaySnackbar('Link copied!')" style="width: 25%; margin-right: 10px;">
+      <img class="primaryButton menu" src="Assets/Images/link_000000.svg">
+      Copy Link
+    </button>
+    <a class="hyperlinkButton" onclick="toggleDialog(false, 'shareCopyOfNote', null)">
+      Close
+    </a>
+  </div>
   <div class="dialogOverlay" hidden id="noteAsHTML" style="height: 90%; margin-top: 1%">
-    <h1>Show Note HTML Markup</h1>
+    <h1>Show Note as HTML Markup</h1>
     <h3 class="helperText">See your note as HTML markup to be used within other applications</h3>
     <div id="noteHTML"></div>
     <a class="hyperlinkButton" onclick="toggleDialog(false, 'noteAsHTML', null)">

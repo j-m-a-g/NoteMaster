@@ -69,7 +69,6 @@ function closeCurrentFile() {
   webpageView.src = "Pages/noWebpageNavigated.html";
   webpageViewer.hidden = true;
 
-  incorrectWordFormatting.hidden = true;
   wordDocumentView.hidden = true;
   wordDocumentView.innerHTML = "";
   wordDocumentViewer.hidden = true;
@@ -110,6 +109,7 @@ function readWordDocument() {
   fileReader.onload = (event) => {
     mammoth.convertToHtml({arrayBuffer: event.target.result}, mammothJSOptions).then((result) => {
       wordDocumentView.innerHTML = result.value;
+      displaySnackbar('Some formatting may not display correctly');
     }).catch(() => {
       throwAppError("The file you are trying to view does not seem like a Word document. Ensure the file extension is correct and try again.");
       closeCurrentFile();
@@ -142,7 +142,7 @@ function viewCodeFile() {
 
 function checkURLInput(URLInputObject) {
   if (document.getElementById(URLInputObject).value === "") {
-    document.getElementById("noURLWarning").hidden = false;
+    displaySnackbar("Please enter a valid URL");
     return false
   } else {
     return true
