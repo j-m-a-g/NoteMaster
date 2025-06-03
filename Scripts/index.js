@@ -1,20 +1,19 @@
 const toolbarOptions = [
-  ['bold', 'italic', 'underline', 'strike'],
-  ['blockquote', 'code-block'],
-  ['link', 'image', 'video', 'formula'],
+  ["bold", "italic", "underline", "strike"],
+  ["blockquote", "code-block"],
+  ["link", "image", "video"],
 
-  [{'list': 'ordered'}, {'list': 'bullet'}, {'list': 'check'}],
-  [{'script': 'sub'}, {'script': 'super'}],
-  [{'indent': '-1'}, {'indent': '+1'}],
-  [{'direction': 'rtl'}],
+  [{"list": "ordered"}, {"list": "bullet"}, {"list": "check"}],
+  [{"script": "sub"}, {"script": "super"}],
+  [{"indent": "-1"}, {"indent": "+1"}],
 
-  [{'header': [1, 2, 3, 4, false, 5, 6]}],
+  [{"header": [1, 2, 3, 4, false, 5, 6]}],
 
-  [{'color': []}, {'background': []}],
-  [{'font': []}],
-  [{'align': []}],
+  [{"color": []}, {"background": []}],
+  [{"font": []}],
+  [{"align": ""}, {"align": "center"}, {"align": "right"}, {"align": "justify"}],
 
-  ['clean']
+  ["clean"]
 ];
 
 // Note editor on the right side
@@ -73,6 +72,17 @@ function onLoadTasks() {
   }
 
   dynamicallySetHeight();
+  updateStatusBar();
+
+  // SHARED NOTE CHECK
+  if (workingURLParameters.has("name") || workingURLParameters.has("markup")) {
+    initiateNote(false);
+    noteName.value = workingURLParameters.get("name");
+    quill.clipboard.dangerouslyPasteHTML(decodeURIComponent(workingURLParameters.get("markup")));
+    // Removes the parameters from being displayed in a user's address
+    // bar for security reasons
+    history.pushState(null, "", window.location.href.split("?")[0]);
+  }
 
   // USER PREFERENCES
   // Auto Save
@@ -95,7 +105,6 @@ function onLoadTasks() {
 // Sets the height of certain elements dependent on the height
 // of a user's browser window
 function dynamicallySetHeight() {
-  const adjustedHeight = (window.innerHeight - 34).toString() + "px";
   appSectionsTable.style.height = adjustedHeight;
   anotherNoteView.style.height = adjustedHeight;
   wordDocumentView.style.height = adjustedHeight;

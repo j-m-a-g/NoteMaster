@@ -63,11 +63,11 @@
       <img class="menu" id="autoSaveCheck">
       Auto Save
     </button>
-    <hr class="menuDropdown">
     <button accesskey="w" class="menuDropdown" disabled id="downloadNote" onclick="downloadNote()">
       <img class="reducedIntensity menu" src="Assets/Images/download_000000.svg">
       Do<u>w</u>nload Note <span class="helperText menuDropdown">Alt + W</span>
     </button>
+    <hr class="menuDropdown">
     <button accesskey="v" class="menuDropdown" disabled id="closeFile" onclick="confirmViewerClose.hidden = false">
       <img class="reducedIntensity menu" src="Assets/Images/home_000000.svg">
       Close <u>V</u>iewer <span class="helperText menuDropdown">Alt + V</span>
@@ -225,9 +225,10 @@
       <td class="appSection" hidden id="noteEditor">
         <div style="overflow-x: auto; height: 100%">
           <nav style="margin-bottom: 5px">
-            <button class="primaryButton navSeparation" onclick="toggleDialog(true, 'shareCopyOfNote', 'shareCopyLink')"
+            <button class="navButton navSeparation"
+                    onclick="toggleDialog(true, 'shareCopyOfNote', 'shareCopyLink'); prepareToShare()"
                     style="width: 125px">
-              <img class="primaryButton menu" src="Assets/Images/share_000000.svg">
+              <img class="reducedIntensity menu" src="Assets/Images/share_000000.svg">
               Share a Copy
             </button>
             <button class="navButton"
@@ -560,37 +561,24 @@
               <td>
                 <span class="helperText">File Name</span>
                 <span class="copyOnClick" id="fileName"
-                      onclick="navigator.clipboard.writeText(this.innerHTML); copiedToClipboard.hidden = false"
+                      onclick="navigator.clipboard.writeText(this.innerHTML); displaySnackbar(copiedToClipboardString)"
                       title="Copy the file's name">---</span>
               </td>
               <td>
                 <span class="helperText">Size</span>
                 <span class="copyOnClick" id="fileSize"
-                      onclick="navigator.clipboard.writeText(this.innerHTML); copiedToClipboard.hidden = false"
+                      onclick="navigator.clipboard.writeText(this.innerHTML); displaySnackbar(copiedToClipboardString)"
                       title="Copy the file's size">---</span>
               </td>
               <td>
                 <span class="helperText">Last Modified</span>
                 <span class="copyOnClick" id="fileLastModified"
-                      onclick="navigator.clipboard.writeText(this.innerHTML); copiedToClipboard.hidden = false"
+                      onclick="navigator.clipboard.writeText(this.innerHTML); displaySnackbar('Copied to clipboard')"
                       title="Copy the file's last modified date">---</span>
               </td>
             </tr>
           </table>
         </nav>
-        <div class="warningBanner" hidden id="copiedToClipboard">
-          <table>
-            <tr>
-              <td>Copied to clipboard!</td>
-              <td>
-                <button class="warningBanner" onclick="copiedToClipboard.hidden = true">
-                  <img class="reducedIntensity menu" src="Assets/Images/close_000000.svg">
-                  <span class="helperText">Dismiss</span>
-                </button>
-              </td>
-            </tr>
-          </table>
-        </div>
         <div id="noFileSelected" style="margin-top: 15%">
           <img class="reducedIntensity" src="Assets/Images/file_copy_off_000000.svg"
                style="margin-left: 45%">
@@ -832,7 +820,7 @@
   <div class="dialogOverlay">
     <h1 class="saveBeforeClosing" id="saveDocumentHeading"></h1>
     <h3 class="saveBeforeClosing helperText">
-      You are continuing onto another task and your current work has not been saved.
+      You are continuing onto another task and your current work has not been saved
     </h3>
     <table onclick="confirmSaveDialog.hidden = true" style="width: 100%">
       <tr>
@@ -876,7 +864,7 @@
     <h1 class="saveBeforeClosing">Are you sure you want to close this viewer?</h1>
     <h3 class="saveBeforeClosing helperText">
       By doing this, you will revert your view back to Welcome and be able to
-      select another document to view.
+      select another document to view
     </h3>
     <table onclick="confirmViewerClose.hidden = true" style="width: 100%">
       <tr>
@@ -947,8 +935,10 @@
 <div class="saveBeforeClosing" hidden id="insertTable">
   <div class="dialogOverlay" style="height: 75%">
     <h1>Insert a Table</h1>
-    <h3 class="helperText">Select the number of rows and columns you'd like to have. Note that this cannot be changed
-      later for the same table</h3>
+    <h3 class="helperText">
+      Select the number of rows and columns you'd like to have. Note that this cannot be changed
+      later for the same table
+    </h3>
     <table style="width: 100%">
       <tr>
         <td style="width: 40%">
@@ -1197,12 +1187,15 @@
     </div>
   </div>
   <div class="dialogOverlay" hidden id="shareCopyOfNote">
+    <img class="reducedIntensity" src="Assets/Images/share_000000.svg">
     <h1>Share a Copy</h1>
     <h3 class="helperText">Send a copy of your note another person to view and edit</h3>
-    <input id="shareCopyLink" readonly style="width: 95%" type="url">
+    <input id="shareCopyLink" readonly style="width: 95%; user-select: all" type="url">
     <br>
     <br>
-    <button class="primaryButton" onclick="displaySnackbar('Link copied!')" style="width: 25%; margin-right: 10px;">
+    <button class="primaryButton"
+            onclick="navigator.clipboard.writeText(shareCopyLink.value); displaySnackbar('Link copied!')"
+            style="width: 25%; margin-right: 10px;">
       <img class="primaryButton menu" src="Assets/Images/link_000000.svg">
       Copy Link
     </button>

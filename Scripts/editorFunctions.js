@@ -10,12 +10,9 @@ function initiateNote(isOpen) {
       }
 
       fileReader.readAsText(event.target.files[0]);
-
       // Removes the "C:\fakepath\" prefix and ".htm" or ".html" suffix as
       // well as periods
-      const trimFakePath = openNoteFileInput.value.replaceAll("C:\\fakepath\\", "");
-      const trimFileExtension = trimFakePath.replaceAll(".htm", "");
-      noteName.value = (trimFileExtension.replaceAll(".html", "")).replaceAll(".", "");
+      noteName.value = openNoteFileInput.value.replaceAll("C:\\fakepath\\", "").replaceAll(".htm", "").replaceAll(".html", "").replaceAll(".", "");
       break;
     case false:
       // Resets the editor's state
@@ -133,16 +130,25 @@ function launchExample() {
 
 function updateStatusBar() {
   if (quill.getLength() === 1) {
-    characterCount.innerHTML = "<span class='helperText'>Characters (Including spaces) </span> 0";
+    characterCount.innerHTML = "<span class='helperText'>Characters (Including spaces) </span> <span class='copyOnClick' onclick='navigator.clipboard.writeText(this.innerHTML); displaySnackbar(copiedToClipboardString)'>0</span>";
   } else {
-    characterCount.innerHTML = "<span class='helperText'>Characters (Including spaces) </span> " + quill.getLength();
+    characterCount.innerHTML = "<span class='helperText'>Characters (Including spaces) </span> <span class='copyOnClick' onclick='navigator.clipboard.writeText(this.innerHTML); displaySnackbar(copiedToClipboardString)'>" + quill.getLength() + "</span>";
   }
 
   if (quill.getText() === "\n") {
-    wordCount.innerHTML = "<span class='helperText'>Words </span> 0";
+    wordCount.innerHTML = "<span class='helperText'>Words </span> <span class='copyOnClick' onclick='navigator.clipboard.writeText(this.innerHTML); displaySnackbar(copiedToClipboardString)'>0</span>";
   } else {
-    wordCount.innerHTML = "<span class='helperText'>Words </span> " + (quill.getText().split(/\s+/).length - 1);
+    wordCount.innerHTML = "<span class='helperText'>Words </span> <span class='copyOnClick' onclick='navigator.clipboard.writeText(this.innerHTML); displaySnackbar(copiedToClipboardString)'>" + (quill.getText().split(/\s+/).length - 1) + "</span>";
   }
 
   mainEditorZoom.innerHTML = "<span class='helperText'>Zoom </span>" + Math.floor((mainEditorFontSize / 13) * 100) + "%";
+}
+
+function prepareToShare() {
+  const linkParameters = new URLSearchParams("name=" + noteName.value + "&markup=" + quill.getSemanticHTML());
+  console.log(linkParameters.toString());
+  console.log(window.location.search);
+  console.log(decodeURIComponent(linkParameters.get("markup")));
+
+  shareCopyLink.value = window.location.href + "?" + linkParameters.toString().replaceAll("=&nbsp%3B", "%20").replaceAll("&nbsp%3B", "%20");
 }
