@@ -38,6 +38,7 @@ function confirmSave() {
   } else {
     hideAndShow("noteEditor", "createOrOpenContainer");
     alterMenuFunctions(true);
+    alterWindowTitle(true);
   }
 }
 
