@@ -7,7 +7,6 @@ const adjustedHeight = (window.innerHeight - 34).toString() + "px";
 const anotherNoteFileInput = document.getElementById("anotherNoteFileInput");
 const anotherNoteView = document.getElementById("anotherNoteView");
 const anotherNoteViewer = document.getElementById("anotherNoteViewer");
-const appMenu = document.getElementById("appMenu");
 const appSectionSizesContainer = document.getElementById("appSectionSizesContainer");
 const appSectionsTable = document.getElementById("appSectionsTable");
 const autoSave = document.getElementById("autoSave");

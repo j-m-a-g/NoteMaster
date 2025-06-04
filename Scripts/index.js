@@ -183,6 +183,9 @@ function alterMenuFunctions(isDisabled) {
   document.getElementById("downloadNote").disabled = isDisabled;
   document.getElementById("save").disabled = isDisabled;
   document.getElementById('showHTMLEditor').disabled = isDisabled;
+  document.getElementById('insertTableButton').disabled = isDisabled;
+  document.getElementById('insertDate').disabled = isDisabled;
+  document.getElementById('insertTime').disabled = isDisabled;
 }
 
 function applyPercentageSizes() {

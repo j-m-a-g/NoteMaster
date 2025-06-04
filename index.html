@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -19,8 +20,7 @@
 
 <body
     onbeforeunload="if (quill.getLength() !== 1 || noteName.value !== '') { event.preventDefault(); event.returnValue = '' }"
-    onload="onLoadTasks()"
-    onresize="dynamicallySetHeight()">
+    onload="onLoadTasks()" onresize="dynamicallySetHeight()">
 <!-- Global Snackbar -->
 <div id="snackbar">
   <img class="primaryButton menu navSeparation" src="Assets/Images/info_000000.svg">
@@ -36,17 +36,13 @@
   <button class="menu" disabled id="quillRedo" onclick="quill.history.redo()" title="Redo change (Ctrl + Y)">
     <img class="menu" src="Assets/Images/redo_000000.svg">
   </button>
-  <button class="menu"
-          onmouseleave="document.getElementById('fileMenu').hidden = true"
+  <button class="menu" onmouseleave="document.getElementById('fileMenu').hidden = true"
           onmouseover="document.getElementById('fileMenu').hidden = false">
     File
   </button>
-  <div class="menu" hidden id="fileMenu"
-       style="margin-left: 75px"
-       onmouseleave="document.getElementById('fileMenu').hidden = true"
-       onmouseover="document.getElementById('fileMenu').hidden = false">
-    <button accesskey="n"
-            class="menuDropdown"
+  <div class="menu" hidden id="fileMenu" onmouseleave="document.getElementById('fileMenu').hidden = true"
+       onmouseover="document.getElementById('fileMenu').hidden = false" style="margin-left: 75px">
+    <button accesskey="n" class="menuDropdown"
             onclick="if (noteEditor.hidden) { initiateNote(false) } else { confirmSave() }">
       <img class="reducedIntensity menu" src="Assets/Images/note_add_000000.svg">
       <u>N</u>ew <span class="helperText menuDropdown">Alt + N</span>
@@ -81,34 +77,29 @@
           onmouseover="document.getElementById('insertMenu').hidden = false">
     Insert
   </button>
-  <div class="menu" hidden id="insertMenu"
-       onmouseleave="document.getElementById('insertMenu').hidden = true"
-       onmouseover="document.getElementById('insertMenu').hidden = false"
-       style="margin-left: 120px">
-    <button class="menuDropdown" onclick="insertTable.hidden = false">
+  <div class="menu" hidden id="insertMenu" onmouseleave="document.getElementById('insertMenu').hidden = true"
+       onmouseover="document.getElementById('insertMenu').hidden = false" style="margin-left: 120px">
+    <button class="menuDropdown" disabled id="insertTableButton" onclick="insertTable.hidden = false">
       <img class="reducedIntensity menu" src="Assets/Images/table_000000.svg">
       Table
     </button>
-    <button class="menuDropdown"
-            onclick="navigator.clipboard.writeText((currentDate.getMonth() + 1).toString() + '/' + currentDate.getDate().toString() + '/' + currentDate.getFullYear().toString())">
+    <button class="menuDropdown" disabled id="insertDate"
+            onclick="quill.insertText(quill.getSelection(focus), (currentDate.getMonth() + 1).toString() + '/' + currentDate.getDate().toString() + '/' + currentDate.getFullYear().toString())">
       <img class="reducedIntensity menu" src="Assets/Images/today_000000.svg">
-      Copy Current Date <span class="helperText menuDropdown">m(m)/d(d)/yyyy</span>
+      Current Date <span class="helperText menuDropdown">m(m)/d(d)/yyyy</span>
     </button>
-    <button class="menuDropdown"
-            onclick="navigator.clipboard.writeText(get12HourTime())">
+    <button class="menuDropdown" disabled id="insertTime"
+            onclick="quill.insertText(quill.getSelection(focus), get12HourTime())">
       <img class="reducedIntensity menu" src="Assets/Images/schedule_000000.svg">
-      Copy Current Time <span class="helperText menuDropdown">(h)h:mm</span>
+      Current Time <span class="helperText menuDropdown">(h)h:mm</span>
     </button>
-    <button class="menuDropdown">Shape</button>
   </div>
   <button class="menu" onmouseleave="document.getElementById('viewMenu').hidden = true"
           onmouseover="document.getElementById('viewMenu').hidden = false">
     View
   </button>
-  <div class="menu" hidden id="viewMenu"
-       onmouseleave="document.getElementById('viewMenu').hidden = true"
-       onmouseover="document.getElementById('viewMenu').hidden = false"
-       style="margin-left: 178px">
+  <div class="menu" hidden id="viewMenu" onmouseleave="document.getElementById('viewMenu').hidden = true"
+       onmouseover="document.getElementById('viewMenu').hidden = false" style="margin-left: 178px">
     <button class="menuDropdown" onclick="window.location.reload()">
       <img class="reducedIntensity menu" src="Assets/Images/refresh_000000.svg">
       Refresh <span class="helperText menuDropdown">F5 or Ctrl + R</span>
@@ -135,18 +126,24 @@
       Word Wrap
     </button>
   </div>
+  <button class="menu" onmouseleave="document.getElementById('settingsMenu').hidden = true"
+          onmouseover="document.getElementById('settingsMenu').hidden = false">
+    Settings
+  </button>
+  <div class="menu" hidden id="settingsMenu" onmouseleave="document.getElementById('settingsMenu').hidden = true"
+       onmouseover="document.getElementById('settingsMenu').hidden = false" style="margin-left: 231px">
+    <button class="menuDropdown">Dark Mode</button>
+    <button class="menuDropdown" onclick="localStorage.clear(); window.location.reload()">
+      <img class="reducedIntensity menu" src="Assets/Images/reset_settings_000000.svg">
+      Reset Settings
+    </button>
+  </div>
   <button class="menu" onmouseleave="document.getElementById('helpMenu').hidden = true"
           onmouseover="document.getElementById('helpMenu').hidden = false">
     Help
   </button>
-  <div class="menu" hidden id="helpMenu"
-       onmouseleave="document.getElementById('helpMenu').hidden = true"
-       onmouseover="document.getElementById('helpMenu').hidden = false"
-       style="margin-left: 231px">
-    <button class="menuDropdown" onclick="toggleDialog(true, 'preferencesDialog', null)">
-      <img class="reducedIntensity menu" src="Assets/Images/settings_000000.svg">
-      Preferences
-    </button>
+  <div class="menu" hidden id="helpMenu" onmouseleave="document.getElementById('helpMenu').hidden = true"
+       onmouseover="document.getElementById('helpMenu').hidden = false" style="margin-left: 303px">
     <button class="menuDropdown" onclick="toggleDialog(true, 'aboutDialog', null)">
       <img class="reducedIntensity menu" src="Assets/Images/info_000000.svg">
       About
@@ -167,9 +164,9 @@
                 <img class="appSection reducedIntensity" src="Assets/Images/note_add_000000.svg">
               </td>
               <td style="width: 100%">
-                <span class="buttonHeading">
-                  Create a <u>N</u>ew Note <span class="helperText menuDropdown">Alt + N</span>
-                </span>
+                    <span class="buttonHeading">
+                      Create a <u>N</u>ew Note <span class="helperText menuDropdown">Alt + N</span>
+                    </span>
                 <br>
                 <span class="helperText">Get started with a blank slate</span>
               </td>
@@ -184,11 +181,9 @@
                 <img class="appSection reducedIntensity" src="Assets/Images/file_open_000000.svg">
               </td>
               <td>
-                <span class="buttonHeading"><u>O</u>pen an Existing Note <span
-                    class="helperText menuDropdown">Alt + O</span></span><br>
-                <input accept="text/html" hidden id="openNoteFileInput"
-                       onchange="initiateNote(true)"
-                       type="file">
+                    <span class="buttonHeading"><u>O</u>pen an Existing Note <span class="helperText menuDropdown">Alt +
+                        O</span></span><br>
+                <input accept="text/html" hidden id="openNoteFileInput" onchange="initiateNote(true)" type="file">
                 <span class="helperText">Browse your computer for a note you were working on last time</span>
               </td>
             </tr>
@@ -206,8 +201,7 @@
                 <input
                     accept=".xml, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                     hidden id="convertWordToNoteInput"
-                    onchange="convertWordToNote(); wordDocumentToNoteButton.disabled = true"
-                    type="file">
+                    onchange="convertWordToNote(); wordDocumentToNoteButton.disabled = true" type="file">
                 <span class="helperText">Markup your Word document as a note</span>
               </td>
             </tr>
@@ -219,8 +213,8 @@
           Download Converted Note
         </button>
         <span class="helperText" style="margin-left: 5px">
-          Don't know where to start? See an <a class="hyperlinkButton" onclick="launchExample()">example</a>
-        </span>
+              Don't know where to start? See an <a class="hyperlinkButton" onclick="launchExample()">example</a>
+            </span>
       </td>
       <td class="appSection" hidden id="noteEditor">
         <div style="overflow-x: auto; height: 100%">
@@ -241,9 +235,9 @@
                     title="Zoom Out">
               <img class="reducedIntensity menu" src="Assets/Images/zoom_out_000000.svg">
             </button>
-            <input id="noteName" oninput="noteName.value = noteName.value.replaceAll('.', ''); alterWindowTitle(false)"
-                   placeholder="Untitled"
-                   type="text">
+            <input id="noteName"
+                   oninput="noteName.value = noteName.value.replaceAll('.', ''); alterWindowTitle(false)"
+                   placeholder="Untitled" type="text">
             <span class="helperText" style="font-size: 14px">.htm</span>
           </nav>
           <div id="mainEditor" oninput="updateStatusBar()"></div>
@@ -277,8 +271,7 @@
           <table style="width: 100%">
             <tr>
               <td>
-                <button class="appSection"
-                        onclick="pdfFileInput.click(); toggleViewer(true, 'pdfViewer')">
+                <button class="appSection" onclick="pdfFileInput.click(); toggleViewer(true, 'pdfViewer')">
                   <table>
                     <tr>
                       <td>
@@ -297,8 +290,7 @@
                 </button>
               </td>
               <td>
-                <button class="appSection"
-                        onclick="imageFileInput.click(); toggleViewer(true, 'imageViewer')">
+                <button class="appSection" onclick="imageFileInput.click(); toggleViewer(true, 'imageViewer')">
                   <table>
                     <tr>
                       <td>
@@ -359,7 +351,8 @@
             </tr>
             <tr>
               <td>
-                <button class="appSection" onclick="wordFileInput.click(); toggleViewer(true, 'wordDocumentViewer')">
+                <button class="appSection"
+                        onclick="wordFileInput.click(); toggleViewer(true, 'wordDocumentViewer')">
                   <table>
                     <tr>
                       <td>
@@ -408,8 +401,7 @@
           <table style="width: 100%">
             <tr>
               <td>
-                <button class="appSection"
-                        onclick="toggleDialog(true, 'linkToPDF', 'URLToPDFInput')">
+                <button class="appSection" onclick="toggleDialog(true, 'linkToPDF', 'URLToPDFInput')">
                   <table>
                     <tr>
                       <td>
@@ -426,8 +418,7 @@
                 </button>
               </td>
               <td>
-                <button class="appSection"
-                        onclick="toggleDialog(true, 'linkToImage', 'URLToImageInput')">
+                <button class="appSection" onclick="toggleDialog(true, 'linkToImage', 'URLToImageInput')">
                   <table>
                     <tr>
                       <td>
@@ -528,8 +519,7 @@
             </tr>
           </table>
         </details>
-        <button class="appSection"
-                onclick="anotherNoteFileInput.click(); toggleViewer(true, 'anotherNoteViewer')">
+        <button class="appSection" onclick="anotherNoteFileInput.click(); toggleViewer(true, 'anotherNoteViewer')">
           <table>
             <tr>
               <td>
@@ -539,8 +529,7 @@
                 <span class="buttonHeading">Another Note</span>
                 <br>
                 <input accept="text/html" hidden id="anotherNoteFileInput"
-                       onchange="readHTMLNote(); anotherNoteView.hidden = false"
-                       type="file">
+                       onchange="readHTMLNote(); anotherNoteView.hidden = false" type="file">
                 <span class="helperText">Have another note open on the side</span>
               </td>
             </tr>
@@ -580,11 +569,11 @@
           </table>
         </nav>
         <div id="noFileSelected" style="margin-top: 15%">
-          <img class="reducedIntensity" src="Assets/Images/file_copy_off_000000.svg"
-               style="margin-left: 45%">
+          <img class="reducedIntensity" src="Assets/Images/file_copy_off_000000.svg" style="margin-left: 45%">
           <h2 class="helperText" style="text-align: center">No file has been chosen... Yet</h2>
-          <button class="dialogOverlay" onclick="hideAndShow('viewersContainer', 'chooseViewer')" style="width: 100%">
-            <img class="menu" src="Assets/Images/home_000000.svg">
+          <button class="primaryButton" onclick="hideAndShow('viewersContainer', 'chooseViewer')"
+                  style="width: 100%">
+            <img class="primaryButton menu" src="Assets/Images/home_000000.svg">
             Return to Welcome
           </button>
         </div>
@@ -602,11 +591,13 @@
               <option value="serif">Serif</option>
               <option selected value="monospace">Monospace</option>
             </select>
-            <button class="navButton" onclick="textViewFontSize += 1; textView.style.fontSize = textViewFontSize + 'px'"
+            <button class="navButton"
+                    onclick="textViewFontSize += 1; textView.style.fontSize = textViewFontSize + 'px'"
                     title="Increase font size">
               <img class="reducedIntensity menu" src="Assets/Images/text_increase_000000.svg">
             </button>
-            <button class="navButton" onclick="textViewFontSize -= 1; textView.style.fontSize = textViewFontSize + 'px'"
+            <button class="navButton"
+                    onclick="textViewFontSize -= 1; textView.style.fontSize = textViewFontSize + 'px'"
                     title="Decrease font size">
               <img class="reducedIntensity menu" src="Assets/Images/text_decrease_000000.svg">
             </button>
@@ -782,9 +773,7 @@
                   </button>
                 </td>
                 <td style="width: 100%">
-                  <input id="webpageURLBar"
-                         placeholder="Type a website address here"
-                         style="width: 95%" type="url">
+                  <input id="webpageURLBar" placeholder="Type a website address here" style="width: 95%" type="url">
                 </td>
                 <td>
                   <button class="navButton"
@@ -897,21 +886,20 @@
             <tr>
               <td>Viewing (%)</td>
               <td>
-                <a class="hyperlinkButton" onclick="viewingSize.value = viewingSize.min; adjustViewingAndEditorSizes()">Min</a>
+                <a class="hyperlinkButton"
+                   onclick="viewingSize.value = viewingSize.min; adjustViewingAndEditorSizes()">Min</a>
                 or
                 <a class="hyperlinkButton"
                    onclick="viewingSize.value = viewingSize.max; adjustViewingAndEditorSizes()">Max</a>
               </td>
             </tr>
           </table>
-          <input id="viewingSize" max="68" min="32"
-                 oninput="adjustViewingAndEditorSizes()"
+          <input id="viewingSize" max="68" min="32" oninput="adjustViewingAndEditorSizes()"
                  onkeydown="appSectionSizesContainer.style.backgroundColor = 'rgba(255, 255, 255, 0.5)'"
                  onkeyup="setTimeout(() => { appSectionSizesContainer.style.backgroundColor = 'white' }, 2000);"
                  onmousedown="appSectionSizesContainer.style.backgroundColor = 'rgba(255, 255, 255, 0.5)'"
                  onmouseup="setTimeout(() => { appSectionSizesContainer.style.backgroundColor = 'white' }, 2000);"
-                 placeholder="50% (Default)" style="width: 90%; margin-top: 5px"
-                 type="number" value="50">
+                 placeholder="50% (Default)" style="width: 90%; margin-top: 5px" type="number" value="50">
         </td>
         <td style="width: 50%">
           <table style="width: 100%">
@@ -919,8 +907,8 @@
               <td>Editor (%)</td>
             </tr>
           </table>
-          <input id="editorSize" placeholder="50% (Default)" readonly style="width: 90%; margin-top: 5px" type="number"
-                 value="50">
+          <input id="editorSize" placeholder="50% (Default)" readonly style="width: 90%; margin-top: 5px"
+                 type="number" value="50">
         </td>
       </tr>
     </table>
@@ -936,21 +924,19 @@
   <div class="dialogOverlay" style="height: 75%">
     <h1>Insert a Table</h1>
     <h3 class="helperText">
-      Select the number of rows and columns you'd like to have. Note that this cannot be changed
-      later for the same table
+      Select the number of rows and columns you'd like to have and then copy the generated table.
+      Note that this cannot be changed later for the same table
     </h3>
     <table style="width: 100%">
       <tr>
         <td style="width: 40%">
           <input id="tableRows" max="32" min="1"
                  onchange="if (tableRows.value <= 9 && tableRows.value >= 1) { tableRows.value = '0' + tableRows.value } if (tableRows.value > tableRows.max) { tableRows.value = tableRows.max }"
-                 placeholder="Rows"
-                 style="width: 90%" type="number">
+                 placeholder="Rows" style="width: 90%" type="number">
         </td>
         <td class="helperText" style="padding-left: 5px; padding-right: 5px; padding-bottom: 6px">x</td>
         <td style="width: 40%">
-          <input id="tableColumns" max="32"
-                 min="1"
+          <input id="tableColumns" max="32" min="1"
                  onchange="if (tableColumns.value <= 9 && tableColumns.value >= 1) { tableColumns.value = '0' + tableColumns.value } if (tableColumns.value > tableColumns.max) { tableColumns.value = tableColumns.max }"
                  placeholder="Columns" style="width: 90%" type="number">
         </td>
@@ -1003,7 +989,8 @@
     <table style="width: 100%; margin-bottom: 10px">
       <tr>
         <td style="width: 75%">
-          <input id="URLToPDFInput" placeholder="e.x: https://example.com/document.pdf" style="width: 94%" type="url">
+          <input id="URLToPDFInput" placeholder="e.x: https://example.com/document.pdf" style="width: 94%"
+                 type="url">
         </td>
         <td>
           <button class="primaryButton"
@@ -1026,7 +1013,8 @@
     <table style="width: 100%; margin-bottom: 10px">
       <tr>
         <td style="width: 75%">
-          <input id="URLToImageInput" placeholder="e.x: https://example.com/image.jpg" style="width: 94%" type="url">
+          <input id="URLToImageInput" placeholder="e.x: https://example.com/image.jpg" style="width: 94%"
+                 type="url">
         </td>
         <td>
           <button class="primaryButton"
@@ -1097,8 +1085,7 @@
         <td style="width: 75%">
           <input id="URLToOnlineDesign"
                  placeholder="e.x: https://www.canva.com/design/DAFtggAaSbw/SzSJMmE_NBWoxEPNDkNjbQ/edit"
-                 style="width: 94%"
-                 type="url">
+                 style="width: 94%" type="url">
         </td>
         <td>
           <button class="primaryButton"
@@ -1120,8 +1107,8 @@
     <table style="width: 100%; margin-bottom: 10px">
       <tr>
         <td style="width: 75%">
-          <input id="URLToTubeVideo" placeholder="e.x: https://www.youtube.com/watch?v=jNQXAC9IVRw" style="width: 94%"
-                 type="url">
+          <input id="URLToTubeVideo" placeholder="e.x: https://www.youtube.com/watch?v=jNQXAC9IVRw"
+                 style="width: 94%" type="url">
         </td>
         <td>
           <button class="primaryButton"
@@ -1154,37 +1141,6 @@
     <a class="hyperlinkButton" onclick="toggleDialog(false, 'customEmbed', null)">
       Close
     </a>
-  </div>
-  <!-- Preferences -->
-  <div class="dialogOverlay" hidden id="preferencesDialog">
-    <h1>Preferences</h1>
-    <h4 class="helperText" style="margin-top: -10px">PERSONALIZATION</h4>
-    <div class="pretty p-switch p-fill">
-      <input type="checkbox">
-      <div class="state p-primary">
-        <label>Dark mode</label>
-      </div>
-    </div>
-    <br>
-    <br>
-    <div class="pretty p-switch p-fill">
-      <input checked type="checkbox">
-      <div class="state p-primary">
-        <label>Show app animations</label>
-      </div>
-    </div>
-    <br>
-    <br>
-    <a class="hyperlinkButton"
-       onclick="toggleDialog(false, 'preferencesDialog', null); if (resetOnCloseCheckbox.checked) { localStorage.clear(); resetOnCloseCheckbox.checked = false; window.location.reload() }">
-      Close
-    </a>|
-    <div class="pretty p-default p-curve p-thick">
-      <input id="resetOnCloseCheckbox" type="checkbox">
-      <div class="state p-primary p-primary-o">
-        <label for="resetOnCloseCheckbox">Reset preferences on close <span class="helperText menuDropdown">(Includes note progress)</span></label>
-      </div>
-    </div>
   </div>
   <div class="dialogOverlay" hidden id="shareCopyOfNote">
     <img class="reducedIntensity" src="Assets/Images/share_000000.svg">

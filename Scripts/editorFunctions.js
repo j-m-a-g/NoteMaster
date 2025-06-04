@@ -146,9 +146,5 @@ function updateStatusBar() {
 
 function prepareToShare() {
   const linkParameters = new URLSearchParams("name=" + noteName.value + "&markup=" + quill.getSemanticHTML());
-  console.log(linkParameters.toString());
-  console.log(window.location.search);
-  console.log(decodeURIComponent(linkParameters.get("markup")));
-
   shareCopyLink.value = window.location.href + "?" + linkParameters.toString().replaceAll("=&nbsp%3B", "%20").replaceAll("&nbsp%3B", "%20");
 }
