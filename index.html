@@ -113,12 +113,12 @@
       <img class="reducedIntensity menu" src="Assets/Images/integration_instructions_000000.svg">
       Show Note as HTML Markup
     </button>
-    <hr class="menuDropdown">
     <button accesskey="h" class="menuDropdown"
             onclick="toggleDialog(true, 'viewingHistory', null); appendViewingHistory()">
       <img class="reducedIntensity menu" src="Assets/Images/history_000000.svg">
       Viewing <u>H</u>istory <span class="helperText menuDropdown">Alt + H</span>
     </button>
+    <hr class="menuDropdown">
     <button class="menuDropdown" id="wordWrap"
             onclick="toggleMenuCheck('wordWrapCheck'); if (wordWrapCheck.src.includes(checkedImageSource)) { localStorage.setItem('wordWrapEnabled', 'true'); mainEditor.style.wordBreak = 'break-word' } else { localStorage.setItem('wordWrapEnabled', 'false'); mainEditor.style.wordBreak = 'normal' }"
             title="May cause layout issues">

@@ -78,7 +78,7 @@ function saveNoteProgress() {
 }
 
 function downloadNote() {
-  const noteFile = new Blob([quill.getSemanticHTML() + "<style>body { font-family: sans-serif } .ql-font-serif { font-family: serif } .ql-font-monospace { font-family: monospace }</style>"], {type: "text/html"});
+  const noteFile = new Blob(["<div style='word-break: break-word'>" + quill.getSemanticHTML() + "</div><style>body { font-family: sans-serif } .ql-font-serif { font-family: serif } .ql-font-monospace { font-family: monospace }</>"], {type: "text/html"});
   if (noteName.value === "") {
     noteDownloadLink.download = "Untitled";
   } else {
@@ -112,7 +112,7 @@ function convertWordToNote() {
 // Executes after the convertWordToNote function as the fileReader.onload event is
 // asynchronous
 function downloadConversion() {
-  const convertedFileOutputBlob = new Blob([convertedFileOutput.toString() + "<style>body { font-family: sans-serif } .ql-font-serif { font-family: serif } .ql-font-monospace { font-family: monospace }</style>"], {type: "text/html"});
+  const convertedFileOutputBlob = new Blob(["<div style='word-break: break-word'>" + convertedFileOutput.toString() + "</div><style>body { font-family: sans-serif } .ql-font-serif { font-family: serif } .ql-font-monospace { font-family: monospace }</style>"], {type: "text/html"});
   noteDownloadLink.download = convertWordToNoteInput.value.replaceAll("C:\\fakepath\\", "").replaceAll(".doc", "").replaceAll(".docx", "");
   noteDownloadLink.href = URL.createObjectURL(convertedFileOutputBlob);
   noteDownloadLink.click();
