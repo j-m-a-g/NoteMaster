@@ -1849,7 +1849,7 @@ define("ace/mode/xml/sax", [], function (require, exports, module) {
   if (!(_set_proto_({}, _set_proto_.prototype) instanceof _set_proto_)) {
     _set_proto_ = function (thiz, parent) {
       function p() {
-      };
+      }
       p.prototype = parent;
       p = new p();
       for (parent in thiz) {
@@ -1949,12 +1949,12 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
     error.code = code;
     if (message) this.message = this.message + ": " + message;
     return error;
-  };
+  }
   DOMException.prototype = Error.prototype;
   copy(ExceptionCode, DOMException)
 
   function NodeList() {
-  };
+  }
   NodeList.prototype = {
     length: 0,
     item: function (index) {
@@ -1986,7 +1986,7 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
   _extends(LiveNodeList, NodeList);
 
   function NamedNodeMap() {
-  };
+  }
 
   function _findNodeIndex(list, node) {
     var i = list.length;
@@ -2094,7 +2094,7 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
         this._features = features[feature];
       }
     }
-  };
+  }
 
   DOMImplementation.prototype = {
     hasFeature: function (/* string */ feature, /* string */ version) {
@@ -2130,7 +2130,7 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
   };
 
   function Node() {
-  };
+  }
 
   Node.prototype = {
     firstChild: null,
@@ -2501,7 +2501,7 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
 
   function Element() {
     this._nsMap = {};
-  };
+  }
   Element.prototype = {
     nodeType: ELEMENT_NODE,
     hasAttribute: function (name) {
@@ -2590,13 +2590,13 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
   _extends(Element, Node);
 
   function Attr() {
-  };
+  }
   Attr.prototype.nodeType = ATTRIBUTE_NODE;
   _extends(Attr, Node);
 
 
   function CharacterData() {
-  };
+  }
   CharacterData.prototype = {
     data: '',
     substringData: function (offset, count) {
@@ -2628,7 +2628,7 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
   _extends(CharacterData, Node);
 
   function Text() {
-  };
+  }
   Text.prototype = {
     nodeName: "#text",
     nodeType: TEXT_NODE,
@@ -2648,7 +2648,7 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
   _extends(Text, CharacterData);
 
   function Comment() {
-  };
+  }
   Comment.prototype = {
     nodeName: "#comment",
     nodeType: COMMENT_NODE
@@ -2656,7 +2656,7 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
   _extends(Comment, CharacterData);
 
   function CDATASection() {
-  };
+  }
   CDATASection.prototype = {
     nodeName: "#cdata-section",
     nodeType: CDATA_SECTION_NODE

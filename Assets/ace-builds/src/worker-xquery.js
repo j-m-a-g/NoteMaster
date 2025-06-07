@@ -52717,7 +52717,7 @@ define("ace/mode/xquery/xqlint", [], function (require, exports, module) {
             }
             return ast;
           } else {
-            return;
+
           }
         },
 

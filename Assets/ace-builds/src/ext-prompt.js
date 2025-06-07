@@ -2378,7 +2378,7 @@ define("ace/autocomplete", ["require", "exports", "module", "ace/keyboard/hash_h
         var index, distance;
         if (this.exactMatch) {
           if (needle !== caption.substr(0, needle.length))
-            continue loop;
+            continue;
         } else {
           var fullMatchIndex = caption.toLowerCase().indexOf(lower);
           if (fullMatchIndex > -1) {

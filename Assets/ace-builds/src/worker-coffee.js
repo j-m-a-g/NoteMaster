@@ -1332,7 +1332,9 @@ define("ace/worker/mirror", [], function (require, exports, module) {
 define("ace/mode/coffee/coffee", [], function (require, exports, module) {
   function define(f) {
     module.exports = f()
-  };define.amd = {};
+  }
+
+  define.amd = {};
   var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (e) {
     return typeof e
   } : function (e) {
@@ -18662,7 +18664,7 @@ define("ace/mode/coffee/coffee", [], function (require, exports, module) {
                 n.push(y);
                 var k = h.options && h.options.ranges;
                 this.parseError = "function" == typeof g.yy.parseError ? g.yy.parseError : Object.getPrototypeOf(this).parseError;
-                _token_stack:var T = function () {
+                var T = function () {
                   var e;
                   return e = h.lex() || u, "number" != typeof e && (e = a.symbols_[e] || e), e
                 };
@@ -18956,7 +18958,7 @@ define("ace/mode/coffee/coffee", [], function (require, exports, module) {
               }, {
                 key: "unwrapAll", value: function unwrapAll() {
                   var e;
-                  for (e = this; e !== (e = e.unwrap());) continue;
+                  for (e = this; e !== (e = e.unwrap());) ;
                   return e
                 }
               }, {
@@ -19148,7 +19150,7 @@ define("ace/mode/coffee/coffee", [], function (require, exports, module) {
                     }
                     if (n.followingComments) {
                       if (_ = n.followingComments[0].trail, s = "", !(_ && 1 === n.followingComments.length)) for (f = !1, b = e.slice(i), T = 0, m = b.length; T < m; T++) if (C = b[T], !f) {
-                        if (0 <= a.call(C.code, "\n")) f = !0; else continue
+                        if (0 <= a.call(C.code, "\n")) f = !0; else ;
                       } else if (d = /^ {2,}/m.exec(C.code), d) {
                         s = d[0];
                         break

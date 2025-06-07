@@ -5214,7 +5214,7 @@ define("ace/mode/html/saxparser", [], function (require, exports, module) {
             index -= 1;
             node = tree.openElements.item(index);
             if (node.isForeign()) {
-              continue;
+
             } else {
               tree.insertionMode.processEndTag(name);
               break;
@@ -7095,7 +7095,7 @@ define("ace/mode/html/saxparser", [], function (require, exports, module) {
         throw new Error("Not Implemented");
       };
       Node.prototype.revisit = function (treeParser) {
-        return;
+
       };
       Node.prototype.detach = function () {
         if (this.parentNode !== null) {

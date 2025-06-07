@@ -14041,16 +14041,16 @@ define("ace/keyboard/gutter_handler", ["require", "exports", "module", "ace/lib/
               this.activeRowIndex = nearestFoldLaneWidgetIndex;
               if (this.$isCustomWidgetVisible(nearestFoldLaneWidgetIndex)) {
                 this.$focusCustomWidget(this.activeRowIndex);
-                return;
+
               } else {
                 this.$focusFoldWidget(this.activeRowIndex);
-                return;
+
               }
             } else {
               this.activeRowIndex = nearestAnnotationIndex;
               this.activeLane = "annotation";
               this.$focusAnnotation(this.activeRowIndex);
-              return;
+
             }
           }.bind(this), 10);
         return;
@@ -14140,7 +14140,7 @@ define("ace/keyboard/gutter_handler", ["require", "exports", "module", "ace/lib/
             this.annotationTooltip.showTooltip(this.$rowIndexToRow(this.activeRowIndex));
             break;
         }
-        return;
+
       }
     };
     GutterKeyboardHandler.prototype.$blurGutter = function () {
@@ -14157,7 +14157,7 @@ define("ace/keyboard/gutter_handler", ["require", "exports", "module", "ace/lib/
       }
       if (this.annotationTooltip.isOpen)
         this.annotationTooltip.hideTooltip();
-      return;
+
     };
     GutterKeyboardHandler.prototype.$isFoldWidgetVisible = function (index) {
       var isRowFullyVisible = this.editor.isRowFullyVisible(this.$rowIndexToRow(index));
@@ -14277,7 +14277,7 @@ define("ace/keyboard/gutter_handler", ["require", "exports", "module", "ace/lib/
           return;
         }
       }
-      return;
+
     };
     GutterKeyboardHandler.prototype.$moveFoldWidgetDown = function () {
       var index = this.activeRowIndex;
@@ -14295,7 +14295,7 @@ define("ace/keyboard/gutter_handler", ["require", "exports", "module", "ace/lib/
           return;
         }
       }
-      return;
+
     };
     GutterKeyboardHandler.prototype.$moveAnnotationUp = function () {
       var index = this.activeRowIndex;
@@ -14308,7 +14308,7 @@ define("ace/keyboard/gutter_handler", ["require", "exports", "module", "ace/lib/
           return;
         }
       }
-      return;
+
     };
     GutterKeyboardHandler.prototype.$moveAnnotationDown = function () {
       var index = this.activeRowIndex;
@@ -14321,7 +14321,7 @@ define("ace/keyboard/gutter_handler", ["require", "exports", "module", "ace/lib/
           return;
         }
       }
-      return;
+
     };
     GutterKeyboardHandler.prototype.$findClosestNumber = function (num1, num2, target) {
       if (num1 === null)
@@ -14364,7 +14364,7 @@ define("ace/keyboard/gutter_handler", ["require", "exports", "module", "ace/lib/
           }
           break;
       }
-      return;
+
     };
     GutterKeyboardHandler.prototype.$rowIndexToRow = function (index) {
       var cell = this.lines.get(index);

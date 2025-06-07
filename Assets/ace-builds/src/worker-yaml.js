@@ -3772,7 +3772,7 @@ define("ace/mode/yaml/yaml-lint", [], function (require, exports, module) {
           if (state.position < (state.length - 1)) {
             throwError(state, 'end of the stream or a document separator is expected');
           } else {
-            return;
+
           }
         }
 

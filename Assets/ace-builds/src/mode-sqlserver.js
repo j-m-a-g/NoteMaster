@@ -327,8 +327,8 @@ define("ace/mode/folding/sqlserver", ["require", "exports", "module", "ace/lib/o
         return range;
       }
       if (foldStyle === "markbegin")
-        return;
-      return;
+
+
     };
     this.getBeginEndBlock = function (session, row, column, matchSequence) {
       var start = {

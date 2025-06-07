@@ -961,7 +961,7 @@ define("ace/keyboard/emacs", ["require", "exports", "module", "ace/lib/dom", "ac
             editor.pushEmacsMark(pos);
           });
           editor.setEmacsMark(rangePositions[rangePositions.length - 1]);
-          return;
+
         }
 
         function moveToMark() {
