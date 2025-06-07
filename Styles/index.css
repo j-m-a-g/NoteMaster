@@ -281,7 +281,7 @@ img.reducedIntensity {
 }
 
 div.dialogOverlay {
-  box-shadow: 1px 1px 10px 1px rgba(0, 0, 0, 0.5);
+  box-shadow: 1px 1px 10px 1px var(--lightAccent400);
   padding: 15px;
   position: fixed;
   background-color: white;
@@ -416,7 +416,7 @@ h3.saveBeforeClosing {
   z-index: 1;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(222, 222, 222, 0.5);
 }
 
 #noteName:focus {
