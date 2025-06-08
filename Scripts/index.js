@@ -84,6 +84,13 @@ function onLoadTasks() {
     history.pushState(null, "", window.location.href.split("?")[0]);
   }
 
+  // RETRIEVE SAVED NOTES
+  if (localStorage.getItem("savedNotes") !== null) {
+    savedForLater.innerHTML = localStorage.getItem("savedNotes");
+    savedForLater.click();
+    savedForLater.open = true;
+  }
+
   // USER PREFERENCES
   // Auto Save
   if (localStorage.getItem("autoSaveEnabled") === "true") {

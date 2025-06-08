@@ -81,6 +81,7 @@ summary {
 
 summary:hover {
   background-color: var(--lightAccent200);
+  color: var(--blueAccent500);
 }
 
 summary:active {
@@ -96,6 +97,7 @@ select {
 
 select:hover {
   background-color: var(--lightAccent200);
+  color: var(--blueAccent500);
 }
 
 select:focus {
@@ -214,6 +216,7 @@ button.navButton {
 
 button.navButton:hover {
   background-color: var(--lightAccent200);
+  color: var(--blueAccent500);
 }
 
 button.navButton:active {
@@ -263,6 +266,70 @@ img.appSection {
   filter: grayscale(100%);
 }
 
+#nothingSavedIndicator {
+  margin-top: 20px;
+  background-color: var(--lightAccent200);
+  padding: 10px;
+  border-radius: 5px;
+  border-color: var(--lightAccent300);
+  border-style: solid;
+  border-width: 1px;
+}
+
+div.savedNote {
+  padding: 10px;
+  width: 95%;
+  display: flex;
+  margin-bottom: 5px;
+  background-color: var(--lightAccent200);
+  border-color: var(--lightAccent300);
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 5px;
+}
+
+div.savedNote:hover {
+  background-color: var(--lightAccent300);
+
+  span.savedNoteTitle {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+}
+
+span.savedNoteTitle {
+  font-weight: 500;
+  word-break: break-word;
+}
+
+div.savedNoteTitle {
+  display: block;
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 10px;
+}
+
+div.savedNotePreview {
+  padding: 15px;
+  width: 150px;
+  height: 100px;
+  background-color: white;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  border-style: solid;
+  border-color: var(--lightAccent300);
+  border-width: 1px;
+}
+
+span.savedNotePreview {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
 span.buttonHeading {
   font-size: 16px;
 }
@@ -299,6 +366,8 @@ div.dialogOverlay {
 }
 
 button.primaryButton {
+  overflow: hidden;
+  text-overflow: ellipsis;
   width: 100%;
   height: 37px;
   padding: 10px;
@@ -325,6 +394,8 @@ img.primaryButton {
 }
 
 button.dialogOverlay {
+  overflow: hidden;
+  text-overflow: ellipsis;
   width: 100%;
   height: 37px;
   padding: 10px;
@@ -337,6 +408,7 @@ button.dialogOverlay {
 
 button.dialogOverlay:hover {
   background-color: rgba(0, 0, 0, 0.025);
+  color: var(--blueAccent500);
 }
 
 button.dialogOverlay:active {

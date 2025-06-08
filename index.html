@@ -132,7 +132,7 @@
   </button>
   <div class="menu" hidden id="settingsMenu" onmouseleave="document.getElementById('settingsMenu').hidden = true"
        onmouseover="document.getElementById('settingsMenu').hidden = false" style="margin-left: 231px">
-    <button class="menuDropdown">Dark Mode</button>
+    <button class="menuDropdown" onclick="throwAppError('Feature has not been implemented yet')">Dark Mode</button>
     <button class="menuDropdown" onclick="localStorage.clear(); window.location.reload()">
       <img class="reducedIntensity menu" src="Assets/Images/reset_settings_000000.svg">
       Reset Settings
@@ -156,65 +156,82 @@
     <tr id="appSectionsTableRow">
       <!-- Editing Panel -->
       <td class="appSection" id="createOrOpenContainer">
+        <img class="reducedIntensity" src="Assets/Images/door_open_000000.svg">
         <h1 style="line-height: 20px">Welcome</h1>
-        <button class="appSection" onclick="initiateNote(false)">
-          <table>
-            <tr>
-              <td>
-                <img class="appSection reducedIntensity" src="Assets/Images/note_add_000000.svg">
-              </td>
-              <td style="width: 100%">
+        <details id="startFromScratchOptions" onclick="savedForLater.open = false" open>
+          <summary>
+            <img class="reducedIntensity menu" src="Assets/Images/cards_star_000000.svg">
+            Start From Scratch
+          </summary>
+          <button class="appSection" onclick="initiateNote(false)">
+            <table>
+              <tr>
+                <td>
+                  <img class="appSection reducedIntensity" src="Assets/Images/note_add_000000.svg">
+                </td>
+                <td style="width: 100%">
                     <span class="buttonHeading">
                       Create a <u>N</u>ew Note <span class="helperText menuDropdown">Alt + N</span>
                     </span>
-                <br>
-                <span class="helperText">Get started with a blank slate</span>
-              </td>
-            </tr>
-          </table>
-        </button>
-        <br>
-        <button class="appSection" onclick="openNoteFileInput.click()">
-          <table>
-            <tr>
-              <td>
-                <img class="appSection reducedIntensity" src="Assets/Images/file_open_000000.svg">
-              </td>
-              <td>
-                    <span class="buttonHeading"><u>O</u>pen an Existing Note <span class="helperText menuDropdown">Alt +
-                        O</span></span><br>
-                <input accept="text/html" hidden id="openNoteFileInput" onchange="initiateNote(true)" type="file">
-                <span class="helperText">Browse your computer for a note you were working on last time</span>
-              </td>
-            </tr>
-          </table>
-        </button>
-        <button class="appSection" id="wordDocumentToNoteButton" onclick="convertWordToNoteInput.click()">
-          <table>
-            <tr>
-              <td>
-                <img class="appSection reducedIntensity" src="Assets/Images/convert_to_text_000000.svg">
-              </td>
-              <td>
-                <span class="buttonHeading">Convert a Word Document to a Note</span>
-                <br>
-                <input
-                    accept=".xml, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                    hidden id="convertWordToNoteInput"
-                    onchange="convertWordToNote(); wordDocumentToNoteButton.disabled = true" type="file">
-                <span class="helperText">Markup your Word document as a note</span>
-              </td>
-            </tr>
-          </table>
-        </button>
-        <button class="primaryButton" hidden id="downloadConvertedNote" onclick="downloadConversion()"
-                style="margin-bottom: 5px">
-          <img class="primaryButton menu" src="Assets/Images/download_000000.svg">
-          Download Converted Note
-        </button>
-        <span class="helperText" style="margin-left: 5px">
+                  <br>
+                  <span class="helperText">Get started with a blank slate</span>
+                </td>
+              </tr>
+            </table>
+          </button>
+          <span class="helperText" style="margin-left: 5px">
               Don't know where to start? See an <a class="hyperlinkButton" onclick="launchExample()">example</a>
-            </span>
+          </span>
+          <br>
+          <button class="appSection" onclick="openNoteFileInput.click()" style="margin-top: 7px">
+            <table>
+              <tr>
+                <td>
+                  <img class="appSection reducedIntensity" src="Assets/Images/file_open_000000.svg">
+                </td>
+                <td>
+                <span class="buttonHeading">
+                  <u>O</u>pen an Existing Note <span class="helperText menuDropdown">Alt + O</span>
+                </span>
+                  <br>
+                  <input accept="text/html" hidden id="openNoteFileInput" onchange="initiateNote(true)" type="file">
+                  <span class="helperText">Browse your computer for a note you were working on last time</span>
+                </td>
+              </tr>
+            </table>
+          </button>
+          <button class="appSection" id="wordDocumentToNoteButton" onclick="convertWordToNoteInput.click()">
+            <table>
+              <tr>
+                <td>
+                  <img class="appSection reducedIntensity" src="Assets/Images/convert_to_text_000000.svg">
+                </td>
+                <td>
+                  <span class="buttonHeading">Convert a Word Document to a Note</span>
+                  <br>
+                  <input
+                      accept=".xml, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                      hidden id="convertWordToNoteInput"
+                      onchange="convertWordToNote(); wordDocumentToNoteButton.disabled = true" type="file">
+                  <span class="helperText">Markup your Word document as a note</span>
+                </td>
+              </tr>
+            </table>
+          </button>
+          <button class="primaryButton" hidden id="downloadConvertedNote" onclick="downloadConversion()"
+                  style="margin-bottom: 5px">
+            <img class="primaryButton menu" src="Assets/Images/download_000000.svg">
+            Download Converted Note
+          </button>
+        </details>
+        <details id="savedForLater" onclick="startFromScratchOptions.open = false">
+          <summary>
+            <img class="reducedIntensity menu" src="Assets/Images/schedule_000000.svg">
+            Saved for Later
+          </summary>
+          <p id="nothingSavedIndicator">You haven't saved any notes yet.<br>To do so, select the, <span
+              class="helperText">"Save for Later"</span> option when you are about to close your note.</p>
+        </details>
       </td>
       <td class="appSection" hidden id="noteEditor">
         <div style="overflow-x: auto; height: 100%">
@@ -811,7 +828,7 @@
     <h3 class="saveBeforeClosing helperText">
       You are continuing onto another task and your current work has not been saved
     </h3>
-    <table onclick="confirmSaveDialog.hidden = true" style="width: 100%">
+    <table onclick="confirmSaveDialog.hidden = true" style="width: 100%; margin-bottom: 5px">
       <tr>
         <td style="width: 33%">
           <button class="dialogOverlay">
@@ -820,19 +837,23 @@
           </button>
         </td>
         <td style="width: 33%">
-          <button class="dialogOverlay" onclick="downloadNote()">
-            <img class="reducedIntensity menu" src="Assets/Images/download_000000.svg">
-            Download
-          </button>
-        </td>
-        <td style="width: 33%">
           <button class="primaryButton" onclick="doNotSave()">
             <img class="primaryButton menu" src="Assets/Images/delete_000000.svg">
             Don't Save
           </button>
         </td>
+        <td style="width: 33%">
+          <button class="dialogOverlay" onclick="downloadNote()">
+            <img class="reducedIntensity menu" src="Assets/Images/download_000000.svg">
+            Download
+          </button>
+        </td>
       </tr>
     </table>
+    <a class="hyperlinkButton" onclick="saveNoteForLater()">
+      <img class="reducedIntensity menu" src="Assets/Images/more_time_000000.svg">
+      Save For Later
+    </a>
   </div>
 </div>
 
