@@ -113,7 +113,7 @@ function convertWordToNote() {
 // asynchronous
 function downloadConversion() {
   const convertedFileOutputBlob = new Blob(["<div style='word-break: break-word'>" + convertedFileOutput.toString() + "</div><style>body { font-family: sans-serif } .ql-font-serif { font-family: serif } .ql-font-monospace { font-family: monospace }</style>"], {type: "text/html"});
-  noteDownloadLink.download = convertWordToNoteInput.value.replaceAll("C:\\fakepath\\", "").replaceAll(".doc", "").replaceAll(".docx", "");
+  noteDownloadLink.download = convertWordToNoteInput.value.replaceAll("C:\\fakepath\\", "").replaceAll(".docx", "").replaceAll(".doc", "");
   noteDownloadLink.href = URL.createObjectURL(convertedFileOutputBlob);
   noteDownloadLink.click();
 
@@ -147,11 +147,10 @@ function updateStatusBar() {
 
 function prepareToShare() {
   const linkParameters = new URLSearchParams("name=" + noteName.value + "&markup=" + quill.getSemanticHTML());
-  shareCopyLink.value = window.location.href + "?" + linkParameters.toString().replaceAll("=&nbsp%3B", "%20").replaceAll("&nbsp%3B", "%20").replaceAll("=&amp%3B", "%26");
+  shareCopyLink.value = window.location.href + "?" + linkParameters.toString().replaceAll("&", "%26").replace("%26", "&").replace("=", "paramEqual").replace("=", "paramEqual").replaceAll("=", "").replaceAll("paramEqual", "=");
 }
 
 function saveNoteForLater() {
-  nothingSavedIndicator.style.display = "none";
   const savedNoteContainer = document.createElement("div");
   const notePreviewContainer = document.createElement("div");
   const notePreview = document.createElement("span");
@@ -174,6 +173,8 @@ function saveNoteForLater() {
     noteTitle.innerHTML = noteName.value;
   }
 
+  noteTitle.title = noteTitle.innerHTML;
+
   noteTitleDate.className = "helperText";
   noteTitleDate.innerHTML = "Saved " + (currentDate.getMonth() + 1).toString() + '/' + currentDate.getDate().toString() + '/' + currentDate.getFullYear().toString() + " at " + get12HourTime();
 
@@ -181,11 +182,10 @@ function saveNoteForLater() {
   deleteSaved.innerHTML = "Delete";
 
   savedNoteContainer.setAttribute("onclick", "initiateNote(false); quill.clipboard.dangerouslyPasteHTML('" + quill.getSemanticHTML() + "'); noteName.value = '" + noteTitle.innerHTML + "'");
-  deleteSaved.setAttribute("onclick", "(this.parentNode).parentNode.removeAttribute('onclick'); savedForLater.removeChild((this.parentNode).parentNode); nothingSavedIndicator.style.display = 'block'; localStorage.setItem('savedNotes', savedForLater.innerHTML)");
+  deleteSaved.setAttribute("onclick", "(this.parentNode).parentNode.removeAttribute('onclick'); savedForLater.removeChild((this.parentNode).parentNode); localStorage.setItem('savedNotes', savedForLater.innerHTML)");
 
   notePreviewContainer.appendChild(notePreview);
   noteTitleContainer.appendChild(noteTitle);
-  noteTitleContainer.appendChild(document.createElement("br"));
   noteTitleContainer.appendChild(noteTitleDate);
   noteTitleContainer.appendChild(document.createElement("br"));
   noteTitleContainer.appendChild(deleteSaved);
@@ -196,7 +196,7 @@ function saveNoteForLater() {
 
   doNotSave();
   confirmSaveDialog.hidden = true;
-  savedForLater.click();
-  savedForLater.open = true;
+  savedForLaterDetails.click();
+  savedForLaterDetails.open = true;
   localStorage.setItem("savedNotes", savedForLater.innerHTML);
 }

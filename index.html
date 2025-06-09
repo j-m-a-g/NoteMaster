@@ -63,6 +63,10 @@
       <img class="reducedIntensity menu" src="Assets/Images/download_000000.svg">
       Do<u>w</u>nload Note <span class="helperText menuDropdown">Alt + W</span>
     </button>
+    <button class="menuDropdown" disabled id="saveForLater" onclick="saveNoteForLater()">
+      <img class="reducedIntensity menu" src="Assets/Images/more_time_000000.svg">
+      Save For Later
+    </button>
     <hr class="menuDropdown">
     <button accesskey="v" class="menuDropdown" disabled id="closeFile" onclick="confirmViewerClose.hidden = false">
       <img class="reducedIntensity menu" src="Assets/Images/home_000000.svg">
@@ -135,7 +139,7 @@
     <button class="menuDropdown" onclick="throwAppError('Feature has not been implemented yet')">Dark Mode</button>
     <button class="menuDropdown" onclick="localStorage.clear(); window.location.reload()">
       <img class="reducedIntensity menu" src="Assets/Images/reset_settings_000000.svg">
-      Reset Settings
+      Clear App Data <span class="helperText menuDropdown">WARNING: This includes any saved notes and settings</span>
     </button>
   </div>
   <button class="menu" onmouseleave="document.getElementById('helpMenu').hidden = true"
@@ -158,7 +162,7 @@
       <td class="appSection" id="createOrOpenContainer">
         <img class="reducedIntensity" src="Assets/Images/door_open_000000.svg">
         <h1 style="line-height: 20px">Welcome</h1>
-        <details id="startFromScratchOptions" onclick="savedForLater.open = false" open>
+        <details id="startFromScratchOptions" onclick="savedForLaterDetails.open = false" open>
           <summary>
             <img class="reducedIntensity menu" src="Assets/Images/cards_star_000000.svg">
             Start From Scratch
@@ -224,13 +228,16 @@
             Download Converted Note
           </button>
         </details>
-        <details id="savedForLater" onclick="startFromScratchOptions.open = false">
+        <details id="savedForLaterDetails" onclick="startFromScratchOptions.open = false">
           <summary>
             <img class="reducedIntensity menu" src="Assets/Images/schedule_000000.svg">
             Saved for Later
           </summary>
-          <p id="nothingSavedIndicator">You haven't saved any notes yet.<br>To do so, select the, <span
-              class="helperText">"Save for Later"</span> option when you are about to close your note.</p>
+          <div id="savedForLater" style="height: 250px; overflow-y: auto"></div>
+          <p id="nothingSavedIndicator">
+            To save notes, select the, <span class="helperText">"Save for Later"</span> option when you are about to
+            close your note or navigate to <span class="helperText">File > Save For Later</span>.
+          </p>
         </details>
       </td>
       <td class="appSection" hidden id="noteEditor">
@@ -478,7 +485,7 @@
                       </td>
                       <td>
                         <span class="buttonHeading">Webpage</span><br>
-                        <span class="helperText">Not all websites might work</span>
+                        <span class="helperText">Not all websites will work</span>
                       </td>
                     </tr>
                   </table>
@@ -933,11 +940,12 @@
         </td>
       </tr>
     </table>
-    <a class="hyperlinkButton" onclick="adjustAppSectionSizes.hidden = true">Close</a>|
-    <a class="hyperlinkButton"
-       onclick="viewingSize.value = 50; editorSize.value = 50; applyPercentageSizes(); localStorage.setItem('viewingSizeValue', viewingSize.value)">
+    <a class="hyperlinkButton" onclick="adjustAppSectionSizes.hidden = true">Close</a>
+    <button class="primaryButton"
+            onclick="viewingSize.value = 50; editorSize.value = 50; applyPercentageSizes(); localStorage.setItem('viewingSizeValue', viewingSize.value)"
+            style="width: 20%; margin-left: 5px; margin-top: 5px">
       Reset
-    </a>
+    </button>
   </div>
 </div>
 
@@ -992,11 +1000,12 @@
     <br>
     <a class="hyperlinkButton" onclick="toggleDialog(false, 'viewingHistory', null)">
       Close
-    </a>|
-    <a class="hyperlinkButton"
-       onclick="document.getElementById('copyHistoryEditor').hidden = false; copyHistoryQuill.clipboard.dangerouslyPasteHTML(historyTableContainer.innerHTML)">
-      Copy History
     </a>
+    <button class="primaryButton"
+            onclick="document.getElementById('copyHistoryEditor').hidden = false; copyHistoryQuill.clipboard.dangerouslyPasteHTML(historyTableContainer.innerHTML)"
+            style="width: 20%; margin-left: 5px">
+      Copy History
+    </button>
     <br>
     <br>
     <div hidden id="copyHistoryEditor" style="user-select: all"></div>
@@ -1170,24 +1179,29 @@
     <input id="shareCopyLink" readonly style="width: 95%; user-select: all" type="url">
     <br>
     <br>
-    <button class="primaryButton"
-            onclick="navigator.clipboard.writeText(shareCopyLink.value); displaySnackbar('Link copied!')"
-            style="width: 25%; margin-right: 10px;">
-      <img class="primaryButton menu" src="Assets/Images/link_000000.svg">
-      Copy Link
-    </button>
     <a class="hyperlinkButton" onclick="toggleDialog(false, 'shareCopyOfNote', null)">
       Close
     </a>
+    <button class="primaryButton"
+            onclick="navigator.clipboard.writeText(shareCopyLink.value); displaySnackbar('Link copied!')"
+            style="width: 20%; margin-left: 10px;">
+      <img class="primaryButton menu" src="Assets/Images/link_000000.svg">
+      Copy Link
+    </button>
   </div>
   <div class="dialogOverlay" hidden id="noteAsHTML" style="height: 90%; margin-top: 1%">
     <h1>Show Note as HTML Markup</h1>
     <h3 class="helperText">See your note as HTML markup to be used within other applications</h3>
     <div id="noteHTML"></div>
+    <br>
     <a class="hyperlinkButton" onclick="toggleDialog(false, 'noteAsHTML', null)">
       Close
-    </a>|
-    <a class="hyperlinkButton" onclick="navigator.clipboard.writeText(noteHTMLCodeEditor.getValue())">Copy</a>
+    </a>
+    <button class="primaryButton"
+            onclick="navigator.clipboard.writeText(noteHTMLCodeEditor.getValue()); displaySnackbar(copiedToClipboardString)"
+            style="width: 20%; margin-left: 5px">
+      Copy
+    </button>
   </div>
   <div class="dialogOverlay" hidden id="aboutDialog">
     <img class="reducedIntensity" src="Assets/Images/info_000000.svg">

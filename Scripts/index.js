@@ -79,16 +79,17 @@ function onLoadTasks() {
     initiateNote(false);
     noteName.value = workingURLParameters.get("name");
     quill.clipboard.dangerouslyPasteHTML(decodeURIComponent(workingURLParameters.get("markup")));
+
     // Removes the parameters from being displayed in a user's address
     // bar for security reasons
     history.pushState(null, "", window.location.href.split("?")[0]);
   }
 
   // RETRIEVE SAVED NOTES
-  if (localStorage.getItem("savedNotes") !== null) {
+  if (localStorage.getItem("savedNotes") !== null && localStorage.getItem("savedNotes") !== "") {
     savedForLater.innerHTML = localStorage.getItem("savedNotes");
-    savedForLater.click();
-    savedForLater.open = true;
+    savedForLaterDetails.click();
+    savedForLaterDetails.open = true;
   }
 
   // USER PREFERENCES
@@ -184,15 +185,16 @@ function toggleMenuCheck(imageObject) {
 }
 
 function alterMenuFunctions(isDisabled) {
-  document.getElementById("quillUndo").disabled = isDisabled;
-  document.getElementById("quillRedo").disabled = isDisabled;
   document.getElementById("closeNote").disabled = isDisabled;
   document.getElementById("downloadNote").disabled = isDisabled;
+  document.getElementById("quillRedo").disabled = isDisabled;
+  document.getElementById("quillUndo").disabled = isDisabled;
   document.getElementById("save").disabled = isDisabled;
-  document.getElementById('showHTMLEditor').disabled = isDisabled;
-  document.getElementById('insertTableButton').disabled = isDisabled;
+  document.getElementById("saveForLater").disabled = isDisabled;
   document.getElementById('insertDate').disabled = isDisabled;
+  document.getElementById('insertTableButton').disabled = isDisabled;
   document.getElementById('insertTime').disabled = isDisabled;
+  document.getElementById('showHTMLEditor').disabled = isDisabled;
 }
 
 function applyPercentageSizes() {
