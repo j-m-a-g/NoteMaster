@@ -233,7 +233,7 @@
             <img class="reducedIntensity menu" src="Assets/Images/schedule_000000.svg">
             Saved for Later
           </summary>
-          <div id="savedForLater" style="height: 250px; overflow-y: auto"></div>
+          <div id="savedForLater" style="height: 200px; overflow-y: auto"></div>
           <p id="nothingSavedIndicator">
             To save notes, select the, <span class="helperText">"Save for Later"</span> option when you are about to
             close your note or navigate to <span class="helperText">File > Save For Later</span>.
@@ -276,6 +276,11 @@
                 </td>
                 <td>
                   <span id="mainEditorZoom"></span>
+                </td>
+                <td>
+                  <button class="warningBanner" title="Writing Insights">
+                    <img class="reducedIntensity menu" src="Assets/Images/data_alert_000000.svg">
+                  </button>
                 </td>
               </tr>
             </table>
@@ -961,13 +966,12 @@
         <td style="width: 40%">
           <input id="tableRows" max="32" min="1"
                  onchange="if (tableRows.value <= 9 && tableRows.value >= 1) { tableRows.value = '0' + tableRows.value } if (tableRows.value > tableRows.max) { tableRows.value = tableRows.max }"
-                 placeholder="Rows" style="width: 90%" type="number">
+                 placeholder="Rows" style="width: 85%" type="number">
         </td>
-        <td class="helperText" style="padding-left: 5px; padding-right: 5px; padding-bottom: 6px">x</td>
         <td style="width: 40%">
           <input id="tableColumns" max="32" min="1"
                  onchange="if (tableColumns.value <= 9 && tableColumns.value >= 1) { tableColumns.value = '0' + tableColumns.value } if (tableColumns.value > tableColumns.max) { tableColumns.value = tableColumns.max }"
-                 placeholder="Columns" style="width: 90%" type="number">
+                 placeholder="Columns" style="width: 85%" type="number">
         </td>
         <td style="width: 20%">
           <button class="primaryButton" onclick="createTable()" style="width: 100%">Create</button>
@@ -984,6 +988,27 @@
 
 <!-- Dialogs with focus -->
 <div hidden id="dialogFocusBackground">
+  <!-- "Out-of-Box" Experience -->
+  <div class="dialogOverlay" hidden id="gettingStarted">
+    <img src="notemasterIcon.svg" style="width: 48px">
+    <h1>Get Started With NoteMaster!</h1>
+    <h3 class="helperText">A lightweight note-taking app for the web</h3>
+    <table style="width: 100%">
+      <tr>
+        <td>
+          <button class="primaryButton"
+                  onclick="toggleDialog(false, 'gettingStarted', null); localStorage.setItem('finishedGetStarted', 'true')">
+            Continue
+          </button>
+        </td>
+        <td>
+          <button class="dialogOverlay" onclick="toggleDialog(false, 'gettingStarted', null); launchExample()">Launch
+            Example
+          </button>
+        </td>
+      </tr>
+    </table>
+  </div>
   <!-- Error -->
   <div class="dialogOverlay" hidden id="applicationError" style="z-index: 3">
     <h1>An Error Occurred</h1>

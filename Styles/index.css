@@ -293,11 +293,6 @@ div.savedNote {
 
 div.savedNote:hover {
   background-color: var(--lightAccent300);
-
-  span.savedNoteTitle {
-    cursor: pointer;
-    text-decoration: underline;
-  }
 }
 
 span.savedNoteTitle {

@@ -74,6 +74,11 @@ function onLoadTasks() {
   dynamicallySetHeight();
   updateStatusBar();
 
+  // GET STARTED WINDOW
+  if (localStorage.getItem("finishedGetStarted") !== "true") {
+    toggleDialog(true, "gettingStarted", null);
+  }
+
   // SHARED NOTE CHECK
   if (workingURLParameters.has("name") || workingURLParameters.has("markup")) {
     initiateNote(false);
