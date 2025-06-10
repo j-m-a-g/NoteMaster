@@ -1,9 +1,23 @@
-define("ace/ext/static-css", ["require", "exports", "module"], function (require, exports, module) {
-  module.exports = ".ace_static_highlight {\n    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'Source Code Pro', 'source-code-pro', 'Droid Sans Mono', monospace;\n    font-size: 12px;\n    white-space: pre-wrap\n}\n\n.ace_static_highlight .ace_gutter {\n    width: 2em;\n    text-align: right;\n    padding: 0 3px 0 0;\n    margin-right: 3px;\n    contain: none;\n}\n\n.ace_static_highlight.ace_show_gutter .ace_line {\n    padding-left: 2.6em;\n}\n\n.ace_static_highlight .ace_line { position: relative; }\n\n.ace_static_highlight .ace_gutter-cell {\n    -moz-user-select: -moz-none;\n    -khtml-user-select: none;\n    -webkit-user-select: none;\n    user-select: none;\n    top: 0;\n    bottom: 0;\n    left: 0;\n    position: absolute;\n}\n\n\n.ace_static_highlight .ace_gutter-cell:before {\n    content: counter(ace_line, decimal);\n    counter-increment: ace_line;\n}\n.ace_static_highlight {\n    counter-reset: ace_line;\n}\n";
-
+define("ace/ext/static-css", ["require", "exports", "module"], function (
+  require,
+  exports,
+  module
+) {
+  module.exports =
+    ".ace_static_highlight {\n    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'Source Code Pro', 'source-code-pro', 'Droid Sans Mono', monospace;\n    font-size: 12px;\n    white-space: pre-wrap\n}\n\n.ace_static_highlight .ace_gutter {\n    width: 2em;\n    text-align: right;\n    padding: 0 3px 0 0;\n    margin-right: 3px;\n    contain: none;\n}\n\n.ace_static_highlight.ace_show_gutter .ace_line {\n    padding-left: 2.6em;\n}\n\n.ace_static_highlight .ace_line { position: relative; }\n\n.ace_static_highlight .ace_gutter-cell {\n    -moz-user-select: -moz-none;\n    -khtml-user-select: none;\n    -webkit-user-select: none;\n    user-select: none;\n    top: 0;\n    bottom: 0;\n    left: 0;\n    position: absolute;\n}\n\n\n.ace_static_highlight .ace_gutter-cell:before {\n    content: counter(ace_line, decimal);\n    counter-increment: ace_line;\n}\n.ace_static_highlight {\n    counter-reset: ace_line;\n}\n";
 });
 
-define("ace/ext/static_highlight", ["require", "exports", "module", "ace/edit_session", "ace/layer/text", "ace/ext/static-css", "ace/config", "ace/lib/dom", "ace/lib/lang"], function (require, exports, module) {
+define("ace/ext/static_highlight", [
+  "require",
+  "exports",
+  "module",
+  "ace/edit_session",
+  "ace/layer/text",
+  "ace/ext/static-css",
+  "ace/config",
+  "ace/lib/dom",
+  "ace/lib/lang"
+], function (require, exports, module) {
   "use strict";
   var EditSession = require("../edit_session").EditSession;
   var TextLayer = require("../layer/text").Text;
@@ -29,8 +43,7 @@ define("ace/ext/static_highlight", ["require", "exports", "module", "ace/edit_se
       var stringBuilder = [];
       if (this.type != "fragment") {
         stringBuilder.push("<", this.type);
-        if (this.className)
-          stringBuilder.push(" class='", this.className, "'");
+        if (this.className) stringBuilder.push(" class='", this.className, "'");
         var styleStr = [];
         for (var key in this.style) {
           styleStr.push(key, ":", this.style[key]);
@@ -48,9 +61,12 @@ define("ace/ext/static_highlight", ["require", "exports", "module", "ace/edit_se
       return stringBuilder.join("");
     };
     return Element;
-  }());
+  })();
   var simpleDom = {
-    createTextNode: function (/** @type {string} */ textContent, /** @type {any} */ element) {
+    createTextNode: function (
+      /** @type {string} */ textContent,
+      /** @type {any} */ element
+    ) {
       return escapeHTML(textContent);
     },
     createElement: function (/** @type {string} */ type) {
@@ -67,9 +83,8 @@ define("ace/ext/static_highlight", ["require", "exports", "module", "ace/edit_se
   SimpleTextLayer.prototype = TextLayer.prototype;
   var highlight = function (el, opts, callback) {
     var m = el.className.match(/lang-(\w+)/);
-    var mode = opts.mode || m && ("ace/mode/" + m[1]);
-    if (!mode)
-      return false;
+    var mode = opts.mode || (m && "ace/mode/" + m[1]);
+    if (!mode) return false;
     var theme = opts.theme || "ace/theme/textmate";
     var data = "";
     var nodes = [];
@@ -86,28 +101,41 @@ define("ace/ext/static_highlight", ["require", "exports", "module", "ace/edit_se
       }
     } else {
       data = el.textContent;
-      if (opts.trim)
-        data = data.trim();
+      if (opts.trim) data = data.trim();
     }
-    highlight.render(data, mode, theme, opts.firstLineNumber, !opts.showGutter, function (highlighted) {
-      dom.importCssString(highlighted.css, "ace_highlight", true);
-      el.innerHTML = highlighted.html;
-      var container = el.firstChild.firstChild;
-      for (var i = 0; i < nodes.length; i += 2) {
-        var pos = highlighted.session.doc.indexToPosition(nodes[i]);
-        var node = nodes[i + 1];
-        var lineEl = container.children[pos.row];
-        lineEl && lineEl.appendChild(node);
+    highlight.render(
+      data,
+      mode,
+      theme,
+      opts.firstLineNumber,
+      !opts.showGutter,
+      function (highlighted) {
+        dom.importCssString(highlighted.css, "ace_highlight", true);
+        el.innerHTML = highlighted.html;
+        var container = el.firstChild.firstChild;
+        for (var i = 0; i < nodes.length; i += 2) {
+          var pos = highlighted.session.doc.indexToPosition(nodes[i]);
+          var node = nodes[i + 1];
+          var lineEl = container.children[pos.row];
+          lineEl && lineEl.appendChild(node);
+        }
+        callback && callback();
       }
-      callback && callback();
-    });
+    );
   };
-  highlight.render = function (input, mode, theme, lineStart, disableGutter, callback) {
+  highlight.render = function (
+    input,
+    mode,
+    theme,
+    lineStart,
+    disableGutter,
+    callback
+  ) {
     var waiting = 1;
     var modeCache = EditSession.prototype.$modes;
     if (typeof theme == "string") {
       waiting++;
-      config.loadModule(['theme', theme], function (m) {
+      config.loadModule(["theme", theme], function (m) {
         theme = m;
         --waiting || done();
       });
@@ -119,22 +147,34 @@ define("ace/ext/static_highlight", ["require", "exports", "module", "ace/edit_se
     }
     if (typeof mode == "string") {
       waiting++;
-      config.loadModule(['mode', mode], function (m) {
-        if (!modeCache[ /**@type{string}*/(mode)] || modeOptions)
-          modeCache[ /**@type{string}*/(mode)] = new m.Mode(modeOptions);
-        mode = modeCache[ /**@type{string}*/(mode)];
+      config.loadModule(["mode", mode], function (m) {
+        if (!modeCache[/**@type{string}*/ (mode)] || modeOptions)
+          modeCache[/**@type{string}*/ (mode)] = new m.Mode(modeOptions);
+        mode = modeCache[/**@type{string}*/ (mode)];
         --waiting || done();
       });
     }
 
     function done() {
-      var result = highlight.renderSync(input, mode, /**@type{Theme}*/ (theme), lineStart, disableGutter);
+      var result = highlight.renderSync(
+        input,
+        mode,
+        /**@type{Theme}*/ (theme),
+        lineStart,
+        disableGutter
+      );
       return callback ? callback(result) : result;
     }
 
     return --waiting || done();
   };
-  highlight.renderSync = function (input, mode, theme, lineStart, disableGutter) {
+  highlight.renderSync = function (
+    input,
+    mode,
+    theme,
+    lineStart,
+    disableGutter
+  ) {
     lineStart = parseInt(lineStart || 1, 10);
     var session = new EditSession("");
     session.setUseWorker(false);
@@ -153,7 +193,8 @@ define("ace/ext/static_highlight", ["require", "exports", "module", "ace/edit_se
     var outerEl = simpleDom.createElement("div");
     outerEl.className = theme.cssClass;
     var innerEl = simpleDom.createElement("div");
-    innerEl.className = "ace_static_highlight" + (disableGutter ? "" : " ace_show_gutter");
+    innerEl.className =
+      "ace_static_highlight" + (disableGutter ? "" : " ace_show_gutter");
     innerEl.style["counter-reset"] = "ace_line " + (lineStart - 1);
     for (var ix = 0; ix < length; ix++) {
       var lineEl = simpleDom.createElement("div");
@@ -177,7 +218,6 @@ define("ace/ext/static_highlight", ["require", "exports", "module", "ace/edit_se
   };
   module.exports = highlight;
   module.exports.highlight = highlight;
-
 });
 (function () {
   window.require(["ace/ext/static_highlight"], function (m) {
@@ -186,4 +226,3 @@ define("ace/ext/static_highlight", ["require", "exports", "module", "ace/edit_se
     }
   });
 })();
-            

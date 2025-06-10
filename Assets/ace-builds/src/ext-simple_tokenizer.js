@@ -1,4 +1,10 @@
-define("ace/ext/simple_tokenizer", ["require", "exports", "module", "ace/tokenizer", "ace/layer/text_util"], function (require, exports, module) {
+define("ace/ext/simple_tokenizer", [
+  "require",
+  "exports",
+  "module",
+  "ace/tokenizer",
+  "ace/layer/text_util"
+], function (require, exports, module) {
   "use strict";
   var Tokenizer = require("../tokenizer").Tokenizer;
   var isTextToken = require("../layer/text_util").isTextToken;
@@ -20,25 +26,31 @@ define("ace/ext/simple_tokenizer", ["require", "exports", "module", "ace/tokeniz
       return this._lines.length;
     };
     return SimpleTokenizer;
-  }());
+  })();
 
   function tokenize(content, highlightRules) {
-    var tokenizer = new SimpleTokenizer(content, new Tokenizer(highlightRules.getRules()));
+    var tokenizer = new SimpleTokenizer(
+      content,
+      new Tokenizer(highlightRules.getRules())
+    );
     var result = [];
     for (var lineIndex = 0; lineIndex < tokenizer.getLength(); lineIndex++) {
       var lineTokens = tokenizer.getTokens(lineIndex);
-      result.push(lineTokens.map(function (token) {
-        return ({
-          className: isTextToken(token.type) ? undefined : "ace_" + token.type.replace(/\./g, " ace_"),
-          value: token.value
-        });
-      }));
+      result.push(
+        lineTokens.map(function (token) {
+          return {
+            className: isTextToken(token.type)
+              ? undefined
+              : "ace_" + token.type.replace(/\./g, " ace_"),
+            value: token.value
+          };
+        })
+      );
     }
     return result;
   }
 
   exports.tokenize = tokenize;
-
 });
 (function () {
   window.require(["ace/ext/simple_tokenizer"], function (m) {
@@ -47,4 +59,3 @@ define("ace/ext/simple_tokenizer", ["require", "exports", "module", "ace/tokeniz
     }
   });
 })();
-            

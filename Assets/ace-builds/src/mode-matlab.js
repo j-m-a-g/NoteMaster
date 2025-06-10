@@ -1,11 +1,20 @@
-define("ace/mode/matlab_highlight_rules", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text_highlight_rules"], function (require, exports, module) {
+define("ace/mode/matlab_highlight_rules", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text_highlight_rules"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
   var MatlabHighlightRules = function () {
-    var keywords = ("break|case|catch|classdef|continue|else|elseif|end|for|function|global|if|otherwise|parfor|persistent|return|spmd|switch|try|while");
-    var builtinConstants = ("true|false|inf|Inf|nan|NaN|eps|pi|ans|nargin|nargout|varargin|varargout");
-    var builtinFunctions = ("abs|accumarray|acos(?:d|h)?|acot(?:d|h)?|acsc(?:d|h)?|actxcontrol(?:list|select)?|actxGetRunningServer|actxserver|addlistener|addpath|addpref|addtodate|" +
+    var keywords =
+      "break|case|catch|classdef|continue|else|elseif|end|for|function|global|if|otherwise|parfor|persistent|return|spmd|switch|try|while";
+    var builtinConstants =
+      "true|false|inf|Inf|nan|NaN|eps|pi|ans|nargin|nargout|varargin|varargout";
+    var builtinFunctions =
+      "abs|accumarray|acos(?:d|h)?|acot(?:d|h)?|acsc(?:d|h)?|actxcontrol(?:list|select)?|actxGetRunningServer|actxserver|addlistener|addpath|addpref|addtodate|" +
       "airy|align|alim|all|allchild|alpha|alphamap|amd|ancestor|and|angle|annotation|any|area|arrayfun|asec(?:d|h)?|asin(?:d|h)?|assert|assignin|atan(?:2|d|h)?|" +
       "audiodevinfo|audioplayer|audiorecorder|aufinfo|auread|autumn|auwrite|avifile|aviinfo|aviread|axes|axis|balance|bar(?:3|3h|h)?|base2dec|beep|BeginInvoke|bench|" +
       "bessel(?:h|i|j|k|y)|beta|betainc|betaincinv|betaln|bicg|bicgstab|bicgstabl|bin2dec|bitand|bitcmp|bitget|bitmax|bitnot|bitor|bitset|bitshift|bitxor|blanks|blkdiag|" +
@@ -111,114 +120,155 @@ define("ace/mode/matlab_highlight_rules", ["require", "exports", "module", "ace/
       "reflect|regionprops|registration.metric.(?:MattesMutualInformation|MeanSquares)|registration.optimizer.(?:OnePlusOneEvolutionary|RegularStepGradientDescent)|rgb2gray|" +
       "rgb2ntsc|rgb2ycbcr|roicolor|roifill|roifilt2|roipoly|rsetwrite|std2|stdfilt|strel|stretchlim|subimage|tformarray|tformfwd|tforminv|tonemap|translate|truesize|uintlut|viscircles|" +
       "warp|watershed|whitepoint|wiener2|xyz2double|xyz2uint16|ycbcr2rgb|bintprog|color|fgoalattain|fminbnd|fmincon|fminimax|fminsearch|fminunc|fseminf|fsolve|fzero|fzmult|gangstr|ktrlink|" +
-      "linprog|lsqcurvefit|lsqlin|lsqnonlin|lsqnonneg|optimget|optimset|optimtool|quadprog");
-    var storageType = ("cell|struct|char|double|single|logical|u?int(?:8|16|32|64)|sparse");
-    var keywordMapper = this.createKeywordMapper({
-      "storage.type": storageType,
-      "support.function": builtinFunctions,
-      "keyword": keywords,
-      "constant.language": builtinConstants
-    }, "identifier", true);
+      "linprog|lsqcurvefit|lsqlin|lsqnonlin|lsqnonneg|optimget|optimset|optimtool|quadprog";
+    var storageType =
+      "cell|struct|char|double|single|logical|u?int(?:8|16|32|64)|sparse";
+    var keywordMapper = this.createKeywordMapper(
+      {
+        "storage.type": storageType,
+        "support.function": builtinFunctions,
+        keyword: keywords,
+        "constant.language": builtinConstants
+      },
+      "identifier",
+      true
+    );
     this.$rules = {
-      start: [{
-        token: "string",
-        regex: "'",
-        stateName: "qstring",
-        next: [{
-          token: "constant.language.escape",
-          regex: "''"
-        }, {
+      start: [
+        {
           token: "string",
-          regex: "'|$",
+          regex: "'",
+          stateName: "qstring",
+          next: [
+            {
+              token: "constant.language.escape",
+              regex: "''"
+            },
+            {
+              token: "string",
+              regex: "'|$",
+              next: "start"
+            },
+            {
+              defaultToken: "string"
+            }
+          ]
+        },
+        {
+          token: "text",
+          regex: "\\s+"
+        },
+        {
+          regex: "",
+          next: "noQstring"
+        }
+      ],
+      noQstring: [
+        {
+          regex: "^\\s*%{\\s*$",
+          token: "comment.start",
+          push: "blockComment"
+        },
+        {
+          token: "comment",
+          regex: "%[^\r\n]*"
+        },
+        {
+          token: "string",
+          regex: '"',
+          stateName: "qqstring",
+          next: [
+            {
+              token: "constant.language.escape",
+              regex: /\\./
+            },
+            {
+              token: "string",
+              regex: "\\\\$",
+              next: "qqstring"
+            },
+            {
+              token: "string",
+              regex: '"|$',
+              next: "start"
+            },
+            {
+              defaultToken: "string"
+            }
+          ]
+        },
+        {
+          token: "constant.numeric", // float
+          regex: "[+-]?\\d+(?:(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)?\\b"
+        },
+        {
+          token: keywordMapper,
+          regex: "[a-zA-Z_$][a-zA-Z0-9_$]*\\b"
+        },
+        {
+          token: "keyword.operator",
+          regex: "\\+|\\-|\\/|\\/\\/|<@>|@>|<@|&|\\^|~|<|>|<=|=>|==|!=|<>|=",
           next: "start"
-        }, {
-          defaultToken: "string"
-        }]
-      }, {
-        token: "text",
-        regex: "\\s+"
-      }, {
-        regex: "",
-        next: "noQstring"
-      }],
-      noQstring: [{
-        regex: "^\\s*%{\\s*$",
-        token: "comment.start",
-        push: "blockComment"
-      }, {
-        token: "comment",
-        regex: "%[^\r\n]*"
-      }, {
-        token: "string",
-        regex: '"',
-        stateName: "qqstring",
-        next: [{
-          token: "constant.language.escape",
-          regex: /\\./
-        }, {
-          token: "string",
-          regex: "\\\\$",
-          next: "qqstring"
-        }, {
-          token: "string",
-          regex: '"|$',
+        },
+        {
+          token: "punctuation.operator",
+          regex: "\\?|\\:|\\,|\\;|\\.",
           next: "start"
-        }, {
-          defaultToken: "string"
-        }]
-      }, {
-        token: "constant.numeric", // float
-        regex: "[+-]?\\d+(?:(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)?\\b"
-      }, {
-        token: keywordMapper,
-        regex: "[a-zA-Z_$][a-zA-Z0-9_$]*\\b"
-      }, {
-        token: "keyword.operator",
-        regex: "\\+|\\-|\\/|\\/\\/|<@>|@>|<@|&|\\^|~|<|>|<=|=>|==|!=|<>|=",
-        next: "start"
-      }, {
-        token: "punctuation.operator",
-        regex: "\\?|\\:|\\,|\\;|\\.",
-        next: "start"
-      }, {
-        token: "paren.lparen",
-        regex: "[({\\[]",
-        next: "start"
-      }, {
-        token: "paren.rparen",
-        regex: "[\\]})]"
-      }, {
-        token: "text",
-        regex: "\\s+"
-      }, {
-        token: "text",
-        regex: "$",
-        next: "start"
-      }],
-      blockComment: [{
-        regex: "^\\s*%{\\s*$",
-        token: "comment.start",
-        push: "blockComment"
-      }, {
-        regex: "^\\s*%}\\s*$",
-        token: "comment.end",
-        next: "pop"
-      }, {
-        defaultToken: "comment"
-      }]
+        },
+        {
+          token: "paren.lparen",
+          regex: "[({\\[]",
+          next: "start"
+        },
+        {
+          token: "paren.rparen",
+          regex: "[\\]})]"
+        },
+        {
+          token: "text",
+          regex: "\\s+"
+        },
+        {
+          token: "text",
+          regex: "$",
+          next: "start"
+        }
+      ],
+      blockComment: [
+        {
+          regex: "^\\s*%{\\s*$",
+          token: "comment.start",
+          push: "blockComment"
+        },
+        {
+          regex: "^\\s*%}\\s*$",
+          token: "comment.end",
+          next: "pop"
+        },
+        {
+          defaultToken: "comment"
+        }
+      ]
     };
     this.normalizeRules();
   };
   oop.inherits(MatlabHighlightRules, TextHighlightRules);
   exports.MatlabHighlightRules = MatlabHighlightRules;
-
 });
 
-define("ace/mode/matlab", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text", "ace/mode/matlab_highlight_rules"], function (require, exports, module) {
+define("ace/mode/matlab", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text",
+  "ace/mode/matlab_highlight_rules"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextMode = require("./text").Mode;
-  var MatlabHighlightRules = require("./matlab_highlight_rules").MatlabHighlightRules;
+  var MatlabHighlightRules =
+    require("./matlab_highlight_rules").MatlabHighlightRules;
   var Mode = function () {
     this.HighlightRules = MatlabHighlightRules;
     this.$behaviour = this.$defaultBehaviour;
@@ -226,11 +276,10 @@ define("ace/mode/matlab", ["require", "exports", "module", "ace/lib/oop", "ace/m
   oop.inherits(Mode, TextMode);
   (function () {
     this.lineCommentStart = "%";
-    this.blockComment = {start: "%{", end: "%}"};
+    this.blockComment = { start: "%{", end: "%}" };
     this.$id = "ace/mode/matlab";
   }).call(Mode.prototype);
   exports.Mode = Mode;
-
 });
 (function () {
   window.require(["ace/mode/matlab"], function (m) {
@@ -239,4 +288,3 @@ define("ace/mode/matlab", ["require", "exports", "module", "ace/lib/oop", "ace/m
     }
   });
 })();
-            

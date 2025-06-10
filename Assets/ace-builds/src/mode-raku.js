@@ -1,15 +1,23 @@
-define("ace/mode/raku_highlight_rules", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text_highlight_rules"], function (require, exports, module) {
+define("ace/mode/raku_highlight_rules", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text_highlight_rules"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
   var RakuHighlightRules = function () {
-    var keywords = ("my|our|class|role|grammar|is|does|sub|method|submethod|try|" +
+    var keywords =
+      "my|our|class|role|grammar|is|does|sub|method|submethod|try|" +
       "default|when|if|elsif|else|unless|with|orwith|without|for|given|proceed|" +
       "succeed|loop|while|until|repeat|module|use|need|import|require|unit|" +
       "constant|enum|multi|return|has|token|rule|make|made|proto|state|augment|" +
       "but|anon|supersede|let|subset|gather|returns|return-rw|temp|" +
-      "BEGIN|CHECK|INIT|END|CLOSE|ENTER|LEAVE|KEEP|UNDO|PRE|POST|FIRST|NEXT|LAST|CATCH|CONTROL|QUIT|DOC");
-    var types = ("Any|Array|Associative|AST|atomicint|Attribute|Backtrace|Backtrace::Frame|" +
+      "BEGIN|CHECK|INIT|END|CLOSE|ENTER|LEAVE|KEEP|UNDO|PRE|POST|FIRST|NEXT|LAST|CATCH|CONTROL|QUIT|DOC";
+    var types =
+      "Any|Array|Associative|AST|atomicint|Attribute|Backtrace|Backtrace::Frame|" +
       "Bag|Baggy|BagHash|Blob|Block|Bool|Buf|Callable|CallFrame|Cancellation|" +
       "Capture|Channel|Code|compiler|Complex|ComplexStr|Cool|CurrentThreadScheduler|" +
       "Cursor|Date|Dateish|DateTime|Distro|Duration|Encoding|Exception|Failure|" +
@@ -60,8 +68,9 @@ define("ace/mode/raku_highlight_rules", ["require", "exports", "module", "ace/li
       "X::Syntax::Signature::InvocantMarker|X::Syntax::Term::MissingInitializer|X::Syntax::UnlessElse|" +
       "X::Syntax::Variable::Match|X::Syntax::Variable::Numeric|X::Syntax::Variable::Twigil|X::Temporal|" +
       "X::Temporal::InvalidFormat|X::TypeCheck|X::TypeCheck::Assignment|X::TypeCheck::Binding|" +
-      "X::TypeCheck::Return|X::TypeCheck::Splice|X::Undeclared");
-    var builtinFunctions = ("abs|abs2rel|absolute|accept|ACCEPTS|accessed|acos|acosec|acosech|acosh|" +
+      "X::TypeCheck::Return|X::TypeCheck::Splice|X::Undeclared";
+    var builtinFunctions =
+      "abs|abs2rel|absolute|accept|ACCEPTS|accessed|acos|acosec|acosech|acosh|" +
       "acotan|acotanh|acquire|act|action|actions|add|add_attribute|add_enum_value|" +
       "add_fallback|add_method|add_parent|add_private_method|add_role|add_trustee|" +
       "adverb|after|all|allocate|allof|allowed|alternative-names|annotations|antipair|" +
@@ -138,56 +147,84 @@ define("ace/mode/raku_highlight_rules", ["require", "exports", "module", "ace/li
       "plan|done-testing|bail-out|todo|skip|skip-rest|diag|subtest|pass|flunk|ok|" +
       "nok|cmp-ok|is-deeply|isnt|is-approx|like|unlike|use-ok|isa-ok|does-ok|" +
       "can-ok|dies-ok|lives-ok|eval-dies-ok|eval-lives-ok|throws-like|fails-like|" +
-      "rw|required|native|repr|export|symbol");
-    var constants_ascii = ("pi|Inf|tau|time");
-    var ops_txt = ("eq|ne|gt|lt|le|ge|div|gcd|lcm|leg|cmp|ff|fff|" +
-      "x|before|after|Z|X|and|or|andthen|notandthen|orelse|xor");
-    var keywordMapper = this.createKeywordMapper({
-      "keyword": keywords,
-      "storage.type": types,
-      "constant.language": constants_ascii,
-      "support.function": builtinFunctions,
-      "keyword.operator": ops_txt
-    }, "identifier");
+      "rw|required|native|repr|export|symbol";
+    var constants_ascii = "pi|Inf|tau|time";
+    var ops_txt =
+      "eq|ne|gt|lt|le|ge|div|gcd|lcm|leg|cmp|ff|fff|" +
+      "x|before|after|Z|X|and|or|andthen|notandthen|orelse|xor";
+    var keywordMapper = this.createKeywordMapper(
+      {
+        keyword: keywords,
+        "storage.type": types,
+        "constant.language": constants_ascii,
+        "support.function": builtinFunctions,
+        "keyword.operator": ops_txt
+      },
+      "identifier"
+    );
     var moduleName = "[a-zA-Z_][a-zA-Z_0-9:-]*\\b";
-    var hex = {token: "constant.numeric", regex: "0x[0-9a-fA-F]+\\b"};
+    var hex = { token: "constant.numeric", regex: "0x[0-9a-fA-F]+\\b" };
     var num_rat = {
       token: "constant.numeric",
-      regex: "[+-.]?\\d[\\d_]*(?:(?:\\.\\d[\\d_]*)?(?:[eE][+-]?\\d[\\d_]*)?)?i?\\b"
+      regex:
+        "[+-.]?\\d[\\d_]*(?:(?:\\.\\d[\\d_]*)?(?:[eE][+-]?\\d[\\d_]*)?)?i?\\b"
     };
-    var booleans = {token: "constant.language.boolean", regex: "(?:True|False)\\b"};
-    var versions = {token: "constant.other", regex: "v[0-9](?:\\.[a-zA-Z0-9*])*\\b"};
-    var lang_keywords = {token: keywordMapper, regex: "[a-zA-Z][\\:a-zA-Z0-9_-]*\\b"};
-    var variables = {token: "variable.language", regex: "[$@%&][?*!.]?[a-zA-Z0-9_-]+\\b"};
-    var vars_special = {token: "variable.language", regex: "\\$[/|!]?|@\\$/"};
+    var booleans = {
+      token: "constant.language.boolean",
+      regex: "(?:True|False)\\b"
+    };
+    var versions = {
+      token: "constant.other",
+      regex: "v[0-9](?:\\.[a-zA-Z0-9*])*\\b"
+    };
+    var lang_keywords = {
+      token: keywordMapper,
+      regex: "[a-zA-Z][\\:a-zA-Z0-9_-]*\\b"
+    };
+    var variables = {
+      token: "variable.language",
+      regex: "[$@%&][?*!.]?[a-zA-Z0-9_-]+\\b"
+    };
+    var vars_special = { token: "variable.language", regex: "\\$[/|!]?|@\\$/" };
     var ops_char = {
-      token: "keyword.operator", regex: "=|<|>|\\+|\\*|-|/|~|%|\\?|!|\\^|\\.|\\:|\\,|" +
-        "»|«|\\||\\&|⚛|∘"
+      token: "keyword.operator",
+      regex: "=|<|>|\\+|\\*|-|/|~|%|\\?|!|\\^|\\.|\\:|\\,|" + "»|«|\\||\\&|⚛|∘"
     };
-    var constants_unicode = {token: "constant.language", regex: "𝑒|π|τ|∞"};
-    var qstrings = {token: "string.quoted.single", regex: "['](?:(?:\\\\.)|(?:[^'\\\\]))*?[']"};
-    var word_quoting = {token: "string.quoted.single", regex: "[<](?:[a-zA-Z0-9 ])*[>]"};
+    var constants_unicode = { token: "constant.language", regex: "𝑒|π|τ|∞" };
+    var qstrings = {
+      token: "string.quoted.single",
+      regex: "['](?:(?:\\\\.)|(?:[^'\\\\]))*?[']"
+    };
+    var word_quoting = {
+      token: "string.quoted.single",
+      regex: "[<](?:[a-zA-Z0-9 ])*[>]"
+    };
     var regexp = {
       token: "string.regexp",
-      regex: "[m|rx]?[/](?:(?:\\[(?:\\\\]|[^\\]])+\\])|(?:\\\\/|[^\\]/]))*[/]\\w*\\s*(?=[).,;]|$)"
+      regex:
+        "[m|rx]?[/](?:(?:\\[(?:\\\\]|[^\\]])+\\])|(?:\\\\/|[^\\]/]))*[/]\\w*\\s*(?=[).,;]|$)"
     };
     this.$rules = {
-      "start": [
+      start: [
         {
           token: "comment.block", // Embedded Comments - Parentheses
           regex: "#[`|=]\\(.*\\)"
-        }, {
+        },
+        {
           token: "comment.block", // Embedded Comments - Brackets
           regex: "#[`|=]\\[.*\\]"
-        }, {
+        },
+        {
           token: "comment.doc", // Multiline Comments
           regex: "^=(?:begin)\\b",
           next: "block_comment"
-        }, {
+        },
+        {
           token: "string.unquoted", // q Heredocs
           regex: "q[x|w]?\\:to/END/;",
           next: "qheredoc"
-        }, {
+        },
+        {
           token: "string.unquoted", // qq Heredocs
           regex: "qq[x|w]?\\:to/END/;",
           next: "qqheredoc"
@@ -216,18 +253,21 @@ define("ace/mode/raku_highlight_rules", ["require", "exports", "module", "ace/li
         {
           token: "comment", // Sigle Line Comments
           regex: "#.*$"
-        }, {
+        },
+        {
           token: "lparen",
           regex: "[[({]"
-        }, {
+        },
+        {
           token: "rparen",
           regex: "[\\])}]"
-        }, {
+        },
+        {
           token: "text",
           regex: "\\s+"
         }
       ],
-      "qqstring": [
+      qqstring: [
         {
           token: "constant.language.escape",
           regex: '\\\\(?:[nrtef\\\\"$]|[0-7]{1,3}|x[0-9A-Fa-f]{1,2})'
@@ -238,15 +278,17 @@ define("ace/mode/raku_highlight_rules", ["require", "exports", "module", "ace/li
           token: "lparen",
           regex: "{",
           next: "qqinterpolation"
-        }, {
+        },
+        {
           token: "string.quoted.double",
           regex: '"',
           next: "start"
-        }, {
+        },
+        {
           defaultToken: "string.quoted.double"
         }
       ],
-      "qqinterpolation": [
+      qqinterpolation: [
         hex,
         num_rat,
         booleans,
@@ -264,7 +306,7 @@ define("ace/mode/raku_highlight_rules", ["require", "exports", "module", "ace/li
           next: "qqstring"
         }
       ],
-      "block_comment": [
+      block_comment: [
         {
           token: "comment.doc",
           regex: "^=end +[a-zA-Z_0-9]*",
@@ -274,31 +316,34 @@ define("ace/mode/raku_highlight_rules", ["require", "exports", "module", "ace/li
           defaultToken: "comment.doc"
         }
       ],
-      "qheredoc": [
+      qheredoc: [
         {
           token: "string.unquoted",
           regex: "END$",
           next: "start"
-        }, {
+        },
+        {
           defaultToken: "string.unquoted"
         }
       ],
-      "qqheredoc": [
+      qqheredoc: [
         variables,
         vars_special,
         {
           token: "lparen",
           regex: "{",
           next: "qqheredocinterpolation"
-        }, {
+        },
+        {
           token: "string.unquoted",
           regex: "END$",
           next: "start"
-        }, {
+        },
+        {
           defaultToken: "string.unquoted"
         }
       ],
-      "qqheredocinterpolation": [
+      qqheredocinterpolation: [
         hex,
         num_rat,
         booleans,
@@ -320,29 +365,29 @@ define("ace/mode/raku_highlight_rules", ["require", "exports", "module", "ace/li
   };
   oop.inherits(RakuHighlightRules, TextHighlightRules);
   exports.RakuHighlightRules = RakuHighlightRules;
-
 });
 
-define("ace/mode/matching_brace_outdent", ["require", "exports", "module", "ace/range"], function (require, exports, module) {
+define("ace/mode/matching_brace_outdent", [
+  "require",
+  "exports",
+  "module",
+  "ace/range"
+], function (require, exports, module) {
   "use strict";
   var Range = require("../range").Range;
-  var MatchingBraceOutdent = function () {
-  };
+  var MatchingBraceOutdent = function () {};
   (function () {
     this.checkOutdent = function (line, input) {
-      if (!/^\s+$/.test(line))
-        return false;
+      if (!/^\s+$/.test(line)) return false;
       return /^\s*\}/.test(input);
     };
     this.autoOutdent = function (doc, row) {
       var line = doc.getLine(row);
       var match = line.match(/^(\s*\})/);
-      if (!match)
-        return 0;
+      if (!match) return 0;
       var column = match[1].length;
-      var openBracePos = doc.findMatchingBracket({row: row, column: column});
-      if (!openBracePos || openBracePos.row == row)
-        return 0;
+      var openBracePos = doc.findMatchingBracket({ row: row, column: column });
+      if (!openBracePos || openBracePos.row == row) return 0;
       var indent = this.$getIndent(doc.getLine(openBracePos.row));
       doc.replace(new Range(row, 0, row, column - 1), indent);
     };
@@ -351,20 +396,36 @@ define("ace/mode/matching_brace_outdent", ["require", "exports", "module", "ace/
     };
   }).call(MatchingBraceOutdent.prototype);
   exports.MatchingBraceOutdent = MatchingBraceOutdent;
-
 });
 
-define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop", "ace/range", "ace/mode/folding/fold_mode"], function (require, exports, module) {
+define("ace/mode/folding/cstyle", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/range",
+  "ace/mode/folding/fold_mode"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../../lib/oop");
   var Range = require("../../range").Range;
   var BaseFoldMode = require("./fold_mode").FoldMode;
-  var FoldMode = exports.FoldMode = function (commentRegex) {
+  var FoldMode = (exports.FoldMode = function (commentRegex) {
     if (commentRegex) {
-      this.foldingStartMarker = new RegExp(this.foldingStartMarker.source.replace(/\|[^|]*?$/, "|" + commentRegex.start));
-      this.foldingStopMarker = new RegExp(this.foldingStopMarker.source.replace(/\|[^|]*?$/, "|" + commentRegex.end));
+      this.foldingStartMarker = new RegExp(
+        this.foldingStartMarker.source.replace(
+          /\|[^|]*?$/,
+          "|" + commentRegex.start
+        )
+      );
+      this.foldingStopMarker = new RegExp(
+        this.foldingStopMarker.source.replace(
+          /\|[^|]*?$/,
+          "|" + commentRegex.end
+        )
+      );
     }
-  };
+  });
   oop.inherits(FoldMode, BaseFoldMode);
   (function () {
     this.foldingStartMarker = /([\{\[\(])[^\}\]\)]*$|^\s*(\/\*)/;
@@ -376,15 +437,22 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
     this.getFoldWidget = function (session, foldStyle, row) {
       var line = session.getLine(row);
       if (this.singleLineBlockCommentRe.test(line)) {
-        if (!this.startRegionRe.test(line) && !this.tripleStarBlockCommentRe.test(line))
+        if (
+          !this.startRegionRe.test(line) &&
+          !this.tripleStarBlockCommentRe.test(line)
+        )
           return "";
       }
       var fw = this._getFoldWidgetBase(session, foldStyle, row);
-      if (!fw && this.startRegionRe.test(line))
-        return "start"; // lineCommentRegionStart
+      if (!fw && this.startRegionRe.test(line)) return "start"; // lineCommentRegionStart
       return fw;
     };
-    this.getFoldWidgetRange = function (session, foldStyle, row, forceMultiline) {
+    this.getFoldWidgetRange = function (
+      session,
+      foldStyle,
+      row,
+      forceMultiline
+    ) {
       var line = session.getLine(row);
       if (this.startRegionRe.test(line))
         return this.getCommentRegionBlock(session, line, row);
@@ -397,13 +465,11 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
         if (range && !range.isMultiLine()) {
           if (forceMultiline) {
             range = this.getSectionRange(session, row);
-          } else if (foldStyle != "all")
-            range = null;
+          } else if (foldStyle != "all") range = null;
         }
         return range;
       }
-      if (foldStyle === "markbegin")
-        return;
+      if (foldStyle === "markbegin") return;
       var match = line.match(this.foldingStopMarker);
       if (match) {
         var i = match.index + match[0].length;
@@ -423,10 +489,8 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       while (++row < maxRow) {
         line = session.getLine(row);
         var indent = line.search(/\S/);
-        if (indent === -1)
-          continue;
-        if (startIndent > indent)
-          break;
+        if (indent === -1) continue;
+        if (startIndent > indent) break;
         var subRange = this.getFoldWidgetRange(session, "all", row);
         if (subRange) {
           if (subRange.start.row <= startRow) {
@@ -439,7 +503,12 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
         }
         endRow = row;
       }
-      return new Range(startRow, startColumn, endRow, session.getLine(endRow).length);
+      return new Range(
+        startRow,
+        startColumn,
+        endRow,
+        session.getLine(endRow).length
+      );
     };
     this.getCommentRegionBlock = function (session, line, row) {
       var startColumn = line.search(/\s*$/);
@@ -450,14 +519,10 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       while (++row < maxRow) {
         line = session.getLine(row);
         var m = re.exec(line);
-        if (!m)
-          continue;
-        if (m[1])
-          depth--;
-        else
-          depth++;
-        if (!depth)
-          break;
+        if (!m) continue;
+        if (m[1]) depth--;
+        else depth++;
+        if (!depth) break;
       }
       var endRow = row;
       if (endRow > startRow) {
@@ -465,28 +530,40 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       }
     };
   }).call(FoldMode.prototype);
-
 });
 
-define("ace/mode/raku", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text", "ace/mode/raku_highlight_rules", "ace/mode/matching_brace_outdent", "ace/mode/folding/cstyle"], function (require, exports, module) {
+define("ace/mode/raku", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text",
+  "ace/mode/raku_highlight_rules",
+  "ace/mode/matching_brace_outdent",
+  "ace/mode/folding/cstyle"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextMode = require("./text").Mode;
   var RakuHighlightRules = require("./raku_highlight_rules").RakuHighlightRules;
-  var MatchingBraceOutdent = require("./matching_brace_outdent").MatchingBraceOutdent;
+  var MatchingBraceOutdent =
+    require("./matching_brace_outdent").MatchingBraceOutdent;
   var CStyleFoldMode = require("./folding/cstyle").FoldMode;
   var Mode = function () {
     this.HighlightRules = RakuHighlightRules;
     this.$outdent = new MatchingBraceOutdent();
-    this.foldingRules = new CStyleFoldMode({start: "^=(begin)\\b", end: "^=(end)\\b"});
+    this.foldingRules = new CStyleFoldMode({
+      start: "^=(begin)\\b",
+      end: "^=(end)\\b"
+    });
     this.$behaviour = this.$defaultBehaviour;
   };
   oop.inherits(Mode, TextMode);
   (function () {
     this.lineCommentStart = "#";
     this.blockComment = [
-      {start: "=begin", end: "=end", lineStartOnly: true},
-      {start: "=item", end: "=end", lineStartOnly: true}
+      { start: "=begin", end: "=end", lineStartOnly: true },
+      { start: "=item", end: "=end", lineStartOnly: true }
     ];
     this.getNextLineIndent = function (state, line, tab) {
       var indent = this.$getIndent(line);
@@ -512,7 +589,6 @@ define("ace/mode/raku", ["require", "exports", "module", "ace/lib/oop", "ace/mod
     this.$id = "ace/mode/raku";
   }).call(Mode.prototype);
   exports.Mode = Mode;
-
 });
 (function () {
   window.require(["ace/mode/raku"], function (m) {
@@ -521,4 +597,3 @@ define("ace/mode/raku", ["require", "exports", "module", "ace/lib/oop", "ace/mod
     }
   });
 })();
-            

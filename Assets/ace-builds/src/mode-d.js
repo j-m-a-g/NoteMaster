@@ -1,14 +1,22 @@
-define("ace/mode/doc_comment_highlight_rules", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text_highlight_rules"], function (require, exports, module) {
+define("ace/mode/doc_comment_highlight_rules", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text_highlight_rules"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
   var DocCommentHighlightRules = function () {
     this.$rules = {
-      "start": [
+      start: [
         {
           token: "comment.doc.tag",
           regex: "@\\w+(?=\\s|$)"
-        }, DocCommentHighlightRules.getTagRule(), {
+        },
+        DocCommentHighlightRules.getTagRule(),
+        {
           defaultToken: "comment.doc.body",
           caseInsensitive: true
         }
@@ -37,53 +45,70 @@ define("ace/mode/doc_comment_highlight_rules", ["require", "exports", "module", 
     };
   };
   exports.DocCommentHighlightRules = DocCommentHighlightRules;
-
 });
 
-define("ace/mode/d_highlight_rules", ["require", "exports", "module", "ace/lib/oop", "ace/mode/doc_comment_highlight_rules", "ace/mode/text_highlight_rules"], function (require, exports, module) {
+define("ace/mode/d_highlight_rules", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/doc_comment_highlight_rules",
+  "ace/mode/text_highlight_rules"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
-  var DocCommentHighlightRules = require("./doc_comment_highlight_rules").DocCommentHighlightRules;
+  var DocCommentHighlightRules =
+    require("./doc_comment_highlight_rules").DocCommentHighlightRules;
   var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
   var DHighlightRules = function () {
-    var keywords = ("this|super|import|module|body|mixin|__traits|invariant|alias|asm|delete|" +
-      "typeof|typeid|sizeof|cast|new|in|is|typedef|__vector|__parameters");
-    var keywordControls = ("break|case|continue|default|do|else|for|foreach|foreach_reverse|goto|if|" +
-      "return|switch|while|catch|try|throw|finally|version|assert|unittest|with");
-    var types = ("auto|bool|char|dchar|wchar|byte|ubyte|float|double|real|" +
+    var keywords =
+      "this|super|import|module|body|mixin|__traits|invariant|alias|asm|delete|" +
+      "typeof|typeid|sizeof|cast|new|in|is|typedef|__vector|__parameters";
+    var keywordControls =
+      "break|case|continue|default|do|else|for|foreach|foreach_reverse|goto|if|" +
+      "return|switch|while|catch|try|throw|finally|version|assert|unittest|with";
+    var types =
+      "auto|bool|char|dchar|wchar|byte|ubyte|float|double|real|" +
       "cfloat|creal|cdouble|cent|ifloat|ireal|idouble|" +
       "int|long|short|void|uint|ulong|ushort|ucent|" +
-      "function|delegate|string|wstring|dstring|size_t|ptrdiff_t|hash_t|Object");
-    var modifiers = ("abstract|align|debug|deprecated|export|extern|const|final|in|inout|out|" +
+      "function|delegate|string|wstring|dstring|size_t|ptrdiff_t|hash_t|Object";
+    var modifiers =
+      "abstract|align|debug|deprecated|export|extern|const|final|in|inout|out|" +
       "ref|immutable|lazy|nothrow|override|package|pragma|private|protected|" +
-      "public|pure|scope|shared|__gshared|synchronized|static|volatile");
-    var storages = ("class|struct|union|template|interface|enum|macro");
+      "public|pure|scope|shared|__gshared|synchronized|static|volatile";
+    var storages = "class|struct|union|template|interface|enum|macro";
     var stringEscapesSeq = {
       token: "constant.language.escape",
-      regex: "\\\\(?:(?:x[0-9A-F]{2})|(?:[0-7]{1,3})|(?:['\"\\?0abfnrtv\\\\])|" +
+      regex:
+        "\\\\(?:(?:x[0-9A-F]{2})|(?:[0-7]{1,3})|(?:['\"\\?0abfnrtv\\\\])|" +
         "(?:u[0-9a-fA-F]{4})|(?:U[0-9a-fA-F]{8}))"
     };
-    var builtinConstants = ("null|true|false|" +
+    var builtinConstants =
+      "null|true|false|" +
       "__DATE__|__EOF__|__TIME__|__TIMESTAMP__|__VENDOR__|__VERSION__|" +
-      "__FILE__|__MODULE__|__LINE__|__FUNCTION__|__PRETTY_FUNCTION__");
-    var operators = ("/|/\\=|&|&\\=|&&|\\|\\|\\=|\\|\\||\\-|\\-\\=|\\-\\-|\\+|" +
+      "__FILE__|__MODULE__|__LINE__|__FUNCTION__|__PRETTY_FUNCTION__";
+    var operators =
+      "/|/\\=|&|&\\=|&&|\\|\\|\\=|\\|\\||\\-|\\-\\=|\\-\\-|\\+|" +
       "\\+\\=|\\+\\+|\\<|\\<\\=|\\<\\<|\\<\\<\\=|\\<\\>|\\<\\>\\=|\\>|\\>\\=|\\>\\>\\=|" +
       "\\>\\>\\>\\=|\\>\\>|\\>\\>\\>|\\!|\\!\\=|\\!\\<\\>|\\!\\<\\>\\=|\\!\\<|\\!\\<\\=|" +
       "\\!\\>|\\!\\>\\=|\\?|\\$|\\=|\\=\\=|\\*|\\*\\=|%|%\\=|" +
-      "\\^|\\^\\=|\\^\\^|\\^\\^\\=|~|~\\=|\\=\\>|#");
-    var keywordMapper = this.$keywords = this.createKeywordMapper({
-      "keyword.modifier": modifiers,
-      "keyword.control": keywordControls,
-      "keyword.type": types,
-      "keyword": keywords,
-      "keyword.storage": storages,
-      "punctation": "\\.|\\,|;|\\.\\.|\\.\\.\\.",
-      "keyword.operator": operators,
-      "constant.language": builtinConstants
-    }, "identifier");
+      "\\^|\\^\\=|\\^\\^|\\^\\^\\=|~|~\\=|\\=\\>|#";
+    var keywordMapper = (this.$keywords = this.createKeywordMapper(
+      {
+        "keyword.modifier": modifiers,
+        "keyword.control": keywordControls,
+        "keyword.type": types,
+        keyword: keywords,
+        "keyword.storage": storages,
+        punctation: "\\.|\\,|;|\\.\\.|\\.\\.\\.",
+        "keyword.operator": operators,
+        "constant.language": builtinConstants
+      },
+      "identifier"
+    ));
     var identifierRe = "[a-zA-Z_\u00a1-\uffff][a-zA-Z\\d_\u00a1-\uffff]*\\b";
     this.$rules = {
-      "start": [
+      start: [
         {
           token: "comment",
           regex: "\\/\\/.*$"
@@ -93,79 +118,101 @@ define("ace/mode/d_highlight_rules", ["require", "exports", "module", "ace/lib/o
           token: "comment", // multi line comment
           regex: "\\/\\*",
           next: "star-comment"
-        }, {
+        },
+        {
           token: "comment.shebang",
           regex: "^\\s*#!.*"
-        }, {
+        },
+        {
           token: "comment",
           regex: "\\/\\+",
           next: "plus-comment"
-        }, {
+        },
+        {
           onMatch: function (value, currentState, state) {
             state.unshift(this.next, value.substr(2));
             return "string";
           },
           regex: 'q"(?:[\\[\\(\\{\\<]+)',
-          next: 'operator-heredoc-string'
-        }, {
+          next: "operator-heredoc-string"
+        },
+        {
           onMatch: function (value, currentState, state) {
             state.unshift(this.next, value.substr(2));
             return "string";
           },
           regex: 'q"(?:[a-zA-Z_]+)$',
-          next: 'identifier-heredoc-string'
-        }, {
+          next: "identifier-heredoc-string"
+        },
+        {
           token: "string", // multi line string start
           regex: '[xr]?"',
           next: "quote-string"
-        }, {
+        },
+        {
           token: "string", // multi line string start
-          regex: '[xr]?`',
+          regex: "[xr]?`",
           next: "backtick-string"
-        }, {
+        },
+        {
           token: "string", // single line
           regex: "[xr]?['](?:(?:\\\\.)|(?:[^'\\\\]))*?['][cdw]?"
-        }, {
+        },
+        {
           token: ["keyword", "text", "paren.lparen"],
           regex: /(asm)(\s*)({)/,
           next: "d-asm"
-        }, {
+        },
+        {
           token: ["keyword", "text", "paren.lparen", "constant.language"],
           regex: "(__traits)(\\s*)(\\()(" + identifierRe + ")"
-        }, {
+        },
+        {
           token: ["keyword", "text", "variable.module"],
           regex: "(import|module)(\\s+)((?:" + identifierRe + "\\.?)*)"
-        }, {
+        },
+        {
           token: ["keyword.storage", "text", "entity.name.type"],
           regex: "(" + storages + ")(\\s*)(" + identifierRe + ")"
-        }, {
+        },
+        {
           token: ["keyword", "text", "variable.storage", "text"],
           regex: "(alias|typedef)(\\s*)(" + identifierRe + ")(\\s*)"
-        }, {
+        },
+        {
           token: "constant.numeric", // hex
           regex: "0[xX][0-9a-fA-F_]+(l|ul|u|f|F|L|U|UL)?\\b"
-        }, {
+        },
+        {
           token: "constant.numeric", // float
-          regex: "[+-]?\\d[\\d_]*(?:(?:\\.[\\d_]*)?(?:[eE][+-]?[\\d_]+)?)?(l|ul|u|f|F|L|U|UL)?\\b"
-        }, {
+          regex:
+            "[+-]?\\d[\\d_]*(?:(?:\\.[\\d_]*)?(?:[eE][+-]?[\\d_]+)?)?(l|ul|u|f|F|L|U|UL)?\\b"
+        },
+        {
           token: "entity.other.attribute-name",
           regex: "@" + identifierRe
-        }, {
+        },
+        {
           token: keywordMapper,
           regex: "[a-zA-Z_][a-zA-Z0-9_]*\\b"
-        }, {
+        },
+        {
           token: "keyword.operator",
           regex: operators
-        }, {
+        },
+        {
           token: "punctuation.operator",
           regex: "\\?|\\:|\\,|\\;|\\.|\\:"
-        }, {
+        },
+        {
           token: "paren.lparen",
           regex: "[[({]"
-        }, {
+        },
+        {
           token: "paren.rparen",
           regex: "[\\])}]"
-        }, {
+        },
+        {
           token: "text",
           regex: "\\s+"
         }
@@ -175,8 +222,9 @@ define("ace/mode/d_highlight_rules", ["require", "exports", "module", "ace/lib/o
           token: "comment", // closing comment
           regex: "\\*\\/",
           next: "start"
-        }, {
-          defaultToken: 'comment'
+        },
+        {
+          defaultToken: "comment"
         }
       ],
       "plus-comment": [
@@ -184,8 +232,9 @@ define("ace/mode/d_highlight_rules", ["require", "exports", "module", "ace/lib/o
           token: "comment", // closing comment
           regex: "\\+\\/",
           next: "start"
-        }, {
-          defaultToken: 'comment'
+        },
+        {
+          defaultToken: "comment"
         }
       ],
       "quote-string": [
@@ -194,55 +243,56 @@ define("ace/mode/d_highlight_rules", ["require", "exports", "module", "ace/lib/o
           token: "string",
           regex: '"[cdw]?',
           next: "start"
-        }, {
-          defaultToken: 'string'
+        },
+        {
+          defaultToken: "string"
         }
       ],
       "backtick-string": [
         stringEscapesSeq,
         {
           token: "string",
-          regex: '`[cdw]?',
+          regex: "`[cdw]?",
           next: "start"
-        }, {
-          defaultToken: 'string'
+        },
+        {
+          defaultToken: "string"
         }
       ],
       "operator-heredoc-string": [
         {
           onMatch: function (value, currentState, state) {
             value = value.substring(value.length - 2, value.length - 1);
-            var map = {'>': '<', ']': '[', ')': '(', '}': '{'};
-            if (Object.keys(map).indexOf(value) != -1)
-              value = map[value];
-            if (value != state[1])
-              return "string";
+            var map = { ">": "<", "]": "[", ")": "(", "}": "{" };
+            if (Object.keys(map).indexOf(value) != -1) value = map[value];
+            if (value != state[1]) return "string";
             state.shift();
             state.shift();
             return "string";
           },
           regex: '(?:[\\]\\)}>]+)"',
-          next: 'start'
-        }, {
-          token: 'string',
-          regex: '[^\\]\\)}>]+'
+          next: "start"
+        },
+        {
+          token: "string",
+          regex: "[^\\]\\)}>]+"
         }
       ],
       "identifier-heredoc-string": [
         {
           onMatch: function (value, currentState, state) {
             value = value.substring(0, value.length - 1);
-            if (value != state[1])
-              return "string";
+            if (value != state[1]) return "string";
             state.shift();
             state.shift();
             return "string";
           },
           regex: '^(?:[A-Za-z_][a-zA-Z0-9]+)"',
-          next: 'start'
-        }, {
-          token: 'string',
-          regex: '[^\\]\\)}>]+'
+          next: "start"
+        },
+        {
+          token: "string",
+          regex: "[^\\]\\)}>]+"
         }
       ],
       "d-asm": [
@@ -250,72 +300,101 @@ define("ace/mode/d_highlight_rules", ["require", "exports", "module", "ace/lib/o
           token: "paren.rparen",
           regex: "\\}",
           next: "start"
-        }, {
-          token: 'keyword.instruction',
-          regex: '[a-zA-Z]+',
-          next: 'd-asm-instruction'
-        }, {
+        },
+        {
+          token: "keyword.instruction",
+          regex: "[a-zA-Z]+",
+          next: "d-asm-instruction"
+        },
+        {
           token: "text",
           regex: "\\s+"
         }
       ],
-      'd-asm-instruction': [
+      "d-asm-instruction": [
         {
-          token: 'constant.language',
-          regex: /AL|AH|AX|EAX|BL|BH|BX|EBX|CL|CH|CX|ECX|DL|DH|DX|EDX|BP|EBP|SP|ESP|DI|EDI|SI|ESI/i
-        }, {
-          token: 'identifier',
-          regex: '[a-zA-Z]+'
-        }, {
-          token: 'string',
+          token: "constant.language",
+          regex:
+            /AL|AH|AX|EAX|BL|BH|BX|EBX|CL|CH|CX|ECX|DL|DH|DX|EDX|BP|EBP|SP|ESP|DI|EDI|SI|ESI/i
+        },
+        {
+          token: "identifier",
+          regex: "[a-zA-Z]+"
+        },
+        {
+          token: "string",
           regex: '"[^"]*"'
-        }, {
-          token: 'comment',
-          regex: '//.*$'
-        }, {
-          token: 'constant.numeric',
-          regex: '[0-9.xA-F]+'
-        }, {
-          token: 'punctuation.operator',
-          regex: '\\,'
-        }, {
-          token: 'punctuation.operator',
-          regex: ';',
-          next: 'd-asm'
-        }, {
-          token: 'text',
-          regex: '\\s+'
+        },
+        {
+          token: "comment",
+          regex: "//.*$"
+        },
+        {
+          token: "constant.numeric",
+          regex: "[0-9.xA-F]+"
+        },
+        {
+          token: "punctuation.operator",
+          regex: "\\,"
+        },
+        {
+          token: "punctuation.operator",
+          regex: ";",
+          next: "d-asm"
+        },
+        {
+          token: "text",
+          regex: "\\s+"
         }
       ]
     };
-    this.embedRules(DocCommentHighlightRules, "doc-", [DocCommentHighlightRules.getEndRule("start")]);
+    this.embedRules(DocCommentHighlightRules, "doc-", [
+      DocCommentHighlightRules.getEndRule("start")
+    ]);
   };
   DHighlightRules.metaData = {
-    comment: 'D language',
-    fileTypes: ['d', 'di'],
-    firstLineMatch: '^#!.*\\b[glr]?dmd\\b.',
-    foldingStartMarker: '(?x)/\\*\\*(?!\\*)|^(?![^{]*?//|[^{]*?/\\*(?!.*?\\*/.*?\\{)).*?\\{\\s*($|//|/\\*(?!.*?\\*/.*\\S))',
-    foldingStopMarker: '(?<!\\*)\\*\\*/|^\\s*\\}',
-    keyEquivalent: '^~D',
-    name: 'D',
-    scopeName: 'source.d'
+    comment: "D language",
+    fileTypes: ["d", "di"],
+    firstLineMatch: "^#!.*\\b[glr]?dmd\\b.",
+    foldingStartMarker:
+      "(?x)/\\*\\*(?!\\*)|^(?![^{]*?//|[^{]*?/\\*(?!.*?\\*/.*?\\{)).*?\\{\\s*($|//|/\\*(?!.*?\\*/.*\\S))",
+    foldingStopMarker: "(?<!\\*)\\*\\*/|^\\s*\\}",
+    keyEquivalent: "^~D",
+    name: "D",
+    scopeName: "source.d"
   };
   oop.inherits(DHighlightRules, TextHighlightRules);
   exports.DHighlightRules = DHighlightRules;
-
 });
 
-define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop", "ace/range", "ace/mode/folding/fold_mode"], function (require, exports, module) {
+define("ace/mode/folding/cstyle", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/range",
+  "ace/mode/folding/fold_mode"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../../lib/oop");
   var Range = require("../../range").Range;
   var BaseFoldMode = require("./fold_mode").FoldMode;
-  var FoldMode = exports.FoldMode = function (commentRegex) {
+  var FoldMode = (exports.FoldMode = function (commentRegex) {
     if (commentRegex) {
-      this.foldingStartMarker = new RegExp(this.foldingStartMarker.source.replace(/\|[^|]*?$/, "|" + commentRegex.start));
-      this.foldingStopMarker = new RegExp(this.foldingStopMarker.source.replace(/\|[^|]*?$/, "|" + commentRegex.end));
+      this.foldingStartMarker = new RegExp(
+        this.foldingStartMarker.source.replace(
+          /\|[^|]*?$/,
+          "|" + commentRegex.start
+        )
+      );
+      this.foldingStopMarker = new RegExp(
+        this.foldingStopMarker.source.replace(
+          /\|[^|]*?$/,
+          "|" + commentRegex.end
+        )
+      );
     }
-  };
+  });
   oop.inherits(FoldMode, BaseFoldMode);
   (function () {
     this.foldingStartMarker = /([\{\[\(])[^\}\]\)]*$|^\s*(\/\*)/;
@@ -327,15 +406,22 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
     this.getFoldWidget = function (session, foldStyle, row) {
       var line = session.getLine(row);
       if (this.singleLineBlockCommentRe.test(line)) {
-        if (!this.startRegionRe.test(line) && !this.tripleStarBlockCommentRe.test(line))
+        if (
+          !this.startRegionRe.test(line) &&
+          !this.tripleStarBlockCommentRe.test(line)
+        )
           return "";
       }
       var fw = this._getFoldWidgetBase(session, foldStyle, row);
-      if (!fw && this.startRegionRe.test(line))
-        return "start"; // lineCommentRegionStart
+      if (!fw && this.startRegionRe.test(line)) return "start"; // lineCommentRegionStart
       return fw;
     };
-    this.getFoldWidgetRange = function (session, foldStyle, row, forceMultiline) {
+    this.getFoldWidgetRange = function (
+      session,
+      foldStyle,
+      row,
+      forceMultiline
+    ) {
       var line = session.getLine(row);
       if (this.startRegionRe.test(line))
         return this.getCommentRegionBlock(session, line, row);
@@ -348,13 +434,11 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
         if (range && !range.isMultiLine()) {
           if (forceMultiline) {
             range = this.getSectionRange(session, row);
-          } else if (foldStyle != "all")
-            range = null;
+          } else if (foldStyle != "all") range = null;
         }
         return range;
       }
-      if (foldStyle === "markbegin")
-        return;
+      if (foldStyle === "markbegin") return;
       var match = line.match(this.foldingStopMarker);
       if (match) {
         var i = match.index + match[0].length;
@@ -374,10 +458,8 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       while (++row < maxRow) {
         line = session.getLine(row);
         var indent = line.search(/\S/);
-        if (indent === -1)
-          continue;
-        if (startIndent > indent)
-          break;
+        if (indent === -1) continue;
+        if (startIndent > indent) break;
         var subRange = this.getFoldWidgetRange(session, "all", row);
         if (subRange) {
           if (subRange.start.row <= startRow) {
@@ -390,7 +472,12 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
         }
         endRow = row;
       }
-      return new Range(startRow, startColumn, endRow, session.getLine(endRow).length);
+      return new Range(
+        startRow,
+        startColumn,
+        endRow,
+        session.getLine(endRow).length
+      );
     };
     this.getCommentRegionBlock = function (session, line, row) {
       var startColumn = line.search(/\s*$/);
@@ -401,14 +488,10 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       while (++row < maxRow) {
         line = session.getLine(row);
         var m = re.exec(line);
-        if (!m)
-          continue;
-        if (m[1])
-          depth--;
-        else
-          depth++;
-        if (!depth)
-          break;
+        if (!m) continue;
+        if (m[1]) depth--;
+        else depth++;
+        if (!depth) break;
       }
       var endRow = row;
       if (endRow > startRow) {
@@ -416,10 +499,18 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       }
     };
   }).call(FoldMode.prototype);
-
 });
 
-define("ace/mode/d", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text", "ace/mode/d_highlight_rules", "ace/mode/folding/cstyle"], function (require, exports, module) {/*
+define("ace/mode/d", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text",
+  "ace/mode/d_highlight_rules",
+  "ace/mode/folding/cstyle"
+], function (require, exports, module) {
+  /*
   THIS FILE WAS AUTOGENERATED BY mode.tmpl.js
 */
   "use strict";
@@ -435,11 +526,10 @@ define("ace/mode/d", ["require", "exports", "module", "ace/lib/oop", "ace/mode/t
   oop.inherits(Mode, TextMode);
   (function () {
     this.lineCommentStart = "//";
-    this.blockComment = {start: "/*", end: "*/"};
+    this.blockComment = { start: "/*", end: "*/" };
     this.$id = "ace/mode/d";
   }).call(Mode.prototype);
   exports.Mode = Mode;
-
 });
 (function () {
   window.require(["ace/mode/d"], function (m) {
@@ -448,4 +538,3 @@ define("ace/mode/d", ["require", "exports", "module", "ace/lib/oop", "ace/mode/t
     }
   });
 })();
-            

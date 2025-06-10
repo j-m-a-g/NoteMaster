@@ -1,26 +1,26 @@
 "no use strict";
 !(function (window) {
-  if (typeof window.window != "undefined" && window.document)
-    return;
-  if (window.require && window.define)
-    return;
+  if (typeof window.window != "undefined" && window.document) return;
+  if (window.require && window.define) return;
 
   if (!window.console) {
     window.console = function () {
       var msgs = Array.prototype.slice.call(arguments, 0);
-      postMessage({type: "log", data: msgs});
+      postMessage({ type: "log", data: msgs });
     };
     window.console.error =
       window.console.warn =
-        window.console.log =
-          window.console.trace = window.console;
+      window.console.log =
+      window.console.trace =
+        window.console;
   }
   window.window = window;
   window.ace = window;
 
   window.onerror = function (message, file, line, col, err) {
     postMessage({
-      type: "error", data: {
+      type: "error",
+      data: {
         message: message,
         data: err && err.data,
         file: file,
@@ -35,7 +35,11 @@
     // normalize plugin requires
     if (moduleName.indexOf("!") !== -1) {
       var chunks = moduleName.split("!");
-      return window.normalizeModule(parentId, chunks[0]) + "!" + window.normalizeModule(parentId, chunks[1]);
+      return (
+        window.normalizeModule(parentId, chunks[0]) +
+        "!" +
+        window.normalizeModule(parentId, chunks[1])
+      );
     }
     // normalize relative requires
     if (moduleName.charAt(0) == ".") {
@@ -44,7 +48,10 @@
 
       while (moduleName.indexOf(".") !== -1 && previous != moduleName) {
         var previous = moduleName;
-        moduleName = moduleName.replace(/^\.\//, "").replace(/\/\.\//, "/").replace(/[^\/]+\/\.\.\//, "");
+        moduleName = moduleName
+          .replace(/^\.\//, "")
+          .replace(/\/\.\//, "/")
+          .replace(/[^\/]+\/\.\.\//, "");
       }
     }
 
@@ -57,7 +64,9 @@
       parentId = null;
     }
     if (!id.charAt)
-      throw new Error("worker.js require() accepts only (parentId, id) as arguments");
+      throw new Error(
+        "worker.js require() accepts only (parentId, id) as arguments"
+      );
 
     id = window.normalizeModule(parentId, id);
 
@@ -70,8 +79,7 @@
       return module.exports;
     }
 
-    if (!window.require.tlns)
-      return console.log("unable to load " + id);
+    if (!window.require.tlns) return console.log("unable to load " + id);
 
     var path = resolveModuleId(id, window.require.tlns);
     if (path.slice(-3) != ".js") path += ".js";
@@ -83,13 +91,17 @@
   };
 
   function resolveModuleId(id, paths) {
-    var testPath = id, tail = "";
+    var testPath = id,
+      tail = "";
     while (testPath) {
       var alias = paths[testPath];
       if (typeof alias == "string") {
         return alias + tail;
       } else if (alias) {
-        return alias.location.replace(/\/*$/, "/") + (tail || alias.main || alias.name);
+        return (
+          alias.location.replace(/\/*$/, "/") +
+          (tail || alias.main || alias.name)
+        );
       } else if (alias === false) {
         return "";
       }
@@ -138,24 +150,26 @@
       exports: {},
       factory: function () {
         var module = this;
-        var returnExports = factory.apply(this, deps.slice(0, factory.length).map(function (dep) {
-          switch (dep) {
-            // Because "require", "exports" and "module" aren't actual
-            // dependencies, we must handle them seperately.
-            case "require":
-              return req;
-            case "exports":
-              return module.exports;
-            case "module":
-              return module;
-            // But for all other dependencies, we can just go ahead and
-            // require them.
-            default:
-              return req(dep);
-          }
-        }));
-        if (returnExports)
-          module.exports = returnExports;
+        var returnExports = factory.apply(
+          this,
+          deps.slice(0, factory.length).map(function (dep) {
+            switch (dep) {
+              // Because "require", "exports" and "module" aren't actual
+              // dependencies, we must handle them seperately.
+              case "require":
+                return req;
+              case "exports":
+                return module.exports;
+              case "module":
+                return module;
+              // But for all other dependencies, we can just go ahead and
+              // require them.
+              default:
+                return req(dep);
+            }
+          })
+        );
+        if (returnExports) module.exports = returnExports;
         return module;
       }
     };
@@ -168,15 +182,12 @@
   };
 
   window.initSender = function initSender() {
-
     var EventEmitter = window.require("ace/lib/event_emitter").EventEmitter;
     var oop = window.require("ace/lib/oop");
 
-    var Sender = function () {
-    };
+    var Sender = function () {};
 
     (function () {
-
       oop.implement(this, EventEmitter);
 
       this.callback = function (data, callbackId) {
@@ -194,26 +205,22 @@
           data: data
         });
       };
-
     }).call(Sender.prototype);
 
     return new Sender();
   };
 
-  var main = window.main = null;
-  var sender = window.sender = null;
+  var main = (window.main = null);
+  var sender = (window.sender = null);
 
   window.onmessage = function (e) {
     var msg = e.data;
     if (msg.event && sender) {
       sender._signal(msg.event, msg.data);
     } else if (msg.command) {
-      if (main[msg.command])
-        main[msg.command].apply(main, msg.args);
-      else if (window[msg.command])
-        window[msg.command].apply(window, msg.args);
-      else
-        throw new Error("Unknown command:" + msg.command);
+      if (main[msg.command]) main[msg.command].apply(main, msg.args);
+      else if (window[msg.command]) window[msg.command].apply(window, msg.args);
+      else throw new Error("Unknown command:" + msg.command);
     } else if (msg.init) {
       window.initBaseUrls(msg.tlns);
       sender = window.sender = window.initSender();
@@ -245,13 +252,11 @@ define("ace/lib/oop", [], function (require, exports, module) {
   exports.implement = function (proto, mixin) {
     exports.mixin(proto, mixin);
   };
-
 });
 
 define("ace/lib/deep_copy", [], function (require, exports, module) {
   exports.deepCopy = function deepCopy(obj) {
-    if (typeof obj !== "object" || !obj)
-      return obj;
+    if (typeof obj !== "object" || !obj) return obj;
     var copy;
     if (Array.isArray(obj)) {
       copy = [];
@@ -260,14 +265,11 @@ define("ace/lib/deep_copy", [], function (require, exports, module) {
       }
       return copy;
     }
-    if (Object.prototype.toString.call(obj) !== "[object Object]")
-      return obj;
+    if (Object.prototype.toString.call(obj) !== "[object Object]") return obj;
     copy = {};
-    for (var key in obj)
-      copy[key] = deepCopy(obj[key]);
+    for (var key in obj) copy[key] = deepCopy(obj[key]);
     return copy;
   };
-
 });
 
 define("ace/lib/lang", [], function (require, exports, module) {
@@ -279,22 +281,20 @@ define("ace/lib/lang", [], function (require, exports, module) {
     return string.split("").reverse().join("");
   };
   exports.stringRepeat = function (string, count) {
-    var result = '';
+    var result = "";
     while (count > 0) {
-      if (count & 1)
-        result += string;
-      if (count >>= 1)
-        string += string;
+      if (count & 1) result += string;
+      if ((count >>= 1)) string += string;
     }
     return result;
   };
   var trimBeginRegexp = /^\s\s*/;
   var trimEndRegexp = /\s\s*$/;
   exports.stringTrimLeft = function (string) {
-    return string.replace(trimBeginRegexp, '');
+    return string.replace(trimBeginRegexp, "");
   };
   exports.stringTrimRight = function (string) {
-    return string.replace(trimEndRegexp, '');
+    return string.replace(trimEndRegexp, "");
   };
   exports.copyObject = function (obj) {
     var copy = {};
@@ -308,8 +308,7 @@ define("ace/lib/lang", [], function (require, exports, module) {
     for (var i = 0, l = array.length; i < l; i++) {
       if (array[i] && typeof array[i] == "object")
         copy[i] = this.copyObject(array[i]);
-      else
-        copy[i] = array[i];
+      else copy[i] = array[i];
     }
     return copy;
   };
@@ -336,10 +335,14 @@ define("ace/lib/lang", [], function (require, exports, module) {
     }
   };
   exports.escapeRegExp = function (str) {
-    return str.replace(/([.*+?^${}()|[\]\/\\])/g, '\\$1');
+    return str.replace(/([.*+?^${}()|[\]\/\\])/g, "\\$1");
   };
   exports.escapeHTML = function (str) {
-    return ("" + str).replace(/&/g, "&#38;").replace(/"/g, "&#34;").replace(/'/g, "&#39;").replace(/</g, "&#60;");
+    return ("" + str)
+      .replace(/&/g, "&#38;")
+      .replace(/"/g, "&#34;")
+      .replace(/'/g, "&#39;")
+      .replace(/</g, "&#60;");
   };
   exports.getMatchOffsets = function (string, regExp) {
     var matches = [];
@@ -408,7 +411,7 @@ define("ace/lib/lang", [], function (require, exports, module) {
   };
   exports.supportsLookbehind = function () {
     try {
-      new RegExp('(?<=.)');
+      new RegExp("(?<=.)");
     } catch (e) {
       return false;
     }
@@ -417,7 +420,6 @@ define("ace/lib/lang", [], function (require, exports, module) {
   exports.skipEmptyMatch = function (line, last, supportsUnicodeFlag) {
     return supportsUnicodeFlag && line.codePointAt(last) > 0xffff ? 2 : 1;
   };
-
 });
 
 define("ace/apply_delta", [], function (require, exports, module) {
@@ -429,8 +431,12 @@ define("ace/apply_delta", [], function (require, exports, module) {
   }
 
   function positionInDocument(docLines, position) {
-    return position.row >= 0 && position.row < docLines.length &&
-      position.column >= 0 && position.column <= docLines[position.row].length;
+    return (
+      position.row >= 0 &&
+      position.row < docLines.length &&
+      position.column >= 0 &&
+      position.column <= docLines[position.row].length
+    );
   }
 
   function validateDelta(docLines, delta) {
@@ -445,10 +451,17 @@ define("ace/apply_delta", [], function (require, exports, module) {
       throwDeltaError(delta, "delta.start must be contained in document");
     var end = delta.end;
     if (delta.action == "remove" && !positionInDocument(docLines, end))
-      throwDeltaError(delta, "delta.end must contained in document for 'remove' actions");
+      throwDeltaError(
+        delta,
+        "delta.end must contained in document for 'remove' actions"
+      );
     var numRangeRows = end.row - start.row;
-    var numRangeLastLineChars = (end.column - (numRangeRows == 0 ? start.column : 0));
-    if (numRangeRows != delta.lines.length - 1 || delta.lines[numRangeRows].length != numRangeLastLineChars)
+    var numRangeLastLineChars =
+      end.column - (numRangeRows == 0 ? start.column : 0);
+    if (
+      numRangeRows != delta.lines.length - 1 ||
+      delta.lines[numRangeRows].length != numRangeLastLineChars
+    )
       throwDeltaError(delta, "delta.range must match delta lines");
   }
 
@@ -460,7 +473,10 @@ define("ace/apply_delta", [], function (require, exports, module) {
       case "insert":
         var lines = delta.lines;
         if (lines.length === 1) {
-          docLines[row] = line.substring(0, startColumn) + delta.lines[0] + line.substring(startColumn);
+          docLines[row] =
+            line.substring(0, startColumn) +
+            delta.lines[0] +
+            line.substring(startColumn);
         } else {
           var args = [row, 1].concat(delta.lines);
           docLines.splice.apply(docLines, args);
@@ -472,14 +488,19 @@ define("ace/apply_delta", [], function (require, exports, module) {
         var endColumn = delta.end.column;
         var endRow = delta.end.row;
         if (row === endRow) {
-          docLines[row] = line.substring(0, startColumn) + line.substring(endColumn);
+          docLines[row] =
+            line.substring(0, startColumn) + line.substring(endColumn);
         } else {
-          docLines.splice(row, endRow - row + 1, line.substring(0, startColumn) + docLines[endRow].substring(endColumn));
+          docLines.splice(
+            row,
+            endRow - row + 1,
+            line.substring(0, startColumn) +
+              docLines[endRow].substring(endColumn)
+          );
         }
         break;
     }
   };
-
 });
 
 define("ace/lib/event_emitter", [], function (require, exports, module) {
@@ -491,38 +512,28 @@ define("ace/lib/event_emitter", [], function (require, exports, module) {
   var preventDefault = function () {
     this.defaultPrevented = true;
   };
-  EventEmitter._emit =
-    EventEmitter._dispatchEvent = function (eventName, e) {
-      this._eventRegistry || (this._eventRegistry = {});
-      this._defaultHandlers || (this._defaultHandlers = {});
-      var listeners = this._eventRegistry[eventName] || [];
-      var defaultHandler = this._defaultHandlers[eventName];
-      if (!listeners.length && !defaultHandler)
-        return;
-      if (typeof e != "object" || !e)
-        e = {};
-      if (!e.type)
-        e.type = eventName;
-      if (!e.stopPropagation)
-        e.stopPropagation = stopPropagation;
-      if (!e.preventDefault)
-        e.preventDefault = preventDefault;
-      listeners = listeners.slice();
-      for (var i = 0; i < listeners.length; i++) {
-        listeners[i](e, this);
-        if (e.propagationStopped)
-          break;
-      }
-      if (defaultHandler && !e.defaultPrevented)
-        return defaultHandler(e, this);
-    };
+  EventEmitter._emit = EventEmitter._dispatchEvent = function (eventName, e) {
+    this._eventRegistry || (this._eventRegistry = {});
+    this._defaultHandlers || (this._defaultHandlers = {});
+    var listeners = this._eventRegistry[eventName] || [];
+    var defaultHandler = this._defaultHandlers[eventName];
+    if (!listeners.length && !defaultHandler) return;
+    if (typeof e != "object" || !e) e = {};
+    if (!e.type) e.type = eventName;
+    if (!e.stopPropagation) e.stopPropagation = stopPropagation;
+    if (!e.preventDefault) e.preventDefault = preventDefault;
+    listeners = listeners.slice();
+    for (var i = 0; i < listeners.length; i++) {
+      listeners[i](e, this);
+      if (e.propagationStopped) break;
+    }
+    if (defaultHandler && !e.defaultPrevented) return defaultHandler(e, this);
+  };
   EventEmitter._signal = function (eventName, e) {
     var listeners = (this._eventRegistry || {})[eventName];
-    if (!listeners)
-      return;
+    if (!listeners) return;
     listeners = listeners.slice();
-    for (var i = 0; i < listeners.length; i++)
-      listeners[i](e, this);
+    for (var i = 0; i < listeners.length; i++) listeners[i](e, this);
   };
   EventEmitter.once = function (eventName, callback) {
     var _self = this;
@@ -538,65 +549,56 @@ define("ace/lib/event_emitter", [], function (require, exports, module) {
   };
   EventEmitter.setDefaultHandler = function (eventName, callback) {
     var handlers = this._defaultHandlers;
-    if (!handlers)
-      handlers = this._defaultHandlers = {_disabled_: {}};
+    if (!handlers) handlers = this._defaultHandlers = { _disabled_: {} };
     if (handlers[eventName]) {
       var old = handlers[eventName];
       var disabled = handlers._disabled_[eventName];
-      if (!disabled)
-        handlers._disabled_[eventName] = disabled = [];
+      if (!disabled) handlers._disabled_[eventName] = disabled = [];
       disabled.push(old);
       var i = disabled.indexOf(callback);
-      if (i != -1)
-        disabled.splice(i, 1);
+      if (i != -1) disabled.splice(i, 1);
     }
     handlers[eventName] = callback;
   };
   EventEmitter.removeDefaultHandler = function (eventName, callback) {
     var handlers = this._defaultHandlers;
-    if (!handlers)
-      return;
+    if (!handlers) return;
     var disabled = handlers._disabled_[eventName];
     if (handlers[eventName] == callback) {
-      if (disabled)
-        this.setDefaultHandler(eventName, disabled.pop());
+      if (disabled) this.setDefaultHandler(eventName, disabled.pop());
     } else if (disabled) {
       var i = disabled.indexOf(callback);
-      if (i != -1)
-        disabled.splice(i, 1);
+      if (i != -1) disabled.splice(i, 1);
     }
   };
-  EventEmitter.on =
-    EventEmitter.addEventListener = function (eventName, callback, capturing) {
-      this._eventRegistry = this._eventRegistry || {};
-      var listeners = this._eventRegistry[eventName];
-      if (!listeners)
-        listeners = this._eventRegistry[eventName] = [];
-      if (listeners.indexOf(callback) == -1)
-        listeners[capturing ? "unshift" : "push"](callback);
-      return callback;
-    };
+  EventEmitter.on = EventEmitter.addEventListener = function (
+    eventName,
+    callback,
+    capturing
+  ) {
+    this._eventRegistry = this._eventRegistry || {};
+    var listeners = this._eventRegistry[eventName];
+    if (!listeners) listeners = this._eventRegistry[eventName] = [];
+    if (listeners.indexOf(callback) == -1)
+      listeners[capturing ? "unshift" : "push"](callback);
+    return callback;
+  };
   EventEmitter.off =
     EventEmitter.removeListener =
-      EventEmitter.removeEventListener = function (eventName, callback) {
+    EventEmitter.removeEventListener =
+      function (eventName, callback) {
         this._eventRegistry = this._eventRegistry || {};
         var listeners = this._eventRegistry[eventName];
-        if (!listeners)
-          return;
+        if (!listeners) return;
         var index = listeners.indexOf(callback);
-        if (index !== -1)
-          listeners.splice(index, 1);
+        if (index !== -1) listeners.splice(index, 1);
       };
   EventEmitter.removeAllListeners = function (eventName) {
-    if (!eventName)
-      this._eventRegistry = this._defaultHandlers = undefined;
-    if (this._eventRegistry)
-      this._eventRegistry[eventName] = undefined;
-    if (this._defaultHandlers)
-      this._defaultHandlers[eventName] = undefined;
+    if (!eventName) this._eventRegistry = this._defaultHandlers = undefined;
+    if (this._eventRegistry) this._eventRegistry[eventName] = undefined;
+    if (this._defaultHandlers) this._defaultHandlers[eventName] = undefined;
   };
   exports.EventEmitter = EventEmitter;
-
 });
 
 define("ace/range", [], function (require, exports, module) {
@@ -614,20 +616,33 @@ define("ace/range", [], function (require, exports, module) {
     }
 
     Range.prototype.isEqual = function (range) {
-      return this.start.row === range.start.row &&
+      return (
+        this.start.row === range.start.row &&
         this.end.row === range.end.row &&
         this.start.column === range.start.column &&
-        this.end.column === range.end.column;
+        this.end.column === range.end.column
+      );
     };
     Range.prototype.toString = function () {
-      return ("Range: [" + this.start.row + "/" + this.start.column +
-        "] -> [" + this.end.row + "/" + this.end.column + "]");
+      return (
+        "Range: [" +
+        this.start.row +
+        "/" +
+        this.start.column +
+        "] -> [" +
+        this.end.row +
+        "/" +
+        this.end.column +
+        "]"
+      );
     };
     Range.prototype.contains = function (row, column) {
       return this.compare(row, column) == 0;
     };
     Range.prototype.compareRange = function (range) {
-      var cmp, end = range.end, start = range.start;
+      var cmp,
+        end = range.end,
+        start = range.start;
       cmp = this.compare(end.row, end.column);
       if (cmp == 1) {
         cmp = this.compare(start.row, start.column);
@@ -655,11 +670,13 @@ define("ace/range", [], function (require, exports, module) {
       return this.compare(p.row, p.column);
     };
     Range.prototype.containsRange = function (range) {
-      return this.comparePoint(range.start) == 0 && this.comparePoint(range.end) == 0;
+      return (
+        this.comparePoint(range.start) == 0 && this.comparePoint(range.end) == 0
+      );
     };
     Range.prototype.intersects = function (range) {
       var cmp = this.compareRange(range);
-      return (cmp == -1 || cmp == 0 || cmp == 1);
+      return cmp == -1 || cmp == 0 || cmp == 1;
     };
     Range.prototype.isEnd = function (row, column) {
       return this.end.row == row && this.end.column == column;
@@ -718,17 +735,17 @@ define("ace/range", [], function (require, exports, module) {
     Range.prototype.compare = function (row, column) {
       if (!this.isMultiLine()) {
         if (row === this.start.row) {
-          return column < this.start.column ? -1 : (column > this.end.column ? 1 : 0);
+          return column < this.start.column
+            ? -1
+            : column > this.end.column
+              ? 1
+              : 0;
         }
       }
-      if (row < this.start.row)
-        return -1;
-      if (row > this.end.row)
-        return 1;
-      if (this.start.row === row)
-        return column >= this.start.column ? 0 : -1;
-      if (this.end.row === row)
-        return column <= this.end.column ? 0 : 1;
+      if (row < this.start.row) return -1;
+      if (row > this.end.row) return 1;
+      if (this.start.row === row) return column >= this.start.column ? 0 : -1;
+      if (this.end.row === row) return column <= this.end.column ? 0 : 1;
       return 0;
     };
     Range.prototype.compareStart = function (row, column) {
@@ -755,45 +772,50 @@ define("ace/range", [], function (require, exports, module) {
       }
     };
     Range.prototype.clipRows = function (firstRow, lastRow) {
-      if (this.end.row > lastRow)
-        var end = {row: lastRow + 1, column: 0};
-      else if (this.end.row < firstRow)
-        var end = {row: firstRow, column: 0};
-      if (this.start.row > lastRow)
-        var start = {row: lastRow + 1, column: 0};
+      if (this.end.row > lastRow) var end = { row: lastRow + 1, column: 0 };
+      else if (this.end.row < firstRow) var end = { row: firstRow, column: 0 };
+      if (this.start.row > lastRow) var start = { row: lastRow + 1, column: 0 };
       else if (this.start.row < firstRow)
-        var start = {row: firstRow, column: 0};
+        var start = { row: firstRow, column: 0 };
       return Range.fromPoints(start || this.start, end || this.end);
     };
     Range.prototype.extend = function (row, column) {
       var cmp = this.compare(row, column);
-      if (cmp == 0)
-        return this;
-      else if (cmp == -1)
-        var start = {row: row, column: column};
-      else
-        var end = {row: row, column: column};
+      if (cmp == 0) return this;
+      else if (cmp == -1) var start = { row: row, column: column };
+      else var end = { row: row, column: column };
       return Range.fromPoints(start || this.start, end || this.end);
     };
     Range.prototype.isEmpty = function () {
-      return (this.start.row === this.end.row && this.start.column === this.end.column);
+      return (
+        this.start.row === this.end.row && this.start.column === this.end.column
+      );
     };
     Range.prototype.isMultiLine = function () {
-      return (this.start.row !== this.end.row);
+      return this.start.row !== this.end.row;
     };
     Range.prototype.clone = function () {
       return Range.fromPoints(this.start, this.end);
     };
     Range.prototype.collapseRows = function () {
       if (this.end.column == 0)
-        return new Range(this.start.row, 0, Math.max(this.start.row, this.end.row - 1), 0);
-      else
-        return new Range(this.start.row, 0, this.end.row, 0);
+        return new Range(
+          this.start.row,
+          0,
+          Math.max(this.start.row, this.end.row - 1),
+          0
+        );
+      else return new Range(this.start.row, 0, this.end.row, 0);
     };
     Range.prototype.toScreenRange = function (session) {
       var screenPosStart = session.documentToScreenPosition(this.start);
       var screenPosEnd = session.documentToScreenPosition(this.end);
-      return new Range(screenPosStart.row, screenPosStart.column, screenPosEnd.row, screenPosEnd.column);
+      return new Range(
+        screenPosStart.row,
+        screenPosStart.column,
+        screenPosEnd.row,
+        screenPosEnd.column
+      );
     };
     Range.prototype.moveBy = function (row, column) {
       this.start.row += row;
@@ -802,7 +824,7 @@ define("ace/range", [], function (require, exports, module) {
       this.end.column += column;
     };
     return Range;
-  }());
+  })();
   Range.fromPoints = function (start, end) {
     return new Range(start.row, start.column, end.row, end.column);
   };
@@ -810,7 +832,6 @@ define("ace/range", [], function (require, exports, module) {
     return p1.row - p2.row || p1.column - p2.column;
   };
   exports.Range = Range;
-
 });
 
 define("ace/anchor", [], function (require, exports, module) {
@@ -821,10 +842,8 @@ define("ace/anchor", [], function (require, exports, module) {
     function Anchor(doc, row, column) {
       this.$onChange = this.onChange.bind(this);
       this.attach(doc);
-      if (typeof row != "number")
-        this.setPosition(row.row, row.column);
-      else
-        this.setPosition(row, column);
+      if (typeof row != "number") this.setPosition(row.row, row.column);
+      else this.setPosition(row, column);
     }
 
     Anchor.prototype.getPosition = function () {
@@ -836,9 +855,12 @@ define("ace/anchor", [], function (require, exports, module) {
     Anchor.prototype.onChange = function (delta) {
       if (delta.start.row == delta.end.row && delta.start.row != this.row)
         return;
-      if (delta.start.row > this.row)
-        return;
-      var point = $getTransformedPoint(delta, {row: this.row, column: this.column}, this.$insertRight);
+      if (delta.start.row > this.row) return;
+      var point = $getTransformedPoint(
+        delta,
+        { row: this.row, column: this.column },
+        this.$insertRight
+      );
       this.setPosition(point.row, point.column, true);
     };
     Anchor.prototype.setPosition = function (row, column, noClip) {
@@ -851,8 +873,7 @@ define("ace/anchor", [], function (require, exports, module) {
       } else {
         pos = this.$clipPositionToDocument(row, column);
       }
-      if (this.row == pos.row && this.column == pos.column)
-        return;
+      if (this.row == pos.row && this.column == pos.column) return;
       var old = {
         row: this.row,
         column: this.column
@@ -881,26 +902,32 @@ define("ace/anchor", [], function (require, exports, module) {
         pos.column = 0;
       } else {
         pos.row = row;
-        pos.column = Math.min(this.document.getLine(pos.row).length, Math.max(0, column));
+        pos.column = Math.min(
+          this.document.getLine(pos.row).length,
+          Math.max(0, column)
+        );
       }
-      if (column < 0)
-        pos.column = 0;
+      if (column < 0) pos.column = 0;
       return pos;
     };
     return Anchor;
-  }());
+  })();
   Anchor.prototype.$insertRight = false;
   oop.implement(Anchor.prototype, EventEmitter);
 
   function $pointsInOrder(point1, point2, equalPointsInOrder) {
-    var bColIsAfter = equalPointsInOrder ? point1.column <= point2.column : point1.column < point2.column;
-    return (point1.row < point2.row) || (point1.row == point2.row && bColIsAfter);
+    var bColIsAfter = equalPointsInOrder
+      ? point1.column <= point2.column
+      : point1.column < point2.column;
+    return point1.row < point2.row || (point1.row == point2.row && bColIsAfter);
   }
 
   function $getTransformedPoint(delta, point, moveIfEqual) {
     var deltaIsInsert = delta.action == "insert";
-    var deltaRowShift = (deltaIsInsert ? 1 : -1) * (delta.end.row - delta.start.row);
-    var deltaColShift = (deltaIsInsert ? 1 : -1) * (delta.end.column - delta.start.column);
+    var deltaRowShift =
+      (deltaIsInsert ? 1 : -1) * (delta.end.row - delta.start.row);
+    var deltaColShift =
+      (deltaIsInsert ? 1 : -1) * (delta.end.column - delta.start.column);
     var deltaStart = delta.start;
     var deltaEnd = deltaIsInsert ? deltaStart : delta.end; // Collapse insert range.
     if ($pointsInOrder(point, deltaStart, moveIfEqual)) {
@@ -922,7 +949,6 @@ define("ace/anchor", [], function (require, exports, module) {
   }
 
   exports.Anchor = Anchor;
-
 });
 
 define("ace/document", [], function (require, exports, module) {
@@ -938,16 +964,16 @@ define("ace/document", [], function (require, exports, module) {
       if (textOrLines.length === 0) {
         this.$lines = [""];
       } else if (Array.isArray(textOrLines)) {
-        this.insertMergedLines({row: 0, column: 0}, textOrLines);
+        this.insertMergedLines({ row: 0, column: 0 }, textOrLines);
       } else {
-        this.insert({row: 0, column: 0}, textOrLines);
+        this.insert({ row: 0, column: 0 }, textOrLines);
       }
     }
 
     Document.prototype.setValue = function (text) {
       var len = this.getLength() - 1;
       this.remove(new Range(0, 0, len, this.getLine(len).length));
-      this.insert({row: 0, column: 0}, text || "");
+      this.insert({ row: 0, column: 0 }, text || "");
     };
     Document.prototype.getValue = function () {
       return this.getAllLines().join(this.getNewLineCharacter());
@@ -971,8 +997,7 @@ define("ace/document", [], function (require, exports, module) {
       }
     };
     Document.prototype.setNewLineMode = function (newLineMode) {
-      if (this.$newLineMode === newLineMode)
-        return;
+      if (this.$newLineMode === newLineMode) return;
       this.$newLineMode = newLineMode;
       this._signal("changeNewLineMode");
     };
@@ -980,7 +1005,7 @@ define("ace/document", [], function (require, exports, module) {
       return this.$newLineMode;
     };
     Document.prototype.isNewLine = function (text) {
-      return (text == "\r\n" || text == "\r" || text == "\n");
+      return text == "\r\n" || text == "\r" || text == "\n";
     };
     Document.prototype.getLine = function (row) {
       return this.$lines[row] || "";
@@ -1000,7 +1025,12 @@ define("ace/document", [], function (require, exports, module) {
     Document.prototype.getLinesForRange = function (range) {
       var lines;
       if (range.start.row === range.end.row) {
-        lines = [this.getLine(range.start.row).substring(range.start.column, range.end.column)];
+        lines = [
+          this.getLine(range.start.row).substring(
+            range.start.column,
+            range.end.column
+          )
+        ];
       } else {
         lines = this.getLines(range.start.row, range.end.row);
         lines[0] = (lines[0] || "").substring(range.start.column);
@@ -1011,31 +1041,39 @@ define("ace/document", [], function (require, exports, module) {
       return lines;
     };
     Document.prototype.insertLines = function (row, lines) {
-      console.warn("Use of document.insertLines is deprecated. Use the insertFullLines method instead.");
+      console.warn(
+        "Use of document.insertLines is deprecated. Use the insertFullLines method instead."
+      );
       return this.insertFullLines(row, lines);
     };
     Document.prototype.removeLines = function (firstRow, lastRow) {
-      console.warn("Use of document.removeLines is deprecated. Use the removeFullLines method instead.");
+      console.warn(
+        "Use of document.removeLines is deprecated. Use the removeFullLines method instead."
+      );
       return this.removeFullLines(firstRow, lastRow);
     };
     Document.prototype.insertNewLine = function (position) {
-      console.warn("Use of document.insertNewLine is deprecated. Use insertMergedLines(position, ['', '']) instead.");
+      console.warn(
+        "Use of document.insertNewLine is deprecated. Use insertMergedLines(position, ['', '']) instead."
+      );
       return this.insertMergedLines(position, ["", ""]);
     };
     Document.prototype.insert = function (position, text) {
-      if (this.getLength() <= 1)
-        this.$detectNewLine(text);
+      if (this.getLength() <= 1) this.$detectNewLine(text);
       return this.insertMergedLines(position, this.$split(text));
     };
     Document.prototype.insertInLine = function (position, text) {
       var start = this.clippedPos(position.row, position.column);
       var end = this.pos(position.row, position.column + text.length);
-      this.applyDelta({
-        start: start,
-        end: end,
-        action: "insert",
-        lines: [text]
-      }, true);
+      this.applyDelta(
+        {
+          start: start,
+          end: end,
+          action: "insert",
+          lines: [text]
+        },
+        true
+      );
       return this.clonePos(end);
     };
     Document.prototype.clippedPos = function (row, column) {
@@ -1049,16 +1087,15 @@ define("ace/document", [], function (require, exports, module) {
         column = undefined;
       }
       var line = this.getLine(row);
-      if (column == undefined)
-        column = line.length;
+      if (column == undefined) column = line.length;
       column = Math.min(Math.max(column, 0), line.length);
-      return {row: row, column: column};
+      return { row: row, column: column };
     };
     Document.prototype.clonePos = function (pos) {
-      return {row: pos.row, column: pos.column};
+      return { row: pos.row, column: pos.column };
     };
     Document.prototype.pos = function (row, column) {
-      return {row: row, column: column};
+      return { row: row, column: column };
     };
     Document.prototype.$clipPosition = function (position) {
       var length = this.getLength();
@@ -1067,7 +1104,10 @@ define("ace/document", [], function (require, exports, module) {
         position.column = this.getLine(length - 1).length;
       } else {
         position.row = Math.max(0, position.row);
-        position.column = Math.min(Math.max(position.column, 0), this.getLine(position.row).length);
+        position.column = Math.min(
+          Math.max(position.column, 0),
+          this.getLine(position.row).length
+        );
       }
       return position;
     };
@@ -1082,13 +1122,15 @@ define("ace/document", [], function (require, exports, module) {
         row--;
         column = this.$lines[row].length;
       }
-      this.insertMergedLines({row: row, column: column}, lines);
+      this.insertMergedLines({ row: row, column: column }, lines);
     };
     Document.prototype.insertMergedLines = function (position, lines) {
       var start = this.clippedPos(position.row, position.column);
       var end = {
         row: start.row + lines.length - 1,
-        column: (lines.length == 1 ? start.column : 0) + lines[lines.length - 1].length
+        column:
+          (lines.length == 1 ? start.column : 0) +
+          lines[lines.length - 1].length
       };
       this.applyDelta({
         start: start,
@@ -1105,19 +1147,22 @@ define("ace/document", [], function (require, exports, module) {
         start: start,
         end: end,
         action: "remove",
-        lines: this.getLinesForRange({start: start, end: end})
+        lines: this.getLinesForRange({ start: start, end: end })
       });
       return this.clonePos(start);
     };
     Document.prototype.removeInLine = function (row, startColumn, endColumn) {
       var start = this.clippedPos(row, startColumn);
       var end = this.clippedPos(row, endColumn);
-      this.applyDelta({
-        start: start,
-        end: end,
-        action: "remove",
-        lines: this.getLinesForRange({start: start, end: end})
-      }, true);
+      this.applyDelta(
+        {
+          start: start,
+          end: end,
+          action: "remove",
+          lines: this.getLinesForRange({ start: start, end: end })
+        },
+        true
+      );
       return this.clonePos(start);
     };
     Document.prototype.removeFullLines = function (firstRow, lastRow) {
@@ -1125,10 +1170,10 @@ define("ace/document", [], function (require, exports, module) {
       lastRow = Math.min(Math.max(0, lastRow), this.getLength() - 1);
       var deleteFirstNewLine = lastRow == this.getLength() - 1 && firstRow > 0;
       var deleteLastNewLine = lastRow < this.getLength() - 1;
-      var startRow = (deleteFirstNewLine ? firstRow - 1 : firstRow);
-      var startCol = (deleteFirstNewLine ? this.getLine(startRow).length : 0);
-      var endRow = (deleteLastNewLine ? lastRow + 1 : lastRow);
-      var endCol = (deleteLastNewLine ? 0 : this.getLine(endRow).length);
+      var startRow = deleteFirstNewLine ? firstRow - 1 : firstRow;
+      var startCol = deleteFirstNewLine ? this.getLine(startRow).length : 0;
+      var endRow = deleteLastNewLine ? lastRow + 1 : lastRow;
+      var endCol = deleteLastNewLine ? 0 : this.getLine(endRow).length;
       var range = new Range(startRow, startCol, endRow, endCol);
       var deletedLines = this.$lines.slice(firstRow, lastRow + 1);
       this.applyDelta({
@@ -1152,10 +1197,8 @@ define("ace/document", [], function (require, exports, module) {
     Document.prototype.replace = function (range, text) {
       if (!(range instanceof Range))
         range = Range.fromPoints(range.start, range.end);
-      if (text.length === 0 && range.isEmpty())
-        return range.start;
-      if (text == this.getTextRange(range))
-        return range.end;
+      if (text.length === 0 && range.isEmpty()) return range.start;
+      if (text == this.getTextRange(range)) return range.end;
       this.remove(range);
       var end;
       if (text) {
@@ -1177,8 +1220,11 @@ define("ace/document", [], function (require, exports, module) {
     };
     Document.prototype.applyDelta = function (delta, doNotValidate) {
       var isInsert = delta.action == "insert";
-      if (isInsert ? delta.lines.length <= 1 && !delta.lines[0]
-        : !Range.comparePoints(delta.start, delta.end)) {
+      if (
+        isInsert
+          ? delta.lines.length <= 1 && !delta.lines[0]
+          : !Range.comparePoints(delta.start, delta.end)
+      ) {
         return;
       }
       if (isInsert && delta.lines.length > 20000) {
@@ -1190,8 +1236,12 @@ define("ace/document", [], function (require, exports, module) {
     };
     Document.prototype.$safeApplyDelta = function (delta) {
       var docLength = this.$lines.length;
-      if (delta.action == "remove" && delta.start.row < docLength && delta.end.row < docLength
-        || delta.action == "insert" && delta.start.row <= docLength) {
+      if (
+        (delta.action == "remove" &&
+          delta.start.row < docLength &&
+          delta.end.row < docLength) ||
+        (delta.action == "insert" && delta.start.row <= docLength)
+      ) {
         this.applyDelta(delta);
       }
     };
@@ -1204,12 +1254,15 @@ define("ace/document", [], function (require, exports, module) {
         to += MAX - 1;
         var chunk = lines.slice(from, to);
         chunk.push("");
-        this.applyDelta({
-          start: this.pos(row + from, column),
-          end: this.pos(row + to, column = 0),
-          action: delta.action,
-          lines: chunk
-        }, true);
+        this.applyDelta(
+          {
+            start: this.pos(row + from, column),
+            end: this.pos(row + to, (column = 0)),
+            action: delta.action,
+            lines: chunk
+          },
+          true
+        );
       }
       delta.lines = lines.slice(from);
       delta.start.row = row + from;
@@ -1220,7 +1273,7 @@ define("ace/document", [], function (require, exports, module) {
       this.$safeApplyDelta({
         start: this.clonePos(delta.start),
         end: this.clonePos(delta.end),
-        action: (delta.action == "insert" ? "remove" : "insert"),
+        action: delta.action == "insert" ? "remove" : "insert",
         lines: delta.lines.slice()
       });
     };
@@ -1230,9 +1283,12 @@ define("ace/document", [], function (require, exports, module) {
       for (var i = startRow || 0, l = lines.length; i < l; i++) {
         index -= lines[i].length + newlineLength;
         if (index < 0)
-          return {row: i, column: index + lines[i].length + newlineLength};
+          return { row: i, column: index + lines[i].length + newlineLength };
       }
-      return {row: l - 1, column: index + lines[l - 1].length + newlineLength};
+      return {
+        row: l - 1,
+        column: index + lines[l - 1].length + newlineLength
+      };
     };
     Document.prototype.positionToIndex = function (pos, startRow) {
       var lines = this.$lines || this.getAllLines();
@@ -1247,12 +1303,11 @@ define("ace/document", [], function (require, exports, module) {
       return text.split(/\r\n|\r|\n/);
     };
     return Document;
-  }());
+  })();
   Document.prototype.$autoNewLine = "";
   Document.prototype.$newLineMode = "auto";
   oop.implement(Document.prototype, EventEmitter);
   exports.Document = Document;
-
 });
 
 define("ace/worker/mirror", [], function (require, exports, module) {
@@ -1261,11 +1316,13 @@ define("ace/worker/mirror", [], function (require, exports, module) {
   var Document = require("../document").Document;
   var lang = require("../lib/lang");
 
-  var Mirror = exports.Mirror = function (sender) {
+  var Mirror = (exports.Mirror = function (sender) {
     this.sender = sender;
-    var doc = this.doc = new Document("");
+    var doc = (this.doc = new Document(""));
 
-    var deferredUpdate = this.deferredUpdate = lang.delayedCall(this.onUpdate.bind(this));
+    var deferredUpdate = (this.deferredUpdate = lang.delayedCall(
+      this.onUpdate.bind(this)
+    ));
 
     var _self = this;
     sender.on("change", function (e) {
@@ -1276,12 +1333,14 @@ define("ace/worker/mirror", [], function (require, exports, module) {
         for (var i = 0; i < data.length; i += 2) {
           var d, err;
           if (Array.isArray(data[i + 1])) {
-            d = {action: "insert", start: data[i], lines: data[i + 1]};
+            d = { action: "insert", start: data[i], lines: data[i + 1] };
           } else {
-            d = {action: "remove", start: data[i], end: data[i + 1]};
+            d = { action: "remove", start: data[i], end: data[i + 1] };
           }
 
-          if ((d.action == "insert" ? d.start : d.end).row >= doc.$lines.length) {
+          if (
+            (d.action == "insert" ? d.start : d.end).row >= doc.$lines.length
+          ) {
             err = new Error("Invalid delta");
             err.data = {
               path: _self.$path,
@@ -1295,14 +1354,12 @@ define("ace/worker/mirror", [], function (require, exports, module) {
           doc.applyDelta(d, true);
         }
       }
-      if (_self.$timeout)
-        return deferredUpdate.schedule(_self.$timeout);
+      if (_self.$timeout) return deferredUpdate.schedule(_self.$timeout);
       _self.onUpdate();
     });
-  };
+  });
 
   (function () {
-
     this.$timeout = 500;
 
     this.setTimeout = function (timeout) {
@@ -1318,51 +1375,64 @@ define("ace/worker/mirror", [], function (require, exports, module) {
       this.sender.callback(this.doc.getValue(), callbackId);
     };
 
-    this.onUpdate = function () {
-    };
+    this.onUpdate = function () {};
 
     this.isPending = function () {
       return this.deferredUpdate.isPending();
     };
-
   }).call(Mirror.prototype);
-
 });
 
 define("ace/mode/xml/sax", [], function (require, exports, module) {
-  var nameStartChar = /[A-Z_a-z\xC0-\xD6\xD8-\xF6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD]///\u10000-\uEFFFF
-  var nameChar = new RegExp("[\\-\\.0-9" + nameStartChar.source.slice(1, -1) + "\u00B7\u0300-\u036F\\ux203F-\u2040]");
-  var tagNamePattern = new RegExp('^' + nameStartChar.source + nameChar.source + '*(?:\:' + nameStartChar.source + nameChar.source + '*)?$');
-  var S_TAG = 0;//tag name offerring
-  var S_ATTR = 1;//attr name offerring
-  var S_ATTR_S = 2;//attr name end and space offer
-  var S_EQ = 3;//=space?
-  var S_V = 4;//attr value(no quot value only)
-  var S_E = 5;//attr value end and no space(quot end)
-  var S_S = 6;//(attr value end || tag end ) && (space offer)
-  var S_C = 7;//closed el<el />
+  var nameStartChar =
+    /[A-Z_a-z\xC0-\xD6\xD8-\xF6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD]/; //\u10000-\uEFFFF
+  var nameChar = new RegExp(
+    "[\\-\\.0-9" +
+      nameStartChar.source.slice(1, -1) +
+      "\u00B7\u0300-\u036F\\ux203F-\u2040]"
+  );
+  var tagNamePattern = new RegExp(
+    "^" +
+      nameStartChar.source +
+      nameChar.source +
+      "*(?:\:" +
+      nameStartChar.source +
+      nameChar.source +
+      "*)?$"
+  );
+  var S_TAG = 0; //tag name offerring
+  var S_ATTR = 1; //attr name offerring
+  var S_ATTR_S = 2; //attr name end and space offer
+  var S_EQ = 3; //=space?
+  var S_V = 4; //attr value(no quot value only)
+  var S_E = 5; //attr value end and no space(quot end)
+  var S_S = 6; //(attr value end || tag end ) && (space offer)
+  var S_C = 7; //closed el<el />
 
-  function XMLReader() {
-
-  }
+  function XMLReader() {}
 
   XMLReader.prototype = {
     parse: function (source, defaultNSMap, entityMap) {
       var domBuilder = this.domBuilder;
       domBuilder.startDocument();
-      _copy(defaultNSMap, defaultNSMap = {})
-      parse(source, defaultNSMap, entityMap,
-        domBuilder, this.errorHandler);
+      _copy(defaultNSMap, (defaultNSMap = {}));
+      parse(source, defaultNSMap, entityMap, domBuilder, this.errorHandler);
       domBuilder.endDocument();
     }
-  }
+  };
 
-  function parse(source, defaultNSMapCopy, entityMap, domBuilder, errorHandler) {
+  function parse(
+    source,
+    defaultNSMapCopy,
+    entityMap,
+    domBuilder,
+    errorHandler
+  ) {
     function fixedFromCharCode(code) {
       if (code > 0xffff) {
         code -= 0x10000;
-        var surrogate1 = 0xd800 + (code >> 10)
-          , surrogate2 = 0xdc00 + (code & 0x3ff);
+        var surrogate1 = 0xd800 + (code >> 10),
+          surrogate2 = 0xdc00 + (code & 0x3ff);
 
         return String.fromCharCode(surrogate1, surrogate2);
       } else {
@@ -1374,19 +1444,20 @@ define("ace/mode/xml/sax", [], function (require, exports, module) {
       var k = a.slice(1, -1);
       if (k in entityMap) {
         return entityMap[k];
-      } else if (k.charAt(0) === '#') {
-        return fixedFromCharCode(parseInt(k.substr(1).replace('x', '0x')))
+      } else if (k.charAt(0) === "#") {
+        return fixedFromCharCode(parseInt(k.substr(1).replace("x", "0x")));
       } else {
-        errorHandler.error('entity not found:' + a);
+        errorHandler.error("entity not found:" + a);
         return a;
       }
     }
 
-    function appendText(end) {//has some bugs
+    function appendText(end) {
+      //has some bugs
       var xt = source.substring(start, end).replace(/&#?\w+;/g, entityReplacer);
       locator && position(start);
       domBuilder.characters(xt, 0, end - start);
-      start = end
+      start = end;
     }
 
     function position(start, m) {
@@ -1400,14 +1471,14 @@ define("ace/mode/xml/sax", [], function (require, exports, module) {
 
     var startPos = 0;
     var endPos = 0;
-    var linePattern = /.+(?:\r\n?|\n)|.*$/g
+    var linePattern = /.+(?:\r\n?|\n)|.*$/g;
     var locator = domBuilder.locator;
 
-    var parseStack = [{currentNSMap: defaultNSMapCopy}]
+    var parseStack = [{ currentNSMap: defaultNSMapCopy }];
     var closeMap = {};
     var start = 0;
     while (true) {
-      var i = source.indexOf('<', start);
+      var i = source.indexOf("<", start);
       if (i < 0) {
         if (!source.substr(start).match(/^\s*$/)) {
           var doc = domBuilder.document;
@@ -1421,8 +1492,8 @@ define("ace/mode/xml/sax", [], function (require, exports, module) {
         appendText(i);
       }
       switch (source.charAt(i + 1)) {
-        case '/':
-          var end = source.indexOf('>', i + 3);
+        case "/":
+          var end = source.indexOf(">", i + 3);
           var tagName = source.substring(i + 2, end);
           var config;
           if (parseStack.length > 1) {
@@ -1434,7 +1505,12 @@ define("ace/mode/xml/sax", [], function (require, exports, module) {
           var localNSMap = config.localNSMap;
 
           if (config.tagName != tagName) {
-            errorHandler.fatalError("end tag name: " + tagName + " does not match the current start tagName: " + config.tagName);
+            errorHandler.fatalError(
+              "end tag name: " +
+                tagName +
+                " does not match the current start tagName: " +
+                config.tagName
+            );
           }
           domBuilder.endElement(config.uri, config.localName, tagName);
           if (localNSMap) {
@@ -1444,11 +1520,11 @@ define("ace/mode/xml/sax", [], function (require, exports, module) {
           }
           end++;
           break;
-        case '?':// <?...?>
+        case "?": // <?...?>
           locator && position(i);
           end = parseInstruction(source, i, domBuilder);
           break;
-        case '!':// <!doctype,<![CDATA,<!--
+        case "!": // <!doctype,<![CDATA,<!--
           locator && position(i);
           end = parseDCC(source, i, domBuilder, errorHandler);
           break;
@@ -1457,7 +1533,13 @@ define("ace/mode/xml/sax", [], function (require, exports, module) {
             locator && position(i);
 
             var el = new ElementAttributes();
-            var end = parseElementStartPart(source, i, el, entityReplacer, errorHandler);
+            var end = parseElementStartPart(
+              source,
+              i,
+              el,
+              entityReplacer,
+              errorHandler
+            );
             var len = el.length;
             if (len && locator) {
               var backup = copyLocator(locator, {});
@@ -1468,25 +1550,32 @@ define("ace/mode/xml/sax", [], function (require, exports, module) {
               }
               copyLocator(backup, locator);
             }
-            if (!el.closed && fixSelfClosed(source, end, el.tagName, closeMap)) {
+            if (
+              !el.closed &&
+              fixSelfClosed(source, end, el.tagName, closeMap)
+            ) {
               el.closed = true;
               if (!entityMap.nbsp) {
-                errorHandler.warning('unclosed xml attribute');
+                errorHandler.warning("unclosed xml attribute");
               }
             }
             appendElement(el, domBuilder, parseStack, errorHandler);
 
-
-            if (el.uri === 'http://www.w3.org/1999/xhtml' && !el.closed) {
-              end = parseHtmlSpecialContent(source, end, el.tagName, entityReplacer, domBuilder)
+            if (el.uri === "http://www.w3.org/1999/xhtml" && !el.closed) {
+              end = parseHtmlSpecialContent(
+                source,
+                end,
+                el.tagName,
+                entityReplacer,
+                domBuilder
+              );
             } else {
               end++;
             }
           } catch (e) {
-            errorHandler.error('element parse error: ' + e);
+            errorHandler.error("element parse error: " + e);
             end = -1;
           }
-
       }
       if (end < 0) {
         appendText(i + 1);
@@ -1500,50 +1589,61 @@ define("ace/mode/xml/sax", [], function (require, exports, module) {
     t.lineNumber = f.lineNumber;
     t.columnNumber = f.columnNumber;
     return t;
-
   }
 
-  function parseElementStartPart(source, start, el, entityReplacer, errorHandler) {
+  function parseElementStartPart(
+    source,
+    start,
+    el,
+    entityReplacer,
+    errorHandler
+  ) {
     var attrName;
     var value;
     var p = ++start;
-    var s = S_TAG;//status
+    var s = S_TAG; //status
     while (true) {
       var c = source.charAt(p);
       switch (c) {
-        case '=':
-          if (s === S_ATTR) {//attrName
+        case "=":
+          if (s === S_ATTR) {
+            //attrName
             attrName = source.slice(start, p);
             s = S_EQ;
           } else if (s === S_ATTR_S) {
             s = S_EQ;
           } else {
-            throw new Error('attribute equal must after attrName');
+            throw new Error("attribute equal must after attrName");
           }
           break;
-        case '\'':
+        case "'":
         case '"':
-          if (s === S_EQ) {//equal
+          if (s === S_EQ) {
+            //equal
             start = p + 1;
-            p = source.indexOf(c, start)
+            p = source.indexOf(c, start);
             if (p > 0) {
-              value = source.slice(start, p).replace(/&#?\w+;/g, entityReplacer);
+              value = source
+                .slice(start, p)
+                .replace(/&#?\w+;/g, entityReplacer);
               el.add(attrName, value, start - 1);
               s = S_E;
             } else {
-              throw new Error('attribute value no end \'' + c + '\' match');
+              throw new Error("attribute value no end '" + c + "' match");
             }
           } else if (s == S_V) {
             value = source.slice(start, p).replace(/&#?\w+;/g, entityReplacer);
             el.add(attrName, value, start);
-            errorHandler.warning('attribute "' + attrName + '" missed start quot(' + c + ')!!');
+            errorHandler.warning(
+              'attribute "' + attrName + '" missed start quot(' + c + ")!!"
+            );
             start = p + 1;
-            s = S_E
+            s = S_E;
           } else {
             throw new Error('attribute value must after "="');
           }
           break;
-        case '/':
+        case "/":
           switch (s) {
             case S_TAG:
               el.setTagName(source.slice(start, p));
@@ -1557,73 +1657,99 @@ define("ace/mode/xml/sax", [], function (require, exports, module) {
             case S_ATTR_S:
               break;
             default:
-              throw new Error("attribute invalid close char('/')")
+              throw new Error("attribute invalid close char('/')");
           }
           break;
-        case ''://end document
-          errorHandler.error('unexpected end of input');
-        case '>':
+        case "": //end document
+          errorHandler.error("unexpected end of input");
+        case ">":
           switch (s) {
             case S_TAG:
               el.setTagName(source.slice(start, p));
             case S_E:
             case S_S:
             case S_C:
-              break;//normal
-            case S_V://Compatible state
+              break; //normal
+            case S_V: //Compatible state
             case S_ATTR:
               value = source.slice(start, p);
-              if (value.slice(-1) === '/') {
+              if (value.slice(-1) === "/") {
                 el.closed = true;
-                value = value.slice(0, -1)
+                value = value.slice(0, -1);
               }
             case S_ATTR_S:
               if (s === S_ATTR_S) {
                 value = attrName;
               }
               if (s == S_V) {
-                errorHandler.warning('attribute "' + value + '" missed quot(")!!');
-                el.add(attrName, value.replace(/&#?\w+;/g, entityReplacer), start)
+                errorHandler.warning(
+                  'attribute "' + value + '" missed quot(")!!'
+                );
+                el.add(
+                  attrName,
+                  value.replace(/&#?\w+;/g, entityReplacer),
+                  start
+                );
               } else {
-                errorHandler.warning('attribute "' + value + '" missed value!! "' + value + '" instead!!')
-                el.add(value, value, start)
+                errorHandler.warning(
+                  'attribute "' +
+                    value +
+                    '" missed value!! "' +
+                    value +
+                    '" instead!!'
+                );
+                el.add(value, value, start);
               }
               break;
             case S_EQ:
-              throw new Error('attribute value missed!!');
+              throw new Error("attribute value missed!!");
           }
           return p;
-        case '\u0080':
-          c = ' ';
+        case "\u0080":
+          c = " ";
         default:
-          if (c <= ' ') {//space
+          if (c <= " ") {
+            //space
             switch (s) {
               case S_TAG:
-                el.setTagName(source.slice(start, p));//tagName
+                el.setTagName(source.slice(start, p)); //tagName
                 s = S_S;
                 break;
               case S_ATTR:
-                attrName = source.slice(start, p)
+                attrName = source.slice(start, p);
                 s = S_ATTR_S;
                 break;
               case S_V:
-                var value = source.slice(start, p).replace(/&#?\w+;/g, entityReplacer);
-                errorHandler.warning('attribute "' + value + '" missed quot(")!!');
-                el.add(attrName, value, start)
+                var value = source
+                  .slice(start, p)
+                  .replace(/&#?\w+;/g, entityReplacer);
+                errorHandler.warning(
+                  'attribute "' + value + '" missed quot(")!!'
+                );
+                el.add(attrName, value, start);
               case S_E:
                 s = S_S;
                 break;
             }
-          } else {//not space
+          } else {
+            //not space
             switch (s) {
               case S_ATTR_S:
-                errorHandler.warning('attribute "' + attrName + '" missed value!! "' + attrName + '" instead!!')
+                errorHandler.warning(
+                  'attribute "' +
+                    attrName +
+                    '" missed value!! "' +
+                    attrName +
+                    '" instead!!'
+                );
                 el.add(attrName, attrName, start);
                 start = p;
                 s = S_ATTR;
                 break;
               case S_E:
-                errorHandler.warning('attribute space is required"' + attrName + '"!!')
+                errorHandler.warning(
+                  'attribute space is required"' + attrName + '"!!'
+                );
               case S_S:
                 s = S_ATTR;
                 start = p;
@@ -1633,7 +1759,9 @@ define("ace/mode/xml/sax", [], function (require, exports, module) {
                 start = p;
                 break;
               case S_C:
-                throw new Error("elements closed character '/' and '>' must be connected to");
+                throw new Error(
+                  "elements closed character '/' and '>' must be connected to"
+                );
             }
           }
       }
@@ -1650,58 +1778,60 @@ define("ace/mode/xml/sax", [], function (require, exports, module) {
       var a = el[i];
       var qName = a.qName;
       var value = a.value;
-      var nsp = qName.indexOf(':');
+      var nsp = qName.indexOf(":");
       if (nsp > 0) {
-        var prefix = a.prefix = qName.slice(0, nsp);
+        var prefix = (a.prefix = qName.slice(0, nsp));
         var localName = qName.slice(nsp + 1);
-        var nsPrefix = prefix === 'xmlns' && localName
+        var nsPrefix = prefix === "xmlns" && localName;
       } else {
         localName = qName;
-        prefix = null
-        nsPrefix = qName === 'xmlns' && ''
+        prefix = null;
+        nsPrefix = qName === "xmlns" && "";
       }
       a.localName = localName;
-      if (nsPrefix !== false) {//hack!!
+      if (nsPrefix !== false) {
+        //hack!!
         if (localNSMap == null) {
-          localNSMap = {}
-          _copy(currentNSMap, currentNSMap = {})
+          localNSMap = {};
+          _copy(currentNSMap, (currentNSMap = {}));
         }
         currentNSMap[nsPrefix] = localNSMap[nsPrefix] = value;
-        a.uri = 'http://www.w3.org/2000/xmlns/'
-        domBuilder.startPrefixMapping(nsPrefix, value)
+        a.uri = "http://www.w3.org/2000/xmlns/";
+        domBuilder.startPrefixMapping(nsPrefix, value);
       }
     }
     var i = el.length;
     while (i--) {
       a = el[i];
       var prefix = a.prefix;
-      if (prefix) {//no prefix attribute has no namespace
-        if (prefix === 'xml') {
-          a.uri = 'http://www.w3.org/XML/1998/namespace';
+      if (prefix) {
+        //no prefix attribute has no namespace
+        if (prefix === "xml") {
+          a.uri = "http://www.w3.org/XML/1998/namespace";
         }
-        if (prefix !== 'xmlns') {
-          a.uri = currentNSMap[prefix]
+        if (prefix !== "xmlns") {
+          a.uri = currentNSMap[prefix];
         }
       }
     }
-    var nsp = tagName.indexOf(':');
+    var nsp = tagName.indexOf(":");
     if (nsp > 0) {
       prefix = el.prefix = tagName.slice(0, nsp);
       localName = el.localName = tagName.slice(nsp + 1);
     } else {
-      prefix = null;//important!!
+      prefix = null; //important!!
       localName = el.localName = tagName;
     }
-    var ns = el.uri = currentNSMap[prefix || ''];
+    var ns = (el.uri = currentNSMap[prefix || ""]);
     if (prefix && !ns) {
-      errorHandler.error('unexpected namespace ' + prefix);
+      errorHandler.error("unexpected namespace " + prefix);
     }
     domBuilder.startElement(ns, localName, tagName, el);
     if (el.closed) {
       domBuilder.endElement(ns, localName, tagName);
       if (localNSMap) {
         for (prefix in localNSMap) {
-          domBuilder.endPrefixMapping(prefix)
+          domBuilder.endPrefixMapping(prefix);
         }
       }
     } else {
@@ -1711,19 +1841,24 @@ define("ace/mode/xml/sax", [], function (require, exports, module) {
     }
   }
 
-  function parseHtmlSpecialContent(source, elStartEnd, tagName, entityReplacer, domBuilder) {
+  function parseHtmlSpecialContent(
+    source,
+    elStartEnd,
+    tagName,
+    entityReplacer,
+    domBuilder
+  ) {
     if (/^(?:script|textarea)$/i.test(tagName)) {
-      var elEndStart = source.indexOf('</' + tagName + '>', elStartEnd);
+      var elEndStart = source.indexOf("</" + tagName + ">", elStartEnd);
       var text = source.substring(elStartEnd + 1, elEndStart);
       if (/[&<]/.test(text)) {
         if (/^script$/i.test(tagName)) {
           domBuilder.characters(text, 0, text.length);
           return elEndStart;
-        }//}else{//text area
+        } //}else{//text area
         text = text.replace(/&#?\w+;/g, entityReplacer);
         domBuilder.characters(text, 0, text.length);
         return elEndStart;
-
       }
     }
     return elStartEnd + 1;
@@ -1732,23 +1867,24 @@ define("ace/mode/xml/sax", [], function (require, exports, module) {
   function fixSelfClosed(source, elStartEnd, tagName, closeMap) {
     var pos = closeMap[tagName];
     if (pos == null) {
-      pos = closeMap[tagName] = source.lastIndexOf('</' + tagName + '>')
+      pos = closeMap[tagName] = source.lastIndexOf("</" + tagName + ">");
     }
     return pos < elStartEnd;
   }
 
   function _copy(source, target) {
     for (var n in source) {
-      target[n] = source[n]
+      target[n] = source[n];
     }
   }
 
-  function parseDCC(source, start, domBuilder, errorHandler) {//sure start with '<!'
-    var next = source.charAt(start + 2)
+  function parseDCC(source, start, domBuilder, errorHandler) {
+    //sure start with '<!'
+    var next = source.charAt(start + 2);
     switch (next) {
-      case '-':
-        if (source.charAt(start + 3) === '-') {
-          var end = source.indexOf('-->', start + 4);
+      case "-":
+        if (source.charAt(start + 3) === "-") {
+          var end = source.indexOf("-->", start + 4);
           if (end > start) {
             domBuilder.comment(source, start + 4, end - start - 4);
             return end + 3;
@@ -1760,12 +1896,12 @@ define("ace/mode/xml/sax", [], function (require, exports, module) {
           return -1;
         }
       default:
-        if (source.substr(start + 3, 6) == 'CDATA[') {
-          var end = source.indexOf(']]>', start + 9);
+        if (source.substr(start + 3, 6) == "CDATA[") {
+          var end = source.indexOf("]]>", start + 9);
           if (end > start) {
             domBuilder.startCDATA();
             domBuilder.characters(source, start + 9, end - start - 9);
-            domBuilder.endCDATA()
+            domBuilder.endCDATA();
             return end + 3;
           } else {
             errorHandler.error("Unclosed CDATA");
@@ -1776,70 +1912,72 @@ define("ace/mode/xml/sax", [], function (require, exports, module) {
         var len = matchs.length;
         if (len > 1 && /!doctype/i.test(matchs[0][0])) {
           var name = matchs[1][0];
-          var pubid = len > 3 && /^public$/i.test(matchs[2][0]) && matchs[3][0]
+          var pubid = len > 3 && /^public$/i.test(matchs[2][0]) && matchs[3][0];
           var sysid = len > 4 && matchs[4][0];
-          var lastMatch = matchs[len - 1]
-          domBuilder.startDTD(name, pubid && pubid.replace(/^(['"])(.*?)\1$/, '$2'),
-            sysid && sysid.replace(/^(['"])(.*?)\1$/, '$2'));
+          var lastMatch = matchs[len - 1];
+          domBuilder.startDTD(
+            name,
+            pubid && pubid.replace(/^(['"])(.*?)\1$/, "$2"),
+            sysid && sysid.replace(/^(['"])(.*?)\1$/, "$2")
+          );
           domBuilder.endDTD();
 
-          return lastMatch.index + lastMatch[0].length
+          return lastMatch.index + lastMatch[0].length;
         }
     }
     return -1;
   }
 
-
   function parseInstruction(source, start, domBuilder) {
-    var end = source.indexOf('?>', start);
+    var end = source.indexOf("?>", start);
     if (end) {
-      var match = source.substring(start, end).match(/^<\?(\S*)\s*([\s\S]*?)\s*$/);
+      var match = source
+        .substring(start, end)
+        .match(/^<\?(\S*)\s*([\s\S]*?)\s*$/);
       if (match) {
         var len = match[0].length;
         domBuilder.processingInstruction(match[1], match[2]);
         return end + 2;
-      } else {//error
+      } else {
+        //error
         return -1;
       }
     }
     return -1;
   }
 
-  function ElementAttributes(source) {
-
-  }
+  function ElementAttributes(source) {}
 
   ElementAttributes.prototype = {
     setTagName: function (tagName) {
       if (!tagNamePattern.test(tagName)) {
-        throw new Error('invalid tagName:' + tagName)
+        throw new Error("invalid tagName:" + tagName);
       }
-      this.tagName = tagName
+      this.tagName = tagName;
     },
     add: function (qName, value, offset) {
       if (!tagNamePattern.test(qName)) {
-        throw new Error('invalid attribute:' + qName)
+        throw new Error("invalid attribute:" + qName);
       }
-      this[this.length++] = {qName: qName, value: value, offset: offset}
+      this[this.length++] = { qName: qName, value: value, offset: offset };
     },
     length: 0,
     getLocalName: function (i) {
-      return this[i].localName
+      return this[i].localName;
     },
     getOffset: function (i) {
-      return this[i].offset
+      return this[i].offset;
     },
     getQName: function (i) {
-      return this[i].qName
+      return this[i].qName;
     },
     getURI: function (i) {
-      return this[i].uri
+      return this[i].uri;
     },
     getValue: function (i) {
-      return this[i].value
+      return this[i].value;
     }
-  }
-
+  };
 
   function _set_proto_(thiz, parent) {
     thiz.__proto__ = parent;
@@ -1848,15 +1986,14 @@ define("ace/mode/xml/sax", [], function (require, exports, module) {
 
   if (!(_set_proto_({}, _set_proto_.prototype) instanceof _set_proto_)) {
     _set_proto_ = function (thiz, parent) {
-      function p() {
-      }
+      function p() {}
       p.prototype = parent;
       p = new p();
       for (parent in thiz) {
         p[parent] = thiz[parent];
       }
       return p;
-    }
+    };
   }
 
   function split(source, start) {
@@ -1864,8 +2001,8 @@ define("ace/mode/xml/sax", [], function (require, exports, module) {
     var buf = [];
     var reg = /'[^']+'|"[^"]+"|[^\s<>\/=]+=?|(\/?\s*>|<)/g;
     reg.lastIndex = start;
-    reg.exec(source);//skip <
-    while (match = reg.exec(source)) {
+    reg.exec(source); //skip <
+    while ((match = reg.exec(source))) {
       buf.push(match);
       if (match[1]) return buf;
     }
@@ -1875,7 +2012,6 @@ define("ace/mode/xml/sax", [], function (require, exports, module) {
 });
 
 define("ace/mode/xml/dom", [], function (require, exports, module) {
-
   function copy(src, dest) {
     for (var p in src) {
       dest[p] = src[p];
@@ -1883,8 +2019,7 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
   }
 
   function _extends(Class, Super) {
-    var t = function () {
-    };
+    var t = function () {};
     var pt = Class.prototype;
     if (Object.create) {
       var ppt = Object.create(Super.prototype);
@@ -1897,45 +2032,59 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
       Class.prototype = pt = t;
     }
     if (pt.constructor != Class) {
-      if (typeof Class != 'function') {
+      if (typeof Class != "function") {
         console.error("unknown Class:" + Class);
       }
       pt.constructor = Class;
     }
   }
 
-  var htmlns = 'http://www.w3.org/1999/xhtml';
+  var htmlns = "http://www.w3.org/1999/xhtml";
   var NodeType = {};
-  var ELEMENT_NODE = NodeType.ELEMENT_NODE = 1;
-  var ATTRIBUTE_NODE = NodeType.ATTRIBUTE_NODE = 2;
-  var TEXT_NODE = NodeType.TEXT_NODE = 3;
-  var CDATA_SECTION_NODE = NodeType.CDATA_SECTION_NODE = 4;
-  var ENTITY_REFERENCE_NODE = NodeType.ENTITY_REFERENCE_NODE = 5;
-  var ENTITY_NODE = NodeType.ENTITY_NODE = 6;
-  var PROCESSING_INSTRUCTION_NODE = NodeType.PROCESSING_INSTRUCTION_NODE = 7;
-  var COMMENT_NODE = NodeType.COMMENT_NODE = 8;
-  var DOCUMENT_NODE = NodeType.DOCUMENT_NODE = 9;
-  var DOCUMENT_TYPE_NODE = NodeType.DOCUMENT_TYPE_NODE = 10;
-  var DOCUMENT_FRAGMENT_NODE = NodeType.DOCUMENT_FRAGMENT_NODE = 11;
-  var NOTATION_NODE = NodeType.NOTATION_NODE = 12;
+  var ELEMENT_NODE = (NodeType.ELEMENT_NODE = 1);
+  var ATTRIBUTE_NODE = (NodeType.ATTRIBUTE_NODE = 2);
+  var TEXT_NODE = (NodeType.TEXT_NODE = 3);
+  var CDATA_SECTION_NODE = (NodeType.CDATA_SECTION_NODE = 4);
+  var ENTITY_REFERENCE_NODE = (NodeType.ENTITY_REFERENCE_NODE = 5);
+  var ENTITY_NODE = (NodeType.ENTITY_NODE = 6);
+  var PROCESSING_INSTRUCTION_NODE = (NodeType.PROCESSING_INSTRUCTION_NODE = 7);
+  var COMMENT_NODE = (NodeType.COMMENT_NODE = 8);
+  var DOCUMENT_NODE = (NodeType.DOCUMENT_NODE = 9);
+  var DOCUMENT_TYPE_NODE = (NodeType.DOCUMENT_TYPE_NODE = 10);
+  var DOCUMENT_FRAGMENT_NODE = (NodeType.DOCUMENT_FRAGMENT_NODE = 11);
+  var NOTATION_NODE = (NodeType.NOTATION_NODE = 12);
   var ExceptionCode = {};
   var ExceptionMessage = {};
-  var INDEX_SIZE_ERR = ExceptionCode.INDEX_SIZE_ERR = ((ExceptionMessage[1] = "Index size error"), 1);
-  var DOMSTRING_SIZE_ERR = ExceptionCode.DOMSTRING_SIZE_ERR = ((ExceptionMessage[2] = "DOMString size error"), 2);
-  var HIERARCHY_REQUEST_ERR = ExceptionCode.HIERARCHY_REQUEST_ERR = ((ExceptionMessage[3] = "Hierarchy request error"), 3);
-  var WRONG_DOCUMENT_ERR = ExceptionCode.WRONG_DOCUMENT_ERR = ((ExceptionMessage[4] = "Wrong document"), 4);
-  var INVALID_CHARACTER_ERR = ExceptionCode.INVALID_CHARACTER_ERR = ((ExceptionMessage[5] = "Invalid character"), 5);
-  var NO_DATA_ALLOWED_ERR = ExceptionCode.NO_DATA_ALLOWED_ERR = ((ExceptionMessage[6] = "No data allowed"), 6);
-  var NO_MODIFICATION_ALLOWED_ERR = ExceptionCode.NO_MODIFICATION_ALLOWED_ERR = ((ExceptionMessage[7] = "No modification allowed"), 7);
-  var NOT_FOUND_ERR = ExceptionCode.NOT_FOUND_ERR = ((ExceptionMessage[8] = "Not found"), 8);
-  var NOT_SUPPORTED_ERR = ExceptionCode.NOT_SUPPORTED_ERR = ((ExceptionMessage[9] = "Not supported"), 9);
-  var INUSE_ATTRIBUTE_ERR = ExceptionCode.INUSE_ATTRIBUTE_ERR = ((ExceptionMessage[10] = "Attribute in use"), 10);
-  var INVALID_STATE_ERR = ExceptionCode.INVALID_STATE_ERR = ((ExceptionMessage[11] = "Invalid state"), 11);
-  var SYNTAX_ERR = ExceptionCode.SYNTAX_ERR = ((ExceptionMessage[12] = "Syntax error"), 12);
-  var INVALID_MODIFICATION_ERR = ExceptionCode.INVALID_MODIFICATION_ERR = ((ExceptionMessage[13] = "Invalid modification"), 13);
-  var NAMESPACE_ERR = ExceptionCode.NAMESPACE_ERR = ((ExceptionMessage[14] = "Invalid namespace"), 14);
-  var INVALID_ACCESS_ERR = ExceptionCode.INVALID_ACCESS_ERR = ((ExceptionMessage[15] = "Invalid access"), 15);
-
+  var INDEX_SIZE_ERR = (ExceptionCode.INDEX_SIZE_ERR =
+    ((ExceptionMessage[1] = "Index size error"), 1));
+  var DOMSTRING_SIZE_ERR = (ExceptionCode.DOMSTRING_SIZE_ERR =
+    ((ExceptionMessage[2] = "DOMString size error"), 2));
+  var HIERARCHY_REQUEST_ERR = (ExceptionCode.HIERARCHY_REQUEST_ERR =
+    ((ExceptionMessage[3] = "Hierarchy request error"), 3));
+  var WRONG_DOCUMENT_ERR = (ExceptionCode.WRONG_DOCUMENT_ERR =
+    ((ExceptionMessage[4] = "Wrong document"), 4));
+  var INVALID_CHARACTER_ERR = (ExceptionCode.INVALID_CHARACTER_ERR =
+    ((ExceptionMessage[5] = "Invalid character"), 5));
+  var NO_DATA_ALLOWED_ERR = (ExceptionCode.NO_DATA_ALLOWED_ERR =
+    ((ExceptionMessage[6] = "No data allowed"), 6));
+  var NO_MODIFICATION_ALLOWED_ERR = (ExceptionCode.NO_MODIFICATION_ALLOWED_ERR =
+    ((ExceptionMessage[7] = "No modification allowed"), 7));
+  var NOT_FOUND_ERR = (ExceptionCode.NOT_FOUND_ERR =
+    ((ExceptionMessage[8] = "Not found"), 8));
+  var NOT_SUPPORTED_ERR = (ExceptionCode.NOT_SUPPORTED_ERR =
+    ((ExceptionMessage[9] = "Not supported"), 9));
+  var INUSE_ATTRIBUTE_ERR = (ExceptionCode.INUSE_ATTRIBUTE_ERR =
+    ((ExceptionMessage[10] = "Attribute in use"), 10));
+  var INVALID_STATE_ERR = (ExceptionCode.INVALID_STATE_ERR =
+    ((ExceptionMessage[11] = "Invalid state"), 11));
+  var SYNTAX_ERR = (ExceptionCode.SYNTAX_ERR =
+    ((ExceptionMessage[12] = "Syntax error"), 12));
+  var INVALID_MODIFICATION_ERR = (ExceptionCode.INVALID_MODIFICATION_ERR =
+    ((ExceptionMessage[13] = "Invalid modification"), 13));
+  var NAMESPACE_ERR = (ExceptionCode.NAMESPACE_ERR =
+    ((ExceptionMessage[14] = "Invalid namespace"), 14));
+  var INVALID_ACCESS_ERR = (ExceptionCode.INVALID_ACCESS_ERR =
+    ((ExceptionMessage[15] = "Invalid access"), 15));
 
   function DOMException(code, message) {
     if (message instanceof Error) {
@@ -1951,10 +2100,9 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
     return error;
   }
   DOMException.prototype = Error.prototype;
-  copy(ExceptionCode, DOMException)
+  copy(ExceptionCode, DOMException);
 
-  function NodeList() {
-  }
+  function NodeList() {}
   NodeList.prototype = {
     length: 0,
     item: function (index) {
@@ -1972,7 +2120,7 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
     var inc = list._node._inc || list._node.ownerDocument._inc;
     if (list._inc != inc) {
       var ls = list._refresh(list._node);
-      __set__(list, 'length', ls.length);
+      __set__(list, "length", ls.length);
       copy(ls, list);
       list._inc = inc;
     }
@@ -1981,18 +2129,17 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
   LiveNodeList.prototype.item = function (i) {
     _updateLiveList(this);
     return this[i];
-  }
+  };
 
   _extends(LiveNodeList, NodeList);
 
-  function NamedNodeMap() {
-  }
+  function NamedNodeMap() {}
 
   function _findNodeIndex(list, node) {
     var i = list.length;
     while (i--) {
       if (list[i] === node) {
-        return i
+        return i;
       }
     }
   }
@@ -2054,8 +2201,10 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
       _addNamedNode(this._ownerElement, this, attr, oldAttr);
       return oldAttr;
     },
-    setNamedItemNS: function (attr) {// raises: WRONG_DOCUMENT_ERR,NO_MODIFICATION_ALLOWED_ERR,INUSE_ATTRIBUTE_ERR
-      var el = attr.ownerElement, oldAttr;
+    setNamedItemNS: function (attr) {
+      // raises: WRONG_DOCUMENT_ERR,NO_MODIFICATION_ALLOWED_ERR,INUSE_ATTRIBUTE_ERR
+      var el = attr.ownerElement,
+        oldAttr;
       if (el && el != this._ownerElement) {
         throw new DOMException(INUSE_ATTRIBUTE_ERR);
       }
@@ -2067,9 +2216,7 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
       var attr = this.getNamedItem(key);
       _removeNamedNode(this._ownerElement, this, attr);
       return attr;
-
-
-    },// raises: NOT_FOUND_ERR,NO_MODIFICATION_ALLOWED_ERR
+    }, // raises: NOT_FOUND_ERR,NO_MODIFICATION_ALLOWED_ERR
     removeNamedItemNS: function (namespaceURI, localName) {
       var attr = this.getNamedItemNS(namespaceURI, localName);
       _removeNamedNode(this._ownerElement, this, attr);
@@ -2105,7 +2252,8 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
         return false;
       }
     },
-    createDocument: function (namespaceURI, qualifiedName, doctype) {// raises:INVALID_CHARACTER_ERR,NAMESPACE_ERR,WRONG_DOCUMENT_ERR
+    createDocument: function (namespaceURI, qualifiedName, doctype) {
+      // raises:INVALID_CHARACTER_ERR,NAMESPACE_ERR,WRONG_DOCUMENT_ERR
       var doc = new Document();
       doc.implementation = this;
       doc.childNodes = new NodeList();
@@ -2119,7 +2267,8 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
       }
       return doc;
     },
-    createDocumentType: function (qualifiedName, publicId, systemId) {// raises:INVALID_CHARACTER_ERR,NAMESPACE_ERR
+    createDocumentType: function (qualifiedName, publicId, systemId) {
+      // raises:INVALID_CHARACTER_ERR,NAMESPACE_ERR
       var node = new DocumentType();
       node.name = qualifiedName;
       node.nodeName = qualifiedName;
@@ -2129,8 +2278,7 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
     }
   };
 
-  function Node() {
-  }
+  function Node() {}
 
   Node.prototype = {
     firstChild: null,
@@ -2145,10 +2293,12 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
     namespaceURI: null,
     prefix: null,
     localName: null,
-    insertBefore: function (newChild, refChild) {//raises
+    insertBefore: function (newChild, refChild) {
+      //raises
       return _insertBefore(this, newChild, refChild);
     },
-    replaceChild: function (newChild, oldChild) {//raises
+    replaceChild: function (newChild, oldChild) {
+      //raises
       this.insertBefore(newChild, oldChild);
       if (oldChild) {
         this.removeChild(oldChild);
@@ -2219,15 +2369,15 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
     }
   };
 
-
   function _xmlEncoder(c) {
-    return c == '<' && '&lt;' ||
-      c == '>' && '&gt;' ||
-      c == '&' && '&amp;' ||
-      c == '"' && '&quot;' ||
-      '&#' + c.charCodeAt() + ';';
+    return (
+      (c == "<" && "&lt;") ||
+      (c == ">" && "&gt;") ||
+      (c == "&" && "&amp;") ||
+      (c == '"' && "&quot;") ||
+      "&#" + c.charCodeAt() + ";"
+    );
   }
-
 
   copy(NodeType, Node);
   copy(NodeType, Node.prototype);
@@ -2236,32 +2386,30 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
     if (callback(node)) {
       return true;
     }
-    if (node = node.firstChild) {
+    if ((node = node.firstChild)) {
       do {
         if (_visitNode(node, callback)) {
-          return true
+          return true;
         }
-      } while (node = node.nextSibling)
+      } while ((node = node.nextSibling));
     }
   }
 
-
-  function Document() {
-  }
+  function Document() {}
 
   function _onAddAttribute(doc, el, newAttr) {
     doc && doc._inc++;
     var ns = newAttr.namespaceURI;
-    if (ns == 'http://www.w3.org/2000/xmlns/') {
-      el._nsMap[newAttr.prefix ? newAttr.localName : ''] = newAttr.value
+    if (ns == "http://www.w3.org/2000/xmlns/") {
+      el._nsMap[newAttr.prefix ? newAttr.localName : ""] = newAttr.value;
     }
   }
 
   function _onRemoveAttribute(doc, el, newAttr, remove) {
     doc && doc._inc++;
     var ns = newAttr.namespaceURI;
-    if (ns == 'http://www.w3.org/2000/xmlns/') {
-      delete el._nsMap[newAttr.prefix ? newAttr.localName : ''];
+    if (ns == "http://www.w3.org/2000/xmlns/") {
+      delete el._nsMap[newAttr.prefix ? newAttr.localName : ""];
     }
   }
 
@@ -2289,7 +2437,7 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
     if (previous) {
       previous.nextSibling = next;
     } else {
-      parentNode.firstChild = next
+      parentNode.firstChild = next;
     }
     if (next) {
       next.previousSibling = previous;
@@ -2303,7 +2451,7 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
   function _insertBefore(parentNode, newChild, nextChild) {
     var cp = newChild.parentNode;
     if (cp) {
-      cp.removeChild(newChild);//remove and update
+      cp.removeChild(newChild); //remove and update
     }
     if (newChild.nodeType === DOCUMENT_FRAGMENT_NODE) {
       var newFirst = newChild.firstChild;
@@ -2319,7 +2467,6 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
     newFirst.previousSibling = pre;
     newLast.nextSibling = nextChild;
 
-
     if (pre) {
       pre.nextSibling = newFirst;
     } else {
@@ -2332,7 +2479,7 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
     }
     do {
       newFirst.parentNode = parentNode;
-    } while (newFirst !== newLast && (newFirst = newFirst.nextSibling))
+    } while (newFirst !== newLast && (newFirst = newFirst.nextSibling));
     _onUpdateChild(parentNode.ownerDocument || parentNode, parentNode);
     if (newChild.nodeType == DOCUMENT_FRAGMENT_NODE) {
       newChild.firstChild = newChild.lastChild = null;
@@ -2344,7 +2491,7 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
     var cp = newChild.parentNode;
     if (cp) {
       var pre = parentNode.lastChild;
-      cp.removeChild(newChild);//remove and update
+      cp.removeChild(newChild); //remove and update
       var pre = parentNode.lastChild;
     }
     var pre = parentNode.lastChild;
@@ -2362,13 +2509,14 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
   }
 
   Document.prototype = {
-    nodeName: '#document',
+    nodeName: "#document",
     nodeType: DOCUMENT_NODE,
     doctype: null,
     documentElement: null,
     _inc: 1,
 
-    insertBefore: function (newChild, refChild) {//raises
+    insertBefore: function (newChild, refChild) {
+      //raises
       if (newChild.nodeType == DOCUMENT_FRAGMENT_NODE) {
         var child = newChild.firstChild;
         while (child) {
@@ -2382,7 +2530,11 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
         this.documentElement = newChild;
       }
 
-      return _insertBefore(this, newChild, refChild), (newChild.ownerDocument = this), newChild;
+      return (
+        _insertBefore(this, newChild, refChild),
+        (newChild.ownerDocument = this),
+        newChild
+      );
     },
     removeChild: function (oldChild) {
       if (this.documentElement == oldChild) {
@@ -2397,7 +2549,7 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
       var rtv = null;
       _visitNode(this.documentElement, function (node) {
         if (node.nodeType == 1) {
-          if (node.getAttribute('id') == id) {
+          if (node.getAttribute("id") == id) {
             rtv = node;
             return true;
           }
@@ -2411,7 +2563,7 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
       node.nodeName = tagName;
       node.tagName = tagName;
       node.childNodes = new NodeList();
-      var attrs = node.attributes = new NamedNodeMap();
+      var attrs = (node.attributes = new NamedNodeMap());
       attrs._ownerElement = node;
       return node;
     },
@@ -2463,8 +2615,8 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
     },
     createElementNS: function (namespaceURI, qualifiedName) {
       var node = new Element();
-      var pl = qualifiedName.split(':');
-      var attrs = node.attributes = new NamedNodeMap();
+      var pl = qualifiedName.split(":");
+      var attrs = (node.attributes = new NamedNodeMap());
       node.childNodes = new NodeList();
       node.ownerDocument = this;
       node.nodeName = qualifiedName;
@@ -2481,7 +2633,7 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
     },
     createAttributeNS: function (namespaceURI, qualifiedName) {
       var node = new Attr();
-      var pl = qualifiedName.split(':');
+      var pl = qualifiedName.split(":");
       node.ownerDocument = this;
       node.nodeName = qualifiedName;
       node.name = qualifiedName;
@@ -2498,7 +2650,6 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
   };
   _extends(Document, Node);
 
-
   function Element() {
     this._nsMap = {};
   }
@@ -2509,7 +2660,7 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
     },
     getAttribute: function (name) {
       var attr = this.getAttributeNode(name);
-      return attr && attr.value || '';
+      return (attr && attr.value) || "";
     },
     getAttributeNode: function (name) {
       return this.attributes.getNamedItem(name);
@@ -2549,10 +2700,13 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
     },
     getAttributeNS: function (namespaceURI, localName) {
       var attr = this.getAttributeNodeNS(namespaceURI, localName);
-      return attr && attr.value || '';
+      return (attr && attr.value) || "";
     },
     setAttributeNS: function (namespaceURI, qualifiedName, value) {
-      var attr = this.ownerDocument.createAttributeNS(namespaceURI, qualifiedName);
+      var attr = this.ownerDocument.createAttributeNS(
+        namespaceURI,
+        qualifiedName
+      );
       attr.value = attr.nodeValue = "" + value;
       this.setAttributeNode(attr);
     },
@@ -2564,7 +2718,11 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
       return new LiveNodeList(this, function (base) {
         var ls = [];
         _visitNode(base, function (node) {
-          if (node !== base && node.nodeType == ELEMENT_NODE && (tagName === '*' || node.tagName == tagName)) {
+          if (
+            node !== base &&
+            node.nodeType == ELEMENT_NODE &&
+            (tagName === "*" || node.tagName == tagName)
+          ) {
             ls.push(node);
           }
         });
@@ -2575,7 +2733,12 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
       return new LiveNodeList(this, function (base) {
         var ls = [];
         _visitNode(base, function (node) {
-          if (node !== base && node.nodeType === ELEMENT_NODE && (namespaceURI === '*' || node.namespaceURI === namespaceURI) && (localName === '*' || node.localName == localName)) {
+          if (
+            node !== base &&
+            node.nodeType === ELEMENT_NODE &&
+            (namespaceURI === "*" || node.namespaceURI === namespaceURI) &&
+            (localName === "*" || node.localName == localName)
+          ) {
             ls.push(node);
           }
         });
@@ -2583,22 +2746,20 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
       });
     }
   };
-  Document.prototype.getElementsByTagName = Element.prototype.getElementsByTagName;
-  Document.prototype.getElementsByTagNameNS = Element.prototype.getElementsByTagNameNS;
-
+  Document.prototype.getElementsByTagName =
+    Element.prototype.getElementsByTagName;
+  Document.prototype.getElementsByTagNameNS =
+    Element.prototype.getElementsByTagNameNS;
 
   _extends(Element, Node);
 
-  function Attr() {
-  }
+  function Attr() {}
   Attr.prototype.nodeType = ATTRIBUTE_NODE;
   _extends(Attr, Node);
 
-
-  function CharacterData() {
-  }
+  function CharacterData() {}
   CharacterData.prototype = {
-    data: '',
+    data: "",
     substringData: function (offset, count) {
       return this.data.substring(offset, offset + count);
     },
@@ -2624,11 +2785,10 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
       this.nodeValue = this.data = text;
       this.length = text.length;
     }
-  }
+  };
   _extends(CharacterData, Node);
 
-  function Text() {
-  }
+  function Text() {}
   Text.prototype = {
     nodeName: "#text",
     nodeType: TEXT_NODE,
@@ -2644,75 +2804,64 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
       }
       return newNode;
     }
-  }
+  };
   _extends(Text, CharacterData);
 
-  function Comment() {
-  }
+  function Comment() {}
   Comment.prototype = {
     nodeName: "#comment",
     nodeType: COMMENT_NODE
-  }
+  };
   _extends(Comment, CharacterData);
 
-  function CDATASection() {
-  }
+  function CDATASection() {}
   CDATASection.prototype = {
     nodeName: "#cdata-section",
     nodeType: CDATA_SECTION_NODE
-  }
+  };
   _extends(CDATASection, CharacterData);
 
-
-  function DocumentType() {
-  }
+  function DocumentType() {}
 
   DocumentType.prototype.nodeType = DOCUMENT_TYPE_NODE;
   _extends(DocumentType, Node);
 
-  function Notation() {
-  }
+  function Notation() {}
 
   Notation.prototype.nodeType = NOTATION_NODE;
   _extends(Notation, Node);
 
-  function Entity() {
-  }
+  function Entity() {}
 
   Entity.prototype.nodeType = ENTITY_NODE;
   _extends(Entity, Node);
 
-  function EntityReference() {
-  }
+  function EntityReference() {}
 
   EntityReference.prototype.nodeType = ENTITY_REFERENCE_NODE;
   _extends(EntityReference, Node);
 
-  function DocumentFragment() {
-  }
+  function DocumentFragment() {}
 
   DocumentFragment.prototype.nodeName = "#document-fragment";
   DocumentFragment.prototype.nodeType = DOCUMENT_FRAGMENT_NODE;
   _extends(DocumentFragment, Node);
 
-
-  function ProcessingInstruction() {
-  }
+  function ProcessingInstruction() {}
 
   ProcessingInstruction.prototype.nodeType = PROCESSING_INSTRUCTION_NODE;
   _extends(ProcessingInstruction, Node);
 
-  function XMLSerializer() {
-  }
+  function XMLSerializer() {}
 
   XMLSerializer.prototype.serializeToString = function (node) {
     var buf = [];
     serializeToString(node, buf);
-    return buf.join('');
-  }
+    return buf.join("");
+  };
   Node.prototype.toString = function () {
     return XMLSerializer.prototype.serializeToString(this);
-  }
+  };
 
   function serializeToString(node, buf) {
     switch (node.nodeType) {
@@ -2722,12 +2871,15 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
         var child = node.firstChild;
         var nodeName = node.tagName;
         var isHTML = htmlns === node.namespaceURI;
-        buf.push('<', nodeName);
+        buf.push("<", nodeName);
         for (var i = 0; i < len; i++) {
           serializeToString(attrs.item(i), buf);
         }
-        if (child || isHTML && !/^(?:meta|link|img|br|hr|input|button)$/i.test(nodeName)) {
-          buf.push('>');
+        if (
+          child ||
+          (isHTML && !/^(?:meta|link|img|br|hr|input|button)$/i.test(nodeName))
+        ) {
+          buf.push(">");
           if (isHTML && /^script$/i.test(nodeName)) {
             if (child) {
               buf.push(child.data);
@@ -2738,9 +2890,9 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
               child = child.nextSibling;
             }
           }
-          buf.push('</', nodeName, '>');
+          buf.push("</", nodeName, ">");
         } else {
-          buf.push('/>');
+          buf.push("/>");
         }
         return;
       case DOCUMENT_NODE:
@@ -2752,24 +2904,30 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
         }
         return;
       case ATTRIBUTE_NODE:
-        return buf.push(' ', node.name, '="', node.value.replace(/[<&"]/g, _xmlEncoder), '"');
+        return buf.push(
+          " ",
+          node.name,
+          '="',
+          node.value.replace(/[<&"]/g, _xmlEncoder),
+          '"'
+        );
       case TEXT_NODE:
         return buf.push(node.data.replace(/[<&]/g, _xmlEncoder));
       case CDATA_SECTION_NODE:
-        return buf.push('<![CDATA[', node.data, ']]>');
+        return buf.push("<![CDATA[", node.data, "]]>");
       case COMMENT_NODE:
         return buf.push("<!--", node.data, "-->");
       case DOCUMENT_TYPE_NODE:
         var pubid = node.publicId;
         var sysid = node.systemId;
-        buf.push('<!DOCTYPE ', node.name);
+        buf.push("<!DOCTYPE ", node.name);
         if (pubid) {
           buf.push(' PUBLIC "', pubid);
-          if (sysid && sysid != '.') {
+          if (sysid && sysid != ".") {
             buf.push('" "', sysid);
           }
           buf.push('">');
-        } else if (sysid && sysid != '.') {
+        } else if (sysid && sysid != ".") {
           buf.push(' SYSTEM "', sysid, '">');
         } else {
           var sub = node.internalSubset;
@@ -2782,9 +2940,9 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
       case PROCESSING_INSTRUCTION_NODE:
         return buf.push("<?", node.target, " ", node.data, "?>");
       case ENTITY_REFERENCE_NODE:
-        return buf.push('&', node.nodeName, ';');
+        return buf.push("&", node.nodeName, ";");
       default:
-        buf.push('??', node.nodeName);
+        buf.push("??", node.nodeName);
     }
   }
 
@@ -2801,7 +2959,7 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
         break;
     }
     if (!node2) {
-      node2 = node.cloneNode(false);//false
+      node2 = node.cloneNode(false); //false
     }
     node2.ownerDocument = doc;
     node2.parentNode = null;
@@ -2819,7 +2977,7 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
     var node2 = new node.constructor();
     for (var n in node) {
       var v = node[n];
-      if (typeof v != 'object') {
+      if (typeof v != "object") {
         if (v != node2[n]) {
           node2[n] = v;
         }
@@ -2832,7 +2990,7 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
     switch (node2.nodeType) {
       case ELEMENT_NODE:
         var attrs = node.attributes;
-        var attrs2 = node2.attributes = new NamedNodeMap();
+        var attrs2 = (node2.attributes = new NamedNodeMap());
         var len = attrs.length;
         attrs2._ownerElement = node2;
         for (var i = 0; i < len; i++) {
@@ -2868,7 +3026,7 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
           }
           node = node.nextSibling;
         }
-        return buf.join('');
+        return buf.join("");
       default:
         return node.nodeValue;
     }
@@ -2876,13 +3034,13 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
 
   try {
     if (Object.defineProperty) {
-      Object.defineProperty(LiveNodeList.prototype, 'length', {
+      Object.defineProperty(LiveNodeList.prototype, "length", {
         get: function () {
           _updateLiveList(this);
           return this.$$length;
         }
       });
-      Object.defineProperty(Node.prototype, 'textContent', {
+      Object.defineProperty(Node.prototype, "textContent", {
         get: function () {
           return getTextContent(this);
         },
@@ -2906,44 +3064,44 @@ define("ace/mode/xml/dom", [], function (require, exports, module) {
       });
 
       __set__ = function (object, key, value) {
-        object['$$' + key] = value;
+        object["$$" + key] = value;
       };
     }
-  } catch (e) {//ie8
+  } catch (e) {
+    //ie8
   }
 
   return DOMImplementation;
 });
 
 define("ace/mode/xml/dom-parser", [], function (require, exports, module) {
-  'use strict';
+  "use strict";
 
-  var XMLReader = require('./sax'),
-    DOMImplementation = require('./dom');
+  var XMLReader = require("./sax"),
+    DOMImplementation = require("./dom");
 
   function DOMParser(options) {
-    this.options = options || {locator: {}};
-
+    this.options = options || { locator: {} };
   }
 
   DOMParser.prototype.parseFromString = function (source, mimeType) {
     var options = this.options;
     var sax = new XMLReader();
-    var domBuilder = options.domBuilder || new DOMHandler();//contentHandler and LexicalHandler
+    var domBuilder = options.domBuilder || new DOMHandler(); //contentHandler and LexicalHandler
     var errorHandler = options.errorHandler;
     var locator = options.locator;
     var defaultNSMap = options.xmlns || {};
-    var entityMap = {'lt': '<', 'gt': '>', 'amp': '&', 'quot': '"', 'apos': "'"}
+    var entityMap = { lt: "<", gt: ">", amp: "&", quot: '"', apos: "'" };
     if (locator) {
-      domBuilder.setDocumentLocator(locator)
+      domBuilder.setDocumentLocator(locator);
     }
 
     sax.errorHandler = buildErrorHandler(errorHandler, domBuilder, locator);
     sax.domBuilder = options.domBuilder || domBuilder;
     if (/\/x?html?$/.test(mimeType)) {
-      entityMap.nbsp = '\xa0';
-      entityMap.copy = '\xa9';
-      defaultNSMap[''] = 'http://www.w3.org/1999/xhtml';
+      entityMap.nbsp = "\xa0";
+      entityMap.copy = "\xa9";
+      defaultNSMap[""] = "http://www.w3.org/1999/xhtml";
     }
     if (source) {
       sax.parse(source, defaultNSMap, entityMap);
@@ -2951,7 +3109,7 @@ define("ace/mode/xml/dom-parser", [], function (require, exports, module) {
       sax.errorHandler.error("invalid document source");
     }
     return domBuilder.document;
-  }
+  };
 
   function buildErrorHandler(errorImpl, domBuilder, locator) {
     if (!errorImpl) {
@@ -2960,35 +3118,40 @@ define("ace/mode/xml/dom-parser", [], function (require, exports, module) {
       }
       errorImpl = domBuilder;
     }
-    var errorHandler = {}
+    var errorHandler = {};
     var isCallback = errorImpl instanceof Function;
-    locator = locator || {}
+    locator = locator || {};
 
     function build(key) {
       var fn = errorImpl[key];
       if (!fn) {
         if (isCallback) {
-          fn = errorImpl.length == 2 ? function (msg) {
-            errorImpl(key, msg)
-          } : errorImpl;
+          fn =
+            errorImpl.length == 2
+              ? function (msg) {
+                  errorImpl(key, msg);
+                }
+              : errorImpl;
         } else {
           var i = arguments.length;
           while (--i) {
-            if (fn = errorImpl[arguments[i]]) {
+            if ((fn = errorImpl[arguments[i]])) {
               break;
             }
           }
         }
       }
-      errorHandler[key] = fn && function (msg) {
-        fn(msg + _locator(locator), msg, locator);
-      } || function () {
-      };
+      errorHandler[key] =
+        (fn &&
+          function (msg) {
+            fn(msg + _locator(locator), msg, locator);
+          }) ||
+        function () {};
     }
 
-    build('warning', 'warn');
-    build('error', 'warn', 'warning');
-    build('fatalError', 'warn', 'warning', 'error');
+    build("warning", "warn");
+    build("error", "warn", "warning");
+    build("fatalError", "warn", "warning", "error");
     return errorHandler;
   }
 
@@ -3015,37 +3178,34 @@ define("ace/mode/xml/dom-parser", [], function (require, exports, module) {
       appendElement(this, el);
       this.currentElement = el;
 
-      this.locator && position(this.locator, el)
+      this.locator && position(this.locator, el);
       for (var i = 0; i < len; i++) {
         var namespaceURI = attrs.getURI(i);
         var value = attrs.getValue(i);
         var qName = attrs.getQName(i);
         var attr = doc.createAttributeNS(namespaceURI, qName);
         if (attr.getOffset) {
-          position(attr.getOffset(1), attr)
+          position(attr.getOffset(1), attr);
         }
         attr.value = attr.nodeValue = value;
-        el.setAttributeNode(attr)
+        el.setAttributeNode(attr);
       }
     },
     endElement: function (namespaceURI, localName, qName) {
-      var current = this.currentElement
+      var current = this.currentElement;
       var tagName = current.tagName;
       this.currentElement = current.parentNode;
     },
-    startPrefixMapping: function (prefix, uri) {
-    },
-    endPrefixMapping: function (prefix) {
-    },
+    startPrefixMapping: function (prefix, uri) {},
+    endPrefixMapping: function (prefix) {},
     processingInstruction: function (target, data) {
       var ins = this.document.createProcessingInstruction(target, data);
-      this.locator && position(this.locator, ins)
+      this.locator && position(this.locator, ins);
       appendElement(this, ins);
     },
-    ignorableWhitespace: function (ch, start, length) {
-    },
+    ignorableWhitespace: function (ch, start, length) {},
     characters: function (chars, start, length) {
-      chars = _toString.apply(this, arguments)
+      chars = _toString.apply(this, arguments);
       if (this.currentElement && chars) {
         if (this.cdata) {
           var charNode = this.document.createCDATASection(chars);
@@ -3054,23 +3214,23 @@ define("ace/mode/xml/dom-parser", [], function (require, exports, module) {
           var charNode = this.document.createTextNode(chars);
           this.currentElement.appendChild(charNode);
         }
-        this.locator && position(this.locator, charNode)
+        this.locator && position(this.locator, charNode);
       }
     },
-    skippedEntity: function (name) {
-    },
+    skippedEntity: function (name) {},
     endDocument: function () {
       this.document.normalize();
     },
     setDocumentLocator: function (locator) {
-      if (this.locator = locator) {// && !('lineNumber' in locator)){
+      if ((this.locator = locator)) {
+        // && !('lineNumber' in locator)){
         locator.lineNumber = 0;
       }
     },
     comment: function (chars, start, length) {
-      chars = _toString.apply(this, arguments)
+      chars = _toString.apply(this, arguments);
       var comm = this.document.createComment(chars);
-      this.locator && position(this.locator, comm)
+      this.locator && position(this.locator, comm);
       appendElement(this, comm);
     },
 
@@ -3085,7 +3245,7 @@ define("ace/mode/xml/dom-parser", [], function (require, exports, module) {
       var impl = this.document.implementation;
       if (impl && impl.createDocumentType) {
         var dt = impl.createDocumentType(name, publicId, systemId);
-        this.locator && position(this.locator, dt)
+        this.locator && position(this.locator, dt);
         appendElement(this, dt);
       }
     },
@@ -3099,30 +3259,42 @@ define("ace/mode/xml/dom-parser", [], function (require, exports, module) {
       console.error(error, _locator(this.locator));
       throw error;
     }
-  }
+  };
 
   function _locator(l) {
     if (l) {
-      return '\n@' + (l.systemId || '') + '#[line:' + l.lineNumber + ',col:' + l.columnNumber + ']'
+      return (
+        "\n@" +
+        (l.systemId || "") +
+        "#[line:" +
+        l.lineNumber +
+        ",col:" +
+        l.columnNumber +
+        "]"
+      );
     }
   }
 
   function _toString(chars, start, length) {
-    if (typeof chars == 'string') {
-      return chars.substr(start, length)
-    } else {//java sax connect width xmldom on rhino(what about: "? && !(chars instanceof String)")
+    if (typeof chars == "string") {
+      return chars.substr(start, length);
+    } else {
+      //java sax connect width xmldom on rhino(what about: "? && !(chars instanceof String)")
       if (chars.length >= start + length || start) {
-        return new java.lang.String(chars, start, length) + '';
+        return new java.lang.String(chars, start, length) + "";
       }
       return chars;
     }
   }
 
-  "endDTD,startEntity,endEntity,attributeDecl,elementDecl,externalEntityDecl,internalEntityDecl,resolveEntity,getExternalSubset,notationDecl,unparsedEntityDecl".replace(/\w+/g, function (key) {
-    DOMHandler.prototype[key] = function () {
-      return null
+  "endDTD,startEntity,endEntity,attributeDecl,elementDecl,externalEntityDecl,internalEntityDecl,resolveEntity,getExternalSubset,notationDecl,unparsedEntityDecl".replace(
+    /\w+/g,
+    function (key) {
+      DOMHandler.prototype[key] = function () {
+        return null;
+      };
     }
-  })
+  );
 
   function appendElement(hander, node) {
     if (!hander.currentElement) {
@@ -3130,7 +3302,7 @@ define("ace/mode/xml/dom-parser", [], function (require, exports, module) {
     } else {
       hander.currentElement.appendChild(node);
     }
-  }//appendChild and setAttributeNS are preformance key
+  } //appendChild and setAttributeNS are preformance key
 
   return {
     DOMParser: DOMParser
@@ -3145,24 +3317,22 @@ define("ace/mode/xml_worker", [], function (require, exports, module) {
   var Mirror = require("../worker/mirror").Mirror;
   var DOMParser = require("./xml/dom-parser").DOMParser;
 
-  var Worker = exports.Worker = function (sender) {
+  var Worker = (exports.Worker = function (sender) {
     Mirror.call(this, sender);
     this.setTimeout(400);
     this.context = null;
-  };
+  });
 
   oop.inherits(Worker, Mirror);
 
   (function () {
-
     this.setOptions = function (options) {
       this.context = options.context;
     };
 
     this.onUpdate = function () {
       var value = this.doc.getValue();
-      if (!value)
-        return;
+      if (!value) return;
       var parser = new DOMParser();
       var errors = [];
       parser.options.errorHandler = {
@@ -3195,7 +3365,5 @@ define("ace/mode/xml_worker", [], function (require, exports, module) {
       parser.parseFromString(value);
       this.sender.emit("error", errors);
     };
-
   }).call(Worker.prototype);
-
 });

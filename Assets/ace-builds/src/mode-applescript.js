@@ -1,9 +1,16 @@
-define("ace/mode/applescript_highlight_rules", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text_highlight_rules"], function (require, exports, module) {
+define("ace/mode/applescript_highlight_rules", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text_highlight_rules"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
   var AppleScriptHighlightRules = function () {
-    var keywords = ("about|above|after|against|and|around|as|at|back|before|beginning|" +
+    var keywords =
+      "about|above|after|against|and|around|as|at|back|before|beginning|" +
       "behind|below|beneath|beside|between|but|by|considering|" +
       "contain|contains|continue|copy|div|does|eighth|else|end|equal|" +
       "equals|error|every|exit|fifth|first|for|fourth|from|front|" +
@@ -11,22 +18,28 @@ define("ace/mode/applescript_highlight_rules", ["require", "exports", "module", 
       "middle|mod|my|ninth|not|of|on|onto|or|over|prop|property|put|ref|" +
       "reference|repeat|returning|script|second|set|seventh|since|" +
       "sixth|some|tell|tenth|that|the|then|third|through|thru|" +
-      "timeout|times|to|transaction|try|until|where|while|whose|with|without");
-    var builtinConstants = ("AppleScript|false|linefeed|return|pi|quote|result|space|tab|true");
-    var builtinFunctions = ("activate|beep|count|delay|launch|log|offset|read|round|run|say|" +
-      "summarize|write");
-    var builtinTypes = ("alias|application|boolean|class|constant|date|file|integer|list|" +
+      "timeout|times|to|transaction|try|until|where|while|whose|with|without";
+    var builtinConstants =
+      "AppleScript|false|linefeed|return|pi|quote|result|space|tab|true";
+    var builtinFunctions =
+      "activate|beep|count|delay|launch|log|offset|read|round|run|say|" +
+      "summarize|write";
+    var builtinTypes =
+      "alias|application|boolean|class|constant|date|file|integer|list|" +
       "number|real|record|string|text|character|characters|contents|day|" +
       "frontmost|id|item|length|month|name|paragraph|paragraphs|rest|" +
-      "reverse|running|time|version|weekday|word|words|year");
-    var keywordMapper = this.createKeywordMapper({
-      "support.function": builtinFunctions,
-      "constant.language": builtinConstants,
-      "support.type": builtinTypes,
-      "keyword": keywords
-    }, "identifier");
+      "reverse|running|time|version|weekday|word|words|year";
+    var keywordMapper = this.createKeywordMapper(
+      {
+        "support.function": builtinFunctions,
+        "constant.language": builtinConstants,
+        "support.type": builtinTypes,
+        keyword: keywords
+      },
+      "identifier"
+    );
     this.$rules = {
-      "start": [
+      start: [
         {
           token: "comment",
           regex: "--.*$"
@@ -42,42 +55,46 @@ define("ace/mode/applescript_highlight_rules", ["require", "exports", "module", 
         },
         {
           token: "support.type",
-          regex: '\\b(POSIX file|POSIX path|(date|time) string|quoted form)\\b'
+          regex: "\\b(POSIX file|POSIX path|(date|time) string|quoted form)\\b"
         },
         {
           token: "support.function",
-          regex: '\\b(clipboard info|the clipboard|info for|list (disks|folder)|' +
-            'mount volume|path to|(close|open for) access|(get|set) eof|' +
-            'current date|do shell script|get volume settings|random number|' +
-            'set volume|system attribute|system info|time to GMT|' +
-            '(load|run|store) script|scripting components|' +
-            'ASCII (character|number)|localized string|' +
-            'choose (application|color|file|file name|' +
-            'folder|from list|remote application|URL)|' +
-            'display (alert|dialog))\\b|^\\s*return\\b'
+          regex:
+            "\\b(clipboard info|the clipboard|info for|list (disks|folder)|" +
+            "mount volume|path to|(close|open for) access|(get|set) eof|" +
+            "current date|do shell script|get volume settings|random number|" +
+            "set volume|system attribute|system info|time to GMT|" +
+            "(load|run|store) script|scripting components|" +
+            "ASCII (character|number)|localized string|" +
+            "choose (application|color|file|file name|" +
+            "folder|from list|remote application|URL)|" +
+            "display (alert|dialog))\\b|^\\s*return\\b"
         },
         {
           token: "constant.language",
-          regex: '\\b(text item delimiters|current application|missing value)\\b'
+          regex:
+            "\\b(text item delimiters|current application|missing value)\\b"
         },
         {
           token: "keyword",
-          regex: '\\b(apart from|aside from|instead of|out of|greater than|' +
+          regex:
+            "\\b(apart from|aside from|instead of|out of|greater than|" +
             "isn't|(doesn't|does not) (equal|come before|come after|contain)|" +
-            '(greater|less) than( or equal)?|(starts?|ends|begins?) with|' +
-            'contained by|comes (before|after)|a (ref|reference))\\b'
+            "(greater|less) than( or equal)?|(starts?|ends|begins?) with|" +
+            "contained by|comes (before|after)|a (ref|reference))\\b"
         },
         {
           token: keywordMapper,
           regex: "[a-zA-Z][a-zA-Z0-9_]*\\b"
         }
       ],
-      "comment": [
+      comment: [
         {
           token: "comment", // closing comment
           regex: "\\*\\)",
           next: "start"
-        }, {
+        },
+        {
           defaultToken: "comment"
         }
       ]
@@ -86,20 +103,36 @@ define("ace/mode/applescript_highlight_rules", ["require", "exports", "module", 
   };
   oop.inherits(AppleScriptHighlightRules, TextHighlightRules);
   exports.AppleScriptHighlightRules = AppleScriptHighlightRules;
-
 });
 
-define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop", "ace/range", "ace/mode/folding/fold_mode"], function (require, exports, module) {
+define("ace/mode/folding/cstyle", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/range",
+  "ace/mode/folding/fold_mode"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../../lib/oop");
   var Range = require("../../range").Range;
   var BaseFoldMode = require("./fold_mode").FoldMode;
-  var FoldMode = exports.FoldMode = function (commentRegex) {
+  var FoldMode = (exports.FoldMode = function (commentRegex) {
     if (commentRegex) {
-      this.foldingStartMarker = new RegExp(this.foldingStartMarker.source.replace(/\|[^|]*?$/, "|" + commentRegex.start));
-      this.foldingStopMarker = new RegExp(this.foldingStopMarker.source.replace(/\|[^|]*?$/, "|" + commentRegex.end));
+      this.foldingStartMarker = new RegExp(
+        this.foldingStartMarker.source.replace(
+          /\|[^|]*?$/,
+          "|" + commentRegex.start
+        )
+      );
+      this.foldingStopMarker = new RegExp(
+        this.foldingStopMarker.source.replace(
+          /\|[^|]*?$/,
+          "|" + commentRegex.end
+        )
+      );
     }
-  };
+  });
   oop.inherits(FoldMode, BaseFoldMode);
   (function () {
     this.foldingStartMarker = /([\{\[\(])[^\}\]\)]*$|^\s*(\/\*)/;
@@ -111,15 +144,22 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
     this.getFoldWidget = function (session, foldStyle, row) {
       var line = session.getLine(row);
       if (this.singleLineBlockCommentRe.test(line)) {
-        if (!this.startRegionRe.test(line) && !this.tripleStarBlockCommentRe.test(line))
+        if (
+          !this.startRegionRe.test(line) &&
+          !this.tripleStarBlockCommentRe.test(line)
+        )
           return "";
       }
       var fw = this._getFoldWidgetBase(session, foldStyle, row);
-      if (!fw && this.startRegionRe.test(line))
-        return "start"; // lineCommentRegionStart
+      if (!fw && this.startRegionRe.test(line)) return "start"; // lineCommentRegionStart
       return fw;
     };
-    this.getFoldWidgetRange = function (session, foldStyle, row, forceMultiline) {
+    this.getFoldWidgetRange = function (
+      session,
+      foldStyle,
+      row,
+      forceMultiline
+    ) {
       var line = session.getLine(row);
       if (this.startRegionRe.test(line))
         return this.getCommentRegionBlock(session, line, row);
@@ -132,13 +172,11 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
         if (range && !range.isMultiLine()) {
           if (forceMultiline) {
             range = this.getSectionRange(session, row);
-          } else if (foldStyle != "all")
-            range = null;
+          } else if (foldStyle != "all") range = null;
         }
         return range;
       }
-      if (foldStyle === "markbegin")
-        return;
+      if (foldStyle === "markbegin") return;
       var match = line.match(this.foldingStopMarker);
       if (match) {
         var i = match.index + match[0].length;
@@ -158,10 +196,8 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       while (++row < maxRow) {
         line = session.getLine(row);
         var indent = line.search(/\S/);
-        if (indent === -1)
-          continue;
-        if (startIndent > indent)
-          break;
+        if (indent === -1) continue;
+        if (startIndent > indent) break;
         var subRange = this.getFoldWidgetRange(session, "all", row);
         if (subRange) {
           if (subRange.start.row <= startRow) {
@@ -174,7 +210,12 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
         }
         endRow = row;
       }
-      return new Range(startRow, startColumn, endRow, session.getLine(endRow).length);
+      return new Range(
+        startRow,
+        startColumn,
+        endRow,
+        session.getLine(endRow).length
+      );
     };
     this.getCommentRegionBlock = function (session, line, row) {
       var startColumn = line.search(/\s*$/);
@@ -185,14 +226,10 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       while (++row < maxRow) {
         line = session.getLine(row);
         var m = re.exec(line);
-        if (!m)
-          continue;
-        if (m[1])
-          depth--;
-        else
-          depth++;
-        if (!depth)
-          break;
+        if (!m) continue;
+        if (m[1]) depth--;
+        else depth++;
+        if (!depth) break;
       }
       var endRow = row;
       if (endRow > startRow) {
@@ -200,14 +237,22 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       }
     };
   }).call(FoldMode.prototype);
-
 });
 
-define("ace/mode/applescript", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text", "ace/mode/applescript_highlight_rules", "ace/mode/folding/cstyle"], function (require, exports, module) {
+define("ace/mode/applescript", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text",
+  "ace/mode/applescript_highlight_rules",
+  "ace/mode/folding/cstyle"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextMode = require("./text").Mode;
-  var AppleScriptHighlightRules = require("./applescript_highlight_rules").AppleScriptHighlightRules;
+  var AppleScriptHighlightRules =
+    require("./applescript_highlight_rules").AppleScriptHighlightRules;
   var FoldMode = require("./folding/cstyle").FoldMode;
   var Mode = function () {
     this.HighlightRules = AppleScriptHighlightRules;
@@ -217,11 +262,10 @@ define("ace/mode/applescript", ["require", "exports", "module", "ace/lib/oop", "
   oop.inherits(Mode, TextMode);
   (function () {
     this.lineCommentStart = "--";
-    this.blockComment = {start: "(*", end: "*)"};
+    this.blockComment = { start: "(*", end: "*)" };
     this.$id = "ace/mode/applescript";
   }).call(Mode.prototype);
   exports.Mode = Mode;
-
 });
 (function () {
   window.require(["ace/mode/applescript"], function (m) {
@@ -230,4 +274,3 @@ define("ace/mode/applescript", ["require", "exports", "module", "ace/lib/oop", "
     }
   });
 })();
-            

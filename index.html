@@ -1,1282 +1,2039 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="ie=edge" http-equiv="X-UA-Compatible" />
+    <title>NoteMaster</title>
+    <link href="Styles/index.css" rel="stylesheet" />
+    <link href="Styles/fileViewers.css" rel="stylesheet" />
+    <link href="Styles/styleMapStyles.css" rel="stylesheet" />
 
-<head>
-  <meta charset="UTF-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <meta content="ie=edge" http-equiv="X-UA-Compatible">
-  <title>NoteMaster</title>
-  <link href="Styles/index.css" rel="stylesheet">
-  <link href="Styles/fileViewers.css" rel="stylesheet">
-  <link href="Styles/styleMapStyles.css" rel="stylesheet">
+    <link href="notemasterIcon.svg" rel="icon" />
+    <link crossorigin="use-credentials" href="manifest.json" rel="manifest" />
 
-  <link href="notemasterIcon.svg" rel="icon">
-  <link crossorigin="use-credentials" href="manifest.json" rel="manifest">
+    <link
+      href="https://cdn.jsdelivr.net/npm/quill/dist/quill.snow.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/pretty-checkbox/dist/pretty-checkbox.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css"
+      rel="stylesheet"
+    />
+  </head>
 
-  <link href="https://cdn.jsdelivr.net/npm/quill/dist/quill.snow.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/pretty-checkbox/dist/pretty-checkbox.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css" rel="stylesheet">
-</head>
-
-<body
+  <body
     onbeforeunload="if (quill.getLength() !== 1 || noteName.value !== '') { event.preventDefault(); event.returnValue = '' }"
-    onload="onLoadTasks()" onresize="dynamicallySetHeight()">
-<!-- Global Snackbar -->
-<div id="snackbar">
-  <img class="primaryButton menu navSeparation" src="Assets/Images/info_000000.svg">
-  <span class="navSeparation" id="snackbarMessage"></span>
-  <button class="warningBanner" onclick="snackbar.style.display = 'none'" title="Dismiss">
-    <img class="primaryButton menu" src="Assets/Images/close_000000.svg">
-  </button>
-</div>
-<nav id="appMenu">
-  <button class="menu" disabled id="quillUndo" onclick="quill.history.undo()" title="Undo change (Ctrl + Z)">
-    <img class="menu" src="Assets/Images/undo_000000.svg">
-  </button>
-  <button class="menu" disabled id="quillRedo" onclick="quill.history.redo()" title="Redo change (Ctrl + Y)">
-    <img class="menu" src="Assets/Images/redo_000000.svg">
-  </button>
-  <button class="menu" onmouseleave="document.getElementById('fileMenu').hidden = true"
-          onmouseover="document.getElementById('fileMenu').hidden = false">
-    File
-  </button>
-  <div class="menu" hidden id="fileMenu" onmouseleave="document.getElementById('fileMenu').hidden = true"
-       onmouseover="document.getElementById('fileMenu').hidden = false" style="margin-left: 75px">
-    <button accesskey="n" class="menuDropdown"
-            onclick="if (noteEditor.hidden) { initiateNote(false) } else { confirmSave() }">
-      <img class="reducedIntensity menu" src="Assets/Images/note_add_000000.svg">
-      <u>N</u>ew <span class="helperText menuDropdown">Alt + N</span>
-    </button>
-    <button accesskey="o" class="menuDropdown" id="openNote" onclick="handleAnotherOpen()">
-      <img class="reducedIntensity menu" src="Assets/Images/file_open_000000.svg">
-      <u>O</u>pen Note... <span class="helperText menuDropdown">Alt + O</span></button>
-    <button accesskey="s" class="menuDropdown" disabled id="save" onclick="saveNoteProgress()">
-      <img class="reducedIntensity menu" src="Assets/Images/save_000000.svg">
-      <u>S</u>ave <span class="helperText">(In-Browser)</span> <span class="helperText menuDropdown">Alt + S</span>
-    </button>
-    <button class="menuDropdown" id="autoSave"
-            onclick="toggleMenuCheck('autoSaveCheck'); if (autoSaveCheck.src.includes(checkedImageSource)) { localStorage.setItem('autoSaveEnabled', 'true'); mainEditor.oninput = () => { saveNoteProgress(); updateStatusBar() } } else { localStorage.setItem('autoSaveEnabled', 'false'); mainEditor.oninput = () => { updateStatusBar() } }">
-      <img class="menu" id="autoSaveCheck">
-      Auto Save
-    </button>
-    <button accesskey="w" class="menuDropdown" disabled id="downloadNote" onclick="downloadNote()">
-      <img class="reducedIntensity menu" src="Assets/Images/download_000000.svg">
-      Do<u>w</u>nload Note <span class="helperText menuDropdown">Alt + W</span>
-    </button>
-    <button class="menuDropdown" disabled id="saveForLater" onclick="saveNoteForLater()">
-      <img class="reducedIntensity menu" src="Assets/Images/more_time_000000.svg">
-      Save For Later
-    </button>
-    <hr class="menuDropdown">
-    <button accesskey="v" class="menuDropdown" disabled id="closeFile" onclick="confirmViewerClose.hidden = false">
-      <img class="reducedIntensity menu" src="Assets/Images/home_000000.svg">
-      Close <u>V</u>iewer <span class="helperText menuDropdown">Alt + V</span>
-    </button>
-    <button accesskey="t" class="menuDropdown" disabled id="closeNote" onclick="confirmSave()">
-      <img class="reducedIntensity menu" src="Assets/Images/close_000000.svg">
-      Close No<u>t</u>e <span class="helperText menuDropdown">Alt + T</span>
-    </button>
-  </div>
-  <button class="menu" onmouseleave="document.getElementById('insertMenu').hidden = true"
-          onmouseover="document.getElementById('insertMenu').hidden = false">
-    Insert
-  </button>
-  <div class="menu" hidden id="insertMenu" onmouseleave="document.getElementById('insertMenu').hidden = true"
-       onmouseover="document.getElementById('insertMenu').hidden = false" style="margin-left: 120px">
-    <button class="menuDropdown" disabled id="insertTableButton" onclick="insertTable.hidden = false">
-      <img class="reducedIntensity menu" src="Assets/Images/table_000000.svg">
-      Table
-    </button>
-    <button class="menuDropdown" disabled id="insertDate"
-            onclick="quill.insertText(quill.getSelection(focus), (currentDate.getMonth() + 1).toString() + '/' + currentDate.getDate().toString() + '/' + currentDate.getFullYear().toString())">
-      <img class="reducedIntensity menu" src="Assets/Images/today_000000.svg">
-      Current Date <span class="helperText menuDropdown">m(m)/d(d)/yyyy</span>
-    </button>
-    <button class="menuDropdown" disabled id="insertTime"
-            onclick="quill.insertText(quill.getSelection(focus), get12HourTime())">
-      <img class="reducedIntensity menu" src="Assets/Images/schedule_000000.svg">
-      Current Time <span class="helperText menuDropdown">(h)h:mm</span>
-    </button>
-  </div>
-  <button class="menu" onmouseleave="document.getElementById('viewMenu').hidden = true"
-          onmouseover="document.getElementById('viewMenu').hidden = false">
-    View
-  </button>
-  <div class="menu" hidden id="viewMenu" onmouseleave="document.getElementById('viewMenu').hidden = true"
-       onmouseover="document.getElementById('viewMenu').hidden = false" style="margin-left: 178px">
-    <button class="menuDropdown" onclick="window.location.reload()">
-      <img class="reducedIntensity menu" src="Assets/Images/refresh_000000.svg">
-      Refresh <span class="helperText menuDropdown">F5 or Ctrl + R</span>
-    </button>
-    <button accesskey="p" class="menuDropdown" onclick="adjustAppSectionSizes.hidden = false">
-      <img class="reducedIntensity menu" src="Assets/Images/width_normal_000000.svg">
-      Adjust <u>P</u>anel Sizes <span class="helperText menuDropdown">Alt + P</span>
-    </button>
-    <button class="menuDropdown" disabled id="showHTMLEditor"
-            onclick="toggleDialog(true, 'noteAsHTML', null); noteHTMLCodeEditor.session.setValue(quill.getSemanticHTML())">
-      <img class="reducedIntensity menu" src="Assets/Images/integration_instructions_000000.svg">
-      Show Note as HTML Markup
-    </button>
-    <button accesskey="h" class="menuDropdown"
-            onclick="toggleDialog(true, 'viewingHistory', null); appendViewingHistory()">
-      <img class="reducedIntensity menu" src="Assets/Images/history_000000.svg">
-      Viewing <u>H</u>istory <span class="helperText menuDropdown">Alt + H</span>
-    </button>
-    <hr class="menuDropdown">
-    <button class="menuDropdown" id="wordWrap"
-            onclick="toggleMenuCheck('wordWrapCheck'); if (wordWrapCheck.src.includes(checkedImageSource)) { localStorage.setItem('wordWrapEnabled', 'true'); mainEditor.style.wordBreak = 'break-word' } else { localStorage.setItem('wordWrapEnabled', 'false'); mainEditor.style.wordBreak = 'normal' }"
-            title="May cause layout issues">
-      <img class="menu" id="wordWrapCheck" src="Assets/Images/check_000000.svg">
-      Word Wrap
-    </button>
-  </div>
-  <button class="menu" onmouseleave="document.getElementById('settingsMenu').hidden = true"
-          onmouseover="document.getElementById('settingsMenu').hidden = false">
-    Settings
-  </button>
-  <div class="menu" hidden id="settingsMenu" onmouseleave="document.getElementById('settingsMenu').hidden = true"
-       onmouseover="document.getElementById('settingsMenu').hidden = false" style="margin-left: 231px">
-    <button class="menuDropdown" onclick="throwAppError('Feature has not been implemented yet')">Dark Mode</button>
-    <button class="menuDropdown" onclick="localStorage.clear(); window.location.reload()">
-      <img class="reducedIntensity menu" src="Assets/Images/reset_settings_000000.svg">
-      Clear App Data <span class="helperText menuDropdown">WARNING: This includes any saved notes and settings</span>
-    </button>
-  </div>
-  <button class="menu" onmouseleave="document.getElementById('helpMenu').hidden = true"
-          onmouseover="document.getElementById('helpMenu').hidden = false">
-    Help
-  </button>
-  <div class="menu" hidden id="helpMenu" onmouseleave="document.getElementById('helpMenu').hidden = true"
-       onmouseover="document.getElementById('helpMenu').hidden = false" style="margin-left: 303px">
-    <button class="menuDropdown" onclick="toggleDialog(true, 'aboutDialog', null)">
-      <img class="reducedIntensity menu" src="Assets/Images/info_000000.svg">
-      About
-    </button>
-  </div>
-</nav>
-
-<div style="padding-top: 34px">
-  <table id="appSectionsTable" style="width: 100%; height: 100%">
-    <tr id="appSectionsTableRow">
-      <!-- Editing Panel -->
-      <td class="appSection" id="createOrOpenContainer">
-        <img class="reducedIntensity" src="Assets/Images/door_open_000000.svg">
-        <h1 style="line-height: 20px">Welcome</h1>
-        <details id="startFromScratchOptions" onclick="savedForLaterDetails.open = false" open>
-          <summary>
-            <img class="reducedIntensity menu" src="Assets/Images/cards_star_000000.svg">
-            Start From Scratch
-          </summary>
-          <button class="appSection" onclick="initiateNote(false)">
-            <table>
-              <tr>
-                <td>
-                  <img class="appSection reducedIntensity" src="Assets/Images/note_add_000000.svg">
-                </td>
-                <td style="width: 100%">
-                    <span class="buttonHeading">
-                      Create a <u>N</u>ew Note <span class="helperText menuDropdown">Alt + N</span>
-                    </span>
-                  <br>
-                  <span class="helperText">Get started with a blank slate</span>
-                </td>
-              </tr>
-            </table>
-          </button>
-          <span class="helperText" style="margin-left: 5px">
-              Don't know where to start? See an <a class="hyperlinkButton" onclick="launchExample()">example</a>
-          </span>
-          <br>
-          <button class="appSection" onclick="openNoteFileInput.click()" style="margin-top: 7px">
-            <table>
-              <tr>
-                <td>
-                  <img class="appSection reducedIntensity" src="Assets/Images/file_open_000000.svg">
-                </td>
-                <td>
-                <span class="buttonHeading">
-                  <u>O</u>pen an Existing Note <span class="helperText menuDropdown">Alt + O</span>
-                </span>
-                  <br>
-                  <input accept="text/html" hidden id="openNoteFileInput" onchange="initiateNote(true)" type="file">
-                  <span class="helperText">Browse your computer for a note you were working on last time</span>
-                </td>
-              </tr>
-            </table>
-          </button>
-          <button class="appSection" id="wordDocumentToNoteButton" onclick="convertWordToNoteInput.click()">
-            <table>
-              <tr>
-                <td>
-                  <img class="appSection reducedIntensity" src="Assets/Images/convert_to_text_000000.svg">
-                </td>
-                <td>
-                  <span class="buttonHeading">Convert a Word Document to a Note</span>
-                  <br>
-                  <input
-                      accept=".xml, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                      hidden id="convertWordToNoteInput"
-                      onchange="convertWordToNote(); wordDocumentToNoteButton.disabled = true" type="file">
-                  <span class="helperText">Markup your Word document as a note</span>
-                </td>
-              </tr>
-            </table>
-          </button>
-          <button class="primaryButton" hidden id="downloadConvertedNote" onclick="downloadConversion()"
-                  style="margin-bottom: 5px">
-            <img class="primaryButton menu" src="Assets/Images/download_000000.svg">
-            Download Converted Note
-          </button>
-        </details>
-        <details id="savedForLaterDetails" onclick="startFromScratchOptions.open = false">
-          <summary>
-            <img class="reducedIntensity menu" src="Assets/Images/schedule_000000.svg">
-            Saved for Later
-          </summary>
-          <div id="savedForLater" style="height: 200px; overflow-y: auto"></div>
-          <p id="nothingSavedIndicator">
-            To save notes, select the, <span class="helperText">"Save for Later"</span> option when you are about to
-            close your note or navigate to <span class="helperText">File > Save For Later</span>.
-          </p>
-        </details>
-      </td>
-      <td class="appSection" hidden id="noteEditor">
-        <div style="overflow-x: auto; height: 100%">
-          <nav style="margin-bottom: 5px">
-            <button class="navButton navSeparation"
-                    onclick="toggleDialog(true, 'shareCopyOfNote', 'shareCopyLink'); prepareToShare()"
-                    style="width: 125px">
-              <img class="reducedIntensity menu" src="Assets/Images/share_000000.svg">
-              Share a Copy
-            </button>
-            <button class="navButton"
-                    onclick="mainEditorFontSize += 1; mainEditor.style.fontSize = mainEditorFontSize + 'px'; updateStatusBar()"
-                    title="Zoom In">
-              <img class="reducedIntensity menu" src="Assets/Images/zoom_in_000000.svg">
-            </button>
-            <button class="navButton navSeparation"
-                    onclick="mainEditorFontSize -= 1; mainEditor.style.fontSize = mainEditorFontSize + 'px'; updateStatusBar()"
-                    title="Zoom Out">
-              <img class="reducedIntensity menu" src="Assets/Images/zoom_out_000000.svg">
-            </button>
-            <input id="noteName"
-                   oninput="noteName.value = noteName.value.replaceAll('.', ''); alterWindowTitle(false)"
-                   placeholder="Untitled" type="text">
-            <span class="helperText" style="font-size: 14px">.htm</span>
-          </nav>
-          <div id="mainEditor" oninput="updateStatusBar()"></div>
-          <nav class="statusBar" id="editorStatusBar">
-            <table style="width: 100%">
-              <tr>
-                <td>
-                  <span id="characterCount"></span>
-                </td>
-                <td>
-                  <span id="wordCount"></span>
-                </td>
-                <td>
-                  <span id="mainEditorZoom"></span>
-                </td>
-                <td>
-                  <button class="warningBanner" title="Writing Insights">
-                    <img class="reducedIntensity menu" src="Assets/Images/data_alert_000000.svg">
-                  </button>
-                </td>
-              </tr>
-            </table>
-          </nav>
-          <a hidden id="noteDownloadLink"></a>
-        </div>
-      </td>
-      <!-- Viewing Panel -->
-      <td class="appSection" id="chooseViewer">
-        <h3>What type of document will you view today?</h3>
-        <details id="localDocuments">
-          <summary accesskey="y" onclick="onlineDocuments.open = false">
-            <img class="reducedIntensity menu" src="Assets/Images/sync_saved_locally_000000.svg">
-            On <u>Y</u>our Computer
-            <span class="helperText menuDropdown">Alt + Y</span>
-          </summary>
-          <table style="width: 100%">
-            <tr>
-              <td>
-                <button class="appSection" onclick="pdfFileInput.click(); toggleViewer(true, 'pdfViewer')">
-                  <table>
-                    <tr>
-                      <td>
-                        <img class="appSection" src="Assets/Images/picture_as_pdf_D16D6A.svg">
-                      </td>
-                      <td>
-                        <span class="buttonHeading">PDF</span>
-                        <br>
-                        <input accept="application/pdf" hidden id="pdfFileInput"
-                               onchange="pdfView.src = window.URL.createObjectURL(this.files[0]); tasksOnceFileOpen('pdfView', 'pdfFileInput')"
-                               type="file">
-                        <span class="helperText">Portable Document Format. .pdf</span>
-                      </td>
-                    </tr>
-                  </table>
-                </button>
-              </td>
-              <td>
-                <button class="appSection" onclick="imageFileInput.click(); toggleViewer(true, 'imageViewer')">
-                  <table>
-                    <tr>
-                      <td>
-                        <img class="appSection" src="Assets/Images/image_80A4AE.svg">
-                      </td>
-                      <td>
-                        <span class="buttonHeading">Image</span>
-                        <br>
-                        <input accept="image/*" hidden id="imageFileInput"
-                               onchange="imageView.src = window.URL.createObjectURL(this.files[0]); tasksOnceFileOpen('imageView', 'imageFileInput')"
-                               type="file">
-                        <span class="helperText">e.x: .png, .jpg, .gif, .svg, .webp</span>
-                      </td>
-                    </tr>
-                  </table>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <button class="appSection" onclick="textFileInput.click(); toggleViewer(true, 'textViewer')">
-                  <table>
-                    <tr>
-                      <td>
-                        <img class="appSection" src="Assets/Images/draft_80A4AE.svg">
-                      </td>
-                      <td>
-                        <span class="buttonHeading">Plain Text</span>
-                        <br>
-                        <input hidden id="textFileInput"
-                               onchange="readTextFile(); textViewActions.hidden = false; textView.hidden = false; tasksOnceFileOpen('textViewer', 'textFileInput')"
-                               type="file">
-                        <span class="helperText">View any file in plain text</span>
-                      </td>
-                    </tr>
-                  </table>
-                </button>
-              </td>
-              <td>
-                <button class="appSection" onclick="videoFileInput.click(); toggleViewer(true, 'videoViewer')">
-                  <table>
-                    <tr>
-                      <td>
-                        <img class="appSection" src="Assets/Images/play_arrow_8B7DBE.svg">
-                      </td>
-                      <td>
-                        <span class="buttonHeading">Audio/Video</span>
-                        <br>
-                        <input accept="audio/*, video/*" hidden id="videoFileInput"
-                               onchange="videoView.src = window.URL.createObjectURL(this.files[0]); tasksOnceFileOpen('videoView', 'videoFileInput'); additionalVideoControls.hidden = false"
-                               type="file">
-                        <span class="helperText">e.x: .mp3, .wav, .mp4</span>
-                      </td>
-                    </tr>
-                  </table>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <button class="appSection"
-                        onclick="wordFileInput.click(); toggleViewer(true, 'wordDocumentViewer')">
-                  <table>
-                    <tr>
-                      <td>
-                        <img class="appSection" src="Assets/Images/description_789DE5.svg">
-                      </td>
-                      <td>
-                        <span class="buttonHeading">Word Document</span>
-                        <br>
-                        <input
-                            accept=".xml, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                            hidden id="wordFileInput"
-                            onchange="readWordDocument(); tasksOnceFileOpen('wordDocumentView', 'wordFileInput')"
-                            type="file">
-                        <span class="helperText">.doc, .docx</span>
-                      </td>
-                    </tr>
-                  </table>
-                </button>
-              </td>
-              <td>
-                <button class="appSection" onclick="codeFileInput.click(); toggleViewer(true, 'codeFileViewer')">
-                  <table>
-                    <tr>
-                      <td>
-                        <img class="appSection" src="Assets/Images/code_9DC384.svg">
-                      </td>
-                      <td>
-                        <span class="buttonHeading">Code File</span>
-                        <br>
-                        <input hidden id="codeFileInput" onchange="viewCodeFile()" type="file">
-                        <span class="helperText">e.x: .py, .html, .css, .js</span>
-                      </td>
-                    </tr>
-                  </table>
-                </button>
-              </td>
-            </tr>
-          </table>
-        </details>
-        <details id="onlineDocuments">
-          <summary accesskey="l" onclick="localDocuments.open = false">
-            <img class="reducedIntensity menu" src="Assets/Images/rss_feed_000000.svg">
-            On<u>l</u>ine
-            <span class="helperText menuDropdown">Alt + L</span>
-          </summary>
-          <table style="width: 100%">
-            <tr>
-              <td>
-                <button class="appSection" onclick="toggleDialog(true, 'linkToPDF', 'URLToPDFInput')">
-                  <table>
-                    <tr>
-                      <td>
-                        <img class="appSection" src="Assets/Images/picture_as_pdf_D16D6A.svg">
-                        <br>
-                        <img class="reducedIntensity appSection" src="Assets/Images/link_000000.svg"
-                             style="margin-top: -20px; margin-left: 10px">
-                      </td>
-                      <td>
-                        <span class="buttonHeading">Link to a PDF</span>
-                      </td>
-                    </tr>
-                  </table>
-                </button>
-              </td>
-              <td>
-                <button class="appSection" onclick="toggleDialog(true, 'linkToImage', 'URLToImageInput')">
-                  <table>
-                    <tr>
-                      <td>
-                        <img class="appSection" src="Assets/Images/image_80A4AE.svg">
-                        <br>
-                        <img class="reducedIntensity appSection" src="Assets/Images/link_000000.svg"
-                             style="margin-top: -20px; margin-left: 10px">
-                      </td>
-                      <td>
-                        <span class="buttonHeading">Link to an Image</span>
-                      </td>
-                    </tr>
-                  </table>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <button class="appSection" onclick="toggleDialog(true, 'insertCloudURLDialog', 'URLToCloudFile')">
-                  <table>
-                    <tr>
-                      <td>
-                        <img class="appSection" src="Assets/Images/cloud_7CA7D8.svg">
-                      </td>
-                      <td>
-                        <span class="buttonHeading">File in the Cloud</span><br>
-                        <span class="helperText">Google Drive, OneDrive</span>
-                      </td>
-                    </tr>
-                  </table>
-                </button>
-              </td>
-              <td>
-                <button class="appSection"
-                        onclick="toggleViewer(true, 'webpageViewer'); tasksOnceFileOpen('webpageView', null); noFileSelected.hidden = true; webpageURLBar.focus()">
-                  <table>
-                    <tr>
-                      <td>
-                        <img class="appSection" src="Assets/Images/language_8B7DBE.svg">
-                      </td>
-                      <td>
-                        <span class="buttonHeading">Webpage</span><br>
-                        <span class="helperText">Not all websites will work</span>
-                      </td>
-                    </tr>
-                  </table>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <button class="appSection" onclick="toggleDialog(true, 'linkToOnlineDesign', 'URLToOnlineDesign')">
-                  <table>
-                    <tr>
-                      <td>
-                        <img class="appSection" src="Assets/Images/wall_art_80A4AE.svg">
-                      </td>
-                      <td>
-                        <span class="buttonHeading">Canva Design</span><br>
-                        <span class="helperText">View your online design</span>
-                      </td>
-                    </tr>
-                  </table>
-                </button>
-              </td>
-              <td>
-                <button class="appSection" onclick="toggleDialog(true, 'linkToTubeVideo', 'URLToTubeVideo')">
-                  <table>
-                    <tr>
-                      <td>
-                        <img class="appSection" src="Assets/Images/youtube_activity_BB271A.svg">
-                      </td>
-                      <td>
-                        <span class="buttonHeading">YouTube Video</span><br>
-                        <span class="helperText">youtube.com</span>
-                      </td>
-                    </tr>
-                  </table>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <button class="appSection" onclick="toggleDialog(true, 'customEmbed', 'embeddedCode')">
-                  <table>
-                    <tr>
-                      <td>
-                        <img class="reducedIntensity appSection" src="Assets/Images/frame_source_000000.svg">
-                      </td>
-                      <td>
-                        <span class="buttonHeading">Custom Embed</span><br>
-                        <span class="helperText">Bring your own embedded document</span>
-                      </td>
-                    </tr>
-                  </table>
-                </button>
-              </td>
-            </tr>
-          </table>
-        </details>
-        <button class="appSection" onclick="anotherNoteFileInput.click(); toggleViewer(true, 'anotherNoteViewer')">
-          <table>
-            <tr>
-              <td>
-                <img class="appSection reducedIntensity" src="Assets/Images/menu_book_000000.svg">
-              </td>
-              <td>
-                <span class="buttonHeading">Another Note</span>
-                <br>
-                <input accept="text/html" hidden id="anotherNoteFileInput"
-                       onchange="readHTMLNote(); anotherNoteView.hidden = false" type="file">
-                <span class="helperText">Have another note open on the side</span>
-              </td>
-            </tr>
-          </table>
+    onload="onLoadTasks()"
+    onresize="dynamicallySetHeight()"
+  >
+    <!-- Global Snackbar -->
+    <div id="snackbar">
+      <img
+        class="primaryButton menu navSeparation"
+        src="Assets/Images/info_000000.svg"
+      />
+      <span class="navSeparation" id="snackbarMessage"></span>
+      <button
+        class="warningBanner"
+        onclick="snackbar.style.display = 'none'"
+        title="Dismiss"
+      >
+        <img class="primaryButton menu" src="Assets/Images/close_000000.svg" />
+      </button>
+    </div>
+    <nav id="appMenu">
+      <button
+        class="menu"
+        disabled
+        id="quillUndo"
+        onclick="quill.history.undo()"
+        title="Undo change (Ctrl + Z)"
+      >
+        <img class="menu" src="Assets/Images/undo_000000.svg" />
+      </button>
+      <button
+        class="menu"
+        disabled
+        id="quillRedo"
+        onclick="quill.history.redo()"
+        title="Redo change (Ctrl + Y)"
+      >
+        <img class="menu" src="Assets/Images/redo_000000.svg" />
+      </button>
+      <button
+        class="menu"
+        onmouseleave="document.getElementById('fileMenu').hidden = true"
+        onmouseover="document.getElementById('fileMenu').hidden = false"
+      >
+        File
+      </button>
+      <div
+        class="menu"
+        hidden
+        id="fileMenu"
+        onmouseleave="document.getElementById('fileMenu').hidden = true"
+        onmouseover="document.getElementById('fileMenu').hidden = false"
+        style="margin-left: 75px"
+      >
+        <button
+          accesskey="n"
+          class="menuDropdown"
+          onclick="if (noteEditor.hidden) { initiateNote(false) } else { confirmSave() }"
+        >
+          <img
+            class="reducedIntensity menu"
+            src="Assets/Images/note_add_000000.svg"
+          />
+          <u>N</u>ew <span class="helperText menuDropdown">Alt + N</span>
         </button>
-      </td>
-      <td class="appSection" hidden id="viewersContainer">
-        <nav class="statusBar" id="viewerStatusBar" style="margin-top: 0; margin-bottom: 5px">
-          <table style="width: 100%">
-            <tr>
-              <td style="width: 5%">
-                <button class="warningBanner"
-                        onclick="toggleDialog(true,  'viewingHistory', null); appendViewingHistory()"
-                        title="Show viewing history">
-                  <img class="reducedIntensity menu" src="Assets/Images/history_000000.svg">
+        <button
+          accesskey="o"
+          class="menuDropdown"
+          id="openNote"
+          onclick="handleAnotherOpen()"
+        >
+          <img
+            class="reducedIntensity menu"
+            src="Assets/Images/file_open_000000.svg"
+          />
+          <u>O</u>pen Note...
+          <span class="helperText menuDropdown">Alt + O</span>
+        </button>
+        <button
+          accesskey="s"
+          class="menuDropdown"
+          disabled
+          id="save"
+          onclick="saveNoteProgress()"
+        >
+          <img
+            class="reducedIntensity menu"
+            src="Assets/Images/save_000000.svg"
+          />
+          <u>S</u>ave <span class="helperText">(In-Browser)</span>
+          <span class="helperText menuDropdown">Alt + S</span>
+        </button>
+        <button
+          class="menuDropdown"
+          id="autoSave"
+          onclick="toggleMenuCheck('autoSaveCheck'); if (autoSaveCheck.src.includes(checkedImageSource)) { localStorage.setItem('autoSaveEnabled', 'true'); mainEditor.oninput = () => { saveNoteProgress(); updateStatusBar() } } else { localStorage.setItem('autoSaveEnabled', 'false'); mainEditor.oninput = () => { updateStatusBar() } }"
+        >
+          <img class="menu" id="autoSaveCheck" />
+          Auto Save
+        </button>
+        <button
+          accesskey="w"
+          class="menuDropdown"
+          disabled
+          id="downloadNote"
+          onclick="downloadNote()"
+        >
+          <img
+            class="reducedIntensity menu"
+            src="Assets/Images/download_000000.svg"
+          />
+          Do<u>w</u>nload Note
+          <span class="helperText menuDropdown">Alt + W</span>
+        </button>
+        <button
+          class="menuDropdown"
+          disabled
+          id="saveForLater"
+          onclick="saveNoteForLater()"
+        >
+          <img
+            class="reducedIntensity menu"
+            src="Assets/Images/more_time_000000.svg"
+          />
+          Save For Later
+        </button>
+        <hr class="menuDropdown" />
+        <button
+          accesskey="v"
+          class="menuDropdown"
+          disabled
+          id="closeFile"
+          onclick="confirmViewerClose.hidden = false"
+        >
+          <img
+            class="reducedIntensity menu"
+            src="Assets/Images/home_000000.svg"
+          />
+          Close <u>V</u>iewer
+          <span class="helperText menuDropdown">Alt + V</span>
+        </button>
+        <button
+          accesskey="t"
+          class="menuDropdown"
+          disabled
+          id="closeNote"
+          onclick="confirmSave()"
+        >
+          <img
+            class="reducedIntensity menu"
+            src="Assets/Images/close_000000.svg"
+          />
+          Close No<u>t</u>e <span class="helperText menuDropdown">Alt + T</span>
+        </button>
+      </div>
+      <button
+        class="menu"
+        onmouseleave="document.getElementById('insertMenu').hidden = true"
+        onmouseover="document.getElementById('insertMenu').hidden = false"
+      >
+        Insert
+      </button>
+      <div
+        class="menu"
+        hidden
+        id="insertMenu"
+        onmouseleave="document.getElementById('insertMenu').hidden = true"
+        onmouseover="document.getElementById('insertMenu').hidden = false"
+        style="margin-left: 120px"
+      >
+        <button
+          class="menuDropdown"
+          disabled
+          id="insertTableButton"
+          onclick="insertTable.hidden = false"
+        >
+          <img
+            class="reducedIntensity menu"
+            src="Assets/Images/table_000000.svg"
+          />
+          Table
+        </button>
+        <button
+          class="menuDropdown"
+          disabled
+          id="insertDate"
+          onclick="quill.insertText(quill.getSelection(focus), (currentDate.getMonth() + 1).toString() + '/' + currentDate.getDate().toString() + '/' + currentDate.getFullYear().toString())"
+        >
+          <img
+            class="reducedIntensity menu"
+            src="Assets/Images/today_000000.svg"
+          />
+          Current Date
+          <span class="helperText menuDropdown">m(m)/d(d)/yyyy</span>
+        </button>
+        <button
+          class="menuDropdown"
+          disabled
+          id="insertTime"
+          onclick="quill.insertText(quill.getSelection(focus), get12HourTime())"
+        >
+          <img
+            class="reducedIntensity menu"
+            src="Assets/Images/schedule_000000.svg"
+          />
+          Current Time <span class="helperText menuDropdown">(h)h:mm</span>
+        </button>
+      </div>
+      <button
+        class="menu"
+        onmouseleave="document.getElementById('viewMenu').hidden = true"
+        onmouseover="document.getElementById('viewMenu').hidden = false"
+      >
+        View
+      </button>
+      <div
+        class="menu"
+        hidden
+        id="viewMenu"
+        onmouseleave="document.getElementById('viewMenu').hidden = true"
+        onmouseover="document.getElementById('viewMenu').hidden = false"
+        style="margin-left: 178px"
+      >
+        <button class="menuDropdown" onclick="window.location.reload()">
+          <img
+            class="reducedIntensity menu"
+            src="Assets/Images/refresh_000000.svg"
+          />
+          Refresh <span class="helperText menuDropdown">F5 or Ctrl + R</span>
+        </button>
+        <button
+          accesskey="p"
+          class="menuDropdown"
+          onclick="adjustAppSectionSizes.hidden = false"
+        >
+          <img
+            class="reducedIntensity menu"
+            src="Assets/Images/width_normal_000000.svg"
+          />
+          Adjust <u>P</u>anel Sizes
+          <span class="helperText menuDropdown">Alt + P</span>
+        </button>
+        <button
+          class="menuDropdown"
+          disabled
+          id="showHTMLEditor"
+          onclick="toggleDialog(true, 'noteAsHTML', null); noteHTMLCodeEditor.session.setValue(quill.getSemanticHTML())"
+        >
+          <img
+            class="reducedIntensity menu"
+            src="Assets/Images/integration_instructions_000000.svg"
+          />
+          Show Note as HTML Markup
+        </button>
+        <button
+          accesskey="h"
+          class="menuDropdown"
+          onclick="toggleDialog(true, 'viewingHistory', null); appendViewingHistory()"
+        >
+          <img
+            class="reducedIntensity menu"
+            src="Assets/Images/history_000000.svg"
+          />
+          Viewing <u>H</u>istory
+          <span class="helperText menuDropdown">Alt + H</span>
+        </button>
+        <hr class="menuDropdown" />
+        <button
+          class="menuDropdown"
+          id="wordWrap"
+          onclick="toggleMenuCheck('wordWrapCheck'); if (wordWrapCheck.src.includes(checkedImageSource)) { localStorage.setItem('wordWrapEnabled', 'true'); mainEditor.style.wordBreak = 'break-word' } else { localStorage.setItem('wordWrapEnabled', 'false'); mainEditor.style.wordBreak = 'normal' }"
+          title="May cause layout issues"
+        >
+          <img
+            class="menu"
+            id="wordWrapCheck"
+            src="Assets/Images/check_000000.svg"
+          />
+          Word Wrap
+        </button>
+      </div>
+      <button
+        class="menu"
+        onmouseleave="document.getElementById('settingsMenu').hidden = true"
+        onmouseover="document.getElementById('settingsMenu').hidden = false"
+      >
+        Settings
+      </button>
+      <div
+        class="menu"
+        hidden
+        id="settingsMenu"
+        onmouseleave="document.getElementById('settingsMenu').hidden = true"
+        onmouseover="document.getElementById('settingsMenu').hidden = false"
+        style="margin-left: 231px"
+      >
+        <button
+          class="menuDropdown"
+          onclick="throwAppError('Feature has not been implemented yet')"
+        >
+          Dark Mode
+        </button>
+        <button
+          class="menuDropdown"
+          onclick="localStorage.clear(); window.location.reload()"
+        >
+          <img
+            class="reducedIntensity menu"
+            src="Assets/Images/reset_settings_000000.svg"
+          />
+          Clear App Data
+          <span class="helperText menuDropdown"
+            >WARNING: This includes any saved notes and settings</span
+          >
+        </button>
+      </div>
+      <button
+        class="menu"
+        onmouseleave="document.getElementById('helpMenu').hidden = true"
+        onmouseover="document.getElementById('helpMenu').hidden = false"
+      >
+        Help
+      </button>
+      <div
+        class="menu"
+        hidden
+        id="helpMenu"
+        onmouseleave="document.getElementById('helpMenu').hidden = true"
+        onmouseover="document.getElementById('helpMenu').hidden = false"
+        style="margin-left: 303px"
+      >
+        <button
+          class="menuDropdown"
+          onclick="toggleDialog(true, 'aboutDialog', null)"
+        >
+          <img
+            class="reducedIntensity menu"
+            src="Assets/Images/info_000000.svg"
+          />
+          About
+        </button>
+      </div>
+    </nav>
+
+    <div style="padding-top: 34px">
+      <table id="appSectionsTable" style="width: 100%; height: 100%">
+        <tr id="appSectionsTableRow">
+          <!-- Editing Panel -->
+          <td class="appSection" id="createOrOpenContainer">
+            <img
+              class="reducedIntensity"
+              src="Assets/Images/door_open_000000.svg"
+            />
+            <h1 style="line-height: 20px">Welcome</h1>
+            <details
+              id="startFromScratchOptions"
+              onclick="savedForLaterDetails.open = false"
+              open
+            >
+              <summary>
+                <img
+                  class="reducedIntensity menu"
+                  src="Assets/Images/cards_star_000000.svg"
+                />
+                Start From Scratch
+              </summary>
+              <button class="appSection" onclick="initiateNote(false)">
+                <table>
+                  <tr>
+                    <td>
+                      <img
+                        class="appSection reducedIntensity"
+                        src="Assets/Images/note_add_000000.svg"
+                      />
+                    </td>
+                    <td style="width: 100%">
+                      <span class="buttonHeading">
+                        Create a <u>N</u>ew Note
+                        <span class="helperText menuDropdown">Alt + N</span>
+                      </span>
+                      <br />
+                      <span class="helperText"
+                        >Get started with a blank slate</span
+                      >
+                    </td>
+                  </tr>
+                </table>
+              </button>
+              <span class="helperText" style="margin-left: 5px">
+                Don't know where to start? See an
+                <a class="hyperlinkButton" onclick="launchExample()">example</a>
+              </span>
+              <br />
+              <button
+                class="appSection"
+                onclick="openNoteFileInput.click()"
+                style="margin-top: 7px"
+              >
+                <table>
+                  <tr>
+                    <td>
+                      <img
+                        class="appSection reducedIntensity"
+                        src="Assets/Images/file_open_000000.svg"
+                      />
+                    </td>
+                    <td>
+                      <span class="buttonHeading">
+                        <u>O</u>pen an Existing Note
+                        <span class="helperText menuDropdown">Alt + O</span>
+                      </span>
+                      <br />
+                      <input
+                        accept="text/html"
+                        hidden
+                        id="openNoteFileInput"
+                        onchange="initiateNote(true)"
+                        type="file"
+                      />
+                      <span class="helperText"
+                        >Browse your computer for a note you were working on
+                        last time</span
+                      >
+                    </td>
+                  </tr>
+                </table>
+              </button>
+              <button
+                class="appSection"
+                id="wordDocumentToNoteButton"
+                onclick="convertWordToNoteInput.click()"
+              >
+                <table>
+                  <tr>
+                    <td>
+                      <img
+                        class="appSection reducedIntensity"
+                        src="Assets/Images/convert_to_text_000000.svg"
+                      />
+                    </td>
+                    <td>
+                      <span class="buttonHeading"
+                        >Convert a Word Document to a Note</span
+                      >
+                      <br />
+                      <input
+                        accept=".xml, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                        hidden
+                        id="convertWordToNoteInput"
+                        onchange="convertWordToNote(); wordDocumentToNoteButton.disabled = true"
+                        type="file"
+                      />
+                      <span class="helperText"
+                        >Markup your Word document as a note</span
+                      >
+                    </td>
+                  </tr>
+                </table>
+              </button>
+              <button
+                class="primaryButton"
+                hidden
+                id="downloadConvertedNote"
+                onclick="downloadConversion()"
+                style="margin-bottom: 5px"
+              >
+                <img
+                  class="primaryButton menu"
+                  src="Assets/Images/download_000000.svg"
+                />
+                Download Converted Note
+              </button>
+            </details>
+            <details
+              id="savedForLaterDetails"
+              onclick="startFromScratchOptions.open = false"
+            >
+              <summary>
+                <img
+                  class="reducedIntensity menu"
+                  src="Assets/Images/schedule_000000.svg"
+                />
+                Saved for Later
+              </summary>
+              <div
+                id="savedForLater"
+                style="height: 200px; overflow-y: auto"
+              ></div>
+              <p id="nothingSavedIndicator">
+                To save notes, select the,
+                <span class="helperText">"Save for Later"</span> option when you
+                are about to close your note or navigate to
+                <span class="helperText">File > Save For Later</span>.
+              </p>
+            </details>
+          </td>
+          <td class="appSection" hidden id="noteEditor">
+            <div style="overflow-x: auto; height: 100%">
+              <nav style="margin-bottom: 5px">
+                <button
+                  class="navButton navSeparation"
+                  onclick="toggleDialog(true, 'shareCopyOfNote', 'shareCopyLink'); prepareToShare()"
+                  style="width: 125px"
+                >
+                  <img
+                    class="reducedIntensity menu"
+                    src="Assets/Images/share_000000.svg"
+                  />
+                  Share a Copy
                 </button>
-              </td>
-              <td>
-                <span class="helperText">File Name</span>
-                <span class="copyOnClick" id="fileName"
+                <button
+                  class="navButton"
+                  onclick="mainEditorFontSize += 1; mainEditor.style.fontSize = mainEditorFontSize + 'px'; updateStatusBar()"
+                  title="Zoom In"
+                >
+                  <img
+                    class="reducedIntensity menu"
+                    src="Assets/Images/zoom_in_000000.svg"
+                  />
+                </button>
+                <button
+                  class="navButton navSeparation"
+                  onclick="mainEditorFontSize -= 1; mainEditor.style.fontSize = mainEditorFontSize + 'px'; updateStatusBar()"
+                  title="Zoom Out"
+                >
+                  <img
+                    class="reducedIntensity menu"
+                    src="Assets/Images/zoom_out_000000.svg"
+                  />
+                </button>
+                <input
+                  id="noteName"
+                  oninput="noteName.value = noteName.value.replaceAll('.', ''); alterWindowTitle(false)"
+                  placeholder="Untitled"
+                  type="text"
+                />
+                <span class="helperText" style="font-size: 14px">.htm</span>
+              </nav>
+              <div id="mainEditor" oninput="updateStatusBar()"></div>
+              <nav class="statusBar" id="editorStatusBar">
+                <table style="width: 100%">
+                  <tr>
+                    <td>
+                      <span id="characterCount"></span>
+                    </td>
+                    <td>
+                      <span id="wordCount"></span>
+                    </td>
+                    <td>
+                      <span id="mainEditorZoom"></span>
+                    </td>
+                    <td>
+                      <button class="warningBanner" title="Writing Insights">
+                        <img
+                          class="reducedIntensity menu"
+                          src="Assets/Images/data_alert_000000.svg"
+                        />
+                      </button>
+                    </td>
+                  </tr>
+                </table>
+              </nav>
+              <a hidden id="noteDownloadLink"></a>
+            </div>
+          </td>
+          <!-- Viewing Panel -->
+          <td class="appSection" id="chooseViewer">
+            <h3>What type of document will you view today?</h3>
+            <details id="localDocuments">
+              <summary accesskey="y" onclick="onlineDocuments.open = false">
+                <img
+                  class="reducedIntensity menu"
+                  src="Assets/Images/sync_saved_locally_000000.svg"
+                />
+                On <u>Y</u>our Computer
+                <span class="helperText menuDropdown">Alt + Y</span>
+              </summary>
+              <table style="width: 100%">
+                <tr>
+                  <td>
+                    <button
+                      class="appSection"
+                      onclick="pdfFileInput.click(); toggleViewer(true, 'pdfViewer')"
+                    >
+                      <table>
+                        <tr>
+                          <td>
+                            <img
+                              class="appSection"
+                              src="Assets/Images/picture_as_pdf_D16D6A.svg"
+                            />
+                          </td>
+                          <td>
+                            <span class="buttonHeading">PDF</span>
+                            <br />
+                            <input
+                              accept="application/pdf"
+                              hidden
+                              id="pdfFileInput"
+                              onchange="pdfView.src = window.URL.createObjectURL(this.files[0]); tasksOnceFileOpen('pdfView', 'pdfFileInput')"
+                              type="file"
+                            />
+                            <span class="helperText"
+                              >Portable Document Format. .pdf</span
+                            >
+                          </td>
+                        </tr>
+                      </table>
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      class="appSection"
+                      onclick="imageFileInput.click(); toggleViewer(true, 'imageViewer')"
+                    >
+                      <table>
+                        <tr>
+                          <td>
+                            <img
+                              class="appSection"
+                              src="Assets/Images/image_80A4AE.svg"
+                            />
+                          </td>
+                          <td>
+                            <span class="buttonHeading">Image</span>
+                            <br />
+                            <input
+                              accept="image/*"
+                              hidden
+                              id="imageFileInput"
+                              onchange="imageView.src = window.URL.createObjectURL(this.files[0]); tasksOnceFileOpen('imageView', 'imageFileInput')"
+                              type="file"
+                            />
+                            <span class="helperText"
+                              >e.x: .png, .jpg, .gif, .svg, .webp</span
+                            >
+                          </td>
+                        </tr>
+                      </table>
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <button
+                      class="appSection"
+                      onclick="textFileInput.click(); toggleViewer(true, 'textViewer')"
+                    >
+                      <table>
+                        <tr>
+                          <td>
+                            <img
+                              class="appSection"
+                              src="Assets/Images/draft_80A4AE.svg"
+                            />
+                          </td>
+                          <td>
+                            <span class="buttonHeading">Plain Text</span>
+                            <br />
+                            <input
+                              hidden
+                              id="textFileInput"
+                              onchange="readTextFile(); textViewActions.hidden = false; textView.hidden = false; tasksOnceFileOpen('textViewer', 'textFileInput')"
+                              type="file"
+                            />
+                            <span class="helperText"
+                              >View any file in plain text</span
+                            >
+                          </td>
+                        </tr>
+                      </table>
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      class="appSection"
+                      onclick="videoFileInput.click(); toggleViewer(true, 'videoViewer')"
+                    >
+                      <table>
+                        <tr>
+                          <td>
+                            <img
+                              class="appSection"
+                              src="Assets/Images/play_arrow_8B7DBE.svg"
+                            />
+                          </td>
+                          <td>
+                            <span class="buttonHeading">Audio/Video</span>
+                            <br />
+                            <input
+                              accept="audio/*, video/*"
+                              hidden
+                              id="videoFileInput"
+                              onchange="videoView.src = window.URL.createObjectURL(this.files[0]); tasksOnceFileOpen('videoView', 'videoFileInput'); additionalVideoControls.hidden = false"
+                              type="file"
+                            />
+                            <span class="helperText"
+                              >e.x: .mp3, .wav, .mp4</span
+                            >
+                          </td>
+                        </tr>
+                      </table>
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <button
+                      class="appSection"
+                      onclick="wordFileInput.click(); toggleViewer(true, 'wordDocumentViewer')"
+                    >
+                      <table>
+                        <tr>
+                          <td>
+                            <img
+                              class="appSection"
+                              src="Assets/Images/description_789DE5.svg"
+                            />
+                          </td>
+                          <td>
+                            <span class="buttonHeading">Word Document</span>
+                            <br />
+                            <input
+                              accept=".xml, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                              hidden
+                              id="wordFileInput"
+                              onchange="readWordDocument(); tasksOnceFileOpen('wordDocumentView', 'wordFileInput')"
+                              type="file"
+                            />
+                            <span class="helperText">.doc, .docx</span>
+                          </td>
+                        </tr>
+                      </table>
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      class="appSection"
+                      onclick="codeFileInput.click(); toggleViewer(true, 'codeFileViewer')"
+                    >
+                      <table>
+                        <tr>
+                          <td>
+                            <img
+                              class="appSection"
+                              src="Assets/Images/code_9DC384.svg"
+                            />
+                          </td>
+                          <td>
+                            <span class="buttonHeading">Code File</span>
+                            <br />
+                            <input
+                              hidden
+                              id="codeFileInput"
+                              onchange="viewCodeFile()"
+                              type="file"
+                            />
+                            <span class="helperText"
+                              >e.x: .py, .html, .css, .js</span
+                            >
+                          </td>
+                        </tr>
+                      </table>
+                    </button>
+                  </td>
+                </tr>
+              </table>
+            </details>
+            <details id="onlineDocuments">
+              <summary accesskey="l" onclick="localDocuments.open = false">
+                <img
+                  class="reducedIntensity menu"
+                  src="Assets/Images/rss_feed_000000.svg"
+                />
+                On<u>l</u>ine
+                <span class="helperText menuDropdown">Alt + L</span>
+              </summary>
+              <table style="width: 100%">
+                <tr>
+                  <td>
+                    <button
+                      class="appSection"
+                      onclick="toggleDialog(true, 'linkToPDF', 'URLToPDFInput')"
+                    >
+                      <table>
+                        <tr>
+                          <td>
+                            <img
+                              class="appSection"
+                              src="Assets/Images/picture_as_pdf_D16D6A.svg"
+                            />
+                            <br />
+                            <img
+                              class="reducedIntensity appSection"
+                              src="Assets/Images/link_000000.svg"
+                              style="margin-top: -20px; margin-left: 10px"
+                            />
+                          </td>
+                          <td>
+                            <span class="buttonHeading">Link to a PDF</span>
+                          </td>
+                        </tr>
+                      </table>
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      class="appSection"
+                      onclick="toggleDialog(true, 'linkToImage', 'URLToImageInput')"
+                    >
+                      <table>
+                        <tr>
+                          <td>
+                            <img
+                              class="appSection"
+                              src="Assets/Images/image_80A4AE.svg"
+                            />
+                            <br />
+                            <img
+                              class="reducedIntensity appSection"
+                              src="Assets/Images/link_000000.svg"
+                              style="margin-top: -20px; margin-left: 10px"
+                            />
+                          </td>
+                          <td>
+                            <span class="buttonHeading">Link to an Image</span>
+                          </td>
+                        </tr>
+                      </table>
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <button
+                      class="appSection"
+                      onclick="toggleDialog(true, 'insertCloudURLDialog', 'URLToCloudFile')"
+                    >
+                      <table>
+                        <tr>
+                          <td>
+                            <img
+                              class="appSection"
+                              src="Assets/Images/cloud_7CA7D8.svg"
+                            />
+                          </td>
+                          <td>
+                            <span class="buttonHeading">File in the Cloud</span
+                            ><br />
+                            <span class="helperText"
+                              >Google Drive, OneDrive</span
+                            >
+                          </td>
+                        </tr>
+                      </table>
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      class="appSection"
+                      onclick="toggleViewer(true, 'webpageViewer'); tasksOnceFileOpen('webpageView', null); noFileSelected.hidden = true; webpageURLBar.focus()"
+                    >
+                      <table>
+                        <tr>
+                          <td>
+                            <img
+                              class="appSection"
+                              src="Assets/Images/language_8B7DBE.svg"
+                            />
+                          </td>
+                          <td>
+                            <span class="buttonHeading">Webpage</span><br />
+                            <span class="helperText"
+                              >Not all websites will work</span
+                            >
+                          </td>
+                        </tr>
+                      </table>
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <button
+                      class="appSection"
+                      onclick="toggleDialog(true, 'linkToOnlineDesign', 'URLToOnlineDesign')"
+                    >
+                      <table>
+                        <tr>
+                          <td>
+                            <img
+                              class="appSection"
+                              src="Assets/Images/wall_art_80A4AE.svg"
+                            />
+                          </td>
+                          <td>
+                            <span class="buttonHeading">Canva Design</span
+                            ><br />
+                            <span class="helperText"
+                              >View your online design</span
+                            >
+                          </td>
+                        </tr>
+                      </table>
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      class="appSection"
+                      onclick="toggleDialog(true, 'linkToTubeVideo', 'URLToTubeVideo')"
+                    >
+                      <table>
+                        <tr>
+                          <td>
+                            <img
+                              class="appSection"
+                              src="Assets/Images/youtube_activity_BB271A.svg"
+                            />
+                          </td>
+                          <td>
+                            <span class="buttonHeading">YouTube Video</span
+                            ><br />
+                            <span class="helperText">youtube.com</span>
+                          </td>
+                        </tr>
+                      </table>
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <button
+                      class="appSection"
+                      onclick="toggleDialog(true, 'customEmbed', 'embeddedCode')"
+                    >
+                      <table>
+                        <tr>
+                          <td>
+                            <img
+                              class="reducedIntensity appSection"
+                              src="Assets/Images/frame_source_000000.svg"
+                            />
+                          </td>
+                          <td>
+                            <span class="buttonHeading">Custom Embed</span
+                            ><br />
+                            <span class="helperText"
+                              >Bring your own embedded document</span
+                            >
+                          </td>
+                        </tr>
+                      </table>
+                    </button>
+                  </td>
+                </tr>
+              </table>
+            </details>
+            <button
+              class="appSection"
+              onclick="anotherNoteFileInput.click(); toggleViewer(true, 'anotherNoteViewer')"
+            >
+              <table>
+                <tr>
+                  <td>
+                    <img
+                      class="appSection reducedIntensity"
+                      src="Assets/Images/menu_book_000000.svg"
+                    />
+                  </td>
+                  <td>
+                    <span class="buttonHeading">Another Note</span>
+                    <br />
+                    <input
+                      accept="text/html"
+                      hidden
+                      id="anotherNoteFileInput"
+                      onchange="readHTMLNote(); anotherNoteView.hidden = false"
+                      type="file"
+                    />
+                    <span class="helperText"
+                      >Have another note open on the side</span
+                    >
+                  </td>
+                </tr>
+              </table>
+            </button>
+          </td>
+          <td class="appSection" hidden id="viewersContainer">
+            <nav
+              class="statusBar"
+              id="viewerStatusBar"
+              style="margin-top: 0; margin-bottom: 5px"
+            >
+              <table style="width: 100%">
+                <tr>
+                  <td style="width: 5%">
+                    <button
+                      class="warningBanner"
+                      onclick="toggleDialog(true,  'viewingHistory', null); appendViewingHistory()"
+                      title="Show viewing history"
+                    >
+                      <img
+                        class="reducedIntensity menu"
+                        src="Assets/Images/history_000000.svg"
+                      />
+                    </button>
+                  </td>
+                  <td>
+                    <span class="helperText">File Name</span>
+                    <span
+                      class="copyOnClick"
+                      id="fileName"
                       onclick="navigator.clipboard.writeText(this.innerHTML); displaySnackbar(copiedToClipboardString)"
-                      title="Copy the file's name">---</span>
-              </td>
-              <td>
-                <span class="helperText">Size</span>
-                <span class="copyOnClick" id="fileSize"
+                      title="Copy the file's name"
+                      >---</span
+                    >
+                  </td>
+                  <td>
+                    <span class="helperText">Size</span>
+                    <span
+                      class="copyOnClick"
+                      id="fileSize"
                       onclick="navigator.clipboard.writeText(this.innerHTML); displaySnackbar(copiedToClipboardString)"
-                      title="Copy the file's size">---</span>
-              </td>
-              <td>
-                <span class="helperText">Last Modified</span>
-                <span class="copyOnClick" id="fileLastModified"
+                      title="Copy the file's size"
+                      >---</span
+                    >
+                  </td>
+                  <td>
+                    <span class="helperText">Last Modified</span>
+                    <span
+                      class="copyOnClick"
+                      id="fileLastModified"
                       onclick="navigator.clipboard.writeText(this.innerHTML); displaySnackbar('Copied to clipboard')"
-                      title="Copy the file's last modified date">---</span>
-              </td>
-            </tr>
-          </table>
-        </nav>
-        <div id="noFileSelected" style="margin-top: 15%">
-          <img class="reducedIntensity" src="Assets/Images/file_copy_off_000000.svg" style="margin-left: 45%">
-          <h2 class="helperText" style="text-align: center">No file has been chosen... Yet</h2>
-          <button class="primaryButton" onclick="hideAndShow('viewersContainer', 'chooseViewer')"
-                  style="width: 100%">
-            <img class="primaryButton menu" src="Assets/Images/home_000000.svg">
-            Return to Welcome
-          </button>
+                      title="Copy the file's last modified date"
+                      >---</span
+                    >
+                  </td>
+                </tr>
+              </table>
+            </nav>
+            <div id="noFileSelected" style="margin-top: 15%">
+              <img
+                class="reducedIntensity"
+                src="Assets/Images/file_copy_off_000000.svg"
+                style="margin-left: 45%"
+              />
+              <h2 class="helperText" style="text-align: center">
+                No file has been chosen... Yet
+              </h2>
+              <button
+                class="primaryButton"
+                onclick="hideAndShow('viewersContainer', 'chooseViewer')"
+                style="width: 100%"
+              >
+                <img
+                  class="primaryButton menu"
+                  src="Assets/Images/home_000000.svg"
+                />
+                Return to Welcome
+              </button>
+            </div>
+            <div hidden id="pdfViewer">
+              <iframe hidden id="pdfView"></iframe>
+            </div>
+            <div hidden id="imageViewer">
+              <img id="imageView" />
+            </div>
+            <div hidden id="textViewer">
+              <nav hidden id="textViewActions">
+                <select
+                  class="navSeparation"
+                  id="textViewFont"
+                  onchange="textView.style.fontFamily = textViewFont.value"
+                >
+                  <option value="sans-serif">Sans Serif</option>
+                  <option value="serif">Serif</option>
+                  <option selected value="monospace">Monospace</option>
+                </select>
+                <button
+                  class="navButton"
+                  onclick="textViewFontSize += 1; textView.style.fontSize = textViewFontSize + 'px'"
+                  title="Increase font size"
+                >
+                  <img
+                    class="reducedIntensity menu"
+                    src="Assets/Images/text_increase_000000.svg"
+                  />
+                </button>
+                <button
+                  class="navButton"
+                  onclick="textViewFontSize -= 1; textView.style.fontSize = textViewFontSize + 'px'"
+                  title="Decrease font size"
+                >
+                  <img
+                    class="reducedIntensity menu"
+                    src="Assets/Images/text_decrease_000000.svg"
+                  />
+                </button>
+                <button
+                  class="navButton"
+                  onclick="textView.style.fontSize = '14px'; textViewFontSize = 14"
+                  title="Reset font size"
+                >
+                  <img
+                    class="reducedIntensity menu"
+                    src="Assets/Images/fullscreen_exit_000000.svg"
+                  />
+                </button>
+              </nav>
+              <textarea hidden id="textView" readonly></textarea>
+            </div>
+            <div hidden id="videoViewer">
+              <video autoplay controls hidden id="videoView"></video>
+              <nav class="statusBar" hidden id="additionalVideoControls">
+                <div class="pretty p-default p-curve p-thick">
+                  <input
+                    oninput="videoView.loop = !!this.checked;"
+                    type="checkbox"
+                  />
+                  <div class="state p-primary p-primary-o">
+                    <label>Enable Loop</label>
+                  </div>
+                </div>
+              </nav>
+            </div>
+            <div hidden id="wordDocumentViewer">
+              <div hidden id="wordDocumentView"></div>
+            </div>
+            <div hidden id="codeFileViewer">
+              <nav class="statusBar" hidden id="codeFileViewerStatusBar">
+                <span class="helperText navSeparation">Syntax</span>
+                <select
+                  class="navSeparation"
+                  id="programmingLanguageMode"
+                  onchange="const editorMode = 'ace/mode/' + programmingLanguageMode.value; codeFileViewCodeEditor.session.setMode(editorMode);"
+                >
+                  <option value="plain_text">None</option>
+                  <optgroup label="A">
+                    <option value="actionscript">ActionScript</option>
+                    <option value="ada">Ada</option>
+                    <option value="apache_conf">Apache Config</option>
+                    <option value="assembly_arm32">Assembly (Arm32)</option>
+                    <option value="assembly_x86">Assembly (x86)</option>
+                    <option value="autohotkey">AutoHotkey</option>
+                  </optgroup>
+                  <optgroup label="B">
+                    <option value="basic">Basic</option>
+                    <option value="batchfile">Batch</option>
+                  </optgroup>
+                  <optgroup label="C">
+                    <option value="c_cpp">C/C++</option>
+                    <option value="clojure">Clojure</option>
+                    <option value="cobol">COBOL</option>
+                    <option value="coffee">Coffee</option>
+                    <option value="csharp">C#</option>
+                    <option value="css">CSS</option>
+                    <option value="csv">CSV</option>
+                  </optgroup>
+                  <optgroup label="D">
+                    <option value="dart">Dart</option>
+                    <option value="diff">Diff</option>
+                    <option value="django">Django</option>
+                    <option value="dockerfile">Dockerfile</option>
+                  </optgroup>
+                  <optgroup label="E">
+                    <option value="elixir">Elixir</option>
+                    <option value="elm">Elm</option>
+                    <option value="erlang">Erlang</option>
+                  </optgroup>
+                  <optgroup label="F">
+                    <option value="fortran">Fortran</option>
+                    <option value="fsharp">F#</option>
+                  </optgroup>
+                  <optgroup label="G">
+                    <option value="golang">Go</option>
+                    <option value="groovy">Groovy</option>
+                  </optgroup>
+                  <optgroup label="H">
+                    <option value="haskell">Haskell</option>
+                    <option value="html">HTML</option>
+                  </optgroup>
+                  <optgroup label="J">
+                    <option value="java">Java</option>
+                    <option value="javascript">JavaScript</option>
+                    <option value="json">JSON</option>
+                    <option value="jsx">JSX</option>
+                    <option value="julia">Julia</option>
+                  </optgroup>
+                  <optgroup label="K">
+                    <option value="kotlin">Kotlin</option>
+                  </optgroup>
+                  <optgroup label="L">
+                    <option value="less">LESS</option>
+                    <option value="lisp">Lisp</option>
+                    <option value="lua">Lua</option>
+                  </optgroup>
+                  <optgroup label="M">
+                    <option value="makefile">Makefile</option>
+                    <option value="markdown">Markdown</option>
+                    <option value="matlab">MATLAB</option>
+                  </optgroup>
+                  <optgroup label="N">
+                    <option value="nim">Nim</option>
+                    <option value="nix">Nix</option>
+                  </optgroup>
+                  <optgroup label="O">
+                    <option value="objectivec">Objective-C</option>
+                    <option value="ocaml">OCaml</option>
+                  </optgroup>
+                  <optgroup label="P">
+                    <option value="pascal">Pascal</option>
+                    <option value="perl">Perl</option>
+                    <option value="php">PHP</option>
+                    <option value="powershell">Powershell</option>
+                    <option value="prolog">Prolog</option>
+                    <option value="python">Python</option>
+                  </optgroup>
+                  <optgroup label="R">
+                    <option value="r">R</option>
+                    <option value="razor">Razor</option>
+                    <option value="ruby">Ruby</option>
+                    <option value="rust">Rust</option>
+                  </optgroup>
+                  <optgroup label="S">
+                    <option value="sass">SASS</option>
+                    <option value="scala">Scala</option>
+                    <option value="scheme">Scheme</option>
+                    <option value="scss">SCSS</option>
+                    <option value="sql">SQL</option>
+                    <option value="svg">SVG</option>
+                    <option value="swift">Swift</option>
+                  </optgroup>
+                  <optgroup label="T">
+                    <option value="toml">TOML</option>
+                    <option value="tsx">TSX</option>
+                    <option value="typescript">TypeScript</option>
+                  </optgroup>
+                  <optgroup label="V">
+                    <option value="vbscript">VB Script</option>
+                  </optgroup>
+                  <optgroup label="X">
+                    <option value="xml">XML</option>
+                  </optgroup>
+                  <optgroup label="Y">
+                    <option value="yaml">YAML</option>
+                  </optgroup>
+                  <optgroup label="Z">
+                    <option value="zig">Zig</option>
+                  </optgroup>
+                </select>
+                <button
+                  class="navButton"
+                  onclick="codeFileViewFontSize += 1; codeFileView.style.fontSize = codeFileViewFontSize + 'px'"
+                  title="Increase font size"
+                >
+                  <img
+                    class="reducedIntensity menu"
+                    src="Assets/Images/text_increase_000000.svg"
+                  />
+                </button>
+                <button
+                  class="navButton"
+                  onclick="codeFileViewFontSize -= 1; codeFileView.style.fontSize = codeFileViewFontSize + 'px'"
+                  title="Decrease font size"
+                >
+                  <img
+                    class="reducedIntensity menu"
+                    src="Assets/Images/text_decrease_000000.svg"
+                  />
+                </button>
+                <button
+                  class="navButton"
+                  onclick="codeFileView.style.fontSize = '12px'; codeFileViewFontSize = 12"
+                  title="Reset font size"
+                >
+                  <img
+                    class="reducedIntensity menu"
+                    src="Assets/Images/fullscreen_exit_000000.svg"
+                  />
+                </button>
+              </nav>
+              <div hidden id="codeFileView"></div>
+            </div>
+            <div hidden id="cloudFileViewer">
+              <iframe allowfullscreen hidden id="cloudFileView"></iframe>
+            </div>
+            <div hidden id="webpageViewer">
+              <nav style="margin-bottom: 5px">
+                <table>
+                  <tr>
+                    <td>
+                      <button
+                        class="navButton"
+                        onclick="if (lastViewedWebpages.length > 1) { webpageView.src = lastViewedWebpages[lastViewedWebpages.length - 2]; webpageURLBar.value = lastViewedWebpages[lastViewedWebpages.length - 2] }"
+                        title="Back"
+                      >
+                        <img
+                          class="reducedIntensity menu"
+                          src="Assets/Images/arrow_back_000000.svg"
+                        />
+                      </button>
+                    </td>
+                    <td style="width: 100%">
+                      <input
+                        id="webpageURLBar"
+                        placeholder="Type a website address here"
+                        style="width: 95%"
+                        type="url"
+                      />
+                    </td>
+                    <td>
+                      <button
+                        class="navButton"
+                        onclick="if (webpageURLBar.value.includes('https://') === false || !webpageURLBar.value.includes('http://') === false) { webpageURLBar.value = 'https://' + webpageURLBar.value } webpageView.src = webpageURLBar.value; lastViewedWebpages.push(webpageURLBar.value); addHistoryEntry('webpageURLBar')"
+                        title="Search"
+                      >
+                        <img
+                          class="reducedIntensity menu"
+                          src="Assets/Images/search_000000.svg"
+                        />
+                      </button>
+                    </td>
+                  </tr>
+                </table>
+              </nav>
+              <iframe
+                id="webpageView"
+                src="Pages/noWebpageNavigated.html"
+              ></iframe>
+            </div>
+            <div hidden id="onlineDesignViewer">
+              <iframe allowfullscreen id="onlineDesignView"></iframe>
+            </div>
+            <div hidden id="tubeVideoViewer">
+              <iframe
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+                id="tubeVideoView"
+                referrerpolicy="strict-origin-when-cross-origin"
+              ></iframe>
+            </div>
+            <div hidden id="customEmbedViewer"></div>
+            <div hidden id="anotherNoteViewer">
+              <div hidden id="anotherNoteView"></div>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Confirm save pop-up -->
+    <div class="saveBeforeClosing" hidden id="confirmSaveDialog">
+      <div class="dialogOverlay">
+        <h1 class="saveBeforeClosing" id="saveDocumentHeading"></h1>
+        <h3 class="saveBeforeClosing helperText">
+          You are continuing onto another task and your current work has not
+          been saved
+        </h3>
+        <table
+          onclick="confirmSaveDialog.hidden = true"
+          style="width: 100%; margin-bottom: 5px"
+        >
+          <tr>
+            <td style="width: 33%">
+              <button class="dialogOverlay">
+                <img
+                  class="reducedIntensity menu"
+                  src="Assets/Images/edit_note_000000.svg"
+                />
+                Continue Working
+              </button>
+            </td>
+            <td style="width: 33%">
+              <button class="primaryButton" onclick="doNotSave()">
+                <img
+                  class="primaryButton menu"
+                  src="Assets/Images/delete_000000.svg"
+                />
+                Don't Save
+              </button>
+            </td>
+            <td style="width: 33%">
+              <button class="dialogOverlay" onclick="downloadNote()">
+                <img
+                  class="reducedIntensity menu"
+                  src="Assets/Images/download_000000.svg"
+                />
+                Download
+              </button>
+            </td>
+          </tr>
+        </table>
+        <a class="hyperlinkButton" onclick="saveNoteForLater()">
+          <img
+            class="reducedIntensity menu"
+            src="Assets/Images/more_time_000000.svg"
+          />
+          Save For Later
+        </a>
+      </div>
+    </div>
+
+    <div class="saveBeforeClosing" id="mobileSizeIndication" style="z-index: 2">
+      <div class="dialogOverlay" style="padding: 20px; text-align: center">
+        <img
+          class="reducedIntensity"
+          src="Assets/Images/fit_width_000000.svg"
+        />
+        <h1>Looks Like You're Out of Screen Real-Estate!</h1>
+        <h3 class="helperText">
+          For NoteMaster to be effectively usable, your viewing area must be
+          wider than 600 pixels. Please widen your window
+        </h3>
+      </div>
+    </div>
+
+    <!-- Confirmation before closing a viewer -->
+    <div class="saveBeforeClosing" hidden id="confirmViewerClose">
+      <div class="dialogOverlay">
+        <h1 class="saveBeforeClosing">
+          Are you sure you want to close this viewer?
+        </h1>
+        <h3 class="saveBeforeClosing helperText">
+          By doing this, you will revert your view back to Welcome and be able
+          to select another document to view
+        </h3>
+        <table onclick="confirmViewerClose.hidden = true" style="width: 100%">
+          <tr>
+            <td style="width: 50%">
+              <button class="primaryButton" onclick="closeCurrentFile()">
+                Yes
+              </button>
+            </td>
+            <td style="width: 50%">
+              <button class="dialogOverlay">No</button>
+            </td>
+          </tr>
+        </table>
+        <br />
+        <a
+          class="hyperlinkButton"
+          onclick="toggleDialog(true, 'viewingHistory', null); appendViewingHistory()"
+        >
+          <img
+            class="reducedIntensity menu"
+            src="Assets/Images/history_000000.svg"
+          />
+          See your Viewing History
+        </a>
+      </div>
+    </div>
+
+    <div class="saveBeforeClosing" hidden id="adjustAppSectionSizes">
+      <div
+        class="dialogOverlay"
+        id="appSectionSizesContainer"
+        style="backdrop-filter: blur(1px); margin-top: 1%"
+      >
+        <h1>Adjust Panel Sizes</h1>
+        <h3 class="helperText">
+          Use your arrow keys or type in a specific value to adjust the size of
+          each panel
+        </h3>
+        <table style="width: 100%">
+          <tr>
+            <td style="width: 50%">
+              <table style="width: 100%">
+                <tr>
+                  <td>Viewing (%)</td>
+                  <td>
+                    <a
+                      class="hyperlinkButton"
+                      onclick="viewingSize.value = viewingSize.min; adjustViewingAndEditorSizes()"
+                      >Min</a
+                    >
+                    or
+                    <a
+                      class="hyperlinkButton"
+                      onclick="viewingSize.value = viewingSize.max; adjustViewingAndEditorSizes()"
+                      >Max</a
+                    >
+                  </td>
+                </tr>
+              </table>
+              <input
+                id="viewingSize"
+                max="68"
+                min="32"
+                oninput="adjustViewingAndEditorSizes()"
+                onkeydown="appSectionSizesContainer.style.backgroundColor = 'rgba(255, 255, 255, 0.5)'"
+                onkeyup="setTimeout(() => { appSectionSizesContainer.style.backgroundColor = 'white' }, 2000);"
+                onmousedown="appSectionSizesContainer.style.backgroundColor = 'rgba(255, 255, 255, 0.5)'"
+                onmouseup="setTimeout(() => { appSectionSizesContainer.style.backgroundColor = 'white' }, 2000);"
+                placeholder="50% (Default)"
+                style="width: 90%; margin-top: 5px"
+                type="number"
+                value="50"
+              />
+            </td>
+            <td style="width: 50%">
+              <table style="width: 100%">
+                <tr>
+                  <td>Editor (%)</td>
+                </tr>
+              </table>
+              <input
+                id="editorSize"
+                placeholder="50% (Default)"
+                readonly
+                style="width: 90%; margin-top: 5px"
+                type="number"
+                value="50"
+              />
+            </td>
+          </tr>
+        </table>
+        <a class="hyperlinkButton" onclick="adjustAppSectionSizes.hidden = true"
+          >Close</a
+        >
+        <button
+          class="primaryButton"
+          onclick="viewingSize.value = 50; editorSize.value = 50; applyPercentageSizes(); localStorage.setItem('viewingSizeValue', viewingSize.value)"
+          style="width: 20%; margin-left: 5px; margin-top: 5px"
+        >
+          Reset
+        </button>
+      </div>
+    </div>
+
+    <div class="saveBeforeClosing" hidden id="insertTable">
+      <div class="dialogOverlay" style="height: 75%">
+        <h1>Insert a Table</h1>
+        <h3 class="helperText">
+          Select the number of rows and columns you'd like to have and then copy
+          the generated table. Note that this cannot be changed later for the
+          same table
+        </h3>
+        <table style="width: 100%">
+          <tr>
+            <td style="width: 40%">
+              <input
+                id="tableRows"
+                max="32"
+                min="1"
+                onchange="if (tableRows.value <= 9 && tableRows.value >= 1) { tableRows.value = '0' + tableRows.value } if (tableRows.value > tableRows.max) { tableRows.value = tableRows.max }"
+                placeholder="Rows"
+                style="width: 85%"
+                type="number"
+              />
+            </td>
+            <td style="width: 40%">
+              <input
+                id="tableColumns"
+                max="32"
+                min="1"
+                onchange="if (tableColumns.value <= 9 && tableColumns.value >= 1) { tableColumns.value = '0' + tableColumns.value } if (tableColumns.value > tableColumns.max) { tableColumns.value = tableColumns.max }"
+                placeholder="Columns"
+                style="width: 85%"
+                type="number"
+              />
+            </td>
+            <td style="width: 20%">
+              <button
+                class="primaryButton"
+                onclick="createTable()"
+                style="width: 100%"
+              >
+                Create
+              </button>
+            </td>
+          </tr>
+        </table>
+        <div
+          id="insertTableEditor"
+          style="user-select: all; margin-top: 5px; margin-bottom: 5px"
+        ></div>
+        <a
+          class="hyperlinkButton"
+          onclick="insertTable.hidden = true; insertTableQuill.setContents()"
+          >Close</a
+        >
+        <div hidden id="tableSourceHTML">
+          <table id="createdTable"></table>
         </div>
-        <div hidden id="pdfViewer">
-          <iframe hidden id="pdfView"></iframe>
+      </div>
+    </div>
+
+    <!-- Dialogs with focus -->
+    <div hidden id="dialogFocusBackground">
+      <!-- "Out-of-Box" Experience -->
+      <div class="dialogOverlay" hidden id="gettingStarted">
+        <img src="notemasterIcon.svg" style="width: 48px" />
+        <h1>Get Started With NoteMaster!</h1>
+        <h3 class="helperText">A lightweight note-taking app for the web</h3>
+        <table style="width: 100%">
+          <tr>
+            <td>
+              <button
+                class="primaryButton"
+                onclick="toggleDialog(false, 'gettingStarted', null); localStorage.setItem('finishedGetStarted', 'true')"
+              >
+                Continue
+              </button>
+            </td>
+            <td>
+              <button
+                class="dialogOverlay"
+                onclick="toggleDialog(false, 'gettingStarted', null); launchExample()"
+              >
+                Launch Example
+              </button>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <!-- Error -->
+      <div
+        class="dialogOverlay"
+        hidden
+        id="applicationError"
+        style="z-index: 3"
+      >
+        <h1>An Error Occurred</h1>
+        <h3 class="helperText" id="errorMessage"></h3>
+        <button
+          class="dialogOverlay"
+          onclick="toggleDialog(false, 'applicationError', null)"
+          style="width: 100%"
+        >
+          OK
+        </button>
+      </div>
+      <div class="dialogOverlay" hidden id="viewingHistory" style="height: 75%">
+        <h1>Viewing History</h1>
+        <h3 class="helperText">
+          View, manage, and add the documents you have viewed to your notes
+        </h3>
+        <div id="historyTableContainer" style="overflow-x: auto">
+          <table id="viewingHistoryTable"></table>
         </div>
-        <div hidden id="imageViewer">
-          <img id="imageView">
-        </div>
-        <div hidden id="textViewer">
-          <nav hidden id="textViewActions">
-            <select class="navSeparation" id="textViewFont"
-                    onchange="textView.style.fontFamily = textViewFont.value">
-              <option value="sans-serif">Sans Serif</option>
-              <option value="serif">Serif</option>
-              <option selected value="monospace">Monospace</option>
-            </select>
-            <button class="navButton"
-                    onclick="textViewFontSize += 1; textView.style.fontSize = textViewFontSize + 'px'"
-                    title="Increase font size">
-              <img class="reducedIntensity menu" src="Assets/Images/text_increase_000000.svg">
-            </button>
-            <button class="navButton"
-                    onclick="textViewFontSize -= 1; textView.style.fontSize = textViewFontSize + 'px'"
-                    title="Decrease font size">
-              <img class="reducedIntensity menu" src="Assets/Images/text_decrease_000000.svg">
-            </button>
-            <button class="navButton" onclick="textView.style.fontSize = '14px'; textViewFontSize = 14"
-                    title="Reset font size">
-              <img class="reducedIntensity menu" src="Assets/Images/fullscreen_exit_000000.svg">
-            </button>
-          </nav>
-          <textarea hidden id="textView" readonly></textarea>
-        </div>
-        <div hidden id="videoViewer">
-          <video autoplay controls hidden id="videoView"></video>
-          <nav class="statusBar" hidden id="additionalVideoControls">
-            <div class="pretty p-default p-curve p-thick">
-              <input oninput="videoView.loop = !!this.checked;" type="checkbox">
-              <div class="state p-primary p-primary-o">
-                <label>Enable Loop</label>
+        <br />
+        <a
+          class="hyperlinkButton"
+          onclick="toggleDialog(false, 'viewingHistory', null)"
+        >
+          Close
+        </a>
+        <button
+          class="primaryButton"
+          onclick="document.getElementById('copyHistoryEditor').hidden = false; copyHistoryQuill.clipboard.dangerouslyPasteHTML(historyTableContainer.innerHTML)"
+          style="width: 20%; margin-left: 5px"
+        >
+          Copy History
+        </button>
+        <br />
+        <br />
+        <div hidden id="copyHistoryEditor" style="user-select: all"></div>
+      </div>
+      <!-- Link to PDF -->
+      <div class="dialogOverlay" hidden id="linkToPDF">
+        <img src="Assets/Images/picture_as_pdf_D16D6A.svg" />
+        <img class="reducedIntensity" src="Assets/Images/link_000000.svg" />
+        <h1>Link to a PDF</h1>
+        <h3 class="helperText">Paste the URL to your PDF below</h3>
+        <table style="width: 100%; margin-bottom: 10px">
+          <tr>
+            <td style="width: 75%">
+              <input
+                id="URLToPDFInput"
+                placeholder="e.x: https://example.com/document.pdf"
+                style="width: 94%"
+                type="url"
+              />
+            </td>
+            <td>
+              <button
+                class="primaryButton"
+                onclick="if (checkURLInput('URLToPDFInput')) { toggleDialog(false, 'linkToPDF', null); pdfView.src = document.getElementById('URLToPDFInput').value; toggleViewer(true, 'pdfViewer'); tasksOnceFileOpen('pdfView', null); addHistoryEntry('URLToPDFInput')}"
+              >
+                Open
+              </button>
+            </td>
+          </tr>
+        </table>
+        <a
+          class="hyperlinkButton"
+          onclick="toggleDialog(false, 'linkToPDF', null)"
+        >
+          Close
+        </a>
+      </div>
+      <!-- Link to an Image -->
+      <div class="dialogOverlay" hidden id="linkToImage">
+        <img src="Assets/Images/image_80A4AE.svg" />
+        <img class="reducedIntensity" src="Assets/Images/link_000000.svg" />
+        <h1>Link to an Image</h1>
+        <h3 class="helperText">Paste the URL to your image below</h3>
+        <table style="width: 100%; margin-bottom: 10px">
+          <tr>
+            <td style="width: 75%">
+              <input
+                id="URLToImageInput"
+                placeholder="e.x: https://example.com/image.jpg"
+                style="width: 94%"
+                type="url"
+              />
+            </td>
+            <td>
+              <button
+                class="primaryButton"
+                onclick="if (checkURLInput('URLToImageInput')) { toggleDialog(false, 'linkToImage', null); imageView.src = document.getElementById('URLToImageInput').value; toggleViewer(true, 'imageViewer'); tasksOnceFileOpen('imageView', null); addHistoryEntry('URLToImageInput') }"
+              >
+                Open
+              </button>
+            </td>
+          </tr>
+        </table>
+        <a
+          class="hyperlinkButton"
+          onclick="toggleDialog(false, 'linkToImage', null)"
+        >
+          Close
+        </a>
+      </div>
+      <!-- Cloud file -->
+      <div
+        class="dialogOverlay"
+        hidden
+        id="insertCloudURLDialog"
+        style="margin-top: 5%"
+      >
+        <img src="Assets/Images/cloud_7CA7D8.svg" />
+        <img src="Assets/Images/article_789DE5.svg" />
+        <img src="Assets/Images/dataset_9DC384.svg" />
+        <img src="Assets/Images/insert_chart_D08370.svg" />
+        <h1>File in the Cloud</h1>
+        <h3 class="helperText">
+          Paste the URL to your cloud document below from your browser's address
+          bar
+        </h3>
+        <span class="helperText">Cloud Storage Service</span>
+        <table style="width: 100%; margin-top: 10px; margin-bottom: 10px">
+          <tr>
+            <td>
+              <div class="pretty p-default p-curve p-thick">
+                <input
+                  checked
+                  id="onedriveOrigin"
+                  name="documentOrigin"
+                  type="radio"
+                />
+                <div class="state p-primary p-primary-o">
+                  <label>OneDrive</label>
+                </div>
               </div>
-            </div>
-          </nav>
-        </div>
-        <div hidden id="wordDocumentViewer">
-          <div hidden id="wordDocumentView"></div>
-        </div>
-        <div hidden id="codeFileViewer">
-          <nav class="statusBar" hidden id="codeFileViewerStatusBar">
-            <span class="helperText navSeparation">Syntax</span>
-            <select class="navSeparation" id="programmingLanguageMode"
-                    onchange="const editorMode = 'ace/mode/' + programmingLanguageMode.value; codeFileViewCodeEditor.session.setMode(editorMode);">
-              <option value="plain_text">None</option>
-              <optgroup label="A">
-                <option value="actionscript">ActionScript</option>
-                <option value="ada">Ada</option>
-                <option value="apache_conf">Apache Config</option>
-                <option value="assembly_arm32">Assembly (Arm32)</option>
-                <option value="assembly_x86">Assembly (x86)</option>
-                <option value="autohotkey">AutoHotkey</option>
-              </optgroup>
-              <optgroup label="B">
-                <option value="basic">Basic</option>
-                <option value="batchfile">Batch</option>
-              </optgroup>
-              <optgroup label="C">
-                <option value="c_cpp">C/C++</option>
-                <option value="clojure">Clojure</option>
-                <option value="cobol">COBOL</option>
-                <option value="coffee">Coffee</option>
-                <option value="csharp">C#</option>
-                <option value="css">CSS</option>
-                <option value="csv">CSV</option>
-              </optgroup>
-              <optgroup label="D">
-                <option value="dart">Dart</option>
-                <option value="diff">Diff</option>
-                <option value="django">Django</option>
-                <option value="dockerfile">Dockerfile</option>
-              </optgroup>
-              <optgroup label="E">
-                <option value="elixir">Elixir</option>
-                <option value="elm">Elm</option>
-                <option value="erlang">Erlang</option>
-              </optgroup>
-              <optgroup label="F">
-                <option value="fortran">Fortran</option>
-                <option value="fsharp">F#</option>
-              </optgroup>
-              <optgroup label="G">
-                <option value="golang">Go</option>
-                <option value="groovy">Groovy</option>
-              </optgroup>
-              <optgroup label="H">
-                <option value="haskell">Haskell</option>
-                <option value="html">HTML</option>
-              </optgroup>
-              <optgroup label="J">
-                <option value="java">Java</option>
-                <option value="javascript">JavaScript</option>
-                <option value="json">JSON</option>
-                <option value="jsx">JSX</option>
-                <option value="julia">Julia</option>
-              </optgroup>
-              <optgroup label="K">
-                <option value="kotlin">Kotlin</option>
-              </optgroup>
-              <optgroup label="L">
-                <option value="less">LESS</option>
-                <option value="lisp">Lisp</option>
-                <option value="lua">Lua</option>
-              </optgroup>
-              <optgroup label="M">
-                <option value="makefile">Makefile</option>
-                <option value="markdown">Markdown</option>
-                <option value="matlab">MATLAB</option>
-              </optgroup>
-              <optgroup label="N">
-                <option value="nim">Nim</option>
-                <option value="nix">Nix</option>
-              </optgroup>
-              <optgroup label="O">
-                <option value="objectivec">Objective-C</option>
-                <option value="ocaml">OCaml</option>
-              </optgroup>
-              <optgroup label="P">
-                <option value="pascal">Pascal</option>
-                <option value="perl">Perl</option>
-                <option value="php">PHP</option>
-                <option value="powershell">Powershell</option>
-                <option value="prolog">Prolog</option>
-                <option value="python">Python</option>
-              </optgroup>
-              <optgroup label="R">
-                <option value="r">R</option>
-                <option value="razor">Razor</option>
-                <option value="ruby">Ruby</option>
-                <option value="rust">Rust</option>
-              </optgroup>
-              <optgroup label="S">
-                <option value="sass">SASS</option>
-                <option value="scala">Scala</option>
-                <option value="scheme">Scheme</option>
-                <option value="scss">SCSS</option>
-                <option value="sql">SQL</option>
-                <option value="svg">SVG</option>
-                <option value="swift">Swift</option>
-              </optgroup>
-              <optgroup label="T">
-                <option value="toml">TOML</option>
-                <option value="tsx">TSX</option>
-                <option value="typescript">TypeScript</option>
-              </optgroup>
-              <optgroup label="V">
-                <option value="vbscript">VB Script</option>
-              </optgroup>
-              <optgroup label="X">
-                <option value="xml">XML</option>
-              </optgroup>
-              <optgroup label="Y">
-                <option value="yaml">YAML</option>
-              </optgroup>
-              <optgroup label="Z">
-                <option value="zig">Zig</option>
-              </optgroup>
-            </select>
-            <button class="navButton"
-                    onclick="codeFileViewFontSize += 1; codeFileView.style.fontSize = codeFileViewFontSize + 'px'"
-                    title="Increase font size">
-              <img class="reducedIntensity menu" src="Assets/Images/text_increase_000000.svg">
-            </button>
-            <button class="navButton"
-                    onclick="codeFileViewFontSize -= 1; codeFileView.style.fontSize = codeFileViewFontSize + 'px'"
-                    title="Decrease font size">
-              <img class="reducedIntensity menu" src="Assets/Images/text_decrease_000000.svg">
-            </button>
-            <button class="navButton" onclick="codeFileView.style.fontSize = '12px'; codeFileViewFontSize = 12"
-                    title="Reset font size">
-              <img class="reducedIntensity menu" src="Assets/Images/fullscreen_exit_000000.svg">
-            </button>
-          </nav>
-          <div hidden id="codeFileView"></div>
-        </div>
-        <div hidden id="cloudFileViewer">
-          <iframe allowfullscreen hidden id="cloudFileView"></iframe>
-        </div>
-        <div hidden id="webpageViewer">
-          <nav style="margin-bottom: 5px">
-            <table>
-              <tr>
-                <td>
-                  <button class="navButton"
-                          onclick="if (lastViewedWebpages.length > 1) { webpageView.src = lastViewedWebpages[lastViewedWebpages.length - 2]; webpageURLBar.value = lastViewedWebpages[lastViewedWebpages.length - 2] }"
-                          title="Back">
-                    <img class="reducedIntensity menu" src="Assets/Images/arrow_back_000000.svg">
-                  </button>
-                </td>
-                <td style="width: 100%">
-                  <input id="webpageURLBar" placeholder="Type a website address here" style="width: 95%" type="url">
-                </td>
-                <td>
-                  <button class="navButton"
-                          onclick="if (webpageURLBar.value.includes('https://') === false || !webpageURLBar.value.includes('http://') === false) { webpageURLBar.value = 'https://' + webpageURLBar.value } webpageView.src = webpageURLBar.value; lastViewedWebpages.push(webpageURLBar.value); addHistoryEntry('webpageURLBar')"
-                          title="Search">
-                    <img class="reducedIntensity menu" src="Assets/Images/search_000000.svg">
-                  </button>
-                </td>
-              </tr>
-            </table>
-          </nav>
-          <iframe id="webpageView" src="Pages/noWebpageNavigated.html"></iframe>
-        </div>
-        <div hidden id="onlineDesignViewer">
-          <iframe allowfullscreen id="onlineDesignView"></iframe>
-        </div>
-        <div hidden id="tubeVideoViewer">
-          <iframe
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowfullscreen id="tubeVideoView" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-        </div>
-        <div hidden id="customEmbedViewer"></div>
-        <div hidden id="anotherNoteViewer">
-          <div hidden id="anotherNoteView"></div>
-        </div>
-      </td>
-    </tr>
-  </table>
-</div>
-
-<!-- Confirm save pop-up -->
-<div class="saveBeforeClosing" hidden id="confirmSaveDialog">
-  <div class="dialogOverlay">
-    <h1 class="saveBeforeClosing" id="saveDocumentHeading"></h1>
-    <h3 class="saveBeforeClosing helperText">
-      You are continuing onto another task and your current work has not been saved
-    </h3>
-    <table onclick="confirmSaveDialog.hidden = true" style="width: 100%; margin-bottom: 5px">
-      <tr>
-        <td style="width: 33%">
-          <button class="dialogOverlay">
-            <img class="reducedIntensity menu" src="Assets/Images/edit_note_000000.svg">
-            Continue Working
-          </button>
-        </td>
-        <td style="width: 33%">
-          <button class="primaryButton" onclick="doNotSave()">
-            <img class="primaryButton menu" src="Assets/Images/delete_000000.svg">
-            Don't Save
-          </button>
-        </td>
-        <td style="width: 33%">
-          <button class="dialogOverlay" onclick="downloadNote()">
-            <img class="reducedIntensity menu" src="Assets/Images/download_000000.svg">
-            Download
-          </button>
-        </td>
-      </tr>
-    </table>
-    <a class="hyperlinkButton" onclick="saveNoteForLater()">
-      <img class="reducedIntensity menu" src="Assets/Images/more_time_000000.svg">
-      Save For Later
-    </a>
-  </div>
-</div>
-
-<div class="saveBeforeClosing" id="mobileSizeIndication" style="z-index: 2">
-  <div class="dialogOverlay" style="padding: 20px; text-align: center">
-    <img class="reducedIntensity" src="Assets/Images/fit_width_000000.svg">
-    <h1>Looks Like You're Out of Screen Real-Estate!</h1>
-    <h3 class="helperText">
-      For NoteMaster to be effectively usable, your viewing area must be wider than 600 pixels.
-      Please widen your window
-    </h3>
-  </div>
-</div>
-
-<!-- Confirmation before closing a viewer -->
-<div class="saveBeforeClosing" hidden id="confirmViewerClose">
-  <div class="dialogOverlay">
-    <h1 class="saveBeforeClosing">Are you sure you want to close this viewer?</h1>
-    <h3 class="saveBeforeClosing helperText">
-      By doing this, you will revert your view back to Welcome and be able to
-      select another document to view
-    </h3>
-    <table onclick="confirmViewerClose.hidden = true" style="width: 100%">
-      <tr>
-        <td style="width: 50%">
-          <button class="primaryButton" onclick="closeCurrentFile()">
-            Yes
-          </button>
-        </td>
-        <td style="width: 50%">
-          <button class="dialogOverlay">No</button>
-        </td>
-      </tr>
-    </table>
-    <br>
-    <a class="hyperlinkButton" onclick="toggleDialog(true, 'viewingHistory', null); appendViewingHistory()">
-      <img class="reducedIntensity menu" src="Assets/Images/history_000000.svg">
-      See your Viewing History
-    </a>
-  </div>
-</div>
-
-<div class="saveBeforeClosing" hidden id="adjustAppSectionSizes">
-  <div class="dialogOverlay" id="appSectionSizesContainer" style="backdrop-filter: blur(1px); margin-top: 1%">
-    <h1>Adjust Panel Sizes</h1>
-    <h3 class="helperText">Use your arrow keys or type in a specific value to adjust the size of each panel</h3>
-    <table style="width: 100%">
-      <tr>
-        <td style="width: 50%">
-          <table style="width: 100%">
-            <tr>
-              <td>Viewing (%)</td>
-              <td>
-                <a class="hyperlinkButton"
-                   onclick="viewingSize.value = viewingSize.min; adjustViewingAndEditorSizes()">Min</a>
-                or
-                <a class="hyperlinkButton"
-                   onclick="viewingSize.value = viewingSize.max; adjustViewingAndEditorSizes()">Max</a>
-              </td>
-            </tr>
-          </table>
-          <input id="viewingSize" max="68" min="32" oninput="adjustViewingAndEditorSizes()"
-                 onkeydown="appSectionSizesContainer.style.backgroundColor = 'rgba(255, 255, 255, 0.5)'"
-                 onkeyup="setTimeout(() => { appSectionSizesContainer.style.backgroundColor = 'white' }, 2000);"
-                 onmousedown="appSectionSizesContainer.style.backgroundColor = 'rgba(255, 255, 255, 0.5)'"
-                 onmouseup="setTimeout(() => { appSectionSizesContainer.style.backgroundColor = 'white' }, 2000);"
-                 placeholder="50% (Default)" style="width: 90%; margin-top: 5px" type="number" value="50">
-        </td>
-        <td style="width: 50%">
-          <table style="width: 100%">
-            <tr>
-              <td>Editor (%)</td>
-            </tr>
-          </table>
-          <input id="editorSize" placeholder="50% (Default)" readonly style="width: 90%; margin-top: 5px"
-                 type="number" value="50">
-        </td>
-      </tr>
-    </table>
-    <a class="hyperlinkButton" onclick="adjustAppSectionSizes.hidden = true">Close</a>
-    <button class="primaryButton"
-            onclick="viewingSize.value = 50; editorSize.value = 50; applyPercentageSizes(); localStorage.setItem('viewingSizeValue', viewingSize.value)"
-            style="width: 20%; margin-left: 5px; margin-top: 5px">
-      Reset
-    </button>
-  </div>
-</div>
-
-<div class="saveBeforeClosing" hidden id="insertTable">
-  <div class="dialogOverlay" style="height: 75%">
-    <h1>Insert a Table</h1>
-    <h3 class="helperText">
-      Select the number of rows and columns you'd like to have and then copy the generated table.
-      Note that this cannot be changed later for the same table
-    </h3>
-    <table style="width: 100%">
-      <tr>
-        <td style="width: 40%">
-          <input id="tableRows" max="32" min="1"
-                 onchange="if (tableRows.value <= 9 && tableRows.value >= 1) { tableRows.value = '0' + tableRows.value } if (tableRows.value > tableRows.max) { tableRows.value = tableRows.max }"
-                 placeholder="Rows" style="width: 85%" type="number">
-        </td>
-        <td style="width: 40%">
-          <input id="tableColumns" max="32" min="1"
-                 onchange="if (tableColumns.value <= 9 && tableColumns.value >= 1) { tableColumns.value = '0' + tableColumns.value } if (tableColumns.value > tableColumns.max) { tableColumns.value = tableColumns.max }"
-                 placeholder="Columns" style="width: 85%" type="number">
-        </td>
-        <td style="width: 20%">
-          <button class="primaryButton" onclick="createTable()" style="width: 100%">Create</button>
-        </td>
-      </tr>
-    </table>
-    <div id="insertTableEditor" style="user-select: all; margin-top: 5px; margin-bottom: 5px"></div>
-    <a class="hyperlinkButton" onclick="insertTable.hidden = true; insertTableQuill.setContents()">Close</a>
-    <div hidden id="tableSourceHTML">
-      <table id="createdTable"></table>
+            </td>
+            <td>
+              <div class="pretty p-default p-curve p-thick">
+                <input
+                  id="googleDriveOrigin"
+                  name="documentOrigin"
+                  type="radio"
+                />
+                <div class="state p-primary p-primary-o">
+                  <label>Google Drive</label>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </table>
+        <table style="width: 100%; margin-bottom: 10px">
+          <tr>
+            <td style="width: 75%">
+              <input
+                id="URLToCloudFile"
+                placeholder="e.x: https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit?gid=0#gid=0"
+                style="width: 94%"
+                type="url"
+              />
+            </td>
+            <td>
+              <button class="primaryButton" onclick="parseCloudDocumentURL()">
+                Open
+              </button>
+            </td>
+          </tr>
+        </table>
+        <a
+          class="hyperlinkButton"
+          onclick="toggleDialog(false, 'insertCloudURLDialog', null)"
+        >
+          Close
+        </a>
+      </div>
+      <div class="dialogOverlay" hidden id="linkToOnlineDesign">
+        <img src="Assets/Images/wall_art_80A4AE.svg" />
+        <h1>Canva Design</h1>
+        <h3 class="helperText">
+          Paste the URL to your Canva design below from your browser's address
+          bar and ensure everyone can view it
+        </h3>
+        <table style="width: 100%; margin-bottom: 10px">
+          <tr>
+            <td style="width: 75%">
+              <input
+                id="URLToOnlineDesign"
+                placeholder="e.x: https://www.canva.com/design/DAFtggAaSbw/SzSJMmE_NBWoxEPNDkNjbQ/edit"
+                style="width: 94%"
+                type="url"
+              />
+            </td>
+            <td>
+              <button
+                class="primaryButton"
+                onclick="if (checkURLInput('URLToOnlineDesign')) { onlineDesignView.src = URLToOnlineDesign.value.replace('edit', 'view') + '?embed'; toggleDialog(false, 'linkToOnlineDesign', null); toggleViewer(true,  'onlineDesignViewer'); tasksOnceFileOpen('onlineDesignView', null); addHistoryEntry('URLToOnlineDesign') }"
+              >
+                Open
+              </button>
+            </td>
+          </tr>
+        </table>
+        <a
+          class="hyperlinkButton"
+          onclick="toggleDialog(false, 'linkToOnlineDesign', null)"
+        >
+          Close
+        </a>
+      </div>
+      <!-- Link to a Video -->
+      <div class="dialogOverlay" hidden id="linkToTubeVideo">
+        <img src="Assets/Images/youtube_activity_BB271A.svg" />
+        <h1>YouTube Video</h1>
+        <h3 class="helperText">Paste the URL to your YouTube video below</h3>
+        <table style="width: 100%; margin-bottom: 10px">
+          <tr>
+            <td style="width: 75%">
+              <input
+                id="URLToTubeVideo"
+                placeholder="e.x: https://www.youtube.com/watch?v=jNQXAC9IVRw"
+                style="width: 94%"
+                type="url"
+              />
+            </td>
+            <td>
+              <button
+                class="primaryButton"
+                onclick="if (checkURLInput('URLToTubeVideo')) { tubeVideoView.src = 'https://www.youtube.com/embed/' + (URLToTubeVideo.value.replaceAll('https://www.youtube.com/watch?v=', '')).replaceAll('https://youtu.be/', ''); toggleDialog(false, 'linkToTubeVideo', null); toggleViewer(true, 'tubeVideoViewer'); tasksOnceFileOpen('tubeVideoView', null); addHistoryEntry('URLToTubeVideo') }"
+              >
+                Open
+              </button>
+            </td>
+          </tr>
+        </table>
+        <a
+          class="hyperlinkButton"
+          onclick="toggleDialog(false, 'linkToTubeVideo', null)"
+        >
+          Close
+        </a>
+      </div>
+      <!-- Custom iFrame -->
+      <div class="dialogOverlay" hidden id="customEmbed">
+        <img
+          class="reducedIntensity"
+          src="Assets/Images/frame_source_000000.svg"
+        />
+        <h1>Custom Embed</h1>
+        <h3 class="helperText">
+          Paste your own iFrame code to view it in the Viewing Panel
+        </h3>
+        <table style="width: 100%; height: 150px">
+          <tr>
+            <td style="width: 75%">
+              <textarea
+                id="embeddedCode"
+                placeholder="Paste your code here"
+              ></textarea>
+            </td>
+            <td style="width: 25%">
+              <button class="primaryButton" onclick="verifyIfiFrameInEmbed()">
+                Open
+              </button>
+            </td>
+          </tr>
+        </table>
+        <br />
+        <a
+          class="hyperlinkButton"
+          onclick="toggleDialog(false, 'customEmbed', null)"
+        >
+          Close
+        </a>
+      </div>
+      <div class="dialogOverlay" hidden id="shareCopyOfNote">
+        <img class="reducedIntensity" src="Assets/Images/share_000000.svg" />
+        <h1>Share a Copy</h1>
+        <h3 class="helperText">
+          Send a copy of your note another person to view and edit
+        </h3>
+        <input
+          id="shareCopyLink"
+          readonly
+          style="width: 95%; user-select: all"
+          type="url"
+        />
+        <br />
+        <br />
+        <a
+          class="hyperlinkButton"
+          onclick="toggleDialog(false, 'shareCopyOfNote', null)"
+        >
+          Close
+        </a>
+        <button
+          class="primaryButton"
+          onclick="navigator.clipboard.writeText(shareCopyLink.value); displaySnackbar('Link copied!')"
+          style="width: 20%; margin-left: 10px"
+        >
+          <img class="primaryButton menu" src="Assets/Images/link_000000.svg" />
+          Copy Link
+        </button>
+      </div>
+      <div
+        class="dialogOverlay"
+        hidden
+        id="noteAsHTML"
+        style="height: 90%; margin-top: 1%"
+      >
+        <h1>Show Note as HTML Markup</h1>
+        <h3 class="helperText">
+          See your note as HTML markup to be used within other applications
+        </h3>
+        <div id="noteHTML"></div>
+        <br />
+        <a
+          class="hyperlinkButton"
+          onclick="toggleDialog(false, 'noteAsHTML', null)"
+        >
+          Close
+        </a>
+        <button
+          class="primaryButton"
+          onclick="navigator.clipboard.writeText(noteHTMLCodeEditor.getValue()); displaySnackbar(copiedToClipboardString)"
+          style="width: 20%; margin-left: 5px"
+        >
+          Copy
+        </button>
+      </div>
+      <div class="dialogOverlay" hidden id="aboutDialog">
+        <img class="reducedIntensity" src="Assets/Images/info_000000.svg" />
+        <img src="notemasterIcon.svg" style="width: 48px" />
+        <h1>About</h1>
+        <p style="line-height: 25px">
+          NoteMaster v25.05.x
+          <br />
+          Designed and developed by
+          <a href="https://github.com/j-m-a-g" target="_blank">J. Maghamez</a>
+          <br />
+          <br />
+          Built with open-source software
+        </p>
+        <table style="width: 100%">
+          <tr>
+            <td>
+              <a href="https://quilljs.com" target="_blank">Quill.js</a>
+            </td>
+            <td>
+              <a
+                href="https://github.com/lokesh-coder/pretty-checkbox"
+                target="_blank"
+                >pretty-checkbox</a
+              >
+            </td>
+            <td>
+              <a
+                href="https://github.com/mwilliamson/mammoth.js"
+                target="_blank"
+                >mammoth.js</a
+              >
+            </td>
+            <td>
+              <a href="https://ace.c9.io" target="_blank">ace</a>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <a href="https://katex.org" target="_blank">KaTex</a>
+            </td>
+          </tr>
+        </table>
+        <br />
+        <a
+          class="hyperlinkButton"
+          onclick="toggleDialog(false, 'aboutDialog', null)"
+        >
+          Close
+        </a>
+      </div>
     </div>
-  </div>
-</div>
 
-<!-- Dialogs with focus -->
-<div hidden id="dialogFocusBackground">
-  <!-- "Out-of-Box" Experience -->
-  <div class="dialogOverlay" hidden id="gettingStarted">
-    <img src="notemasterIcon.svg" style="width: 48px">
-    <h1>Get Started With NoteMaster!</h1>
-    <h3 class="helperText">A lightweight note-taking app for the web</h3>
-    <table style="width: 100%">
-      <tr>
-        <td>
-          <button class="primaryButton"
-                  onclick="toggleDialog(false, 'gettingStarted', null); localStorage.setItem('finishedGetStarted', 'true')">
-            Continue
-          </button>
-        </td>
-        <td>
-          <button class="dialogOverlay" onclick="toggleDialog(false, 'gettingStarted', null); launchExample()">Launch
-            Example
-          </button>
-        </td>
-      </tr>
-    </table>
-  </div>
-  <!-- Error -->
-  <div class="dialogOverlay" hidden id="applicationError" style="z-index: 3">
-    <h1>An Error Occurred</h1>
-    <h3 class="helperText" id="errorMessage"></h3>
-    <button class="dialogOverlay" onclick="toggleDialog(false, 'applicationError', null)" style="width: 100%">OK
-    </button>
-  </div>
-  <div class="dialogOverlay" hidden id="viewingHistory" style="height: 75%">
-    <h1>Viewing History</h1>
-    <h3 class="helperText">View, manage, and add the documents you have viewed to your notes</h3>
-    <div id="historyTableContainer" style="overflow-x: auto">
-      <table id="viewingHistoryTable"></table>
-    </div>
-    <br>
-    <a class="hyperlinkButton" onclick="toggleDialog(false, 'viewingHistory', null)">
-      Close
-    </a>
-    <button class="primaryButton"
-            onclick="document.getElementById('copyHistoryEditor').hidden = false; copyHistoryQuill.clipboard.dangerouslyPasteHTML(historyTableContainer.innerHTML)"
-            style="width: 20%; margin-left: 5px">
-      Copy History
-    </button>
-    <br>
-    <br>
-    <div hidden id="copyHistoryEditor" style="user-select: all"></div>
-  </div>
-  <!-- Link to PDF -->
-  <div class="dialogOverlay" hidden id="linkToPDF">
-    <img src="Assets/Images/picture_as_pdf_D16D6A.svg">
-    <img class="reducedIntensity" src="Assets/Images/link_000000.svg">
-    <h1>Link to a PDF</h1>
-    <h3 class="helperText">Paste the URL to your PDF below</h3>
-    <table style="width: 100%; margin-bottom: 10px">
-      <tr>
-        <td style="width: 75%">
-          <input id="URLToPDFInput" placeholder="e.x: https://example.com/document.pdf" style="width: 94%"
-                 type="url">
-        </td>
-        <td>
-          <button class="primaryButton"
-                  onclick="if (checkURLInput('URLToPDFInput')) { toggleDialog(false, 'linkToPDF', null); pdfView.src = document.getElementById('URLToPDFInput').value; toggleViewer(true, 'pdfViewer'); tasksOnceFileOpen('pdfView', null); addHistoryEntry('URLToPDFInput')}">
-            Open
-          </button>
-        </td>
-      </tr>
-    </table>
-    <a class="hyperlinkButton" onclick="toggleDialog(false, 'linkToPDF', null)">
-      Close
-    </a>
-  </div>
-  <!-- Link to an Image -->
-  <div class="dialogOverlay" hidden id="linkToImage">
-    <img src="Assets/Images/image_80A4AE.svg">
-    <img class="reducedIntensity" src="Assets/Images/link_000000.svg">
-    <h1>Link to an Image</h1>
-    <h3 class="helperText">Paste the URL to your image below</h3>
-    <table style="width: 100%; margin-bottom: 10px">
-      <tr>
-        <td style="width: 75%">
-          <input id="URLToImageInput" placeholder="e.x: https://example.com/image.jpg" style="width: 94%"
-                 type="url">
-        </td>
-        <td>
-          <button class="primaryButton"
-                  onclick="if (checkURLInput('URLToImageInput')) { toggleDialog(false, 'linkToImage', null); imageView.src = document.getElementById('URLToImageInput').value; toggleViewer(true, 'imageViewer'); tasksOnceFileOpen('imageView', null); addHistoryEntry('URLToImageInput') }">
-            Open
-          </button>
-        </td>
-      </tr>
-    </table>
-    <a class="hyperlinkButton" onclick="toggleDialog(false, 'linkToImage', null)">
-      Close
-    </a>
-  </div>
-  <!-- Cloud file -->
-  <div class="dialogOverlay" hidden id="insertCloudURLDialog" style="margin-top: 5%">
-    <img src="Assets/Images/cloud_7CA7D8.svg">
-    <img src="Assets/Images/article_789DE5.svg">
-    <img src="Assets/Images/dataset_9DC384.svg">
-    <img src="Assets/Images/insert_chart_D08370.svg">
-    <h1>File in the Cloud</h1>
-    <h3 class="helperText">Paste the URL to your cloud document below from your browser's address bar</h3>
-    <span class="helperText">Cloud Storage Service</span>
-    <table style="width: 100%; margin-top: 10px; margin-bottom: 10px">
-      <tr>
-        <td>
-          <div class="pretty p-default p-curve p-thick">
-            <input checked id="onedriveOrigin" name="documentOrigin" type="radio">
-            <div class="state p-primary p-primary-o">
-              <label>OneDrive</label>
-            </div>
-          </div>
-        </td>
-        <td>
-          <div class="pretty p-default p-curve p-thick">
-            <input id="googleDriveOrigin" name="documentOrigin" type="radio">
-            <div class="state p-primary p-primary-o">
-              <label>Google Drive</label>
-            </div>
-          </div>
-        </td>
-      </tr>
-    </table>
-    <table style="width: 100%; margin-bottom: 10px">
-      <tr>
-        <td style="width: 75%">
-          <input id="URLToCloudFile"
-                 placeholder="e.x: https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit?gid=0#gid=0"
-                 style="width: 94%" type="url">
-        </td>
-        <td>
-          <button class="primaryButton" onclick="parseCloudDocumentURL()">Open</button>
-        </td>
-      </tr>
-    </table>
-    <a class="hyperlinkButton" onclick="toggleDialog(false, 'insertCloudURLDialog', null)">
-      Close
-    </a>
-  </div>
-  <div class="dialogOverlay" hidden id="linkToOnlineDesign">
-    <img src="Assets/Images/wall_art_80A4AE.svg">
-    <h1>Canva Design</h1>
-    <h3 class="helperText">
-      Paste the URL to your Canva design below from your browser's address bar and ensure everyone
-      can view it
-    </h3>
-    <table style="width: 100%; margin-bottom: 10px">
-      <tr>
-        <td style="width: 75%">
-          <input id="URLToOnlineDesign"
-                 placeholder="e.x: https://www.canva.com/design/DAFtggAaSbw/SzSJMmE_NBWoxEPNDkNjbQ/edit"
-                 style="width: 94%" type="url">
-        </td>
-        <td>
-          <button class="primaryButton"
-                  onclick="if (checkURLInput('URLToOnlineDesign')) { onlineDesignView.src = URLToOnlineDesign.value.replace('edit', 'view') + '?embed'; toggleDialog(false, 'linkToOnlineDesign', null); toggleViewer(true,  'onlineDesignViewer'); tasksOnceFileOpen('onlineDesignView', null); addHistoryEntry('URLToOnlineDesign') }">
-            Open
-          </button>
-        </td>
-      </tr>
-    </table>
-    <a class="hyperlinkButton" onclick="toggleDialog(false, 'linkToOnlineDesign', null)">
-      Close
-    </a>
-  </div>
-  <!-- Link to a Video -->
-  <div class="dialogOverlay" hidden id="linkToTubeVideo">
-    <img src="Assets/Images/youtube_activity_BB271A.svg">
-    <h1>YouTube Video</h1>
-    <h3 class="helperText">Paste the URL to your YouTube video below</h3>
-    <table style="width: 100%; margin-bottom: 10px">
-      <tr>
-        <td style="width: 75%">
-          <input id="URLToTubeVideo" placeholder="e.x: https://www.youtube.com/watch?v=jNQXAC9IVRw"
-                 style="width: 94%" type="url">
-        </td>
-        <td>
-          <button class="primaryButton"
-                  onclick="if (checkURLInput('URLToTubeVideo')) { tubeVideoView.src = 'https://www.youtube.com/embed/' + (URLToTubeVideo.value.replaceAll('https://www.youtube.com/watch?v=', '')).replaceAll('https://youtu.be/', ''); toggleDialog(false, 'linkToTubeVideo', null); toggleViewer(true, 'tubeVideoViewer'); tasksOnceFileOpen('tubeVideoView', null); addHistoryEntry('URLToTubeVideo') }">
-            Open
-          </button>
-        </td>
-      </tr>
-    </table>
-    <a class="hyperlinkButton" onclick="toggleDialog(false, 'linkToTubeVideo', null)">
-      Close
-    </a>
-  </div>
-  <!-- Custom iFrame -->
-  <div class="dialogOverlay" hidden id="customEmbed">
-    <img class="reducedIntensity" src="Assets/Images/frame_source_000000.svg">
-    <h1>Custom Embed</h1>
-    <h3 class="helperText">Paste your own iFrame code to view it in the Viewing Panel</h3>
-    <table style="width: 100%; height: 150px">
-      <tr>
-        <td style="width: 75%">
-          <textarea id="embeddedCode" placeholder="Paste your code here"></textarea>
-        </td>
-        <td style="width: 25%">
-          <button class="primaryButton" onclick="verifyIfiFrameInEmbed()">Open</button>
-        </td>
-      </tr>
-    </table>
-    <br>
-    <a class="hyperlinkButton" onclick="toggleDialog(false, 'customEmbed', null)">
-      Close
-    </a>
-  </div>
-  <div class="dialogOverlay" hidden id="shareCopyOfNote">
-    <img class="reducedIntensity" src="Assets/Images/share_000000.svg">
-    <h1>Share a Copy</h1>
-    <h3 class="helperText">Send a copy of your note another person to view and edit</h3>
-    <input id="shareCopyLink" readonly style="width: 95%; user-select: all" type="url">
-    <br>
-    <br>
-    <a class="hyperlinkButton" onclick="toggleDialog(false, 'shareCopyOfNote', null)">
-      Close
-    </a>
-    <button class="primaryButton"
-            onclick="navigator.clipboard.writeText(shareCopyLink.value); displaySnackbar('Link copied!')"
-            style="width: 20%; margin-left: 10px;">
-      <img class="primaryButton menu" src="Assets/Images/link_000000.svg">
-      Copy Link
-    </button>
-  </div>
-  <div class="dialogOverlay" hidden id="noteAsHTML" style="height: 90%; margin-top: 1%">
-    <h1>Show Note as HTML Markup</h1>
-    <h3 class="helperText">See your note as HTML markup to be used within other applications</h3>
-    <div id="noteHTML"></div>
-    <br>
-    <a class="hyperlinkButton" onclick="toggleDialog(false, 'noteAsHTML', null)">
-      Close
-    </a>
-    <button class="primaryButton"
-            onclick="navigator.clipboard.writeText(noteHTMLCodeEditor.getValue()); displaySnackbar(copiedToClipboardString)"
-            style="width: 20%; margin-left: 5px">
-      Copy
-    </button>
-  </div>
-  <div class="dialogOverlay" hidden id="aboutDialog">
-    <img class="reducedIntensity" src="Assets/Images/info_000000.svg">
-    <img src="notemasterIcon.svg" style="width: 48px">
-    <h1>About</h1>
-    <p style="line-height: 25px">
-      NoteMaster v25.05.x
-      <br>
-      Designed and developed by <a href="https://github.com/j-m-a-g" target="_blank">J. Maghamez</a>
-      <br>
-      <br>
-      Built with open-source software
-    </p>
-    <table style="width: 100%">
-      <tr>
-        <td>
-          <a href="https://quilljs.com" target="_blank">Quill.js</a>
-        </td>
-        <td>
-          <a href="https://github.com/lokesh-coder/pretty-checkbox" target="_blank">pretty-checkbox</a>
-        </td>
-        <td>
-          <a href="https://github.com/mwilliamson/mammoth.js" target="_blank">mammoth.js</a>
-        </td>
-        <td>
-          <a href="https://ace.c9.io" target="_blank">ace</a>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <a href="https://katex.org" target="_blank">KaTex</a>
-        </td>
-      </tr>
-    </table>
-    <br>
-    <a class="hyperlinkButton" onclick="toggleDialog(false, 'aboutDialog', null)">
-      Close
-    </a>
-  </div>
-</div>
+    <script src="https://cdn.jsdelivr.net/npm/quill/dist/quill.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.9.0/mammoth.browser.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.js"></script>
+    <script src="Assets/ace-builds/src/ace.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/quill/dist/quill.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.9.0/mammoth.browser.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.js"></script>
-<script src="Assets/ace-builds/src/ace.js"></script>
-
-<script src="Scripts/globalVarDeclarations.js"></script>
-<script src="Scripts/index.js"></script>
-<script src="Scripts/editorFunctions.js"></script>
-<script src="Scripts/fileViewing.js"></script>
-</body>
-
+    <script src="Scripts/globalVarDeclarations.js"></script>
+    <script src="Scripts/index.js"></script>
+    <script src="Scripts/editorFunctions.js"></script>
+    <script src="Scripts/fileViewing.js"></script>
+  </body>
 </html>

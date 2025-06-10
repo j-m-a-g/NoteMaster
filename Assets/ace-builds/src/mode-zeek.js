@@ -1,10 +1,16 @@
-define("ace/mode/zeek_highlight_rules", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text_highlight_rules"], function (require, exports, module) {
+define("ace/mode/zeek_highlight_rules", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text_highlight_rules"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
   var ZeekHighlightRules = function () {
     this.$rules = {
-      "start": [
+      start: [
         {
           token: "comment.line",
           regex: "#.*$"
@@ -38,7 +44,8 @@ define("ace/mode/zeek_highlight_rules", ["require", "exports", "module", "ace/li
         },
         {
           token: "storage.modifier.attribute",
-          regex: /\&\b(?:redef|priority|log|optional|default|add_func|delete_func|expire_func|read_expire|write_expire|create_expire|synchronized|persistent|rotate_interval|rotate_size|encrypt|raw_output|mergeable|error_handler|type_column|deprecated)\b/
+          regex:
+            /\&\b(?:redef|priority|log|optional|default|add_func|delete_func|expire_func|read_expire|write_expire|create_expire|synchronized|persistent|rotate_interval|rotate_size|encrypt|raw_output|mergeable|error_handler|type_column|deprecated)\b/
         },
         {
           token: "constant.language",
@@ -50,17 +57,20 @@ define("ace/mode/zeek_highlight_rules", ["require", "exports", "module", "ace/li
         },
         {
           token: "constant.numeric.addr",
-          regex: /\b(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{1,2})\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{1,2})\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{1,2})\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{1,2})\b/,
+          regex:
+            /\b(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{1,2})\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{1,2})\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{1,2})\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{1,2})\b/,
           comment: "IPv4 address"
         },
         {
           token: "constant.numeric.addr",
-          regex: /\[(?:[0-9a-fA-F]{0,4}:){2,7}(?:[0-9a-fA-F]{0,4})?(?:(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{1,2})\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{1,2})\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{1,2})\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{1,2}))?\]/,
+          regex:
+            /\[(?:[0-9a-fA-F]{0,4}:){2,7}(?:[0-9a-fA-F]{0,4})?(?:(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{1,2})\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{1,2})\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{1,2})\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{1,2}))?\]/,
           comment: "IPv6 address"
         },
         {
           token: "constant.numeric.float.decimal.interval",
-          regex: /(?:(?:\d*\.\d*(?:[eE][+-]?\d+)?|\d*[eE][+-]?\d+|\d*\.\d*)|\d+)\s*(?:day|hr|min|msec|usec|sec)s?/
+          regex:
+            /(?:(?:\d*\.\d*(?:[eE][+-]?\d+)?|\d*[eE][+-]?\d+|\d*\.\d*)|\d+)\s*(?:day|hr|min|msec|usec|sec)s?/
         },
         {
           token: "constant.numeric.float.decimal",
@@ -127,12 +137,9 @@ define("ace/mode/zeek_highlight_rules", ["require", "exports", "module", "ace/li
           regex: /,/
         },
         {
-          token: [
-            "keyword.other",
-            "meta.namespace",
-            "entity.name.namespace"
-          ],
-          regex: /(module)(\s+)([A-Za-z_][A-Za-z_0-9]*(?:::[A-Za-z_][A-Za-z_0-9]*)*)/
+          token: ["keyword.other", "meta.namespace", "entity.name.namespace"],
+          regex:
+            /(module)(\s+)([A-Za-z_][A-Za-z_0-9]*(?:::[A-Za-z_][A-Za-z_0-9]*)*)/
         },
         {
           token: "keyword.other",
@@ -176,7 +183,8 @@ define("ace/mode/zeek_highlight_rules", ["require", "exports", "module", "ace/li
             "meta.struct.record",
             "storage.type.struct.record"
           ],
-          regex: /\b(type)(\s+)([A-Za-z_][A-Za-z_0-9]*(?:::[A-Za-z_][A-Za-z_0-9]*)*)(\s*)(:)(\s*\b)(record)\b/
+          regex:
+            /\b(type)(\s+)([A-Za-z_][A-Za-z_0-9]*(?:::[A-Za-z_][A-Za-z_0-9]*)*)(\s*)(:)(\s*\b)(record)\b/
         },
         {
           token: [
@@ -188,7 +196,8 @@ define("ace/mode/zeek_highlight_rules", ["require", "exports", "module", "ace/li
             "meta.enum",
             "storage.type.enum"
           ],
-          regex: /\b(type)(\s+)([A-Za-z_][A-Za-z_0-9]*(?:::[A-Za-z_][A-Za-z_0-9]*)*)(\s*)(:)(\s*\b)(enum)\b/
+          regex:
+            /\b(type)(\s+)([A-Za-z_][A-Za-z_0-9]*(?:::[A-Za-z_][A-Za-z_0-9]*)*)(\s*)(:)(\s*\b)(enum)\b/
         },
         {
           token: [
@@ -198,7 +207,8 @@ define("ace/mode/zeek_highlight_rules", ["require", "exports", "module", "ace/li
             "meta.type",
             "punctuation.separator"
           ],
-          regex: /\b(type)(\s+)([A-Za-z_][A-Za-z_0-9]*(?:::[A-Za-z_][A-Za-z_0-9]*)*)(\s*)(:)/
+          regex:
+            /\b(type)(\s+)([A-Za-z_][A-Za-z_0-9]*(?:::[A-Za-z_][A-Za-z_0-9]*)*)(\s*)(:)/
         },
         {
           token: [
@@ -208,7 +218,8 @@ define("ace/mode/zeek_highlight_rules", ["require", "exports", "module", "ace/li
             "meta.struct.record",
             "entity.name.struct.record"
           ],
-          regex: /\b(redef)(\s+)(record)(\s+)([A-Za-z_][A-Za-z_0-9]*(?:::[A-Za-z_][A-Za-z_0-9]*)*)\b/
+          regex:
+            /\b(redef)(\s+)(record)(\s+)([A-Za-z_][A-Za-z_0-9]*(?:::[A-Za-z_][A-Za-z_0-9]*)*)\b/
         },
         {
           token: [
@@ -218,31 +229,23 @@ define("ace/mode/zeek_highlight_rules", ["require", "exports", "module", "ace/li
             "meta.enum",
             "entity.name.enum"
           ],
-          regex: /\b(redef)(\s+)(enum)(\s+)([A-Za-z_][A-Za-z_0-9]*(?:::[A-Za-z_][A-Za-z_0-9]*)*)\b/
+          regex:
+            /\b(redef)(\s+)(enum)(\s+)([A-Za-z_][A-Za-z_0-9]*(?:::[A-Za-z_][A-Za-z_0-9]*)*)\b/
         },
         {
-          token: [
-            "storage.type",
-            "text",
-            "entity.name.function.event"
-          ],
-          regex: /\b(event)(\s+)([A-Za-z_][A-Za-z_0-9]*(?:::[A-Za-z_][A-Za-z_0-9]*)*)(?=s*\()/
+          token: ["storage.type", "text", "entity.name.function.event"],
+          regex:
+            /\b(event)(\s+)([A-Za-z_][A-Za-z_0-9]*(?:::[A-Za-z_][A-Za-z_0-9]*)*)(?=s*\()/
         },
         {
-          token: [
-            "storage.type",
-            "text",
-            "entity.name.function.hook"
-          ],
-          regex: /\b(hook)(\s+)([A-Za-z_][A-Za-z_0-9]*(?:::[A-Za-z_][A-Za-z_0-9]*)*)(?=s*\()/
+          token: ["storage.type", "text", "entity.name.function.hook"],
+          regex:
+            /\b(hook)(\s+)([A-Za-z_][A-Za-z_0-9]*(?:::[A-Za-z_][A-Za-z_0-9]*)*)(?=s*\()/
         },
         {
-          token: [
-            "storage.type",
-            "text",
-            "entity.name.function"
-          ],
-          regex: /\b(function)(\s+)([A-Za-z_][A-Za-z_0-9]*(?:::[A-Za-z_][A-Za-z_0-9]*)*)(?=s*\()/
+          token: ["storage.type", "text", "entity.name.function"],
+          regex:
+            /\b(function)(\s+)([A-Za-z_][A-Za-z_0-9]*(?:::[A-Za-z_][A-Za-z_0-9]*)*)(?=s*\()/
         },
         {
           token: "keyword.other",
@@ -264,7 +267,8 @@ define("ace/mode/zeek_highlight_rules", ["require", "exports", "module", "ace/li
             "text",
             "storage.type"
           ],
-          regex: /\b(opaque)(\s+)(of)(\s+)([A-Za-z_][A-Za-z_0-9]*(?:::[A-Za-z_][A-Za-z_0-9]*)*)\b/
+          regex:
+            /\b(opaque)(\s+)(of)(\s+)([A-Za-z_][A-Za-z_0-9]*(?:::[A-Za-z_][A-Za-z_0-9]*)*)\b/
         },
         {
           token: "keyword.operator",
@@ -272,7 +276,8 @@ define("ace/mode/zeek_highlight_rules", ["require", "exports", "module", "ace/li
         },
         {
           token: "storage.type",
-          regex: /\b(?:addr|bool|count|double|file|int|interval|pattern|port|string|subnet|time)\b/
+          regex:
+            /\b(?:addr|bool|count|double|file|int|interval|pattern|port|string|subnet|time)\b/
         },
         {
           token: "storage.type",
@@ -355,20 +360,36 @@ define("ace/mode/zeek_highlight_rules", ["require", "exports", "module", "ace/li
   };
   oop.inherits(ZeekHighlightRules, TextHighlightRules);
   exports.ZeekHighlightRules = ZeekHighlightRules;
-
 });
 
-define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop", "ace/range", "ace/mode/folding/fold_mode"], function (require, exports, module) {
+define("ace/mode/folding/cstyle", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/range",
+  "ace/mode/folding/fold_mode"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../../lib/oop");
   var Range = require("../../range").Range;
   var BaseFoldMode = require("./fold_mode").FoldMode;
-  var FoldMode = exports.FoldMode = function (commentRegex) {
+  var FoldMode = (exports.FoldMode = function (commentRegex) {
     if (commentRegex) {
-      this.foldingStartMarker = new RegExp(this.foldingStartMarker.source.replace(/\|[^|]*?$/, "|" + commentRegex.start));
-      this.foldingStopMarker = new RegExp(this.foldingStopMarker.source.replace(/\|[^|]*?$/, "|" + commentRegex.end));
+      this.foldingStartMarker = new RegExp(
+        this.foldingStartMarker.source.replace(
+          /\|[^|]*?$/,
+          "|" + commentRegex.start
+        )
+      );
+      this.foldingStopMarker = new RegExp(
+        this.foldingStopMarker.source.replace(
+          /\|[^|]*?$/,
+          "|" + commentRegex.end
+        )
+      );
     }
-  };
+  });
   oop.inherits(FoldMode, BaseFoldMode);
   (function () {
     this.foldingStartMarker = /([\{\[\(])[^\}\]\)]*$|^\s*(\/\*)/;
@@ -380,15 +401,22 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
     this.getFoldWidget = function (session, foldStyle, row) {
       var line = session.getLine(row);
       if (this.singleLineBlockCommentRe.test(line)) {
-        if (!this.startRegionRe.test(line) && !this.tripleStarBlockCommentRe.test(line))
+        if (
+          !this.startRegionRe.test(line) &&
+          !this.tripleStarBlockCommentRe.test(line)
+        )
           return "";
       }
       var fw = this._getFoldWidgetBase(session, foldStyle, row);
-      if (!fw && this.startRegionRe.test(line))
-        return "start"; // lineCommentRegionStart
+      if (!fw && this.startRegionRe.test(line)) return "start"; // lineCommentRegionStart
       return fw;
     };
-    this.getFoldWidgetRange = function (session, foldStyle, row, forceMultiline) {
+    this.getFoldWidgetRange = function (
+      session,
+      foldStyle,
+      row,
+      forceMultiline
+    ) {
       var line = session.getLine(row);
       if (this.startRegionRe.test(line))
         return this.getCommentRegionBlock(session, line, row);
@@ -401,13 +429,11 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
         if (range && !range.isMultiLine()) {
           if (forceMultiline) {
             range = this.getSectionRange(session, row);
-          } else if (foldStyle != "all")
-            range = null;
+          } else if (foldStyle != "all") range = null;
         }
         return range;
       }
-      if (foldStyle === "markbegin")
-        return;
+      if (foldStyle === "markbegin") return;
       var match = line.match(this.foldingStopMarker);
       if (match) {
         var i = match.index + match[0].length;
@@ -427,10 +453,8 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       while (++row < maxRow) {
         line = session.getLine(row);
         var indent = line.search(/\S/);
-        if (indent === -1)
-          continue;
-        if (startIndent > indent)
-          break;
+        if (indent === -1) continue;
+        if (startIndent > indent) break;
         var subRange = this.getFoldWidgetRange(session, "all", row);
         if (subRange) {
           if (subRange.start.row <= startRow) {
@@ -443,7 +467,12 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
         }
         endRow = row;
       }
-      return new Range(startRow, startColumn, endRow, session.getLine(endRow).length);
+      return new Range(
+        startRow,
+        startColumn,
+        endRow,
+        session.getLine(endRow).length
+      );
     };
     this.getCommentRegionBlock = function (session, line, row) {
       var startColumn = line.search(/\s*$/);
@@ -454,14 +483,10 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       while (++row < maxRow) {
         line = session.getLine(row);
         var m = re.exec(line);
-        if (!m)
-          continue;
-        if (m[1])
-          depth--;
-        else
-          depth++;
-        if (!depth)
-          break;
+        if (!m) continue;
+        if (m[1]) depth--;
+        else depth++;
+        if (!depth) break;
       }
       var endRow = row;
       if (endRow > startRow) {
@@ -469,10 +494,18 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       }
     };
   }).call(FoldMode.prototype);
-
 });
 
-define("ace/mode/zeek", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text", "ace/mode/zeek_highlight_rules", "ace/mode/folding/cstyle"], function (require, exports, module) {/*
+define("ace/mode/zeek", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text",
+  "ace/mode/zeek_highlight_rules",
+  "ace/mode/folding/cstyle"
+], function (require, exports, module) {
+  /*
   THIS FILE WAS AUTOGENERATED BY mode.tmpl.js
 */
   "use strict";
@@ -490,7 +523,6 @@ define("ace/mode/zeek", ["require", "exports", "module", "ace/lib/oop", "ace/mod
     this.$id = "ace/mode/zeek";
   }).call(Mode.prototype);
   exports.Mode = Mode;
-
 });
 (function () {
   window.require(["ace/mode/zeek"], function (m) {
@@ -499,4 +531,3 @@ define("ace/mode/zeek", ["require", "exports", "module", "ace/lib/oop", "ace/mod
     }
   });
 })();
-            

@@ -1,291 +1,418 @@
-define("ace/mode/kotlin_highlight_rules", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text_highlight_rules"], function (require, exports, module) {
+define("ace/mode/kotlin_highlight_rules", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text_highlight_rules"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
   var KotlinHighlightRules = function () {
-    var keywordMapper = this.$keywords = this.createKeywordMapper({
-      "storage.modifier.kotlin": "var|val|public|private|protected|abstract|final|enum|open|attribute|"
-        + "annotation|override|inline|var|val|vararg|lazy|in|out|internal|data|tailrec|operator|infix|const|"
-        + "yield|typealias|typeof|sealed|inner|value|lateinit|external|suspend|noinline|crossinline|reified|"
-        + "expect|actual",
-      "keyword": "companion|class|object|interface|namespace|type|fun|constructor|if|else|while|for|do|return|when|"
-        + "where|break|continue|try|catch|finally|throw|in|is|as|assert|constructor",
-      "constant.language.kotlin": "true|false|null|this|super",
-      "entity.name.function.kotlin": "get|set"
-    }, "identifier");
+    var keywordMapper = (this.$keywords = this.createKeywordMapper(
+      {
+        "storage.modifier.kotlin":
+          "var|val|public|private|protected|abstract|final|enum|open|attribute|" +
+          "annotation|override|inline|var|val|vararg|lazy|in|out|internal|data|tailrec|operator|infix|const|" +
+          "yield|typealias|typeof|sealed|inner|value|lateinit|external|suspend|noinline|crossinline|reified|" +
+          "expect|actual",
+        keyword:
+          "companion|class|object|interface|namespace|type|fun|constructor|if|else|while|for|do|return|when|" +
+          "where|break|continue|try|catch|finally|throw|in|is|as|assert|constructor",
+        "constant.language.kotlin": "true|false|null|this|super",
+        "entity.name.function.kotlin": "get|set"
+      },
+      "identifier"
+    ));
     this.$rules = {
-      start: [{
-        include: "#comments"
-      }, {
-        token: [
-          "text",
-          "keyword.other.kotlin",
-          "text",
-          "entity.name.package.kotlin",
-          "text"
-        ],
-        regex: /^(\s*)(package)\b(?:(\s*)([^ ;$]+)(\s*))?/
-      }, {
-        token: "comment",
-        regex: /^\s*#!.*$/
-      }, {
-        include: "#imports"
-      }, {
-        include: "#expressions"
-      }, {
-        token: "string",
-        regex: /@[a-zA-Z][a-zA-Z:]*\b/
-      }, {
-        token: ["keyword.other.kotlin", "text", "entity.name.variable.kotlin"],
-        regex: /\b(var|val)(\s+)([a-zA-Z_][\w]*)\b/
-      }, {
-        token: ["keyword.other.kotlin", "text", "entity.name.variable.kotlin", "paren.lparen"],
-        regex: /(fun)(\s+)(\w+)(\()/,
-        push: [{
-          token: ["variable.parameter.function.kotlin", "text", "keyword.operator"],
-          regex: /(\w+)(\s*)(:)/
-        }, {
-          token: "paren.rparen",
-          regex: /\)/,
-          next: "pop"
-        }, {
+      start: [
+        {
           include: "#comments"
-        }, {
-          include: "#types"
-        }, {
-          include: "#expressions"
-        }]
-      }, {
-        token: ["text", "keyword", "text", "identifier"],
-        regex: /^(\s*)(class)(\s*)([a-zA-Z]+)/,
-        next: "#classes"
-      }, {
-        token: ["identifier", "punctuaction"],
-        regex: /([a-zA-Z_][\w]*)(<)/,
-        push: [{
-          include: "#generics"
-        }, {
-          include: "#defaultTypes"
-        }, {
-          token: "punctuation",
-          regex: />/,
-          next: "pop"
-        }]
-      }, {
-        token: keywordMapper,
-        regex: /[a-zA-Z_][\w]*\b/
-      }, {
-        token: "paren.lparen",
-        regex: /[{(\[]/
-      }, {
-        token: "paren.rparen",
-        regex: /[})\]]/
-      }],
-      "#comments": [{
-        token: "comment",
-        regex: /\/\*/,
-        push: [{
+        },
+        {
+          token: [
+            "text",
+            "keyword.other.kotlin",
+            "text",
+            "entity.name.package.kotlin",
+            "text"
+          ],
+          regex: /^(\s*)(package)\b(?:(\s*)([^ ;$]+)(\s*))?/
+        },
+        {
           token: "comment",
-          regex: /\*\//,
-          next: "pop"
-        }, {
-          defaultToken: "comment"
-        }]
-      }, {
-        token: [
-          "text",
-          "comment"
-        ],
-        regex: /(\s*)(\/\/.*$)/
-      }],
-      "#constants": [{
-        token: "constant.numeric.kotlin",
-        regex: /\b(?:0(?:x|X)[0-9a-fA-F]*|(?:[0-9]+\.?[0-9]*|\.[0-9]+)(?:(?:e|E)(?:\+|-)?[0-9]+)?)(?:[LlFfUuDd]|UL|ul)?\b/
-      }, {
-        token: "constant.other.kotlin",
-        regex: /\b[A-Z][A-Z0-9_]+\b/
-      }],
-      "#expressions": [{
-        include: "#strings"
-      }, {
-        include: "#constants"
-      }, {
-        include: "#keywords"
-      }],
-      "#imports": [{
-        token: [
-          "text",
-          "keyword.other.kotlin",
-          "text",
-          "keyword.other.kotlin"
-        ],
-        regex: /^(\s*)(import)(\s+[^ $]+\s+)((?:as)?)/
-      }],
-      "#generics": [{
-        token: "punctuation",
-        regex: /</,
-        push: [{
-          token: "punctuation",
-          regex: />/,
-          next: "pop"
-        }, {
-          token: "storage.type.generic.kotlin",
-          regex: /\w+/
-        }, {
-          token: "keyword.operator",
-          regex: /:/
-        }, {
-          token: "punctuation",
-          regex: /,/
-        }, {
-          include: "#generics"
-        }]
-      }],
-      "#classes": [{
-        include: "#generics"
-      }, {
-        token: "keyword",
-        regex: /public|private|constructor/
-      }, {
-        token: "string",
-        regex: /@[a-zA-Z][a-zA-Z:]*\b/
-      }, {
-        token: "text",
-        regex: /(?=$|\(|{)/,
-        next: "start"
-      }],
-      "#keywords": [{
-        token: "keyword.operator.kotlin",
-        regex: /==|!=|===|!==|<=|>=|<|>|=>|->|::|\?:/
-      }, {
-        token: "keyword.operator.assignment.kotlin",
-        regex: /=/
-      }, {
-        token: "keyword.operator.declaration.kotlin",
-        regex: /:/,
-        push: [{
-          token: "text",
-          regex: /(?=$|{|=|,)/,
-          next: "pop"
-        }, {
-          include: "#types"
-        }]
-      }, {
-        token: "keyword.operator.dot.kotlin",
-        regex: /\./
-      }, {
-        token: "keyword.operator.increment-decrement.kotlin",
-        regex: /\-\-|\+\+/
-      }, {
-        token: "keyword.operator.arithmetic.kotlin",
-        regex: /\-|\+|\*|\/|%/
-      }, {
-        token: "keyword.operator.arithmetic.assign.kotlin",
-        regex: /\+=|\-=|\*=|\/=/
-      }, {
-        token: "keyword.operator.logical.kotlin",
-        regex: /!|&&|\|\|/
-      }, {
-        token: "keyword.operator.range.kotlin",
-        regex: /\.\./
-      }, {
-        token: "punctuation.kotlin",
-        regex: /[;,]/
-      }],
-      "#types": [{
-        include: "#defaultTypes"
-      }, {
-        token: "paren.lparen",
-        regex: /\(/,
-        push: [{
+          regex: /^\s*#!.*$/
+        },
+        {
+          include: "#imports"
+        },
+        {
+          include: "#expressions"
+        },
+        {
+          token: "string",
+          regex: /@[a-zA-Z][a-zA-Z:]*\b/
+        },
+        {
+          token: [
+            "keyword.other.kotlin",
+            "text",
+            "entity.name.variable.kotlin"
+          ],
+          regex: /\b(var|val)(\s+)([a-zA-Z_][\w]*)\b/
+        },
+        {
+          token: [
+            "keyword.other.kotlin",
+            "text",
+            "entity.name.variable.kotlin",
+            "paren.lparen"
+          ],
+          regex: /(fun)(\s+)(\w+)(\()/,
+          push: [
+            {
+              token: [
+                "variable.parameter.function.kotlin",
+                "text",
+                "keyword.operator"
+              ],
+              regex: /(\w+)(\s*)(:)/
+            },
+            {
+              token: "paren.rparen",
+              regex: /\)/,
+              next: "pop"
+            },
+            {
+              include: "#comments"
+            },
+            {
+              include: "#types"
+            },
+            {
+              include: "#expressions"
+            }
+          ]
+        },
+        {
+          token: ["text", "keyword", "text", "identifier"],
+          regex: /^(\s*)(class)(\s*)([a-zA-Z]+)/,
+          next: "#classes"
+        },
+        {
+          token: ["identifier", "punctuaction"],
+          regex: /([a-zA-Z_][\w]*)(<)/,
+          push: [
+            {
+              include: "#generics"
+            },
+            {
+              include: "#defaultTypes"
+            },
+            {
+              token: "punctuation",
+              regex: />/,
+              next: "pop"
+            }
+          ]
+        },
+        {
+          token: keywordMapper,
+          regex: /[a-zA-Z_][\w]*\b/
+        },
+        {
+          token: "paren.lparen",
+          regex: /[{(\[]/
+        },
+        {
           token: "paren.rparen",
-          regex: /\)/,
-          next: "pop"
-        }, {
-          include: "#defaultTypes"
-        }, {
+          regex: /[})\]]/
+        }
+      ],
+      "#comments": [
+        {
+          token: "comment",
+          regex: /\/\*/,
+          push: [
+            {
+              token: "comment",
+              regex: /\*\//,
+              next: "pop"
+            },
+            {
+              defaultToken: "comment"
+            }
+          ]
+        },
+        {
+          token: ["text", "comment"],
+          regex: /(\s*)(\/\/.*$)/
+        }
+      ],
+      "#constants": [
+        {
+          token: "constant.numeric.kotlin",
+          regex:
+            /\b(?:0(?:x|X)[0-9a-fA-F]*|(?:[0-9]+\.?[0-9]*|\.[0-9]+)(?:(?:e|E)(?:\+|-)?[0-9]+)?)(?:[LlFfUuDd]|UL|ul)?\b/
+        },
+        {
+          token: "constant.other.kotlin",
+          regex: /\b[A-Z][A-Z0-9_]+\b/
+        }
+      ],
+      "#expressions": [
+        {
+          include: "#strings"
+        },
+        {
+          include: "#constants"
+        },
+        {
+          include: "#keywords"
+        }
+      ],
+      "#imports": [
+        {
+          token: [
+            "text",
+            "keyword.other.kotlin",
+            "text",
+            "keyword.other.kotlin"
+          ],
+          regex: /^(\s*)(import)(\s+[^ $]+\s+)((?:as)?)/
+        }
+      ],
+      "#generics": [
+        {
           token: "punctuation",
-          regex: /,/
-        }]
-      }, {
-        include: "#generics"
-      }, {
-        token: "keyword.operator.declaration.kotlin",
-        regex: /->/
-      }, {
-        token: "paren.rparen",
-        regex: /\)/
-      }, {
-        token: "keyword.operator.declaration.kotlin",
-        regex: /:/,
-        push: [{
+          regex: /</,
+          push: [
+            {
+              token: "punctuation",
+              regex: />/,
+              next: "pop"
+            },
+            {
+              token: "storage.type.generic.kotlin",
+              regex: /\w+/
+            },
+            {
+              token: "keyword.operator",
+              regex: /:/
+            },
+            {
+              token: "punctuation",
+              regex: /,/
+            },
+            {
+              include: "#generics"
+            }
+          ]
+        }
+      ],
+      "#classes": [
+        {
+          include: "#generics"
+        },
+        {
+          token: "keyword",
+          regex: /public|private|constructor/
+        },
+        {
+          token: "string",
+          regex: /@[a-zA-Z][a-zA-Z:]*\b/
+        },
+        {
           token: "text",
-          regex: /(?=$|{|=|,)/,
-          next: "pop"
-        }, {
-          include: "#types"
-        }]
-      }],
-      "#defaultTypes": [{
-        token: "storage.type.buildin.kotlin",
-        regex: /\b(Any|Unit|String|Int|Boolean|Char|Long|Double|Float|Short|Byte|dynamic|IntArray|BooleanArray|CharArray|LongArray|DoubleArray|FloatArray|ShortArray|ByteArray|Array|List|Map|Nothing|Enum|Throwable|Comparable)\b/
-      }],
-      "#strings": [{
-        token: "string",
-        regex: /"""/,
-        push: [{
+          regex: /(?=$|\(|{)/,
+          next: "start"
+        }
+      ],
+      "#keywords": [
+        {
+          token: "keyword.operator.kotlin",
+          regex: /==|!=|===|!==|<=|>=|<|>|=>|->|::|\?:/
+        },
+        {
+          token: "keyword.operator.assignment.kotlin",
+          regex: /=/
+        },
+        {
+          token: "keyword.operator.declaration.kotlin",
+          regex: /:/,
+          push: [
+            {
+              token: "text",
+              regex: /(?=$|{|=|,)/,
+              next: "pop"
+            },
+            {
+              include: "#types"
+            }
+          ]
+        },
+        {
+          token: "keyword.operator.dot.kotlin",
+          regex: /\./
+        },
+        {
+          token: "keyword.operator.increment-decrement.kotlin",
+          regex: /\-\-|\+\+/
+        },
+        {
+          token: "keyword.operator.arithmetic.kotlin",
+          regex: /\-|\+|\*|\/|%/
+        },
+        {
+          token: "keyword.operator.arithmetic.assign.kotlin",
+          regex: /\+=|\-=|\*=|\/=/
+        },
+        {
+          token: "keyword.operator.logical.kotlin",
+          regex: /!|&&|\|\|/
+        },
+        {
+          token: "keyword.operator.range.kotlin",
+          regex: /\.\./
+        },
+        {
+          token: "punctuation.kotlin",
+          regex: /[;,]/
+        }
+      ],
+      "#types": [
+        {
+          include: "#defaultTypes"
+        },
+        {
+          token: "paren.lparen",
+          regex: /\(/,
+          push: [
+            {
+              token: "paren.rparen",
+              regex: /\)/,
+              next: "pop"
+            },
+            {
+              include: "#defaultTypes"
+            },
+            {
+              token: "punctuation",
+              regex: /,/
+            }
+          ]
+        },
+        {
+          include: "#generics"
+        },
+        {
+          token: "keyword.operator.declaration.kotlin",
+          regex: /->/
+        },
+        {
+          token: "paren.rparen",
+          regex: /\)/
+        },
+        {
+          token: "keyword.operator.declaration.kotlin",
+          regex: /:/,
+          push: [
+            {
+              token: "text",
+              regex: /(?=$|{|=|,)/,
+              next: "pop"
+            },
+            {
+              include: "#types"
+            }
+          ]
+        }
+      ],
+      "#defaultTypes": [
+        {
+          token: "storage.type.buildin.kotlin",
+          regex:
+            /\b(Any|Unit|String|Int|Boolean|Char|Long|Double|Float|Short|Byte|dynamic|IntArray|BooleanArray|CharArray|LongArray|DoubleArray|FloatArray|ShortArray|ByteArray|Array|List|Map|Nothing|Enum|Throwable|Comparable)\b/
+        }
+      ],
+      "#strings": [
+        {
           token: "string",
           regex: /"""/,
-          next: "pop"
-        }, {
-          token: "variable.parameter.template.kotlin",
-          regex: /\$\w+|\${[^}]+}/
-        }, {
-          token: "constant.character.escape.kotlin",
-          regex: /\\./
-        }, {
-          defaultToken: "string"
-        }]
-      }, {
-        token: "string",
-        regex: /"/,
-        push: [{
+          push: [
+            {
+              token: "string",
+              regex: /"""/,
+              next: "pop"
+            },
+            {
+              token: "variable.parameter.template.kotlin",
+              regex: /\$\w+|\${[^}]+}/
+            },
+            {
+              token: "constant.character.escape.kotlin",
+              regex: /\\./
+            },
+            {
+              defaultToken: "string"
+            }
+          ]
+        },
+        {
           token: "string",
           regex: /"/,
-          next: "pop"
-        }, {
-          token: "variable.parameter.template.kotlin",
-          regex: /\$\w+|\$\{[^\}]+\}/
-        }, {
-          token: "constant.character.escape.kotlin",
-          regex: /\\./
-        }, {
-          defaultToken: "string"
-        }]
-      }, {
-        token: "string",
-        regex: /'/,
-        push: [{
+          push: [
+            {
+              token: "string",
+              regex: /"/,
+              next: "pop"
+            },
+            {
+              token: "variable.parameter.template.kotlin",
+              regex: /\$\w+|\$\{[^\}]+\}/
+            },
+            {
+              token: "constant.character.escape.kotlin",
+              regex: /\\./
+            },
+            {
+              defaultToken: "string"
+            }
+          ]
+        },
+        {
           token: "string",
           regex: /'/,
-          next: "pop"
-        }, {
-          token: "constant.character.escape.kotlin",
-          regex: /\\./
-        }, {
-          defaultToken: "string"
-        }]
-      }, {
-        token: "string",
-        regex: /`/,
-        push: [{
+          push: [
+            {
+              token: "string",
+              regex: /'/,
+              next: "pop"
+            },
+            {
+              token: "constant.character.escape.kotlin",
+              regex: /\\./
+            },
+            {
+              defaultToken: "string"
+            }
+          ]
+        },
+        {
           token: "string",
           regex: /`/,
-          next: "pop"
-        }, {
-          defaultToken: "string"
-        }]
-      }]
+          push: [
+            {
+              token: "string",
+              regex: /`/,
+              next: "pop"
+            },
+            {
+              defaultToken: "string"
+            }
+          ]
+        }
+      ]
     };
     this.normalizeRules();
   };
@@ -296,20 +423,36 @@ define("ace/mode/kotlin_highlight_rules", ["require", "exports", "module", "ace/
   };
   oop.inherits(KotlinHighlightRules, TextHighlightRules);
   exports.KotlinHighlightRules = KotlinHighlightRules;
-
 });
 
-define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop", "ace/range", "ace/mode/folding/fold_mode"], function (require, exports, module) {
+define("ace/mode/folding/cstyle", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/range",
+  "ace/mode/folding/fold_mode"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../../lib/oop");
   var Range = require("../../range").Range;
   var BaseFoldMode = require("./fold_mode").FoldMode;
-  var FoldMode = exports.FoldMode = function (commentRegex) {
+  var FoldMode = (exports.FoldMode = function (commentRegex) {
     if (commentRegex) {
-      this.foldingStartMarker = new RegExp(this.foldingStartMarker.source.replace(/\|[^|]*?$/, "|" + commentRegex.start));
-      this.foldingStopMarker = new RegExp(this.foldingStopMarker.source.replace(/\|[^|]*?$/, "|" + commentRegex.end));
+      this.foldingStartMarker = new RegExp(
+        this.foldingStartMarker.source.replace(
+          /\|[^|]*?$/,
+          "|" + commentRegex.start
+        )
+      );
+      this.foldingStopMarker = new RegExp(
+        this.foldingStopMarker.source.replace(
+          /\|[^|]*?$/,
+          "|" + commentRegex.end
+        )
+      );
     }
-  };
+  });
   oop.inherits(FoldMode, BaseFoldMode);
   (function () {
     this.foldingStartMarker = /([\{\[\(])[^\}\]\)]*$|^\s*(\/\*)/;
@@ -321,15 +464,22 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
     this.getFoldWidget = function (session, foldStyle, row) {
       var line = session.getLine(row);
       if (this.singleLineBlockCommentRe.test(line)) {
-        if (!this.startRegionRe.test(line) && !this.tripleStarBlockCommentRe.test(line))
+        if (
+          !this.startRegionRe.test(line) &&
+          !this.tripleStarBlockCommentRe.test(line)
+        )
           return "";
       }
       var fw = this._getFoldWidgetBase(session, foldStyle, row);
-      if (!fw && this.startRegionRe.test(line))
-        return "start"; // lineCommentRegionStart
+      if (!fw && this.startRegionRe.test(line)) return "start"; // lineCommentRegionStart
       return fw;
     };
-    this.getFoldWidgetRange = function (session, foldStyle, row, forceMultiline) {
+    this.getFoldWidgetRange = function (
+      session,
+      foldStyle,
+      row,
+      forceMultiline
+    ) {
       var line = session.getLine(row);
       if (this.startRegionRe.test(line))
         return this.getCommentRegionBlock(session, line, row);
@@ -342,13 +492,11 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
         if (range && !range.isMultiLine()) {
           if (forceMultiline) {
             range = this.getSectionRange(session, row);
-          } else if (foldStyle != "all")
-            range = null;
+          } else if (foldStyle != "all") range = null;
         }
         return range;
       }
-      if (foldStyle === "markbegin")
-        return;
+      if (foldStyle === "markbegin") return;
       var match = line.match(this.foldingStopMarker);
       if (match) {
         var i = match.index + match[0].length;
@@ -368,10 +516,8 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       while (++row < maxRow) {
         line = session.getLine(row);
         var indent = line.search(/\S/);
-        if (indent === -1)
-          continue;
-        if (startIndent > indent)
-          break;
+        if (indent === -1) continue;
+        if (startIndent > indent) break;
         var subRange = this.getFoldWidgetRange(session, "all", row);
         if (subRange) {
           if (subRange.start.row <= startRow) {
@@ -384,7 +530,12 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
         }
         endRow = row;
       }
-      return new Range(startRow, startColumn, endRow, session.getLine(endRow).length);
+      return new Range(
+        startRow,
+        startColumn,
+        endRow,
+        session.getLine(endRow).length
+      );
     };
     this.getCommentRegionBlock = function (session, line, row) {
       var startColumn = line.search(/\s*$/);
@@ -395,14 +546,10 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       while (++row < maxRow) {
         line = session.getLine(row);
         var m = re.exec(line);
-        if (!m)
-          continue;
-        if (m[1])
-          depth--;
-        else
-          depth++;
-        if (!depth)
-          break;
+        if (!m) continue;
+        if (m[1]) depth--;
+        else depth++;
+        if (!depth) break;
       }
       var endRow = row;
       if (endRow > startRow) {
@@ -410,16 +557,25 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       }
     };
   }).call(FoldMode.prototype);
-
 });
 
-define("ace/mode/kotlin", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text", "ace/mode/kotlin_highlight_rules", "ace/mode/folding/cstyle"], function (require, exports, module) {/*
+define("ace/mode/kotlin", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text",
+  "ace/mode/kotlin_highlight_rules",
+  "ace/mode/folding/cstyle"
+], function (require, exports, module) {
+  /*
   THIS FILE WAS AUTOGENERATED BY mode.tmpl.js
 */
   "use strict";
   var oop = require("../lib/oop");
   var TextMode = require("./text").Mode;
-  var KotlinHighlightRules = require("./kotlin_highlight_rules").KotlinHighlightRules;
+  var KotlinHighlightRules =
+    require("./kotlin_highlight_rules").KotlinHighlightRules;
   var FoldMode = require("./folding/cstyle").FoldMode;
   var Mode = function () {
     this.HighlightRules = KotlinHighlightRules;
@@ -429,11 +585,10 @@ define("ace/mode/kotlin", ["require", "exports", "module", "ace/lib/oop", "ace/m
   oop.inherits(Mode, TextMode);
   (function () {
     this.lineCommentStart = "//";
-    this.blockComment = {start: "/*", end: "*/"};
+    this.blockComment = { start: "/*", end: "*/" };
     this.$id = "ace/mode/kotlin";
   }).call(Mode.prototype);
   exports.Mode = Mode;
-
 });
 (function () {
   window.require(["ace/mode/kotlin"], function (m) {
@@ -442,4 +597,3 @@ define("ace/mode/kotlin", ["require", "exports", "module", "ace/lib/oop", "ace/m
     }
   });
 })();
-            

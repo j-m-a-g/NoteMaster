@@ -3,53 +3,58 @@ const toolbarOptions = [
   ["blockquote", "code-block"],
   ["link", "image", "video"],
 
-  [{"list": "ordered"}, {"list": "bullet"}, {"list": "check"}],
-  [{"script": "sub"}, {"script": "super"}],
-  [{"indent": "-1"}, {"indent": "+1"}],
+  [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
+  [{ script: "sub" }, { script: "super" }],
+  [{ indent: "-1" }, { indent: "+1" }],
 
-  [{"header": [1, 2, 3, 4, false, 5, 6]}],
+  [{ header: [1, 2, 3, 4, false, 5, 6] }],
 
-  [{"color": []}, {"background": []}],
-  [{"font": []}],
-  [{"align": ""}, {"align": "center"}, {"align": "right"}, {"align": "justify"}],
+  [{ color: [] }, { background: [] }],
+  [{ font: [] }],
+  [
+    { align: "" },
+    { align: "center" },
+    { align: "right" },
+    { align: "justify" },
+  ],
 
-  ["clean"]
+  ["clean"],
 ];
 
 // Note editor on the right side
-const quill = new Quill('#mainEditor', {
+const quill = new Quill("#mainEditor", {
   modules: {
-    toolbar: toolbarOptions
+    toolbar: toolbarOptions,
   },
   placeholder: "Start your note-taking here",
-  theme: "snow"
+  theme: "snow",
 });
 
 // Editor on the right side for viewing notes
 const anotherNoteViewQuill = new Quill("#anotherNoteView", {
   readOnly: true,
   modules: {
-    toolbar: null
+    toolbar: null,
   },
-  theme: "snow"
+  theme: "snow",
 });
 
 // Displays the user their Viewing History as a table to be copied
 const copyHistoryQuill = new Quill("#copyHistoryEditor", {
   readOnly: true,
   modules: {
-    toolbar: null
+    toolbar: null,
   },
-  theme: "snow"
+  theme: "snow",
 });
 
 const insertTableQuill = new Quill("#insertTableEditor", {
   readOnly: true,
   modules: {
-    toolbar: null
+    toolbar: null,
   },
   placeholder: "You haven't created a table yet",
-  theme: "snow"
+  theme: "snow",
 });
 
 const noteHTMLCodeEditor = ace.edit("noteHTML");
@@ -63,11 +68,14 @@ codeFileViewCodeEditor.setReadOnly(true);
 codeFileViewCodeEditor.session.setUseWrapMode(true);
 
 function onLoadTasks() {
-  if (localStorage.getItem("noteProgress") !== "<p></p>" && localStorage.getItem(("noteProgress")) !== null) {
+  if (
+    localStorage.getItem("noteProgress") !== "<p></p>" &&
+    localStorage.getItem("noteProgress") !== null
+  ) {
     hideAndShow("createOrOpenContainer", "noteEditor");
     quill.clipboard.dangerouslyPasteHTML(localStorage.getItem("noteProgress"));
 
-    noteName.value = localStorage.getItem('noteTitle');
+    noteName.value = localStorage.getItem("noteTitle");
     alterMenuFunctions(false);
   }
 
@@ -83,7 +91,9 @@ function onLoadTasks() {
   if (workingURLParameters.has("name") || workingURLParameters.has("markup")) {
     initiateNote(false);
     noteName.value = workingURLParameters.get("name");
-    quill.clipboard.dangerouslyPasteHTML(decodeURIComponent(workingURLParameters.get("markup")));
+    quill.clipboard.dangerouslyPasteHTML(
+      decodeURIComponent(workingURLParameters.get("markup")),
+    );
 
     // Removes the parameters from being displayed in a user's address
     // bar for security reasons
@@ -91,7 +101,10 @@ function onLoadTasks() {
   }
 
   // RETRIEVE SAVED NOTES
-  if (localStorage.getItem("savedNotes") !== null && localStorage.getItem("savedNotes") !== "") {
+  if (
+    localStorage.getItem("savedNotes") !== null &&
+    localStorage.getItem("savedNotes") !== ""
+  ) {
     savedForLater.innerHTML = localStorage.getItem("savedNotes");
     savedForLaterDetails.click();
     savedForLaterDetails.open = true;
@@ -160,7 +173,7 @@ function toggleViewer(isShown, currentViewer) {
       document.getElementById(currentViewer).hidden = true;
       viewersContainer.hidden = true;
       chooseViewer.hidden = false;
-      break
+      break;
   }
 }
 
@@ -182,10 +195,14 @@ function toggleDialog(isShown, currentDialog, focusedElement) {
 }
 
 function toggleMenuCheck(imageObject) {
-  if (document.getElementById(imageObject).src.includes("Assets/Images/check_000000.svg")) {
+  if (
+    document
+      .getElementById(imageObject)
+      .src.includes("Assets/Images/check_000000.svg")
+  ) {
     document.getElementById(imageObject).removeAttribute("src");
   } else {
-    document.getElementById(imageObject).src = "Assets/Images/check_000000.svg"
+    document.getElementById(imageObject).src = "Assets/Images/check_000000.svg";
   }
 }
 
@@ -196,17 +213,17 @@ function alterMenuFunctions(isDisabled) {
   document.getElementById("quillUndo").disabled = isDisabled;
   document.getElementById("save").disabled = isDisabled;
   document.getElementById("saveForLater").disabled = isDisabled;
-  document.getElementById('insertDate').disabled = isDisabled;
-  document.getElementById('insertTableButton').disabled = isDisabled;
-  document.getElementById('insertTime').disabled = isDisabled;
-  document.getElementById('showHTMLEditor').disabled = isDisabled;
+  document.getElementById("insertDate").disabled = isDisabled;
+  document.getElementById("insertTableButton").disabled = isDisabled;
+  document.getElementById("insertTime").disabled = isDisabled;
+  document.getElementById("showHTMLEditor").disabled = isDisabled;
 }
 
 function applyPercentageSizes() {
-  chooseViewer.style.width = (viewingSize.value).toString() + '%';
-  viewersContainer.style.width = (viewingSize.value).toString() + '%';
-  createOrOpenContainer.style.width = (editorSize.value).toString() + '%';
-  noteEditor.style.width = (editorSize.value).toString() + '%';
+  chooseViewer.style.width = viewingSize.value.toString() + "%";
+  viewersContainer.style.width = viewingSize.value.toString() + "%";
+  createOrOpenContainer.style.width = editorSize.value.toString() + "%";
+  noteEditor.style.width = editorSize.value.toString() + "%";
 }
 
 function adjustViewingAndEditorSizes() {
@@ -219,7 +236,7 @@ function adjustViewingAndEditorSizes() {
 
   editorSize.value = 100 - viewingSize.value;
   applyPercentageSizes();
-  localStorage.setItem('viewingSizeValue', viewingSize.value);
+  localStorage.setItem("viewingSizeValue", viewingSize.value);
 }
 
 function addHistoryEntry(valueObject) {
@@ -265,7 +282,7 @@ function displaySnackbar(snackbarText) {
   snackbar.style.display = "flex";
   snackbarMessage.innerHTML = snackbarText;
 
-  setTimeout(() => snackbar.style.display = "none", 7500);
+  setTimeout(() => (snackbar.style.display = "none"), 7500);
 }
 
 function get12HourTime() {

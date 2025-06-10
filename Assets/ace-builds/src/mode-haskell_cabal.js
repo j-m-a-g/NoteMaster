@@ -1,4 +1,10 @@
-define("ace/mode/haskell_cabal_highlight_rules", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text_highlight_rules"], function (require, exports, module) {
+define("ace/mode/haskell_cabal_highlight_rules", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text_highlight_rules"
+], function (require, exports, module) {
   /**
    * Haskell Cabal files highlighter (https://www.haskell.org/cabal/users-guide/developing-packages.html)
    **/
@@ -7,20 +13,24 @@ define("ace/mode/haskell_cabal_highlight_rules", ["require", "exports", "module"
   var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
   var CabalHighlightRules = function () {
     this.$rules = {
-      "start": [
+      start: [
         {
           token: "comment",
           regex: "^\\s*--.*$"
-        }, {
+        },
+        {
           token: ["keyword"],
           regex: /^(\s*\w.*?)(:(?:\s+|$))/
-        }, {
+        },
+        {
           token: "constant.numeric", // float
           regex: /[\d_]+(?:(?:[\.\d_]*)?)/
-        }, {
+        },
+        {
           token: "constant.language.boolean",
           regex: "(?:true|false|TRUE|FALSE|True|False|yes|no)\\b"
-        }, {
+        },
+        {
           token: "markup.heading",
           regex: /^(\w.*)$/
         }
@@ -29,19 +39,25 @@ define("ace/mode/haskell_cabal_highlight_rules", ["require", "exports", "module"
   };
   oop.inherits(CabalHighlightRules, TextHighlightRules);
   exports.CabalHighlightRules = CabalHighlightRules;
-
 });
 
-define("ace/mode/folding/haskell_cabal", ["require", "exports", "module", "ace/lib/oop", "ace/mode/folding/fold_mode", "ace/range"], function (require, exports, module) {/*
-* Folding mode for Cabal files (Haskell): allow folding each seaction, including
-* the initial general section.
-*/
+define("ace/mode/folding/haskell_cabal", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/folding/fold_mode",
+  "ace/range"
+], function (require, exports, module) {
+  /*
+   * Folding mode for Cabal files (Haskell): allow folding each seaction, including
+   * the initial general section.
+   */
   "use strict";
   var oop = require("../../lib/oop");
   var BaseFoldMode = require("./fold_mode").FoldMode;
   var Range = require("../../range").Range;
-  var FoldMode = exports.FoldMode = function () {
-  };
+  var FoldMode = (exports.FoldMode = function () {});
   oop.inherits(FoldMode, BaseFoldMode);
   (function () {
     this.isHeading = function (session, row) {
@@ -52,10 +68,13 @@ define("ace/mode/folding/haskell_cabal", ["require", "exports", "module", "ace/l
     this.getFoldWidget = function (session, foldStyle, row) {
       if (this.isHeading(session, row)) {
         return "start";
-      } else if (foldStyle === "markbeginend" && !(/^\s*$/.test(session.getLine(row)))) {
+      } else if (
+        foldStyle === "markbeginend" &&
+        !/^\s*$/.test(session.getLine(row))
+      ) {
         var maxRow = session.getLength();
         while (++row < maxRow) {
-          if (!(/^\s*$/.test(session.getLine(row)))) {
+          if (!/^\s*$/.test(session.getLine(row))) {
             break;
           }
         }
@@ -101,17 +120,25 @@ define("ace/mode/folding/haskell_cabal", ["require", "exports", "module", "ace/l
       }
     };
   }).call(FoldMode.prototype);
-
 });
 
-define("ace/mode/haskell_cabal", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text", "ace/mode/haskell_cabal_highlight_rules", "ace/mode/folding/haskell_cabal"], function (require, exports, module) {
+define("ace/mode/haskell_cabal", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text",
+  "ace/mode/haskell_cabal_highlight_rules",
+  "ace/mode/folding/haskell_cabal"
+], function (require, exports, module) {
   /**
    * Haskell Cabal files mode (https://www.haskell.org/cabal/users-guide/developing-packages.html)
    **/
   "use strict";
   var oop = require("../lib/oop");
   var TextMode = require("./text").Mode;
-  var CabalHighlightRules = require("./haskell_cabal_highlight_rules").CabalHighlightRules;
+  var CabalHighlightRules =
+    require("./haskell_cabal_highlight_rules").CabalHighlightRules;
   var FoldMode = require("./folding/haskell_cabal").FoldMode;
   var Mode = function () {
     this.HighlightRules = CabalHighlightRules;
@@ -125,7 +152,6 @@ define("ace/mode/haskell_cabal", ["require", "exports", "module", "ace/lib/oop",
     this.$id = "ace/mode/haskell_cabal";
   }).call(Mode.prototype);
   exports.Mode = Mode;
-
 });
 (function () {
   window.require(["ace/mode/haskell_cabal"], function (m) {
@@ -134,4 +160,3 @@ define("ace/mode/haskell_cabal", ["require", "exports", "module", "ace/lib/oop",
     }
   });
 })();
-            

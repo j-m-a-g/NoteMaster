@@ -1,97 +1,130 @@
-define("ace/mode/jack_highlight_rules", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text_highlight_rules"], function (require, exports, module) {
+define("ace/mode/jack_highlight_rules", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text_highlight_rules"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
   var JackHighlightRules = function () {
     this.$rules = {
-      "start": [
+      start: [
         {
           token: "string",
           regex: '"',
           next: "string2"
-        }, {
+        },
+        {
           token: "string",
           regex: "'",
           next: "string1"
-        }, {
+        },
+        {
           token: "constant.numeric", // hex
           regex: "-?0[xX][0-9a-fA-F]+\\b"
-        }, {
+        },
+        {
           token: "constant.numeric", // float
           regex: "(?:0|[-+]?[1-9][0-9]*)\\b"
-        }, {
+        },
+        {
           token: "constant.binary",
           regex: "<[0-9A-Fa-f][0-9A-Fa-f](\\s+[0-9A-Fa-f][0-9A-Fa-f])*>"
-        }, {
+        },
+        {
           token: "constant.language.boolean",
           regex: "(?:true|false)\\b"
-        }, {
+        },
+        {
           token: "constant.language.null",
           regex: "null\\b"
-        }, {
+        },
+        {
           token: "storage.type",
-          regex: "(?:Integer|Boolean|Null|String|Buffer|Tuple|List|Object|Function|Coroutine|Form)\\b"
-        }, {
+          regex:
+            "(?:Integer|Boolean|Null|String|Buffer|Tuple|List|Object|Function|Coroutine|Form)\\b"
+        },
+        {
           token: "keyword",
-          regex: "(?:return|abort|vars|for|delete|in|is|escape|exec|split|and|if|elif|else|while)\\b"
-        }, {
+          regex:
+            "(?:return|abort|vars|for|delete|in|is|escape|exec|split|and|if|elif|else|while)\\b"
+        },
+        {
           token: "language.builtin",
-          regex: "(?:lines|source|parse|read-stream|interval|substr|parseint|write|print|range|rand|inspect|bind|i-values|i-pairs|i-map|i-filter|i-chunk|i-all\\?|i-any\\?|i-collect|i-zip|i-merge|i-each)\\b"
-        }, {
+          regex:
+            "(?:lines|source|parse|read-stream|interval|substr|parseint|write|print|range|rand|inspect|bind|i-values|i-pairs|i-map|i-filter|i-chunk|i-all\\?|i-any\\?|i-collect|i-zip|i-merge|i-each)\\b"
+        },
+        {
           token: "comment",
           regex: "--.*$"
-        }, {
+        },
+        {
           token: "paren.lparen",
           regex: "[[({]"
-        }, {
+        },
+        {
           token: "paren.rparen",
           regex: "[\\])}]"
-        }, {
+        },
+        {
           token: "storage.form",
           regex: "@[a-z]+"
-        }, {
+        },
+        {
           token: "constant.other.symbol",
-          regex: ':+[a-zA-Z_]([-]?[a-zA-Z0-9_])*[?!]?'
-        }, {
+          regex: ":+[a-zA-Z_]([-]?[a-zA-Z0-9_])*[?!]?"
+        },
+        {
           token: "variable",
-          regex: '[a-zA-Z_]([-]?[a-zA-Z0-9_])*[?!]?'
-        }, {
+          regex: "[a-zA-Z_]([-]?[a-zA-Z0-9_])*[?!]?"
+        },
+        {
           token: "keyword.operator",
-          regex: "\\|\\||\\^\\^|&&|!=|==|<=|<|>=|>|\\+|-|\\*|\\/|\\^|\\%|\\#|\\!"
-        }, {
+          regex:
+            "\\|\\||\\^\\^|&&|!=|==|<=|<|>=|>|\\+|-|\\*|\\/|\\^|\\%|\\#|\\!"
+        },
+        {
           token: "text",
           regex: "\\s+"
         }
       ],
-      "string1": [
+      string1: [
         {
           token: "constant.language.escape",
           regex: /\\(?:x[0-9a-fA-F]{2}|u[0-9a-fA-F]{4}|['"\\\/bfnrt])/
-        }, {
+        },
+        {
           token: "string",
           regex: "[^'\\\\]+"
-        }, {
+        },
+        {
           token: "string",
           regex: "'",
           next: "start"
-        }, {
+        },
+        {
           token: "string",
           regex: "",
           next: "start"
         }
       ],
-      "string2": [
+      string2: [
         {
           token: "constant.language.escape",
           regex: /\\(?:x[0-9a-fA-F]{2}|u[0-9a-fA-F]{4}|['"\\\/bfnrt])/
-        }, {
+        },
+        {
           token: "string",
           regex: '[^"\\\\]+'
-        }, {
+        },
+        {
           token: "string",
           regex: '"',
           next: "start"
-        }, {
+        },
+        {
           token: "string",
           regex: "",
           next: "start"
@@ -101,29 +134,29 @@ define("ace/mode/jack_highlight_rules", ["require", "exports", "module", "ace/li
   };
   oop.inherits(JackHighlightRules, TextHighlightRules);
   exports.JackHighlightRules = JackHighlightRules;
-
 });
 
-define("ace/mode/matching_brace_outdent", ["require", "exports", "module", "ace/range"], function (require, exports, module) {
+define("ace/mode/matching_brace_outdent", [
+  "require",
+  "exports",
+  "module",
+  "ace/range"
+], function (require, exports, module) {
   "use strict";
   var Range = require("../range").Range;
-  var MatchingBraceOutdent = function () {
-  };
+  var MatchingBraceOutdent = function () {};
   (function () {
     this.checkOutdent = function (line, input) {
-      if (!/^\s+$/.test(line))
-        return false;
+      if (!/^\s+$/.test(line)) return false;
       return /^\s*\}/.test(input);
     };
     this.autoOutdent = function (doc, row) {
       var line = doc.getLine(row);
       var match = line.match(/^(\s*\})/);
-      if (!match)
-        return 0;
+      if (!match) return 0;
       var column = match[1].length;
-      var openBracePos = doc.findMatchingBracket({row: row, column: column});
-      if (!openBracePos || openBracePos.row == row)
-        return 0;
+      var openBracePos = doc.findMatchingBracket({ row: row, column: column });
+      if (!openBracePos || openBracePos.row == row) return 0;
       var indent = this.$getIndent(doc.getLine(openBracePos.row));
       doc.replace(new Range(row, 0, row, column - 1), indent);
     };
@@ -132,20 +165,36 @@ define("ace/mode/matching_brace_outdent", ["require", "exports", "module", "ace/
     };
   }).call(MatchingBraceOutdent.prototype);
   exports.MatchingBraceOutdent = MatchingBraceOutdent;
-
 });
 
-define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop", "ace/range", "ace/mode/folding/fold_mode"], function (require, exports, module) {
+define("ace/mode/folding/cstyle", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/range",
+  "ace/mode/folding/fold_mode"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../../lib/oop");
   var Range = require("../../range").Range;
   var BaseFoldMode = require("./fold_mode").FoldMode;
-  var FoldMode = exports.FoldMode = function (commentRegex) {
+  var FoldMode = (exports.FoldMode = function (commentRegex) {
     if (commentRegex) {
-      this.foldingStartMarker = new RegExp(this.foldingStartMarker.source.replace(/\|[^|]*?$/, "|" + commentRegex.start));
-      this.foldingStopMarker = new RegExp(this.foldingStopMarker.source.replace(/\|[^|]*?$/, "|" + commentRegex.end));
+      this.foldingStartMarker = new RegExp(
+        this.foldingStartMarker.source.replace(
+          /\|[^|]*?$/,
+          "|" + commentRegex.start
+        )
+      );
+      this.foldingStopMarker = new RegExp(
+        this.foldingStopMarker.source.replace(
+          /\|[^|]*?$/,
+          "|" + commentRegex.end
+        )
+      );
     }
-  };
+  });
   oop.inherits(FoldMode, BaseFoldMode);
   (function () {
     this.foldingStartMarker = /([\{\[\(])[^\}\]\)]*$|^\s*(\/\*)/;
@@ -157,15 +206,22 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
     this.getFoldWidget = function (session, foldStyle, row) {
       var line = session.getLine(row);
       if (this.singleLineBlockCommentRe.test(line)) {
-        if (!this.startRegionRe.test(line) && !this.tripleStarBlockCommentRe.test(line))
+        if (
+          !this.startRegionRe.test(line) &&
+          !this.tripleStarBlockCommentRe.test(line)
+        )
           return "";
       }
       var fw = this._getFoldWidgetBase(session, foldStyle, row);
-      if (!fw && this.startRegionRe.test(line))
-        return "start"; // lineCommentRegionStart
+      if (!fw && this.startRegionRe.test(line)) return "start"; // lineCommentRegionStart
       return fw;
     };
-    this.getFoldWidgetRange = function (session, foldStyle, row, forceMultiline) {
+    this.getFoldWidgetRange = function (
+      session,
+      foldStyle,
+      row,
+      forceMultiline
+    ) {
       var line = session.getLine(row);
       if (this.startRegionRe.test(line))
         return this.getCommentRegionBlock(session, line, row);
@@ -178,13 +234,11 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
         if (range && !range.isMultiLine()) {
           if (forceMultiline) {
             range = this.getSectionRange(session, row);
-          } else if (foldStyle != "all")
-            range = null;
+          } else if (foldStyle != "all") range = null;
         }
         return range;
       }
-      if (foldStyle === "markbegin")
-        return;
+      if (foldStyle === "markbegin") return;
       var match = line.match(this.foldingStopMarker);
       if (match) {
         var i = match.index + match[0].length;
@@ -204,10 +258,8 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       while (++row < maxRow) {
         line = session.getLine(row);
         var indent = line.search(/\S/);
-        if (indent === -1)
-          continue;
-        if (startIndent > indent)
-          break;
+        if (indent === -1) continue;
+        if (startIndent > indent) break;
         var subRange = this.getFoldWidgetRange(session, "all", row);
         if (subRange) {
           if (subRange.start.row <= startRow) {
@@ -220,7 +272,12 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
         }
         endRow = row;
       }
-      return new Range(startRow, startColumn, endRow, session.getLine(endRow).length);
+      return new Range(
+        startRow,
+        startColumn,
+        endRow,
+        session.getLine(endRow).length
+      );
     };
     this.getCommentRegionBlock = function (session, line, row) {
       var startColumn = line.search(/\s*$/);
@@ -231,14 +288,10 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       while (++row < maxRow) {
         line = session.getLine(row);
         var m = re.exec(line);
-        if (!m)
-          continue;
-        if (m[1])
-          depth--;
-        else
-          depth++;
-        if (!depth)
-          break;
+        if (!m) continue;
+        if (m[1]) depth--;
+        else depth++;
+        if (!depth) break;
       }
       var endRow = row;
       if (endRow > startRow) {
@@ -246,15 +299,24 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       }
     };
   }).call(FoldMode.prototype);
-
 });
 
-define("ace/mode/jack", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text", "ace/mode/jack_highlight_rules", "ace/mode/matching_brace_outdent", "ace/mode/folding/cstyle"], function (require, exports, module) {
+define("ace/mode/jack", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text",
+  "ace/mode/jack_highlight_rules",
+  "ace/mode/matching_brace_outdent",
+  "ace/mode/folding/cstyle"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextMode = require("./text").Mode;
   var HighlightRules = require("./jack_highlight_rules").JackHighlightRules;
-  var MatchingBraceOutdent = require("./matching_brace_outdent").MatchingBraceOutdent;
+  var MatchingBraceOutdent =
+    require("./matching_brace_outdent").MatchingBraceOutdent;
   var CStyleFoldMode = require("./folding/cstyle").FoldMode;
   var Mode = function () {
     this.HighlightRules = HighlightRules;
@@ -284,7 +346,6 @@ define("ace/mode/jack", ["require", "exports", "module", "ace/lib/oop", "ace/mod
     this.$id = "ace/mode/jack";
   }).call(Mode.prototype);
   exports.Mode = Mode;
-
 });
 (function () {
   window.require(["ace/mode/jack"], function (m) {
@@ -293,4 +354,3 @@ define("ace/mode/jack", ["require", "exports", "module", "ace/lib/oop", "ace/mod
     }
   });
 })();
-            

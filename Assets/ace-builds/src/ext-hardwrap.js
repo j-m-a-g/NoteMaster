@@ -1,4 +1,11 @@
-define("ace/ext/hardwrap", ["require", "exports", "module", "ace/range", "ace/editor", "ace/config"], function (require, exports, module) {
+define("ace/ext/hardwrap", [
+  "require",
+  "exports",
+  "module",
+  "ace/range",
+  "ace/editor",
+  "ace/config"
+], function (require, exports, module) {
   "use strict";
   var Range = require("../range").Range;
 
@@ -14,7 +21,10 @@ define("ace/ext/hardwrap", ["require", "exports", "module", "ace/range", "ace/ed
         var space = findSpace(line, max, 5);
         if (space) {
           var indentation = /^\s*/.exec(line)[0];
-          session.replace(new Range(row, space.start, row, space.end), "\n" + indentation);
+          session.replace(
+            new Range(row, space.start, row, space.end),
+            "\n" + indentation
+          );
         }
         endRow++;
       } else if (allowMerge && /\S/.test(line) && row != endRow) {
@@ -24,13 +34,23 @@ define("ace/ext/hardwrap", ["require", "exports", "module", "ace/range", "ace/ed
           var trimmedNextLine = nextLine.replace(/^\s+/, "");
           var mergedLine = trimmedLine + " " + trimmedNextLine;
           var space = findSpace(mergedLine, max, 5);
-          if (space && space.start > trimmedLine.length || mergedLine.length < max) {
-            var replaceRange = new Range(row, trimmedLine.length, row + 1, nextLine.length - trimmedNextLine.length);
+          if (
+            (space && space.start > trimmedLine.length) ||
+            mergedLine.length < max
+          ) {
+            var replaceRange = new Range(
+              row,
+              trimmedLine.length,
+              row + 1,
+              nextLine.length - trimmedNextLine.length
+            );
             session.replace(replaceRange, " ");
             row--;
             endRow--;
           } else if (trimmedLine.length < line.length) {
-            session.remove(new Range(row, trimmedLine.length, row, line.length));
+            session.remove(
+              new Range(row, trimmedLine.length, row, line.length)
+            );
           }
         }
       }
@@ -38,8 +58,7 @@ define("ace/ext/hardwrap", ["require", "exports", "module", "ace/range", "ace/ed
     }
 
     function findSpace(line, max, min) {
-      if (line.length < max)
-        return;
+      if (line.length < max) return;
       var before = line.slice(0, max);
       var after = line.slice(max);
       var spaceAfter = /^(?:(\s+)|(\S+)(\s+))/.exec(after);
@@ -51,8 +70,7 @@ define("ace/ext/hardwrap", ["require", "exports", "module", "ace/range", "ace/ed
         end = max;
       }
       if (spaceAfter && !spaceAfter[2]) {
-        if (!start)
-          start = max;
+        if (!start) start = max;
         end = max + spaceAfter[1].length;
       }
       if (start) {
@@ -81,11 +99,11 @@ define("ace/ext/hardwrap", ["require", "exports", "module", "ace/range", "ace/ed
     if (e.command.name == "insertstring" && /\S/.test(e.args)) {
       var editor = e.editor;
       var cursor = editor.selection.cursor;
-      if (cursor.column <= editor.renderer.$printMarginColumn)
-        return;
+      if (cursor.column <= editor.renderer.$printMarginColumn) return;
       var lastDelta = editor.session.$undoManager.$lastDelta;
       hardWrap(editor, {
-        startRow: cursor.row, endRow: cursor.row,
+        startRow: cursor.row,
+        endRow: cursor.row,
         allowMerge: false
       });
       if (lastDelta != editor.session.$undoManager.$lastDelta)
@@ -107,7 +125,6 @@ define("ace/ext/hardwrap", ["require", "exports", "module", "ace/range", "ace/ed
     }
   });
   exports.hardWrap = hardWrap;
-
 });
 (function () {
   window.require(["ace/ext/hardwrap"], function (m) {
@@ -116,4 +133,3 @@ define("ace/ext/hardwrap", ["require", "exports", "module", "ace/range", "ace/ed
     }
   });
 })();
-            

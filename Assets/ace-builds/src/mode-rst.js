@@ -1,4 +1,11 @@
-define("ace/mode/rst_highlight_rules", ["require", "exports", "module", "ace/lib/oop", "ace/lib/lang", "ace/mode/text_highlight_rules"], function (require, exports, module) {
+define("ace/mode/rst_highlight_rules", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/lib/lang",
+  "ace/mode/text_highlight_rules"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var lang = require("../lib/lang");
@@ -19,7 +26,7 @@ define("ace/mode/rst_highlight_rules", ["require", "exports", "module", "ace/lib
     var startStringPrefix = "(^|\\s|[\"'(<\\[{\\-/:])";
     var endStringSuffix = "(?:$|(?=\\s|[\\\\.,;!?\\-/:\"')>\\]}]))";
     this.$rules = {
-      "start": [
+      start: [
         {
           token: tokens.title,
           regex: "(^)([\\=\\-`:\\.'\"~\\^_\\*\\+#])(\\2{2,}\\s*$)"
@@ -130,7 +137,7 @@ define("ace/mode/rst_highlight_rules", ["require", "exports", "module", "ace/lib
           regex: "\\|"
         }
       ],
-      "codeblock": [
+      codeblock: [
         {
           token: tokens.literal,
           regex: "^ +.+$",
@@ -138,7 +145,7 @@ define("ace/mode/rst_highlight_rules", ["require", "exports", "module", "ace/lib
         },
         {
           token: tokens.literal,
-          regex: '^$',
+          regex: "^$",
           next: "codeblock"
         },
         {
@@ -147,7 +154,7 @@ define("ace/mode/rst_highlight_rules", ["require", "exports", "module", "ace/lib
           next: "start"
         }
       ],
-      "code": [
+      code: [
         {
           token: tokens.literal,
           regex: "\\S``" + endStringSuffix,
@@ -157,7 +164,7 @@ define("ace/mode/rst_highlight_rules", ["require", "exports", "module", "ace/lib
           defaultToken: tokens.literal
         }
       ],
-      "bold": [
+      bold: [
         {
           token: tokens.bold,
           regex: "\\S\\*\\*" + endStringSuffix,
@@ -167,7 +174,7 @@ define("ace/mode/rst_highlight_rules", ["require", "exports", "module", "ace/lib
           defaultToken: tokens.bold
         }
       ],
-      "italic": [
+      italic: [
         {
           token: tokens.italic,
           regex: "\\S\\*" + endStringSuffix,
@@ -177,7 +184,7 @@ define("ace/mode/rst_highlight_rules", ["require", "exports", "module", "ace/lib
           defaultToken: tokens.italic
         }
       ],
-      "entity": [
+      entity: [
         {
           token: tokens.entity,
           regex: "\\S`" + endStringSuffix,
@@ -187,7 +194,7 @@ define("ace/mode/rst_highlight_rules", ["require", "exports", "module", "ace/lib
           defaultToken: tokens.entity
         }
       ],
-      "link": [
+      link: [
         {
           token: tokens.link,
           regex: "\\S`__?" + endStringSuffix,
@@ -197,7 +204,7 @@ define("ace/mode/rst_highlight_rules", ["require", "exports", "module", "ace/lib
           defaultToken: tokens.link
         }
       ],
-      "comment": [
+      comment: [
         {
           token: tokens.comment,
           regex: "^ +.+$",
@@ -205,7 +212,7 @@ define("ace/mode/rst_highlight_rules", ["require", "exports", "module", "ace/lib
         },
         {
           token: tokens.comment,
-          regex: '^$',
+          regex: "^$",
           next: "comment"
         },
         {
@@ -218,10 +225,16 @@ define("ace/mode/rst_highlight_rules", ["require", "exports", "module", "ace/lib
   };
   oop.inherits(RSTHighlightRules, TextHighlightRules);
   exports.RSTHighlightRules = RSTHighlightRules;
-
 });
 
-define("ace/mode/rst", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text", "ace/mode/rst_highlight_rules"], function (require, exports, module) {
+define("ace/mode/rst", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text",
+  "ace/mode/rst_highlight_rules"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextMode = require("./text").Mode;
@@ -236,7 +249,6 @@ define("ace/mode/rst", ["require", "exports", "module", "ace/lib/oop", "ace/mode
     this.snippetFileId = "ace/snippets/rst";
   }).call(Mode.prototype);
   exports.Mode = Mode;
-
 });
 (function () {
   window.require(["ace/mode/rst"], function (m) {
@@ -245,4 +257,3 @@ define("ace/mode/rst", ["require", "exports", "module", "ace/lib/oop", "ace/mode
     }
   });
 })();
-            

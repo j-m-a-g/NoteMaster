@@ -1,9 +1,16 @@
-define("ace/mode/csound_preprocessor_highlight_rules", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text_highlight_rules"], function (require, exports, module) {
+define("ace/mode/csound_preprocessor_highlight_rules", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text_highlight_rules"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
   var CsoundPreprocessorHighlightRules = function (embeddedRulePrefix) {
-    this.embeddedRulePrefix = embeddedRulePrefix === undefined ? "" : embeddedRulePrefix;
+    this.embeddedRulePrefix =
+      embeddedRulePrefix === undefined ? "" : embeddedRulePrefix;
     this.semicolonComments = {
       token: "comment.line.semicolon.csound",
       regex: ";.*$"
@@ -17,11 +24,13 @@ define("ace/mode/csound_preprocessor_highlight_rules", ["require", "exports", "m
             token: "punctuation.definition.comment.end.csound",
             regex: "\\*/",
             next: "pop"
-          }, {
+          },
+          {
             defaultToken: "comment.block.csound"
           }
         ]
-      }, {
+      },
+      {
         token: "comment.line.double-slash.csound",
         regex: "//.*$"
       },
@@ -29,10 +38,14 @@ define("ace/mode/csound_preprocessor_highlight_rules", ["require", "exports", "m
     ];
     this.macroUses = [
       {
-        token: ["entity.name.function.preprocessor.csound", "punctuation.definition.macro-parameter-value-list.begin.csound"],
+        token: [
+          "entity.name.function.preprocessor.csound",
+          "punctuation.definition.macro-parameter-value-list.begin.csound"
+        ],
         regex: /(\$[A-Z_a-z]\w*\.?)(\()/,
         next: "macro parameter value list"
-      }, {
+      },
+      {
         token: "entity.name.function.preprocessor.csound",
         regex: /\$[A-Z_a-z]\w*(?:\.|\b)/
       }
@@ -41,10 +54,15 @@ define("ace/mode/csound_preprocessor_highlight_rules", ["require", "exports", "m
       {
         token: "constant.numeric.float.csound",
         regex: /(?:\d+[Ee][+-]?\d+)|(?:\d+\.\d*|\d*\.\d+)(?:[Ee][+-]?\d+)?/
-      }, {
-        token: ["storage.type.number.csound", "constant.numeric.integer.hexadecimal.csound"],
+      },
+      {
+        token: [
+          "storage.type.number.csound",
+          "constant.numeric.integer.hexadecimal.csound"
+        ],
         regex: /(0[Xx])([0-9A-Fa-f]+)/
-      }, {
+      },
+      {
         token: "constant.numeric.integer.decimal.csound",
         regex: /\d+/
       }
@@ -57,21 +75,20 @@ define("ace/mode/csound_preprocessor_highlight_rules", ["require", "exports", "m
       {
         token: "constant.character.placeholder.csound",
         regex: /%[#0\- +]*\d*(?:\.\d+)?[diuoxXfFeEgGaAcs]/
-      }, {
+      },
+      {
         token: "constant.character.escape.csound",
         regex: /%%/
       }
     ];
-    this.quotedStringContents = [
-      this.macroUses,
-      this.bracedStringContents
-    ];
+    this.quotedStringContents = [this.macroUses, this.bracedStringContents];
     var start = [
       this.comments,
       {
         token: "keyword.preprocessor.csound",
         regex: /#(?:e(?:nd(?:if)?|lse)\b|##)|@@?[ \t]*\d+/
-      }, {
+      },
+      {
         token: "keyword.preprocessor.csound",
         regex: /#include/,
         push: [
@@ -82,7 +99,8 @@ define("ace/mode/csound_preprocessor_highlight_rules", ["require", "exports", "m
             next: "pop"
           }
         ]
-      }, {
+      },
+      {
         token: "keyword.preprocessor.csound",
         regex: /#includestr/,
         push: [
@@ -93,11 +111,13 @@ define("ace/mode/csound_preprocessor_highlight_rules", ["require", "exports", "m
             next: "pop"
           }
         ]
-      }, {
+      },
+      {
         token: "keyword.preprocessor.csound",
         regex: /#[ \t]*define/,
         next: "define directive"
-      }, {
+      },
+      {
         token: "keyword.preprocessor.csound",
         regex: /#(?:ifn?def|undef)\b/,
         next: "macro directive"
@@ -105,17 +125,20 @@ define("ace/mode/csound_preprocessor_highlight_rules", ["require", "exports", "m
       this.macroUses
     ];
     this.$rules = {
-      "start": start,
+      start: start,
       "define directive": [
         this.comments,
         {
           token: "entity.name.function.preprocessor.csound",
           regex: /[A-Z_a-z]\w*/
-        }, {
-          token: "punctuation.definition.macro-parameter-name-list.begin.csound",
+        },
+        {
+          token:
+            "punctuation.definition.macro-parameter-name-list.begin.csound",
           regex: /\(/,
           next: "macro parameter name list"
-        }, {
+        },
+        {
           token: "punctuation.definition.macro.begin.csound",
           regex: /#/,
           next: "macro body"
@@ -125,7 +148,8 @@ define("ace/mode/csound_preprocessor_highlight_rules", ["require", "exports", "m
         {
           token: "variable.parameter.preprocessor.csound",
           regex: /[A-Z_a-z]\w*/
-        }, {
+        },
+        {
           token: "punctuation.definition.macro-parameter-name-list.end.csound",
           regex: /\)/,
           next: "define directive"
@@ -135,7 +159,8 @@ define("ace/mode/csound_preprocessor_highlight_rules", ["require", "exports", "m
         {
           token: "constant.character.escape.csound",
           regex: /\\#/
-        }, {
+        },
+        {
           token: "punctuation.definition.macro.end.csound",
           regex: /#/,
           next: "start"
@@ -155,15 +180,18 @@ define("ace/mode/csound_preprocessor_highlight_rules", ["require", "exports", "m
           token: "punctuation.definition.macro-parameter-value-list.end.csound",
           regex: /\)/,
           next: "start"
-        }, {
+        },
+        {
           token: "punctuation.definition.string.begin.csound",
           regex: /"/,
           next: "macro parameter value quoted string"
-        }, this.pushRule({
+        },
+        this.pushRule({
           token: "punctuation.macro-parameter-value-parenthetical.begin.csound",
           regex: /\(/,
           next: "macro parameter value parenthetical"
-        }), {
+        }),
+        {
           token: "punctuation.macro-parameter-value-separator.csound",
           regex: "[#']"
         }
@@ -172,10 +200,12 @@ define("ace/mode/csound_preprocessor_highlight_rules", ["require", "exports", "m
         {
           token: "constant.character.escape.csound",
           regex: /\\[#'()]/
-        }, {
+        },
+        {
           token: "invalid.illegal.csound",
           regex: /[#'()]/
-        }, {
+        },
+        {
           token: "punctuation.definition.string.end.csound",
           regex: /"/,
           next: "macro parameter value list"
@@ -189,10 +219,12 @@ define("ace/mode/csound_preprocessor_highlight_rules", ["require", "exports", "m
         {
           token: "constant.character.escape.csound",
           regex: /\\\)/
-        }, this.popRule({
+        },
+        this.popRule({
           token: "punctuation.macro-parameter-value-parenthetical.end.csound",
           regex: /\)/
-        }), this.pushRule({
+        }),
+        this.pushRule({
           token: "punctuation.macro-parameter-value-parenthetical.begin.csound",
           regex: /\(/,
           next: "macro parameter value parenthetical"
@@ -210,9 +242,9 @@ define("ace/mode/csound_preprocessor_highlight_rules", ["require", "exports", "m
         }
       }
       return {
-        regex: params.regex, onMatch: function (value, currentState, stack, line) {
-          if (stack.length === 0)
-            stack.push(currentState);
+        regex: params.regex,
+        onMatch: function (value, currentState, stack, line) {
+          if (stack.length === 0) stack.push(currentState);
           if (Array.isArray(params.next)) {
             for (var i = 0; i < params.next.length; i++) {
               stack.push(params.next[i]);
@@ -224,7 +256,9 @@ define("ace/mode/csound_preprocessor_highlight_rules", ["require", "exports", "m
           return params.token;
         },
         get next() {
-          return Array.isArray(params.next) ? params.next[params.next.length - 1] : params.next;
+          return Array.isArray(params.next)
+            ? params.next[params.next.length - 1]
+            : params.next;
         },
         set next(next) {
           if (!Array.isArray(params.next)) {
@@ -241,13 +275,15 @@ define("ace/mode/csound_preprocessor_highlight_rules", ["require", "exports", "m
         params.next = this.embeddedRulePrefix + params.next;
       }
       return {
-        regex: params.regex, onMatch: function (value, currentState, stack, line) {
+        regex: params.regex,
+        onMatch: function (value, currentState, stack, line) {
           stack.pop();
           if (params.next) {
             stack.push(params.next);
             this.next = stack[stack.length - 1];
           } else {
-            this.next = stack.length > 1 ? stack[stack.length - 1] : stack.pop();
+            this.next =
+              stack.length > 1 ? stack[stack.length - 1] : stack.pop();
           }
           return params.token;
         }
@@ -255,13 +291,19 @@ define("ace/mode/csound_preprocessor_highlight_rules", ["require", "exports", "m
     };
   }).call(CsoundPreprocessorHighlightRules.prototype);
   exports.CsoundPreprocessorHighlightRules = CsoundPreprocessorHighlightRules;
-
 });
 
-define("ace/mode/csound_score_highlight_rules", ["require", "exports", "module", "ace/lib/oop", "ace/mode/csound_preprocessor_highlight_rules"], function (require, exports, module) {
+define("ace/mode/csound_score_highlight_rules", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/csound_preprocessor_highlight_rules"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
-  var CsoundPreprocessorHighlightRules = require("./csound_preprocessor_highlight_rules").CsoundPreprocessorHighlightRules;
+  var CsoundPreprocessorHighlightRules =
+    require("./csound_preprocessor_highlight_rules").CsoundPreprocessorHighlightRules;
   var CsoundScoreHighlightRules = function (embeddedRulePrefix) {
     CsoundPreprocessorHighlightRules.call(this, embeddedRulePrefix);
     this.quotedStringContents.push({
@@ -269,49 +311,63 @@ define("ace/mode/csound_score_highlight_rules", ["require", "exports", "module",
       regex: /[^"]*$/
     });
     var start = this.$rules.start;
-    start.push({
-      token: "keyword.control.csound-score",
-      regex: /[aBbCdefiqstvxy]/
-    }, {
-      token: "invalid.illegal.csound-score",
-      regex: /w/
-    }, {
-      token: "constant.numeric.language.csound-score",
-      regex: /z/
-    }, {
-      token: ["keyword.control.csound-score", "constant.numeric.integer.decimal.csound-score"],
-      regex: /([nNpP][pP])(\d+)/
-    }, {
-      token: "keyword.other.csound-score",
-      regex: /[mn]/,
-      push: [
-        {
-          token: "empty",
-          regex: /$/,
-          next: "pop"
-        },
-        this.comments,
-        {
-          token: "entity.name.label.csound-score",
-          regex: /[A-Z_a-z]\w*/
-        }
-      ]
-    }, {
-      token: "keyword.preprocessor.csound-score",
-      regex: /r\b/,
-      next: "repeat section"
-    }, this.numbers, {
-      token: "keyword.operator.csound-score",
-      regex: "[!+\\-*/^%&|<>#~.]"
-    }, this.pushRule({
-      token: "punctuation.definition.string.begin.csound-score",
-      regex: /"/,
-      next: "quoted string"
-    }), this.pushRule({
-      token: "punctuation.braced-loop.begin.csound-score",
-      regex: /{/,
-      next: "loop after left brace"
-    }));
+    start.push(
+      {
+        token: "keyword.control.csound-score",
+        regex: /[aBbCdefiqstvxy]/
+      },
+      {
+        token: "invalid.illegal.csound-score",
+        regex: /w/
+      },
+      {
+        token: "constant.numeric.language.csound-score",
+        regex: /z/
+      },
+      {
+        token: [
+          "keyword.control.csound-score",
+          "constant.numeric.integer.decimal.csound-score"
+        ],
+        regex: /([nNpP][pP])(\d+)/
+      },
+      {
+        token: "keyword.other.csound-score",
+        regex: /[mn]/,
+        push: [
+          {
+            token: "empty",
+            regex: /$/,
+            next: "pop"
+          },
+          this.comments,
+          {
+            token: "entity.name.label.csound-score",
+            regex: /[A-Z_a-z]\w*/
+          }
+        ]
+      },
+      {
+        token: "keyword.preprocessor.csound-score",
+        regex: /r\b/,
+        next: "repeat section"
+      },
+      this.numbers,
+      {
+        token: "keyword.operator.csound-score",
+        regex: "[!+\\-*/^%&|<>#~.]"
+      },
+      this.pushRule({
+        token: "punctuation.definition.string.begin.csound-score",
+        regex: /"/,
+        next: "quoted string"
+      }),
+      this.pushRule({
+        token: "punctuation.braced-loop.begin.csound-score",
+        regex: /{/,
+        next: "loop after left brace"
+      })
+    );
     this.addRules({
       "repeat section": [
         {
@@ -385,25 +441,31 @@ define("ace/mode/csound_score_highlight_rules", ["require", "exports", "module",
   };
   oop.inherits(CsoundScoreHighlightRules, CsoundPreprocessorHighlightRules);
   exports.CsoundScoreHighlightRules = CsoundScoreHighlightRules;
-
 });
 
-define("ace/mode/csound_score", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text", "ace/mode/csound_score_highlight_rules"], function (require, exports, module) {
+define("ace/mode/csound_score", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text",
+  "ace/mode/csound_score_highlight_rules"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextMode = require("./text").Mode;
-  var CsoundScoreHighlightRules = require("./csound_score_highlight_rules").CsoundScoreHighlightRules;
+  var CsoundScoreHighlightRules =
+    require("./csound_score_highlight_rules").CsoundScoreHighlightRules;
   var Mode = function () {
     this.HighlightRules = CsoundScoreHighlightRules;
   };
   oop.inherits(Mode, TextMode);
   (function () {
     this.lineCommentStart = ";";
-    this.blockComment = {start: "/*", end: "*/"};
+    this.blockComment = { start: "/*", end: "*/" };
     this.$id = "ace/mode/csound_score";
   }).call(Mode.prototype);
   exports.Mode = Mode;
-
 });
 (function () {
   window.require(["ace/mode/csound_score"], function (m) {
@@ -412,4 +474,3 @@ define("ace/mode/csound_score", ["require", "exports", "module", "ace/lib/oop", 
     }
   });
 })();
-            

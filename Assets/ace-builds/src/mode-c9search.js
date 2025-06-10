@@ -1,4 +1,11 @@
-define("ace/mode/c9search_highlight_rules", ["require", "exports", "module", "ace/lib/oop", "ace/lib/lang", "ace/mode/text_highlight_rules"], function (require, exports, module) {
+define("ace/mode/c9search_highlight_rules", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/lib/lang",
+  "ace/mode/text_highlight_rules"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var lang = require("../lib/lang");
@@ -7,31 +14,37 @@ define("ace/mode/c9search_highlight_rules", ["require", "exports", "module", "ac
   function safeCreateRegexp(source, flag) {
     try {
       return new RegExp(source, flag);
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
   var C9SearchHighlightRules = function () {
     this.$rules = {
-      "start": [
+      start: [
         {
-          tokenNames: ["c9searchresults.constant.numeric", "c9searchresults.text", "c9searchresults.text", "c9searchresults.keyword"],
+          tokenNames: [
+            "c9searchresults.constant.numeric",
+            "c9searchresults.text",
+            "c9searchresults.text",
+            "c9searchresults.keyword"
+          ],
           regex: /(^\s+[0-9]+)(:)(\d*\s?)([^\r\n]+)/,
           onMatch: function (val, state, stack) {
             var values = this.splitRegex.exec(val);
             var types = this.tokenNames;
-            var tokens = [{
-              type: types[0],
-              value: values[1]
-            }, {
-              type: types[1],
-              value: values[2]
-            }];
+            var tokens = [
+              {
+                type: types[0],
+                value: values[1]
+              },
+              {
+                type: types[1],
+                value: values[2]
+              }
+            ];
             if (values[3]) {
               if (values[3] == " ")
-                tokens[1] = {type: types[1], value: values[2] + " "};
-              else
-                tokens.push({type: types[1], value: values[3]});
+                tokens[1] = { type: types[1], value: values[2] + " " };
+              else tokens.push({ type: types[1], value: values[3] });
             }
             var regex = stack[1];
             var str = values[4];
@@ -39,19 +52,16 @@ define("ace/mode/c9search_highlight_rules", ["require", "exports", "module", "ac
             var last = 0;
             if (regex && regex.exec) {
               regex.lastIndex = 0;
-              while (m = regex.exec(str)) {
+              while ((m = regex.exec(str))) {
                 var skipped = str.substring(last, m.index);
                 last = regex.lastIndex;
-                if (skipped)
-                  tokens.push({type: types[2], value: skipped});
-                if (m[0])
-                  tokens.push({type: types[3], value: m[0]});
-                else if (!skipped)
-                  break;
+                if (skipped) tokens.push({ type: types[2], value: skipped });
+                if (m[0]) tokens.push({ type: types[3], value: m[0] });
+                else if (!skipped) break;
               }
             }
             if (last < str.length)
-              tokens.push({type: types[2], value: str.substr(last)});
+              tokens.push({ type: types[2], value: str.substr(last) });
             return tokens;
           }
         },
@@ -59,28 +69,34 @@ define("ace/mode/c9search_highlight_rules", ["require", "exports", "module", "ac
           regex: "^Searching for [^\\r\\n]*$",
           onMatch: function (val, state, stack) {
             var parts = val.split("\x01");
-            if (parts.length < 3)
-              return "text";
+            if (parts.length < 3) return "text";
             var options, search;
             var i = 0;
-            var tokens = [{
-              value: parts[i++] + "'",
-              type: "text"
-            }, {
-              value: search = parts[i++],
-              type: "text" // "c9searchresults.keyword"
-            }, {
-              value: "'" + parts[i++],
-              type: "text"
-            }];
+            var tokens = [
+              {
+                value: parts[i++] + "'",
+                type: "text"
+              },
+              {
+                value: (search = parts[i++]),
+                type: "text" // "c9searchresults.keyword"
+              },
+              {
+                value: "'" + parts[i++],
+                type: "text"
+              }
+            ];
             if (parts[2] !== " in") {
-              tokens.push({
-                value: "'" + parts[i++] + "'",
-                type: "text"
-              }, {
-                value: parts[i++],
-                type: "text"
-              });
+              tokens.push(
+                {
+                  value: "'" + parts[i++] + "'",
+                  type: "text"
+                },
+                {
+                  value: parts[i++],
+                  type: "text"
+                }
+              );
             }
             tokens.push({
               value: " " + parts[i++] + " ",
@@ -97,18 +113,22 @@ define("ace/mode/c9search_highlight_rules", ["require", "exports", "module", "ac
               i -= 1;
             }
             while (i++ < parts.length) {
-              parts[i] && tokens.push({
-                value: parts[i],
-                type: "text"
-              });
+              parts[i] &&
+                tokens.push({
+                  value: parts[i],
+                  type: "text"
+                });
             }
             if (search) {
-              if (!/regex/.test(options))
-                search = lang.escapeRegExp(search);
-              if (/whole/.test(options))
-                search = "\\b" + search + "\\b";
+              if (!/regex/.test(options)) search = lang.escapeRegExp(search);
+              if (/whole/.test(options)) search = "\\b" + search + "\\b";
             }
-            var regex = search && safeCreateRegexp("(" + search + ")", / sensitive/.test(options) ? "g" : "ig");
+            var regex =
+              search &&
+              safeCreateRegexp(
+                "(" + search + ")",
+                / sensitive/.test(options) ? "g" : "ig"
+              );
             if (regex) {
               stack[0] = state;
               stack[1] = regex;
@@ -127,42 +147,45 @@ define("ace/mode/c9search_highlight_rules", ["require", "exports", "module", "ac
           next: "numbers"
         }
       ],
-      numbers: [{
-        regex: "\\d+",
-        token: "constant.numeric"
-      }, {
-        regex: "$",
-        token: "text",
-        next: "start"
-      }]
+      numbers: [
+        {
+          regex: "\\d+",
+          token: "constant.numeric"
+        },
+        {
+          regex: "$",
+          token: "text",
+          next: "start"
+        }
+      ]
     };
     this.normalizeRules();
   };
   oop.inherits(C9SearchHighlightRules, TextHighlightRules);
   exports.C9SearchHighlightRules = C9SearchHighlightRules;
-
 });
 
-define("ace/mode/matching_brace_outdent", ["require", "exports", "module", "ace/range"], function (require, exports, module) {
+define("ace/mode/matching_brace_outdent", [
+  "require",
+  "exports",
+  "module",
+  "ace/range"
+], function (require, exports, module) {
   "use strict";
   var Range = require("../range").Range;
-  var MatchingBraceOutdent = function () {
-  };
+  var MatchingBraceOutdent = function () {};
   (function () {
     this.checkOutdent = function (line, input) {
-      if (!/^\s+$/.test(line))
-        return false;
+      if (!/^\s+$/.test(line)) return false;
       return /^\s*\}/.test(input);
     };
     this.autoOutdent = function (doc, row) {
       var line = doc.getLine(row);
       var match = line.match(/^(\s*\})/);
-      if (!match)
-        return 0;
+      if (!match) return 0;
       var column = match[1].length;
-      var openBracePos = doc.findMatchingBracket({row: row, column: column});
-      if (!openBracePos || openBracePos.row == row)
-        return 0;
+      var openBracePos = doc.findMatchingBracket({ row: row, column: column });
+      if (!openBracePos || openBracePos.row == row) return 0;
       var indent = this.$getIndent(doc.getLine(openBracePos.row));
       doc.replace(new Range(row, 0, row, column - 1), indent);
     };
@@ -171,16 +194,21 @@ define("ace/mode/matching_brace_outdent", ["require", "exports", "module", "ace/
     };
   }).call(MatchingBraceOutdent.prototype);
   exports.MatchingBraceOutdent = MatchingBraceOutdent;
-
 });
 
-define("ace/mode/folding/c9search", ["require", "exports", "module", "ace/lib/oop", "ace/range", "ace/mode/folding/fold_mode"], function (require, exports, module) {
+define("ace/mode/folding/c9search", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/range",
+  "ace/mode/folding/fold_mode"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../../lib/oop");
   var Range = require("../../range").Range;
   var BaseFoldMode = require("./fold_mode").FoldMode;
-  var FoldMode = exports.FoldMode = function () {
-  };
+  var FoldMode = (exports.FoldMode = function () {});
   oop.inherits(FoldMode, BaseFoldMode);
   (function () {
     this.foldingStartMarker = /^(\S.*:|Searching for.*)$/;
@@ -195,35 +223,42 @@ define("ace/mode/folding/c9search", ["require", "exports", "module", "ace/lib/oo
       var endRow = row;
       if (this.foldingStartMarker.test(line)) {
         for (var i = row + 1, l = session.getLength(); i < l; i++) {
-          if (re.test(lines[i]))
-            break;
+          if (re.test(lines[i])) break;
         }
         endRow = i;
       } else if (this.foldingStopMarker.test(line)) {
         for (var i = row - 1; i >= 0; i--) {
           line = lines[i];
-          if (re.test(line))
-            break;
+          if (re.test(line)) break;
         }
         startRow = i;
       }
       if (startRow != endRow) {
         var col = line.length;
-        if (re === level1)
-          col = line.search(/\(Found[^)]+\)$|$/);
+        if (re === level1) col = line.search(/\(Found[^)]+\)$|$/);
         return new Range(startRow, col, endRow, 0);
       }
     };
   }).call(FoldMode.prototype);
-
 });
 
-define("ace/mode/c9search", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text", "ace/mode/c9search_highlight_rules", "ace/mode/matching_brace_outdent", "ace/mode/folding/c9search"], function (require, exports, module) {
+define("ace/mode/c9search", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text",
+  "ace/mode/c9search_highlight_rules",
+  "ace/mode/matching_brace_outdent",
+  "ace/mode/folding/c9search"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextMode = require("./text").Mode;
-  var C9SearchHighlightRules = require("./c9search_highlight_rules").C9SearchHighlightRules;
-  var MatchingBraceOutdent = require("./matching_brace_outdent").MatchingBraceOutdent;
+  var C9SearchHighlightRules =
+    require("./c9search_highlight_rules").C9SearchHighlightRules;
+  var MatchingBraceOutdent =
+    require("./matching_brace_outdent").MatchingBraceOutdent;
   var C9StyleFoldMode = require("./folding/c9search").FoldMode;
   var Mode = function () {
     this.HighlightRules = C9SearchHighlightRules;
@@ -245,7 +280,6 @@ define("ace/mode/c9search", ["require", "exports", "module", "ace/lib/oop", "ace
     this.$id = "ace/mode/c9search";
   }).call(Mode.prototype);
   exports.Mode = Mode;
-
 });
 (function () {
   window.require(["ace/mode/c9search"], function (m) {
@@ -254,4 +288,3 @@ define("ace/mode/c9search", ["require", "exports", "module", "ace/lib/oop", "ace
     }
   });
 })();
-            

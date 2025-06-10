@@ -1,18 +1,23 @@
-define("ace/mode/folding/coffee", ["require", "exports", "module", "ace/lib/oop", "ace/mode/folding/fold_mode", "ace/range"], function (require, exports, module) {
+define("ace/mode/folding/coffee", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/folding/fold_mode",
+  "ace/range"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../../lib/oop");
   var BaseFoldMode = require("./fold_mode").FoldMode;
   var Range = require("../../range").Range;
-  var FoldMode = exports.FoldMode = function () {
-  };
+  var FoldMode = (exports.FoldMode = function () {});
   oop.inherits(FoldMode, BaseFoldMode);
   (function () {
     this.commentBlock = function (session, row) {
       var re = /\S/;
       var line = session.getLine(row);
       var startLevel = line.search(re);
-      if (startLevel == -1 || line[startLevel] != "#")
-        return;
+      if (startLevel == -1 || line[startLevel] != "#") return;
       var startColumn = line.length;
       var maxRow = session.getLength();
       var startRow = row;
@@ -20,10 +25,8 @@ define("ace/mode/folding/coffee", ["require", "exports", "module", "ace/lib/oop"
       while (++row < maxRow) {
         line = session.getLine(row);
         var level = line.search(re);
-        if (level == -1)
-          continue;
-        if (line[level] != "#")
-          break;
+        if (level == -1) continue;
+        if (line[level] != "#") break;
         endRow = row;
       }
       if (endRow > startRow) {
@@ -33,11 +36,9 @@ define("ace/mode/folding/coffee", ["require", "exports", "module", "ace/lib/oop"
     };
     this.getFoldWidgetRange = function (session, foldStyle, row) {
       var range = this.indentationBlock(session, row);
-      if (range)
-        return range;
+      if (range) return range;
       range = this.commentBlock(session, row);
-      if (range)
-        return range;
+      if (range) return range;
     };
     this.getFoldWidget = function (session, foldStyle, row) {
       var line = session.getLine(row);
@@ -47,16 +48,25 @@ define("ace/mode/folding/coffee", ["require", "exports", "module", "ace/lib/oop"
       var prevIndent = prev.search(/\S/);
       var nextIndent = next.search(/\S/);
       if (indent == -1) {
-        session.foldWidgets[row - 1] = prevIndent != -1 && prevIndent < nextIndent ? "start" : "";
+        session.foldWidgets[row - 1] =
+          prevIndent != -1 && prevIndent < nextIndent ? "start" : "";
         return "";
       }
       if (prevIndent == -1) {
-        if (indent == nextIndent && line[indent] == "#" && next[indent] == "#") {
+        if (
+          indent == nextIndent &&
+          line[indent] == "#" &&
+          next[indent] == "#"
+        ) {
           session.foldWidgets[row - 1] = "";
           session.foldWidgets[row + 1] = "";
           return "start";
         }
-      } else if (prevIndent == indent && line[indent] == "#" && prev[indent] == "#") {
+      } else if (
+        prevIndent == indent &&
+        line[indent] == "#" &&
+        prev[indent] == "#"
+      ) {
         if (session.getLine(row - 2).search(/\S/) == -1) {
           session.foldWidgets[row - 1] = "start";
           session.foldWidgets[row + 1] = "";
@@ -65,75 +75,81 @@ define("ace/mode/folding/coffee", ["require", "exports", "module", "ace/lib/oop"
       }
       if (prevIndent != -1 && prevIndent < indent)
         session.foldWidgets[row - 1] = "start";
-      else
-        session.foldWidgets[row - 1] = "";
-      if (indent < nextIndent)
-        return "start";
-      else
-        return "";
+      else session.foldWidgets[row - 1] = "";
+      if (indent < nextIndent) return "start";
+      else return "";
     };
   }).call(FoldMode.prototype);
-
 });
 
-define("ace/mode/snippets", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text", "ace/mode/text_highlight_rules", "ace/mode/folding/coffee"], function (require, exports, module) {
+define("ace/mode/snippets", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text",
+  "ace/mode/text_highlight_rules",
+  "ace/mode/folding/coffee"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextMode = require("./text").Mode;
   var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
   var SnippetHighlightRules = function () {
-    var builtins = "SELECTION|CURRENT_WORD|SELECTED_TEXT|CURRENT_LINE|LINE_INDEX|" +
+    var builtins =
+      "SELECTION|CURRENT_WORD|SELECTED_TEXT|CURRENT_LINE|LINE_INDEX|" +
       "LINE_NUMBER|SOFT_TABS|TAB_SIZE|FILENAME|FILEPATH|FULLNAME";
     this.$rules = {
-      "start": [
-        {token: "constant.language.escape", regex: /\\[\$}`\\]/},
-        {token: "keyword", regex: "\\$(?:TM_)?(?:" + builtins + ")\\b"},
-        {token: "variable", regex: "\\$\\w+"},
+      start: [
+        { token: "constant.language.escape", regex: /\\[\$}`\\]/ },
+        { token: "keyword", regex: "\\$(?:TM_)?(?:" + builtins + ")\\b" },
+        { token: "variable", regex: "\\$\\w+" },
         {
           onMatch: function (value, state, stack) {
-            if (stack[1])
-              stack[1]++;
-            else
-              stack.unshift(state, 1);
+            if (stack[1]) stack[1]++;
+            else stack.unshift(state, 1);
             return this.tokenName;
-          }, tokenName: "markup.list", regex: "\\${", next: "varDecl"
+          },
+          tokenName: "markup.list",
+          regex: "\\${",
+          next: "varDecl"
         },
         {
           onMatch: function (value, state, stack) {
-            if (!stack[1])
-              return "text";
+            if (!stack[1]) return "text";
             stack[1]--;
-            if (!stack[1])
-              stack.splice(0, 2);
+            if (!stack[1]) stack.splice(0, 2);
             return this.tokenName;
-          }, tokenName: "markup.list", regex: "}"
+          },
+          tokenName: "markup.list",
+          regex: "}"
         },
-        {token: "doc.comment", regex: /^\${2}-{5,}$/}
+        { token: "doc.comment", regex: /^\${2}-{5,}$/ }
       ],
-      "varDecl": [
-        {regex: /\d+\b/, token: "constant.numeric"},
-        {token: "keyword", regex: "(?:TM_)?(?:" + builtins + ")\\b"},
-        {token: "variable", regex: "\\w+"},
-        {regex: /:/, token: "punctuation.operator", next: "start"},
-        {regex: /\//, token: "string.regex", next: "regexp"},
-        {regex: "", next: "start"}
+      varDecl: [
+        { regex: /\d+\b/, token: "constant.numeric" },
+        { token: "keyword", regex: "(?:TM_)?(?:" + builtins + ")\\b" },
+        { token: "variable", regex: "\\w+" },
+        { regex: /:/, token: "punctuation.operator", next: "start" },
+        { regex: /\//, token: "string.regex", next: "regexp" },
+        { regex: "", next: "start" }
       ],
-      "regexp": [
-        {regex: /\\./, token: "escape"},
-        {regex: /\[/, token: "regex.start", next: "charClass"},
-        {regex: "/", token: "string.regex", next: "format"},
-        {"token": "string.regex", regex: "."}
+      regexp: [
+        { regex: /\\./, token: "escape" },
+        { regex: /\[/, token: "regex.start", next: "charClass" },
+        { regex: "/", token: "string.regex", next: "format" },
+        { token: "string.regex", regex: "." }
       ],
       charClass: [
-        {regex: "\\.", token: "escape"},
-        {regex: "\\]", token: "regex.end", next: "regexp"},
-        {"token": "string.regex", regex: "."}
+        { regex: "\\.", token: "escape" },
+        { regex: "\\]", token: "regex.end", next: "regexp" },
+        { token: "string.regex", regex: "." }
       ],
-      "format": [
-        {regex: /\\[ulULE]/, token: "keyword"},
-        {regex: /\$\d+/, token: "variable"},
-        {regex: "/[gim]*:?", token: "string.regex", next: "start"},
-        {"token": "string", regex: "."}
+      format: [
+        { regex: /\\[ulULE]/, token: "keyword" },
+        { regex: /\$\d+/, token: "variable" },
+        { regex: "/[gim]*:?", token: "string.regex", next: "start" },
+        { token: "string", regex: "." }
       ]
     };
   };
@@ -141,29 +157,33 @@ define("ace/mode/snippets", ["require", "exports", "module", "ace/lib/oop", "ace
   exports.SnippetHighlightRules = SnippetHighlightRules;
   var SnippetGroupHighlightRules = function () {
     this.$rules = {
-      "start": [
-        {token: "text", regex: "^\\t", next: "sn-start"},
-        {token: "invalid", regex: /^ \s*/},
-        {token: "comment", regex: /^#.*/},
-        {token: "constant.language.escape", regex: "^regex ", next: "regex"},
+      start: [
+        { token: "text", regex: "^\\t", next: "sn-start" },
+        { token: "invalid", regex: /^ \s*/ },
+        { token: "comment", regex: /^#.*/ },
+        { token: "constant.language.escape", regex: "^regex ", next: "regex" },
         {
           token: "constant.language.escape",
-          regex: "^(trigger|endTrigger|name|snippet|guard|endGuard|tabTrigger|key)\\b"
+          regex:
+            "^(trigger|endTrigger|name|snippet|guard|endGuard|tabTrigger|key)\\b"
         }
       ],
-      "regex": [
-        {token: "text", regex: "\\."},
-        {token: "keyword", regex: "/"},
-        {token: "empty", regex: "$", next: "start"}
+      regex: [
+        { token: "text", regex: "\\." },
+        { token: "keyword", regex: "/" },
+        { token: "empty", regex: "$", next: "start" }
       ]
     };
     this.embedRules(SnippetHighlightRules, "sn-", [
-      {token: "text", regex: "^\\t", next: "sn-start"},
+      { token: "text", regex: "^\\t", next: "sn-start" },
       {
         onMatch: function (value, state, stack) {
           stack.splice(stack.length);
           return this.tokenName;
-        }, tokenName: "text", regex: "^(?!\t)", next: "start"
+        },
+        tokenName: "text",
+        regex: "^(?!\t)",
+        next: "start"
       }
     ]);
   };
@@ -183,7 +203,6 @@ define("ace/mode/snippets", ["require", "exports", "module", "ace/lib/oop", "ace
     this.snippetFileId = "ace/snippets/snippets";
   }).call(Mode.prototype);
   exports.Mode = Mode;
-
 });
 (function () {
   window.require(["ace/mode/snippets"], function (m) {
@@ -192,4 +211,3 @@ define("ace/mode/snippets", ["require", "exports", "module", "ace/lib/oop", "ace
     }
   });
 })();
-            

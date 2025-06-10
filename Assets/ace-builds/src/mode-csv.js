@@ -1,4 +1,10 @@
-define("ace/mode/csv_highlight_rules", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text_highlight_rules"], function (require, exports, module) {
+define("ace/mode/csv_highlight_rules", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text_highlight_rules"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
@@ -7,10 +13,17 @@ define("ace/mode/csv_highlight_rules", ["require", "exports", "module", "ace/lib
   };
   oop.inherits(CsvHighlightRules, TextHighlightRules);
   exports.CsvHighlightRules = CsvHighlightRules;
-
 });
 
-define("ace/mode/csv", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text", "ace/lib/lang", "ace/mode/csv_highlight_rules"], function (require, exports, module) {
+define("ace/mode/csv", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text",
+  "ace/lib/lang",
+  "ace/mode/csv_highlight_rules"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextMode = require("./text").Mode;
@@ -18,10 +31,10 @@ define("ace/mode/csv", ["require", "exports", "module", "ace/lib/oop", "ace/mode
   var CsvHighlightRules = require("./csv_highlight_rules").CsvHighlightRules;
   var Mode = function (options) {
     this.HighlightRules = CsvHighlightRules;
-    if (!options)
-      options = {};
+    if (!options) options = {};
     var separatorRegex = [options.splitter || ",", options.quote || '"']
-      .map(escapeRegExp).join("|");
+      .map(escapeRegExp)
+      .join("|");
     this.$tokenizer = {
       getLineTokens: function (line, state, row) {
         return tokenizeCsv(line, state, this.options);
@@ -31,7 +44,7 @@ define("ace/mode/csv", ["require", "exports", "module", "ace/lib/oop", "ace/mode
         separatorRegex: new RegExp("(" + separatorRegex + ")"),
         spliter: options.splitter || ","
       },
-      states: {},
+      states: {}
     };
     this.$highlightRules = new this.HighlightRules();
   };
@@ -43,7 +56,14 @@ define("ace/mode/csv", ["require", "exports", "module", "ace/lib/oop", "ace/mode
     this.$id = "ace/mode/csv";
   }).call(Mode.prototype);
   exports.Mode = Mode;
-  var classNames = ["keyword", "text", "string", "string.regex", "variable", "constant.numeric"];
+  var classNames = [
+    "keyword",
+    "text",
+    "string",
+    "string.regex",
+    "variable",
+    "constant.numeric"
+  ];
 
   function tokenizeCsv(line, state, options) {
     var result = [];
@@ -52,7 +72,7 @@ define("ace/mode/csv", ["require", "exports", "module", "ace/lib/oop", "ace/mode
     var quote = options.quote || '"';
     var stateParts = (state || "start").split("-");
     var column = parseInt(stateParts[1]) || 0;
-    var inString = stateParts[0] == 'string';
+    var inString = stateParts[0] == "string";
     var atColumnStart = !inString;
     for (var i = 0; i < parts.length; i++) {
       var value = parts[i];
@@ -67,7 +87,7 @@ define("ace/mode/csv", ["require", "exports", "module", "ace/lib/oop", "ace/mode
             inString = true;
             atColumnStart = false;
           } else if (inString) {
-            if (parts[i + 1] == '' && parts[i + 2] == quote) {
+            if (parts[i + 1] == "" && parts[i + 2] == quote) {
               value = quote + quote;
               i += 2;
             } else {
@@ -79,13 +99,16 @@ define("ace/mode/csv", ["require", "exports", "module", "ace/lib/oop", "ace/mode
         }
         result.push({
           value: value,
-          type: classNames[column % classNames.length] + ".csv_" + column + (isSeparator ? ".csv_separator" : "")
+          type:
+            classNames[column % classNames.length] +
+            ".csv_" +
+            column +
+            (isSeparator ? ".csv_separator" : "")
         });
       }
     }
-    return {tokens: result, state: inString ? "string-" + column : "start"};
+    return { tokens: result, state: inString ? "string-" + column : "start" };
   }
-
 });
 (function () {
   window.require(["ace/mode/csv"], function (m) {
@@ -94,4 +117,3 @@ define("ace/mode/csv", ["require", "exports", "module", "ace/lib/oop", "ace/mode
     }
   });
 })();
-            

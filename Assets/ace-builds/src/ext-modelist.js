@@ -1,4 +1,8 @@
-define("ace/ext/modelist", ["require", "exports", "module"], function (require, exports, module) {
+define("ace/ext/modelist", ["require", "exports", "module"], function (
+  require,
+  exports,
+  module
+) {
   "use strict";
   var modes = [];
 
@@ -22,9 +26,10 @@ define("ace/ext/modelist", ["require", "exports", "module"], function (require, 
       this.extensions = extensions;
       var re;
       if (/\^/.test(extensions)) {
-        re = extensions.replace(/\|(\^)?/g, function (a, b) {
-          return "$|" + (b ? "^" : "^.*\\.");
-        }) + "$";
+        re =
+          extensions.replace(/\|(\^)?/g, function (a, b) {
+            return "$|" + (b ? "^" : "^.*\\.");
+          }) + "$";
       } else {
         re = "\\.(" + extensions + ")$";
       }
@@ -35,14 +40,16 @@ define("ace/ext/modelist", ["require", "exports", "module"], function (require, 
       return filename.match(this.extRe);
     };
     return Mode;
-  }());
+  })();
   var supportedModes = {
     ABAP: ["abap"],
     ABC: ["abc"],
     ActionScript: ["as"],
     ADA: ["ada|adb"],
     Alda: ["alda"],
-    Apache_Conf: ["^htaccess|^htgroups|^htpasswd|^conf|htaccess|htgroups|htpasswd"],
+    Apache_Conf: [
+      "^htaccess|^htgroups|^htpasswd|^conf|htaccess|htgroups|htpasswd"
+    ],
     Apex: ["apex|cls|trigger|tgr"],
     AQL: ["aql"],
     AsciiDoc: ["asciidoc|adoc"],
@@ -259,7 +266,6 @@ define("ace/ext/modelist", ["require", "exports", "module"], function (require, 
     modes: modes,
     modesByName: modesByName
   };
-
 });
 (function () {
   window.require(["ace/ext/modelist"], function (m) {
@@ -268,4 +274,3 @@ define("ace/ext/modelist", ["require", "exports", "module"], function (require, 
     }
   });
 })();
-            

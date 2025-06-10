@@ -1,4 +1,10 @@
-define("ace/ext/linking", ["require", "exports", "module", "ace/editor", "ace/config"], function (require, exports, module) {
+define("ace/ext/linking", [
+  "require",
+  "exports",
+  "module",
+  "ace/editor",
+  "ace/config"
+], function (require, exports, module) {
   var Editor = require("../editor").Editor;
   require("../config").defineOptions(Editor.prototype, "editor", {
     enableLinking: {
@@ -24,10 +30,13 @@ define("ace/ext/linking", ["require", "exports", "module", "ace/editor", "ace/co
       var docPos = e.getDocumentPosition();
       var session = editor.session;
       var token = session.getTokenAt(docPos.row, docPos.column);
-      if (exports.previousLinkingHover && exports.previousLinkingHover != token) {
+      if (
+        exports.previousLinkingHover &&
+        exports.previousLinkingHover != token
+      ) {
         editor._emit("linkHoverOut");
       }
-      editor._emit("linkHover", {position: docPos, token: token});
+      editor._emit("linkHover", { position: docPos, token: token });
       exports.previousLinkingHover = token;
     } else if (exports.previousLinkingHover) {
       editor._emit("linkHoverOut");
@@ -43,10 +52,9 @@ define("ace/ext/linking", ["require", "exports", "module", "ace/editor", "ace/co
       var docPos = e.getDocumentPosition();
       var session = editor.session;
       var token = session.getTokenAt(docPos.row, docPos.column);
-      editor._emit("linkClick", {position: docPos, token: token});
+      editor._emit("linkClick", { position: docPos, token: token });
     }
   }
-
 });
 (function () {
   window.require(["ace/ext/linking"], function (m) {
@@ -55,4 +63,3 @@ define("ace/ext/linking", ["require", "exports", "module", "ace/editor", "ace/co
     }
   });
 })();
-            

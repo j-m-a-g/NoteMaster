@@ -1,4 +1,13 @@
-define("ace/ext/code_lens", ["require", "exports", "module", "ace/lib/event", "ace/lib/lang", "ace/lib/dom", "ace/editor", "ace/config"], function (require, exports, module) {
+define("ace/ext/code_lens", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/event",
+  "ace/lib/lang",
+  "ace/lib/dom",
+  "ace/editor",
+  "ace/config"
+], function (require, exports, module) {
   "use strict";
   var event = require("../lib/event");
   var lang = require("../lib/lang");
@@ -15,37 +24,36 @@ define("ace/ext/code_lens", ["require", "exports", "module", "ace/lib/event", "a
   }
 
   function renderWidgets(changes, renderer) {
-    var changed = changes & renderer.CHANGE_LINES
-      || changes & renderer.CHANGE_FULL
-      || changes & renderer.CHANGE_SCROLL
-      || changes & renderer.CHANGE_TEXT;
-    if (!changed)
-      return;
+    var changed =
+      changes & renderer.CHANGE_LINES ||
+      changes & renderer.CHANGE_FULL ||
+      changes & renderer.CHANGE_SCROLL ||
+      changes & renderer.CHANGE_TEXT;
+    if (!changed) return;
     var session = renderer.session;
     var lineWidgets = renderer.session.lineWidgets;
     var textLayer = renderer.$textLayer;
     var lensElements = textLayer.$lenses;
     if (!lineWidgets) {
-      if (lensElements)
-        clearLensElements(renderer);
+      if (lensElements) clearLensElements(renderer);
       return;
     }
     var textCells = renderer.$textLayer.$lines.cells;
     var config = renderer.layerConfig;
     var padding = renderer.$padding;
-    if (!lensElements)
-      lensElements = textLayer.$lenses = [];
+    if (!lensElements) lensElements = textLayer.$lenses = [];
     var index = 0;
     for (var i = 0; i < textCells.length; i++) {
       var row = textCells[i].row;
       var widget = lineWidgets[row];
       var lenses = widget && widget.lenses;
-      if (!lenses || !lenses.length)
-        continue;
+      if (!lenses || !lenses.length) continue;
       var lensContainer = lensElements[index];
       if (!lensContainer) {
-        lensContainer = lensElements[index]
-          = dom.buildDom(["div", {class: "ace_codeLens"}], renderer.container);
+        lensContainer = lensElements[index] = dom.buildDom(
+          ["div", { class: "ace_codeLens" }],
+          renderer.container
+        );
       }
       lensContainer.style.height = config.lineHeight + "px";
       index++;
@@ -57,57 +65,59 @@ define("ace/ext/code_lens", ["require", "exports", "module", "ace/lib/event", "a
           el = dom.buildDom(["a"], lensContainer);
         }
         el.textContent = lenses[j].title;
-        (el).lensCommand = lenses[j];
+        el.lensCommand = lenses[j];
       }
       while (lensContainer.childNodes.length > 2 * j - 1)
         lensContainer.lastChild.remove();
-      var top = renderer.$cursorLayer.getPixelPosition({
-        row: row,
-        column: 0
-      }, true).top - config.lineHeight * widget.rowsAbove - config.offset;
+      var top =
+        renderer.$cursorLayer.getPixelPosition(
+          {
+            row: row,
+            column: 0
+          },
+          true
+        ).top -
+        config.lineHeight * widget.rowsAbove -
+        config.offset;
       lensContainer.style.top = top + "px";
       var left = renderer.gutterWidth;
       var indent = session.getLine(row).search(/\S|$/);
-      if (indent == -1)
-        indent = 0;
+      if (indent == -1) indent = 0;
       left += indent * config.characterWidth;
       lensContainer.style.paddingLeft = padding + left + "px";
     }
-    while (index < lensElements.length)
-      lensElements.pop().remove();
+    while (index < lensElements.length) lensElements.pop().remove();
   }
 
   function clearCodeLensWidgets(session) {
-    if (!session.lineWidgets)
-      return;
+    if (!session.lineWidgets) return;
     var widgetManager = session.widgetManager;
     session.lineWidgets.forEach(function (widget) {
-      if (widget && widget.lenses)
-        widgetManager.removeLineWidget(widget);
+      if (widget && widget.lenses) widgetManager.removeLineWidget(widget);
     });
   }
 
   exports.setLenses = function (session, lenses) {
     var firstRow = Number.MAX_VALUE;
     clearCodeLensWidgets(session);
-    lenses && lenses.forEach(function (lens) {
-      var row = lens.start.row;
-      var column = lens.start.column;
-      var widget = session.lineWidgets && session.lineWidgets[row];
-      if (!widget || !widget.lenses) {
-        widget = session.widgetManager.$registerLineWidget({
-          rowCount: 1,
-          rowsAbove: 1,
-          row: row,
-          column: column,
-          lenses: []
-        });
-      }
-      widget.lenses.push(lens.command);
-      if (row < firstRow)
-        firstRow = row;
-    });
-    session._emit("changeFold", {data: {start: {row: firstRow}}});
+    lenses &&
+      lenses.forEach(function (lens) {
+        var row = lens.start.row;
+        var column = lens.start.column;
+        var widget = session.lineWidgets && session.lineWidgets[row];
+        if (!widget || !widget.lenses) {
+          widget = session.widgetManager.$registerLineWidget({
+            rowCount: 1,
+            rowsAbove: 1,
+            row: row,
+            column: column,
+            lenses: []
+          });
+        }
+        widget.lenses.push(lens.command);
+        if (row < firstRow) firstRow = row;
+      });
+    session._emit("changeFold", { data: { start: { row: firstRow } } });
     return firstRow;
   };
 
@@ -117,23 +127,25 @@ define("ace/ext/code_lens", ["require", "exports", "module", "ace/lib/event", "a
     if (!editor.$codeLensClickHandler) {
       editor.$codeLensClickHandler = function (e) {
         var command = e.target.lensCommand;
-        if (!command)
-          return;
+        if (!command) return;
         editor.execCommand(command.id, command.arguments);
         editor._emit("codeLensClick", e);
       };
-      event.addListener(editor.container, "click", editor.$codeLensClickHandler, editor);
+      event.addListener(
+        editor.container,
+        "click",
+        editor.$codeLensClickHandler,
+        editor
+      );
     }
     editor.$updateLenses = function () {
       var session = editor.session;
-      if (!session)
-        return;
+      if (!session) return;
       var providersToWaitNum = editor.codeLensProviders.length;
       var lenses = [];
       editor.codeLensProviders.forEach(function (provider) {
         provider.provideCodeLenses(session, function (err, payload) {
-          if (err)
-            return;
+          if (err) return;
           payload.forEach(function (lens) {
             lenses.push(lens);
           });
@@ -150,12 +162,20 @@ define("ace/ext/code_lens", ["require", "exports", "module", "ace/lib/event", "a
         var scrollTop = session.getScrollTop();
         var firstRow = exports.setLenses(session, lenses);
         var lastDelta = session.$undoManager && session.$undoManager.$lastDelta;
-        if (lastDelta && lastDelta.action == "remove" && lastDelta.lines.length > 1)
+        if (
+          lastDelta &&
+          lastDelta.action == "remove" &&
+          lastDelta.lines.length > 1
+        )
           return;
         var row = session.documentToScreenRow(cursor);
         var lineHeight = editor.renderer.layerConfig.lineHeight;
         var top = session.getScrollTop() + (row - oldRow) * lineHeight;
-        if (firstRow == 0 && scrollTop < lineHeight / 4 && scrollTop > -lineHeight / 4) {
+        if (
+          firstRow == 0 &&
+          scrollTop < lineHeight / 4 &&
+          scrollTop > -lineHeight / 4
+        ) {
           top = -lineHeight;
         }
         session.setScrollTop(top);
@@ -172,7 +192,10 @@ define("ace/ext/code_lens", ["require", "exports", "module", "ace/lib/event", "a
     editor.off("input", editor.$updateLensesOnInput);
     editor.renderer.off("afterRender", renderWidgets);
     if (editor.$codeLensClickHandler)
-      editor.container.removeEventListener("click", editor.$codeLensClickHandler);
+      editor.container.removeEventListener(
+        "click",
+        editor.$codeLensClickHandler
+      );
   }
 
   exports.registerCodeLensProvider = function (editor, codeLensProvider) {
@@ -195,8 +218,11 @@ define("ace/ext/code_lens", ["require", "exports", "module", "ace/lib/event", "a
       }
     }
   });
-  dom.importCssString("\n.ace_codeLens {\n    position: absolute;\n    color: #aaa;\n    font-size: 88%;\n    background: inherit;\n    width: 100%;\n    display: flex;\n    align-items: flex-end;\n    pointer-events: none;\n}\n.ace_codeLens > a {\n    cursor: pointer;\n    pointer-events: auto;\n}\n.ace_codeLens > a:hover {\n    color: #0000ff;\n    text-decoration: underline;\n}\n.ace_dark > .ace_codeLens > a:hover {\n    color: #4e94ce;\n}\n", "codelense.css", false);
-
+  dom.importCssString(
+    "\n.ace_codeLens {\n    position: absolute;\n    color: #aaa;\n    font-size: 88%;\n    background: inherit;\n    width: 100%;\n    display: flex;\n    align-items: flex-end;\n    pointer-events: none;\n}\n.ace_codeLens > a {\n    cursor: pointer;\n    pointer-events: auto;\n}\n.ace_codeLens > a:hover {\n    color: #0000ff;\n    text-decoration: underline;\n}\n.ace_dark > .ace_codeLens > a:hover {\n    color: #4e94ce;\n}\n",
+    "codelense.css",
+    false
+  );
 });
 (function () {
   window.require(["ace/ext/code_lens"], function (m) {
@@ -205,4 +231,3 @@ define("ace/ext/code_lens", ["require", "exports", "module", "ace/lib/event", "a
     }
   });
 })();
-            

@@ -1,12 +1,19 @@
-define("ace/mode/lua_highlight_rules", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text_highlight_rules"], function (require, exports, module) {
+define("ace/mode/lua_highlight_rules", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text_highlight_rules"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
   var LuaHighlightRules = function () {
-    var keywords = ("break|do|else|elseif|end|for|function|if|in|local|repeat|" +
-      "return|then|until|while|or|and|not");
-    var builtinConstants = ("true|false|nil|_G|_VERSION");
-    var functions = (
+    var keywords =
+      "break|do|else|elseif|end|for|function|if|in|local|repeat|" +
+      "return|then|until|while|or|and|not";
+    var builtinConstants = "true|false|nil|_G|_VERSION";
+    var functions =
       "string|xpcall|package|tostring|print|os|unpack|require|" +
       "getfenv|setmetatable|next|assert|tonumber|io|rawequal|" +
       "collectgarbage|getmetatable|module|rawset|math|debug|" +
@@ -27,51 +34,57 @@ define("ace/mode/lua_highlight_rules", ["require", "exports", "module", "ace/lib
       "foreachi|maxn|foreach|concat|sort|remove|resume|yield|" +
       "status|wrap|create|running|" +
       "__add|__sub|__mod|__unm|__concat|__lt|__index|__call|__gc|__metatable|" +
-      "__mul|__div|__pow|__len|__eq|__le|__newindex|__tostring|__mode|__tonumber");
-    var stdLibaries = ("string|package|os|io|math|debug|table|coroutine");
-    var deprecatedIn5152 = ("setn|foreach|foreachi|gcinfo|log10|maxn");
-    var keywordMapper = this.createKeywordMapper({
-      "keyword": keywords,
-      "support.function": functions,
-      "keyword.deprecated": deprecatedIn5152,
-      "constant.library": stdLibaries,
-      "constant.language": builtinConstants,
-      "variable.language": "self"
-    }, "identifier");
+      "__mul|__div|__pow|__len|__eq|__le|__newindex|__tostring|__mode|__tonumber";
+    var stdLibaries = "string|package|os|io|math|debug|table|coroutine";
+    var deprecatedIn5152 = "setn|foreach|foreachi|gcinfo|log10|maxn";
+    var keywordMapper = this.createKeywordMapper(
+      {
+        keyword: keywords,
+        "support.function": functions,
+        "keyword.deprecated": deprecatedIn5152,
+        "constant.library": stdLibaries,
+        "constant.language": builtinConstants,
+        "variable.language": "self"
+      },
+      "identifier"
+    );
     var decimalInteger = "(?:(?:[1-9]\\d*)|(?:0))";
     var hexInteger = "(?:0[xX][\\dA-Fa-f]+)";
     var integer = "(?:" + decimalInteger + "|" + hexInteger + ")";
     var fraction = "(?:\\.\\d+)";
     var intPart = "(?:\\d+)";
-    var pointFloat = "(?:(?:" + intPart + "?" + fraction + ")|(?:" + intPart + "\\.))";
+    var pointFloat =
+      "(?:(?:" + intPart + "?" + fraction + ")|(?:" + intPart + "\\.))";
     var floatNumber = "(?:" + pointFloat + ")";
     this.$rules = {
-      "start": [{
-        stateName: "bracketedComment",
-        onMatch: function (value, currentState, stack) {
-          stack.unshift(this.next, value.length - 2, currentState);
-          return "comment";
-        },
-        regex: /\-\-\[=*\[/,
-        next: [
-          {
-            onMatch: function (value, currentState, stack) {
-              if (value.length == stack[1]) {
-                stack.shift();
-                stack.shift();
-                this.next = stack.shift();
-              } else {
-                this.next = "";
-              }
-              return "comment";
+      start: [
+        {
+          stateName: "bracketedComment",
+          onMatch: function (value, currentState, stack) {
+            stack.unshift(this.next, value.length - 2, currentState);
+            return "comment";
+          },
+          regex: /\-\-\[=*\[/,
+          next: [
+            {
+              onMatch: function (value, currentState, stack) {
+                if (value.length == stack[1]) {
+                  stack.shift();
+                  stack.shift();
+                  this.next = stack.shift();
+                } else {
+                  this.next = "";
+                }
+                return "comment";
+              },
+              regex: /\]=*\]/,
+              next: "start"
             },
-            regex: /\]=*\]/,
-            next: "start"
-          }, {
-            defaultToken: "comment.body"
-          }
-        ]
-      },
+            {
+              defaultToken: "comment.body"
+            }
+          ]
+        },
         {
           token: "comment",
           regex: "\\-\\-.*$"
@@ -97,7 +110,8 @@ define("ace/mode/lua_highlight_rules", ["require", "exports", "module", "ace/lib
               },
               regex: /\]=*\]/,
               next: "start"
-            }, {
+            },
+            {
               defaultToken: "string"
             }
           ]
@@ -105,47 +119,63 @@ define("ace/mode/lua_highlight_rules", ["require", "exports", "module", "ace/lib
         {
           token: "string", // " string
           regex: '"(?:[^\\\\]|\\\\.)*?"'
-        }, {
+        },
+        {
           token: "string", // ' string
           regex: "'(?:[^\\\\]|\\\\.)*?'"
-        }, {
+        },
+        {
           token: "constant.numeric", // float
           regex: floatNumber
-        }, {
+        },
+        {
           token: "constant.numeric", // integer
           regex: integer + "\\b"
-        }, {
+        },
+        {
           token: keywordMapper,
           regex: "[a-zA-Z_$][a-zA-Z0-9_$]*\\b"
-        }, {
+        },
+        {
           token: "keyword.operator",
-          regex: "\\+|\\-|\\*|\\/|%|\\#|\\^|~|<|>|<=|=>|==|~=|=|\\:|\\.\\.\\.|\\.\\."
-        }, {
+          regex:
+            "\\+|\\-|\\*|\\/|%|\\#|\\^|~|<|>|<=|=>|==|~=|=|\\:|\\.\\.\\.|\\.\\."
+        },
+        {
           token: "paren.lparen",
           regex: "[\\[\\(\\{]"
-        }, {
+        },
+        {
           token: "paren.rparen",
           regex: "[\\]\\)\\}]"
-        }, {
+        },
+        {
           token: "text",
           regex: "\\s+|\\w+"
-        }]
+        }
+      ]
     };
     this.normalizeRules();
   };
   oop.inherits(LuaHighlightRules, TextHighlightRules);
   exports.LuaHighlightRules = LuaHighlightRules;
-
 });
 
-define("ace/mode/folding/lua", ["require", "exports", "module", "ace/lib/oop", "ace/mode/folding/fold_mode", "ace/range", "ace/token_iterator"], function (require, exports, module) {
+define("ace/mode/folding/lua", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/folding/fold_mode",
+  "ace/range",
+  "ace/token_iterator"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../../lib/oop");
   var BaseFoldMode = require("./fold_mode").FoldMode;
   var Range = require("../../range").Range;
   var TokenIterator = require("../../token_iterator").TokenIterator;
-  var FoldMode = exports.FoldMode = function () {
-  };
+  var FoldMode = (exports.FoldMode = function () {});
   oop.inherits(FoldMode, BaseFoldMode);
   (function () {
     this.foldingStartMarker = /\b(function|then|do|repeat)\b|{\s*$|(\[=*\[)/;
@@ -156,8 +186,7 @@ define("ace/mode/folding/lua", ["require", "exports", "module", "ace/lib/oop", "
       var isEnd = this.foldingStopMarker.test(line);
       if (isStart && !isEnd) {
         var match = line.match(this.foldingStartMarker);
-        if (match[1] == "then" && /\belseif\b/.test(line))
-          return;
+        if (match[1] == "then" && /\belseif\b/.test(line)) return;
         if (match[1]) {
           if (session.getTokenAt(row, match.index + 1).type === "keyword")
             return "start";
@@ -169,7 +198,7 @@ define("ace/mode/folding/lua", ["require", "exports", "module", "ace/lib/oop", "
           return "start";
         }
       }
-      if (foldStyle != "markbeginend" || !isEnd || isStart && isEnd)
+      if (foldStyle != "markbeginend" || !isEnd || (isStart && isEnd))
         return "";
       var match = line.match(this.foldingStopMarker);
       if (match[0] === "end") {
@@ -179,17 +208,14 @@ define("ace/mode/folding/lua", ["require", "exports", "module", "ace/lib/oop", "
         var type = session.bgTokenizer.getState(row - 1) || "";
         if (type[0] == "bracketedComment" || type[0] == "bracketedString")
           return "end";
-      } else
-        return "end";
+      } else return "end";
     };
     this.getFoldWidgetRange = function (session, foldStyle, row) {
       var line = session.doc.getLine(row);
       var match = this.foldingStartMarker.exec(line);
       if (match) {
-        if (match[1])
-          return this.luaBlock(session, row, match.index + 1);
-        if (match[2])
-          return session.getCommentFoldRange(row, match.index + 1);
+        if (match[1]) return this.luaBlock(session, row, match.index + 1);
+        if (match[2]) return session.getCommentFoldRange(row, match.index + 1);
         return this.openingBracketBlock(session, "{", row, match.index);
       }
       var match = this.foldingStopMarker.exec(line);
@@ -200,60 +226,80 @@ define("ace/mode/folding/lua", ["require", "exports", "module", "ace/lib/oop", "
         }
         if (match[0][0] === "]")
           return session.getCommentFoldRange(row, match.index + 1);
-        return this.closingBracketBlock(session, "}", row, match.index + match[0].length);
+        return this.closingBracketBlock(
+          session,
+          "}",
+          row,
+          match.index + match[0].length
+        );
       }
     };
     this.luaBlock = function (session, row, column, tokenRange) {
       var stream = new TokenIterator(session, row, column);
       var indentKeywords = {
-        "function": 1,
-        "do": 1,
-        "then": 1,
-        "elseif": -1,
-        "end": -1,
-        "repeat": 1,
-        "until": -1
+        function: 1,
+        do: 1,
+        then: 1,
+        elseif: -1,
+        end: -1,
+        repeat: 1,
+        until: -1
       };
       var token = stream.getCurrentToken();
-      if (!token || token.type != "keyword")
-        return;
+      if (!token || token.type != "keyword") return;
       var val = token.value;
       var stack = [val];
       var dir = indentKeywords[val];
-      if (!dir)
-        return;
-      var startColumn = dir === -1 ? stream.getCurrentTokenColumn() : session.getLine(row).length;
+      if (!dir) return;
+      var startColumn =
+        dir === -1
+          ? stream.getCurrentTokenColumn()
+          : session.getLine(row).length;
       var startRow = row;
       stream.step = dir === -1 ? stream.stepBackward : stream.stepForward;
-      while (token = stream.step()) {
-        if (token.type !== "keyword")
-          continue;
+      while ((token = stream.step())) {
+        if (token.type !== "keyword") continue;
         var level = dir * indentKeywords[token.value];
         if (level > 0) {
           stack.unshift(token.value);
         } else if (level <= 0) {
           stack.shift();
-          if (!stack.length && token.value != "elseif")
-            break;
-          if (level === 0)
-            stack.unshift(token.value);
+          if (!stack.length && token.value != "elseif") break;
+          if (level === 0) stack.unshift(token.value);
         }
       }
-      if (!token)
-        return null;
-      if (tokenRange)
-        return stream.getCurrentTokenRange();
+      if (!token) return null;
+      if (tokenRange) return stream.getCurrentTokenRange();
       var row = stream.getCurrentTokenRow();
       if (dir === -1)
-        return new Range(row, session.getLine(row).length, startRow, startColumn);
+        return new Range(
+          row,
+          session.getLine(row).length,
+          startRow,
+          startColumn
+        );
       else
-        return new Range(startRow, startColumn, row, stream.getCurrentTokenColumn());
+        return new Range(
+          startRow,
+          startColumn,
+          row,
+          stream.getCurrentTokenColumn()
+        );
     };
   }).call(FoldMode.prototype);
-
 });
 
-define("ace/mode/lua", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text", "ace/mode/lua_highlight_rules", "ace/mode/folding/lua", "ace/range", "ace/worker/worker_client"], function (require, exports, module) {
+define("ace/mode/lua", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text",
+  "ace/mode/lua_highlight_rules",
+  "ace/mode/folding/lua",
+  "ace/range",
+  "ace/worker/worker_client"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextMode = require("./text").Mode;
@@ -269,23 +315,18 @@ define("ace/mode/lua", ["require", "exports", "module", "ace/lib/oop", "ace/mode
   oop.inherits(Mode, TextMode);
   (function () {
     this.lineCommentStart = "--";
-    this.blockComment = {start: "--[[", end: "--]]"};
+    this.blockComment = { start: "--[[", end: "--]]" };
     var indentKeywords = {
-      "function": 1,
-      "then": 1,
-      "do": 1,
-      "else": 1,
-      "elseif": 1,
-      "repeat": 1,
-      "end": -1,
-      "until": -1
+      function: 1,
+      then: 1,
+      do: 1,
+      else: 1,
+      elseif: 1,
+      repeat: 1,
+      end: -1,
+      until: -1
     };
-    var outdentKeywords = [
-      "else",
-      "elseif",
-      "end",
-      "until"
-    ];
+    var outdentKeywords = ["else", "elseif", "end", "until"];
 
     function getNetIndentLevel(tokens) {
       var level = 0;
@@ -320,7 +361,10 @@ define("ace/mode/lua", ["require", "exports", "module", "ace/lib/oop", "ace/mode
       }
       if (level > 0) {
         return indent + tab;
-      } else if (level < 0 && indent.substr(indent.length - tab.length) == tab) {
+      } else if (
+        level < 0 &&
+        indent.substr(indent.length - tab.length) == tab
+      ) {
         if (!this.checkOutdent(state, line, "\n")) {
           return indent.substr(0, indent.length - tab.length);
         }
@@ -328,14 +372,14 @@ define("ace/mode/lua", ["require", "exports", "module", "ace/lib/oop", "ace/mode
       return indent;
     };
     this.checkOutdent = function (state, line, input) {
-      if (input != "\n" && input != "\r" && input != "\r\n")
-        return false;
-      if (line.match(/^\s*[\)\}\]]$/))
-        return true;
+      if (input != "\n" && input != "\r" && input != "\r\n") return false;
+      if (line.match(/^\s*[\)\}\]]$/)) return true;
       var tokens = this.getTokenizer().getLineTokens(line.trim(), state).tokens;
-      if (!tokens || !tokens.length)
-        return false;
-      return (tokens[0].type == "keyword" && outdentKeywords.indexOf(tokens[0].value) != -1);
+      if (!tokens || !tokens.length) return false;
+      return (
+        tokens[0].type == "keyword" &&
+        outdentKeywords.indexOf(tokens[0].value) != -1
+      );
     };
     this.getMatching = function (session, row, column) {
       if (row == undefined) {
@@ -350,11 +394,9 @@ define("ace/mode/lua", ["require", "exports", "module", "ace/lib/oop", "ace/mode
     this.autoOutdent = function (state, session, row) {
       var line = session.getLine(row);
       var column = line.match(/^\s*/)[0].length;
-      if (!column || !row)
-        return;
+      if (!column || !row) return;
       var startRange = this.getMatching(session, row, column + 1);
-      if (!startRange || startRange.start.row == row)
-        return;
+      if (!startRange || startRange.start.row == row) return;
       var indent = this.$getIndent(session.getLine(startRange.start.row));
       if (indent.length != column) {
         session.replace(new Range(row, 0, row, column), indent);
@@ -376,7 +418,6 @@ define("ace/mode/lua", ["require", "exports", "module", "ace/lib/oop", "ace/mode
     this.snippetFileId = "ace/snippets/lua";
   }).call(Mode.prototype);
   exports.Mode = Mode;
-
 });
 (function () {
   window.require(["ace/mode/lua"], function (m) {
@@ -385,4 +426,3 @@ define("ace/mode/lua", ["require", "exports", "module", "ace/lib/oop", "ace/mode
     }
   });
 })();
-            

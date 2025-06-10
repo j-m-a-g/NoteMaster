@@ -1,4 +1,14 @@
-define("ace/split", ["require", "exports", "module", "ace/lib/oop", "ace/lib/lang", "ace/lib/event_emitter", "ace/editor", "ace/virtual_renderer", "ace/edit_session"], function (require, exports, module) {
+define("ace/split", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/lib/lang",
+  "ace/lib/event_emitter",
+  "ace/editor",
+  "ace/virtual_renderer",
+  "ace/edit_session"
+], function (require, exports, module) {
   "use strict";
   var oop = require("./lib/oop");
   var lang = require("./lib/lang");
@@ -18,9 +28,12 @@ define("ace/split", ["require", "exports", "module", "ace/lib/oop", "ace/lib/lan
     this.$orientation = this.BESIDE;
     this.setSplits(splits || 1);
     this.$cEditor = this.$editors[0];
-    this.on("focus", function (editor) {
-      this.$cEditor = editor;
-    }.bind(this));
+    this.on(
+      "focus",
+      function (editor) {
+        this.$cEditor = editor;
+      }.bind(this)
+    );
   };
   (function () {
     oop.implement(this, EventEmitter);
@@ -30,9 +43,12 @@ define("ace/split", ["require", "exports", "module", "ace/lib/oop", "ace/lib/lan
       el.style.cssText = "position: absolute; top:0px; bottom:0px";
       this.$container.appendChild(el);
       var editor = new Editor(new Renderer(el, this.$theme));
-      editor.on("focus", function () {
-        this._emit("focus", editor);
-      }.bind(this));
+      editor.on(
+        "focus",
+        function () {
+          this._emit("focus", editor);
+        }.bind(this)
+      );
       this.$editors.push(editor);
       editor.setFontSize(this.$fontSize);
       return editor;
@@ -109,7 +125,10 @@ define("ace/split", ["require", "exports", "module", "ace/lib/oop", "ace/lib/lan
       s.setBreakpoints(session.getBreakpoints());
       s.setUseWrapMode(session.getUseWrapMode());
       s.setUseWorker(session.getUseWorker());
-      s.setWrapLimitRange(session.$wrapLimitRange.min, session.$wrapLimitRange.max);
+      s.setWrapLimitRange(
+        session.$wrapLimitRange.min,
+        session.$wrapLimitRange.max
+      );
       s.$foldData = session.$cloneFoldData();
       return s;
     };
@@ -167,13 +186,16 @@ define("ace/split", ["require", "exports", "module", "ace/lib/oop", "ace/lib/lan
     };
   }).call(Split.prototype);
   exports.Split = Split;
-
 });
 
-define("ace/ext/split", ["require", "exports", "module", "ace/split"], function (require, exports, module) {
+define("ace/ext/split", [
+  "require",
+  "exports",
+  "module",
+  "ace/split"
+], function (require, exports, module) {
   "use strict";
   module.exports = require("../split");
-
 });
 (function () {
   window.require(["ace/ext/split"], function (m) {
@@ -182,4 +204,3 @@ define("ace/ext/split", ["require", "exports", "module", "ace/split"], function 
     }
   });
 })();
-            

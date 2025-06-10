@@ -1,11 +1,19 @@
-define("ace/mode/aql_highlight_rules", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text_highlight_rules"], function (require, exports, module) {
+define("ace/mode/aql_highlight_rules", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text_highlight_rules"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
   var AqlHighlightRules = function () {
-    var keywords = ("for|return|filter|search|sort|limit|let|collect|asc|desc|in|into|insert|update|remove|replace|upsert|options|with|and|or|not|distinct|graph|shortest_path|outbound|inbound|any|all|none|at least|aggregate|like|k_shortest_paths|k_paths|all_shortest_paths|prune|window");
-    var builtinConstants = ("true|false");
-    var builtinFunctions = ("to_bool|to_number|to_string|to_array|to_list|is_null|is_bool|is_number|is_string|is_array|is_list|is_object|is_document|is_datestring|" +
+    var keywords =
+      "for|return|filter|search|sort|limit|let|collect|asc|desc|in|into|insert|update|remove|replace|upsert|options|with|and|or|not|distinct|graph|shortest_path|outbound|inbound|any|all|none|at least|aggregate|like|k_shortest_paths|k_paths|all_shortest_paths|prune|window";
+    var builtinConstants = "true|false";
+    var builtinFunctions =
+      "to_bool|to_number|to_string|to_array|to_list|is_null|is_bool|is_number|is_string|is_array|is_list|is_object|is_document|is_datestring|" +
       "typename|json_stringify|json_parse|concat|concat_separator|char_length|lower|upper|substring|left|right|trim|reverse|contains|" +
       "log|log2|log10|exp|exp2|sin|cos|tan|asin|acos|atan|atan2|radians|degrees|pi|regex_test|regex_replace|" +
       "like|floor|ceil|round|abs|rand|sqrt|pow|length|count|min|max|average|avg|sum|product|median|variance_population|variance_sample|variance|percentile|" +
@@ -25,50 +33,70 @@ define("ace/mode/aql_highlight_rules", ["require", "exports", "module", "ace/lib
       "tokens|exists|starts_with|phrase|min_match|bm25|tfidf|boost|analyzer|" +
       "cosine_similarity|decay_exp|decay_gauss|decay_linear|l1_distance|l2_distance|minhash|minhash_count|minhash_error|minhash_match|" +
       "geo_point|geo_multipoint|geo_polygon|geo_multipolygon|geo_linestring|geo_multilinestring|geo_contains|geo_intersects|" +
-      "geo_equals|geo_distance|geo_area|geo_in_range");
-    var keywordMapper = this.createKeywordMapper({
-      "support.function": builtinFunctions,
-      "keyword": keywords,
-      "constant.language": builtinConstants
-    }, "identifier", true);
+      "geo_equals|geo_distance|geo_area|geo_in_range";
+    var keywordMapper = this.createKeywordMapper(
+      {
+        "support.function": builtinFunctions,
+        keyword: keywords,
+        "constant.language": builtinConstants
+      },
+      "identifier",
+      true
+    );
     this.$rules = {
-      "start": [{
-        token: "comment",
-        regex: "//.*$"
-      }, {
-        token: "string", // " string
-        regex: '".*?"'
-      }, {
-        token: "string", // ' string
-        regex: "'.*?'"
-      }, {
-        token: "constant.numeric", // float
-        regex: "[+-]?\\d+(?:(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)?\\b"
-      }, {
-        token: keywordMapper,
-        regex: "[a-zA-Z_$][a-zA-Z0-9_$]*\\b"
-      }, {
-        token: "keyword.operator",
-        regex: "\\+|\\-|\\/|\\/\\/|%|<@>|@>|<@|&|\\^|~|<|>|<=|=>|==|!=|<>|="
-      }, {
-        token: "paren.lparen",
-        regex: "[\\(]"
-      }, {
-        token: "paren.rparen",
-        regex: "[\\)]"
-      }, {
-        token: "text",
-        regex: "\\s+"
-      }]
+      start: [
+        {
+          token: "comment",
+          regex: "//.*$"
+        },
+        {
+          token: "string", // " string
+          regex: '".*?"'
+        },
+        {
+          token: "string", // ' string
+          regex: "'.*?'"
+        },
+        {
+          token: "constant.numeric", // float
+          regex: "[+-]?\\d+(?:(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)?\\b"
+        },
+        {
+          token: keywordMapper,
+          regex: "[a-zA-Z_$][a-zA-Z0-9_$]*\\b"
+        },
+        {
+          token: "keyword.operator",
+          regex: "\\+|\\-|\\/|\\/\\/|%|<@>|@>|<@|&|\\^|~|<|>|<=|=>|==|!=|<>|="
+        },
+        {
+          token: "paren.lparen",
+          regex: "[\\(]"
+        },
+        {
+          token: "paren.rparen",
+          regex: "[\\)]"
+        },
+        {
+          token: "text",
+          regex: "\\s+"
+        }
+      ]
     };
     this.normalizeRules();
   };
   oop.inherits(AqlHighlightRules, TextHighlightRules);
   exports.AqlHighlightRules = AqlHighlightRules;
-
 });
 
-define("ace/mode/aql", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text", "ace/mode/aql_highlight_rules"], function (require, exports, module) {
+define("ace/mode/aql", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text",
+  "ace/mode/aql_highlight_rules"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextMode = require("./text").Mode;
@@ -83,7 +111,6 @@ define("ace/mode/aql", ["require", "exports", "module", "ace/lib/oop", "ace/mode
     this.$id = "ace/mode/aql";
   }).call(Mode.prototype);
   exports.Mode = Mode;
-
 });
 (function () {
   window.require(["ace/mode/aql"], function (m) {
@@ -92,4 +119,3 @@ define("ace/mode/aql", ["require", "exports", "module", "ace/lib/oop", "ace/mode
     }
   });
 })();
-            

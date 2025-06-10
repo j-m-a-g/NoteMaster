@@ -1,14 +1,24 @@
-define("ace/mode/toml_highlight_rules", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text_highlight_rules"], function (require, exports, module) {
+define("ace/mode/toml_highlight_rules", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text_highlight_rules"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
   var TomlHighlightRules = function () {
-    var keywordMapper = this.createKeywordMapper({
-      "constant.language.boolean": "true|false"
-    }, "identifier");
-    var identifierRe = "[a-zA-Z\\$_\u00a1-\uffff][a-zA-Z\\d\\$_\u00a1-\uffff]*\\b";
+    var keywordMapper = this.createKeywordMapper(
+      {
+        "constant.language.boolean": "true|false"
+      },
+      "identifier"
+    );
+    var identifierRe =
+      "[a-zA-Z\\$_\u00a1-\uffff][a-zA-Z\\d\\$_\u00a1-\uffff]*\\b";
     this.$rules = {
-      "start": [
+      start: [
         {
           token: "comment.toml",
           regex: /#.*$/
@@ -39,7 +49,7 @@ define("ace/mode/toml_highlight_rules", ["require", "exports", "module", "ace/li
           regex: "-?\\d+(\\.?\\d+)?"
         }
       ],
-      "qqstring": [
+      qqstring: [
         {
           token: "string",
           regex: "\\\\$",
@@ -62,16 +72,21 @@ define("ace/mode/toml_highlight_rules", ["require", "exports", "module", "ace/li
   };
   oop.inherits(TomlHighlightRules, TextHighlightRules);
   exports.TomlHighlightRules = TomlHighlightRules;
-
 });
 
-define("ace/mode/folding/ini", ["require", "exports", "module", "ace/lib/oop", "ace/range", "ace/mode/folding/fold_mode"], function (require, exports, module) {
+define("ace/mode/folding/ini", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/range",
+  "ace/mode/folding/fold_mode"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../../lib/oop");
   var Range = require("../../range").Range;
   var BaseFoldMode = require("./fold_mode").FoldMode;
-  var FoldMode = exports.FoldMode = function () {
-  };
+  var FoldMode = (exports.FoldMode = function () {});
   oop.inherits(FoldMode, BaseFoldMode);
   (function () {
     this.foldingStartMarker = /^\s*\[([^\])]*)]\s*(?:$|[;#])/;
@@ -79,8 +94,7 @@ define("ace/mode/folding/ini", ["require", "exports", "module", "ace/lib/oop", "
       var re = this.foldingStartMarker;
       var line = session.getLine(row);
       var m = line.match(re);
-      if (!m)
-        return;
+      if (!m) return;
       var startName = m[1] + ".";
       var startColumn = line.length;
       var maxRow = session.getLength();
@@ -88,11 +102,9 @@ define("ace/mode/folding/ini", ["require", "exports", "module", "ace/lib/oop", "
       var endRow = row;
       while (++row < maxRow) {
         line = session.getLine(row);
-        if (/^\s*$/.test(line))
-          continue;
+        if (/^\s*$/.test(line)) continue;
         m = line.match(re);
-        if (m && m[1].lastIndexOf(startName, 0) !== 0)
-          break;
+        if (m && m[1].lastIndexOf(startName, 0) !== 0) break;
         endRow = row;
       }
       if (endRow > startRow) {
@@ -101,10 +113,17 @@ define("ace/mode/folding/ini", ["require", "exports", "module", "ace/lib/oop", "
       }
     };
   }).call(FoldMode.prototype);
-
 });
 
-define("ace/mode/toml", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text", "ace/mode/toml_highlight_rules", "ace/mode/folding/ini"], function (require, exports, module) {
+define("ace/mode/toml", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text",
+  "ace/mode/toml_highlight_rules",
+  "ace/mode/folding/ini"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextMode = require("./text").Mode;
@@ -121,7 +140,6 @@ define("ace/mode/toml", ["require", "exports", "module", "ace/lib/oop", "ace/mod
     this.$id = "ace/mode/toml";
   }).call(Mode.prototype);
   exports.Mode = Mode;
-
 });
 (function () {
   window.require(["ace/mode/toml"], function (m) {
@@ -130,4 +148,3 @@ define("ace/mode/toml", ["require", "exports", "module", "ace/lib/oop", "ace/mod
     }
   });
 })();
-            

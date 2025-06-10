@@ -1,13 +1,20 @@
-define("ace/mode/powershell_highlight_rules", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text_highlight_rules"], function (require, exports, module) {
+define("ace/mode/powershell_highlight_rules", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text_highlight_rules"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
   var PowershellHighlightRules = function () {
     var identifierRe = "[a-zA-Z\\?_\u00a1-\uffff][a-zA-Z\\d\\?_\u00a1-\uffff]*";
-    var keywords = ("begin|break|catch|class|continue|data|define|do|dynamicparam|else|elseif|end|enum|exit|filter|" +
+    var keywords =
+      "begin|break|catch|class|continue|data|define|do|dynamicparam|else|elseif|end|enum|exit|filter|" +
       "finally|for|foreach|from|function|if|in|inlinescript|hidden|parallel|param|" +
-      "process|return|static|sequence|switch|throw|trap|try|until|using|while|workflow|var");
-    var builtinFunctions = (
+      "process|return|static|sequence|switch|throw|trap|try|until|using|while|workflow|var";
+    var builtinFunctions =
       "Get-AppBackgroundTask|Start-AppBackgroundTask|Unregister-AppBackgroundTask|Disable-AppBackgroundTaskDiagnosticLog|Enable-AppBackgroundTaskDiagnosticLog|Set-AppBackgroundTaskResourcePolicy|" +
       "Get-AppLockerFileInformation|Get-AppLockerPolicy|New-AppLockerPolicy|Set-AppLockerPolicy|Test-AppLockerPolicy|" +
       "Add-AppvClientConnectionGroup|Add-AppvClientPackage|Add-AppvPublishingServer|Disable-Appv|Disable-AppvClientConnectionGroup|Disable-AppvClientMode|Disable-AppvPublishingServer|Enable-Appv|Enable-AppvClientConnectionGroup|Enable-AppvClientMode|Enable-AppvPublishingServer|Get-AppvClientApplication|Get-AppvClientConfiguration|Get-AppvClientConnectionGroup|Get-AppvClientMode|Get-AppvClientPackage|Get-AppvClientPackageStatus|Get-AppvClientPackageVersion|Get-AppvClientPackageVersionHistory|Get-AppvClientPackageVersionStatus|Get-AppvClientPublishingServer|Get-AppvClientSFTFileSystem|Get-AppvClientStatus|Get-AppvPublishingServer|Get-AppvVirtualProcess|Publish-AppvClientPackage|Remove-AppvClientConnectionGroup|Remove-AppvClientPackage|Remove-AppvPublishingServer|Set-AppvClientConfiguration|Set-AppvClientMode|Set-AppvClientPackage|Set-AppvClientPublishingServer|Set-AppvVirtualProcess|Sync-AppvPublishingServer|Get-AppvStatus|Mount-AppvClientConnectionGroup|Repair-AppvClientConnectionGroup|Repair-AppvClientPackage|Send-AppvClientReport|Set-AppvPublishingServer|Start-AppvVirtualProcess|Stop-AppvClientConnectionGroup|Stop-AppvClientPackage|Unpublish-AppvClientPackage|" +
@@ -146,12 +153,15 @@ define("ace/mode/powershell_highlight_rules", ["require", "exports", "module", "
       "Disable-WindowsErrorReporting|Enable-WindowsErrorReporting|Get-WindowsErrorReporting|" +
       "Get-WindowsSearchSetting|Set-WindowsSearchSetting|" +
       "Add-WBBackupTarget|Add-WBBareMetalRecovery|Add-WBFileSpec|Add-WBSystemState|Add-WBVirtualMachine|Add-WBVolume|Backup-ACL|Get-WBBackupSet|Get-WBBackupTarget|Get-WBBackupVolumeBrowsePath|Get-WBBareMetalRecovery|Get-WBDisk|Get-WBFileSpec|Get-WBJob|Get-WBPerformanceConfiguration|Get-WBPolicy|Get-WBSchedule|Get-WBSummary|Get-WBSystemState|Get-WBVirtualMachine|Get-WBVolume|Get-WBVssBackupOption|New-WBBackupTarget|New-WBFileSpec|New-WBPolicy|Remove-WBBackupSet|Remove-WBBackupTarget|Remove-WBBareMetalRecovery|Remove-WBCatalog|Remove-WBFileSpec|Remove-WBPolicy|Remove-WBSystemState|Remove-WBVirtualMachine|Remove-WBVolume|Restore-ACL|Restore-WBCatalog|Resume-WBBackup|Resume-WBVolumeRecovery|Set-WBPerformanceConfiguration|Set-WBPolicy|Set-WBSchedule|Set-WBVssBackupOption|Start-WBApplicationRecovery|Start-WBBackup|Start-WBFileRecovery|Start-WBHyperVRecovery|Start-WBSystemStateRecovery|Start-WBVolumeRecovery|Stop-WBJob|" +
-      "Get-WindowsUpdateLog");
-    var keywordMapper = this.createKeywordMapper({
-      "support.function": builtinFunctions,
-      "keyword": keywords
-    }, "identifier");
-    var binaryOperatorsRe = (
+      "Get-WindowsUpdateLog";
+    var keywordMapper = this.createKeywordMapper(
+      {
+        "support.function": builtinFunctions,
+        keyword: keywords
+      },
+      "identifier"
+    );
+    var binaryOperatorsRe =
       "eq|ne|gt|lt|le|ge|like|notlike|match|notmatch|contains|notcontains|in|notin|band|bor|bxor|bnot|" +
       "ceq|cne|cgt|clt|cle|cge|clike|cnotlike|cmatch|cnotmatch|ccontains|cnotcontains|cin|cnotin|" +
       "ieq|ine|igt|ilt|ile|ige|ilike|inotlike|imatch|inotmatch|icontains|inotcontains|iin|inotin|" +
@@ -160,17 +170,19 @@ define("ace/mode/powershell_highlight_rules", ["require", "exports", "module", "
       "csplit|creplace|" +
       "isplit|ireplace|" +
       "is|isnot|as|" +
-      "shl|shr");
+      "shl|shr";
     this.$rules = {
-      "start": [
+      start: [
         {
           token: "comment",
           regex: "#.*$"
-        }, {
+        },
+        {
           token: "comment.start",
           regex: "<#",
           next: "comment"
-        }, {
+        },
+        {
           token: "string", // multi line
           regex: /@'$/,
           push: [
@@ -183,7 +195,8 @@ define("ace/mode/powershell_highlight_rules", ["require", "exports", "module", "
               defaultToken: "string"
             }
           ]
-        }, {
+        },
+        {
           token: "string", // multi line
           regex: /@"$/,
           push: [
@@ -192,21 +205,22 @@ define("ace/mode/powershell_highlight_rules", ["require", "exports", "module", "
               regex: /^"@/,
               next: "pop"
             },
-            {include: "expressions"},
-            {include: "expandable-strings"},
+            { include: "expressions" },
+            { include: "expandable-strings" },
             {
               defaultToken: "string"
             }
           ]
         },
-        {include: "strings"},
-        {include: "variables"},
-        {include: "statements"},
-        {include: "expressions"},
+        { include: "strings" },
+        { include: "variables" },
+        { include: "statements" },
+        { include: "expressions" },
         {
           token: "lparen",
           regex: "[[({]"
-        }, {
+        },
+        {
           token: "rparen",
           regex: "[\\])}]"
         },
@@ -215,15 +229,17 @@ define("ace/mode/powershell_highlight_rules", ["require", "exports", "module", "
           regex: "\\s+"
         }
       ],
-      "comment": [
+      comment: [
         {
           token: "comment.end",
           regex: "#>",
           next: "start"
-        }, {
+        },
+        {
           token: "doc.comment.tag",
           regex: "^\\.\\w+"
-        }, {
+        },
+        {
           defaultToken: "comment"
         }
       ],
@@ -232,9 +248,9 @@ define("ace/mode/powershell_highlight_rules", ["require", "exports", "module", "
           token: "constant.language.escape",
           regex: /`./
         },
-        {include: "variables"}
+        { include: "variables" }
       ],
-      "variables": [
+      variables: [
         {
           token: "variable.instance",
           regex: "[$]" + identifierRe + "\\b"
@@ -252,11 +268,11 @@ define("ace/mode/powershell_highlight_rules", ["require", "exports", "module", "
               token: "constant.language.escape",
               regex: /`./
             },
-            {defaultToken: "variable.braced"}
+            { defaultToken: "variable.braced" }
           ]
         }
       ],
-      "statements": [
+      statements: [
         {
           token: "punctuation",
           regex: ";"
@@ -264,32 +280,36 @@ define("ace/mode/powershell_highlight_rules", ["require", "exports", "module", "
         {
           token: "keyword.operator",
           regex: "\\-(?:" + binaryOperatorsRe + ")"
-        }, {
+        },
+        {
           token: "keyword.operator",
           regex: "&|\\+|\\-|\\*|\\/|\\%|\\=|\\>|\\&|\\!|\\|"
         },
-        {include: "constants"},
+        { include: "constants" },
         {
           token: keywordMapper,
           regex: "[a-zA-Z_$][a-zA-Z0-9_$\\-]*\\b"
         }
       ],
-      "constants": [
+      constants: [
         {
           token: "constant.numeric", // hex
           regex: "0[xX][0-9a-fA-F]+\\b"
-        }, {
+        },
+        {
           token: "constant.numeric", // float
           regex: "[+-]?\\d+(?:(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)?\\b"
-        }, {
+        },
+        {
           token: "constant.language.boolean",
           regex: "[$](?:[Tt]rue|[Ff]alse)\\b"
-        }, {
+        },
+        {
           token: "constant.language",
           regex: "[$][Nn]ull\\b"
         }
       ],
-      "strings": [
+      strings: [
         {
           token: "string", // single line
           regex: "['][^']*[']"
@@ -303,15 +323,15 @@ define("ace/mode/powershell_highlight_rules", ["require", "exports", "module", "
               regex: /"|$/,
               next: "pop"
             },
-            {include: "expressions"},
-            {include: "expandable-strings"},
+            { include: "expressions" },
+            { include: "expandable-strings" },
             {
               defaultToken: "string"
             }
           ]
         }
       ],
-      "expressions": [
+      expressions: [
         {
           token: "keyword.operator",
           regex: /[$@]\(/,
@@ -321,11 +341,11 @@ define("ace/mode/powershell_highlight_rules", ["require", "exports", "module", "
               regex: /\)/,
               next: "pop"
             },
-            {include: "parens-block"},
-            {include: "expressions"},
-            {include: "strings"},
-            {include: "variables"},
-            {include: "statements"}
+            { include: "parens-block" },
+            { include: "expressions" },
+            { include: "strings" },
+            { include: "variables" },
+            { include: "statements" }
           ]
         },
         {
@@ -337,10 +357,10 @@ define("ace/mode/powershell_highlight_rules", ["require", "exports", "module", "
               regex: /\}/,
               next: "pop"
             },
-            {include: "parens-block"},
-            {include: "strings"},
-            {include: "variables"},
-            {include: "statements"}
+            { include: "parens-block" },
+            { include: "strings" },
+            { include: "variables" },
+            { include: "statements" }
           ]
         }
       ],
@@ -354,10 +374,10 @@ define("ace/mode/powershell_highlight_rules", ["require", "exports", "module", "
               regex: /\)/,
               next: "pop"
             },
-            {include: "parens-block"},
-            {include: "strings"},
-            {include: "variables"},
-            {include: "statements"}
+            { include: "parens-block" },
+            { include: "strings" },
+            { include: "variables" },
+            { include: "statements" }
           ]
         }
       ]
@@ -366,29 +386,29 @@ define("ace/mode/powershell_highlight_rules", ["require", "exports", "module", "
   };
   oop.inherits(PowershellHighlightRules, TextHighlightRules);
   exports.PowershellHighlightRules = PowershellHighlightRules;
-
 });
 
-define("ace/mode/matching_brace_outdent", ["require", "exports", "module", "ace/range"], function (require, exports, module) {
+define("ace/mode/matching_brace_outdent", [
+  "require",
+  "exports",
+  "module",
+  "ace/range"
+], function (require, exports, module) {
   "use strict";
   var Range = require("../range").Range;
-  var MatchingBraceOutdent = function () {
-  };
+  var MatchingBraceOutdent = function () {};
   (function () {
     this.checkOutdent = function (line, input) {
-      if (!/^\s+$/.test(line))
-        return false;
+      if (!/^\s+$/.test(line)) return false;
       return /^\s*\}/.test(input);
     };
     this.autoOutdent = function (doc, row) {
       var line = doc.getLine(row);
       var match = line.match(/^(\s*\})/);
-      if (!match)
-        return 0;
+      if (!match) return 0;
       var column = match[1].length;
-      var openBracePos = doc.findMatchingBracket({row: row, column: column});
-      if (!openBracePos || openBracePos.row == row)
-        return 0;
+      var openBracePos = doc.findMatchingBracket({ row: row, column: column });
+      if (!openBracePos || openBracePos.row == row) return 0;
       var indent = this.$getIndent(doc.getLine(openBracePos.row));
       doc.replace(new Range(row, 0, row, column - 1), indent);
     };
@@ -397,20 +417,36 @@ define("ace/mode/matching_brace_outdent", ["require", "exports", "module", "ace/
     };
   }).call(MatchingBraceOutdent.prototype);
   exports.MatchingBraceOutdent = MatchingBraceOutdent;
-
 });
 
-define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop", "ace/range", "ace/mode/folding/fold_mode"], function (require, exports, module) {
+define("ace/mode/folding/cstyle", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/range",
+  "ace/mode/folding/fold_mode"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../../lib/oop");
   var Range = require("../../range").Range;
   var BaseFoldMode = require("./fold_mode").FoldMode;
-  var FoldMode = exports.FoldMode = function (commentRegex) {
+  var FoldMode = (exports.FoldMode = function (commentRegex) {
     if (commentRegex) {
-      this.foldingStartMarker = new RegExp(this.foldingStartMarker.source.replace(/\|[^|]*?$/, "|" + commentRegex.start));
-      this.foldingStopMarker = new RegExp(this.foldingStopMarker.source.replace(/\|[^|]*?$/, "|" + commentRegex.end));
+      this.foldingStartMarker = new RegExp(
+        this.foldingStartMarker.source.replace(
+          /\|[^|]*?$/,
+          "|" + commentRegex.start
+        )
+      );
+      this.foldingStopMarker = new RegExp(
+        this.foldingStopMarker.source.replace(
+          /\|[^|]*?$/,
+          "|" + commentRegex.end
+        )
+      );
     }
-  };
+  });
   oop.inherits(FoldMode, BaseFoldMode);
   (function () {
     this.foldingStartMarker = /([\{\[\(])[^\}\]\)]*$|^\s*(\/\*)/;
@@ -422,15 +458,22 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
     this.getFoldWidget = function (session, foldStyle, row) {
       var line = session.getLine(row);
       if (this.singleLineBlockCommentRe.test(line)) {
-        if (!this.startRegionRe.test(line) && !this.tripleStarBlockCommentRe.test(line))
+        if (
+          !this.startRegionRe.test(line) &&
+          !this.tripleStarBlockCommentRe.test(line)
+        )
           return "";
       }
       var fw = this._getFoldWidgetBase(session, foldStyle, row);
-      if (!fw && this.startRegionRe.test(line))
-        return "start"; // lineCommentRegionStart
+      if (!fw && this.startRegionRe.test(line)) return "start"; // lineCommentRegionStart
       return fw;
     };
-    this.getFoldWidgetRange = function (session, foldStyle, row, forceMultiline) {
+    this.getFoldWidgetRange = function (
+      session,
+      foldStyle,
+      row,
+      forceMultiline
+    ) {
       var line = session.getLine(row);
       if (this.startRegionRe.test(line))
         return this.getCommentRegionBlock(session, line, row);
@@ -443,13 +486,11 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
         if (range && !range.isMultiLine()) {
           if (forceMultiline) {
             range = this.getSectionRange(session, row);
-          } else if (foldStyle != "all")
-            range = null;
+          } else if (foldStyle != "all") range = null;
         }
         return range;
       }
-      if (foldStyle === "markbegin")
-        return;
+      if (foldStyle === "markbegin") return;
       var match = line.match(this.foldingStopMarker);
       if (match) {
         var i = match.index + match[0].length;
@@ -469,10 +510,8 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       while (++row < maxRow) {
         line = session.getLine(row);
         var indent = line.search(/\S/);
-        if (indent === -1)
-          continue;
-        if (startIndent > indent)
-          break;
+        if (indent === -1) continue;
+        if (startIndent > indent) break;
         var subRange = this.getFoldWidgetRange(session, "all", row);
         if (subRange) {
           if (subRange.start.row <= startRow) {
@@ -485,7 +524,12 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
         }
         endRow = row;
       }
-      return new Range(startRow, startColumn, endRow, session.getLine(endRow).length);
+      return new Range(
+        startRow,
+        startColumn,
+        endRow,
+        session.getLine(endRow).length
+      );
     };
     this.getCommentRegionBlock = function (session, line, row) {
       var startColumn = line.search(/\s*$/);
@@ -496,14 +540,10 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       while (++row < maxRow) {
         line = session.getLine(row);
         var m = re.exec(line);
-        if (!m)
-          continue;
-        if (m[1])
-          depth--;
-        else
-          depth++;
-        if (!depth)
-          break;
+        if (!m) continue;
+        if (m[1]) depth--;
+        else depth++;
+        if (!depth) break;
       }
       var endRow = row;
       if (endRow > startRow) {
@@ -511,26 +551,39 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       }
     };
   }).call(FoldMode.prototype);
-
 });
 
-define("ace/mode/powershell", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text", "ace/mode/powershell_highlight_rules", "ace/mode/matching_brace_outdent", "ace/mode/folding/cstyle"], function (require, exports, module) {
+define("ace/mode/powershell", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text",
+  "ace/mode/powershell_highlight_rules",
+  "ace/mode/matching_brace_outdent",
+  "ace/mode/folding/cstyle"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextMode = require("./text").Mode;
-  var PowershellHighlightRules = require("./powershell_highlight_rules").PowershellHighlightRules;
-  var MatchingBraceOutdent = require("./matching_brace_outdent").MatchingBraceOutdent;
+  var PowershellHighlightRules =
+    require("./powershell_highlight_rules").PowershellHighlightRules;
+  var MatchingBraceOutdent =
+    require("./matching_brace_outdent").MatchingBraceOutdent;
   var CStyleFoldMode = require("./folding/cstyle").FoldMode;
   var Mode = function () {
     this.HighlightRules = PowershellHighlightRules;
     this.$outdent = new MatchingBraceOutdent();
     this.$behaviour = this.$defaultBehaviour;
-    this.foldingRules = new CStyleFoldMode({start: "^\\s*(<#)", end: "^[#\\s]>\\s*$"});
+    this.foldingRules = new CStyleFoldMode({
+      start: "^\\s*(<#)",
+      end: "^[#\\s]>\\s*$"
+    });
   };
   oop.inherits(Mode, TextMode);
   (function () {
     this.lineCommentStart = "#";
-    this.blockComment = {start: "<#", end: "#>"};
+    this.blockComment = { start: "<#", end: "#>" };
     this.getNextLineIndent = function (state, line, tab) {
       var indent = this.$getIndent(line);
       var tokenizedLine = this.getTokenizer().getLineTokens(line, state);
@@ -558,7 +611,6 @@ define("ace/mode/powershell", ["require", "exports", "module", "ace/lib/oop", "a
     this.$id = "ace/mode/powershell";
   }).call(Mode.prototype);
   exports.Mode = Mode;
-
 });
 (function () {
   window.require(["ace/mode/powershell"], function (m) {
@@ -567,4 +619,3 @@ define("ace/mode/powershell", ["require", "exports", "module", "ace/lib/oop", "a
     }
   });
 })();
-            

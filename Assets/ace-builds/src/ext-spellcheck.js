@@ -1,17 +1,22 @@
-define("ace/ext/spellcheck", ["require", "exports", "module", "ace/lib/event", "ace/editor", "ace/config"], function (require, exports, module) {
+define("ace/ext/spellcheck", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/event",
+  "ace/editor",
+  "ace/config"
+], function (require, exports, module) {
   "use strict";
   var event = require("../lib/event");
   exports.contextMenuHandler = function (e) {
     var host = e.target;
     var text = host.textInput.getElement();
-    if (!host.selection.isEmpty())
-      return;
+    if (!host.selection.isEmpty()) return;
     var c = host.getCursorPosition();
     var r = host.session.getWordRange(c.row, c.column);
     var w = host.session.getTextRange(r);
     host.session.tokenRe.lastIndex = 0;
-    if (!host.session.tokenRe.test(w))
-      return;
+    if (!host.session.tokenRe.test(w)) return;
     var PLACEHOLDER = "\x01\x01";
     var value = w + " " + PLACEHOLDER;
     text.value = value;
@@ -24,17 +29,14 @@ define("ace/ext/spellcheck", ["require", "exports", "module", "ace/lib/event", "
       afterKeydown = true;
     });
     host.textInput.setInputHandler(function (newVal) {
-      if (newVal == value)
-        return '';
-      if (newVal.lastIndexOf(value, 0) === 0)
-        return newVal.slice(value.length);
+      if (newVal == value) return "";
+      if (newVal.lastIndexOf(value, 0) === 0) return newVal.slice(value.length);
       if (newVal.substr(text.selectionEnd) == value)
         return newVal.slice(0, -value.length);
       if (newVal.slice(-2) == PLACEHOLDER) {
         var val = newVal.slice(0, -2);
         if (val.slice(-1) == " ") {
-          if (afterKeydown)
-            return val.substring(0, text.selectionEnd);
+          if (afterKeydown) return val.substring(0, text.selectionEnd);
           val = val.slice(0, -1);
           host.session.replace(r, val);
           return "";
@@ -51,13 +53,11 @@ define("ace/ext/spellcheck", ["require", "exports", "module", "ace/lib/event", "
         text.spellcheck = !!val;
         if (!val)
           this.removeListener("nativecontextmenu", exports.contextMenuHandler);
-        else
-          this.on("nativecontextmenu", exports.contextMenuHandler);
+        else this.on("nativecontextmenu", exports.contextMenuHandler);
       },
       value: true
     }
   });
-
 });
 (function () {
   window.require(["ace/ext/spellcheck"], function (m) {
@@ -66,4 +66,3 @@ define("ace/ext/spellcheck", ["require", "exports", "module", "ace/lib/event", "
     }
   });
 })();
-            

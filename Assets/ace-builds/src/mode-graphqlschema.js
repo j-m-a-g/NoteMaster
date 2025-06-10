@@ -1,48 +1,79 @@
-define("ace/mode/graphqlschema_highlight_rules", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text_highlight_rules"], function (require, exports, module) {
+define("ace/mode/graphqlschema_highlight_rules", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text_highlight_rules"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
   var GraphQLSchemaHighlightRules = function () {
-    var keywords = ("type|interface|union|enum|schema|input|implements|extends|scalar");
-    var dataTypes = ("Int|Float|String|ID|Boolean");
-    var keywordMapper = this.createKeywordMapper({
-      "keyword": keywords,
-      "storage.type": dataTypes
-    }, "identifier");
+    var keywords =
+      "type|interface|union|enum|schema|input|implements|extends|scalar";
+    var dataTypes = "Int|Float|String|ID|Boolean";
+    var keywordMapper = this.createKeywordMapper(
+      {
+        keyword: keywords,
+        "storage.type": dataTypes
+      },
+      "identifier"
+    );
     this.$rules = {
-      "start": [{
-        token: "comment",
-        regex: "#.*$"
-      }, {
-        token: "paren.lparen",
-        regex: /[\[({]/,
-        next: "start"
-      }, {
-        token: "paren.rparen",
-        regex: /[\])}]/
-      }, {
-        token: keywordMapper,
-        regex: "[a-zA-Z_$][a-zA-Z0-9_$]*\\b"
-      }]
+      start: [
+        {
+          token: "comment",
+          regex: "#.*$"
+        },
+        {
+          token: "paren.lparen",
+          regex: /[\[({]/,
+          next: "start"
+        },
+        {
+          token: "paren.rparen",
+          regex: /[\])}]/
+        },
+        {
+          token: keywordMapper,
+          regex: "[a-zA-Z_$][a-zA-Z0-9_$]*\\b"
+        }
+      ]
     };
     this.normalizeRules();
   };
   oop.inherits(GraphQLSchemaHighlightRules, TextHighlightRules);
   exports.GraphQLSchemaHighlightRules = GraphQLSchemaHighlightRules;
-
 });
 
-define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop", "ace/range", "ace/mode/folding/fold_mode"], function (require, exports, module) {
+define("ace/mode/folding/cstyle", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/range",
+  "ace/mode/folding/fold_mode"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../../lib/oop");
   var Range = require("../../range").Range;
   var BaseFoldMode = require("./fold_mode").FoldMode;
-  var FoldMode = exports.FoldMode = function (commentRegex) {
+  var FoldMode = (exports.FoldMode = function (commentRegex) {
     if (commentRegex) {
-      this.foldingStartMarker = new RegExp(this.foldingStartMarker.source.replace(/\|[^|]*?$/, "|" + commentRegex.start));
-      this.foldingStopMarker = new RegExp(this.foldingStopMarker.source.replace(/\|[^|]*?$/, "|" + commentRegex.end));
+      this.foldingStartMarker = new RegExp(
+        this.foldingStartMarker.source.replace(
+          /\|[^|]*?$/,
+          "|" + commentRegex.start
+        )
+      );
+      this.foldingStopMarker = new RegExp(
+        this.foldingStopMarker.source.replace(
+          /\|[^|]*?$/,
+          "|" + commentRegex.end
+        )
+      );
     }
-  };
+  });
   oop.inherits(FoldMode, BaseFoldMode);
   (function () {
     this.foldingStartMarker = /([\{\[\(])[^\}\]\)]*$|^\s*(\/\*)/;
@@ -54,15 +85,22 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
     this.getFoldWidget = function (session, foldStyle, row) {
       var line = session.getLine(row);
       if (this.singleLineBlockCommentRe.test(line)) {
-        if (!this.startRegionRe.test(line) && !this.tripleStarBlockCommentRe.test(line))
+        if (
+          !this.startRegionRe.test(line) &&
+          !this.tripleStarBlockCommentRe.test(line)
+        )
           return "";
       }
       var fw = this._getFoldWidgetBase(session, foldStyle, row);
-      if (!fw && this.startRegionRe.test(line))
-        return "start"; // lineCommentRegionStart
+      if (!fw && this.startRegionRe.test(line)) return "start"; // lineCommentRegionStart
       return fw;
     };
-    this.getFoldWidgetRange = function (session, foldStyle, row, forceMultiline) {
+    this.getFoldWidgetRange = function (
+      session,
+      foldStyle,
+      row,
+      forceMultiline
+    ) {
       var line = session.getLine(row);
       if (this.startRegionRe.test(line))
         return this.getCommentRegionBlock(session, line, row);
@@ -75,13 +113,11 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
         if (range && !range.isMultiLine()) {
           if (forceMultiline) {
             range = this.getSectionRange(session, row);
-          } else if (foldStyle != "all")
-            range = null;
+          } else if (foldStyle != "all") range = null;
         }
         return range;
       }
-      if (foldStyle === "markbegin")
-        return;
+      if (foldStyle === "markbegin") return;
       var match = line.match(this.foldingStopMarker);
       if (match) {
         var i = match.index + match[0].length;
@@ -101,10 +137,8 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       while (++row < maxRow) {
         line = session.getLine(row);
         var indent = line.search(/\S/);
-        if (indent === -1)
-          continue;
-        if (startIndent > indent)
-          break;
+        if (indent === -1) continue;
+        if (startIndent > indent) break;
         var subRange = this.getFoldWidgetRange(session, "all", row);
         if (subRange) {
           if (subRange.start.row <= startRow) {
@@ -117,7 +151,12 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
         }
         endRow = row;
       }
-      return new Range(startRow, startColumn, endRow, session.getLine(endRow).length);
+      return new Range(
+        startRow,
+        startColumn,
+        endRow,
+        session.getLine(endRow).length
+      );
     };
     this.getCommentRegionBlock = function (session, line, row) {
       var startColumn = line.search(/\s*$/);
@@ -128,14 +167,10 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       while (++row < maxRow) {
         line = session.getLine(row);
         var m = re.exec(line);
-        if (!m)
-          continue;
-        if (m[1])
-          depth--;
-        else
-          depth++;
-        if (!depth)
-          break;
+        if (!m) continue;
+        if (m[1]) depth--;
+        else depth++;
+        if (!depth) break;
       }
       var endRow = row;
       if (endRow > startRow) {
@@ -143,14 +178,22 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       }
     };
   }).call(FoldMode.prototype);
-
 });
 
-define("ace/mode/graphqlschema", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text", "ace/mode/graphqlschema_highlight_rules", "ace/mode/folding/cstyle"], function (require, exports, module) {
+define("ace/mode/graphqlschema", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text",
+  "ace/mode/graphqlschema_highlight_rules",
+  "ace/mode/folding/cstyle"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextMode = require("./text").Mode;
-  var GraphQLSchemaHighlightRules = require("./graphqlschema_highlight_rules").GraphQLSchemaHighlightRules;
+  var GraphQLSchemaHighlightRules =
+    require("./graphqlschema_highlight_rules").GraphQLSchemaHighlightRules;
   var FoldMode = require("./folding/cstyle").FoldMode;
   var Mode = function () {
     this.HighlightRules = GraphQLSchemaHighlightRules;
@@ -163,7 +206,6 @@ define("ace/mode/graphqlschema", ["require", "exports", "module", "ace/lib/oop",
     this.snippetFileId = "ace/snippets/graphqlschema";
   }).call(Mode.prototype);
   exports.Mode = Mode;
-
 });
 (function () {
   window.require(["ace/mode/graphqlschema"], function (m) {
@@ -172,4 +214,3 @@ define("ace/mode/graphqlschema", ["require", "exports", "module", "ace/lib/oop",
     }
   });
 })();
-            

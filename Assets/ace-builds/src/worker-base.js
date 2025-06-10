@@ -1,26 +1,26 @@
 "no use strict";
 !(function (window) {
-  if (typeof window.window != "undefined" && window.document)
-    return;
-  if (window.require && window.define)
-    return;
+  if (typeof window.window != "undefined" && window.document) return;
+  if (window.require && window.define) return;
 
   if (!window.console) {
     window.console = function () {
       var msgs = Array.prototype.slice.call(arguments, 0);
-      postMessage({type: "log", data: msgs});
+      postMessage({ type: "log", data: msgs });
     };
     window.console.error =
       window.console.warn =
-        window.console.log =
-          window.console.trace = window.console;
+      window.console.log =
+      window.console.trace =
+        window.console;
   }
   window.window = window;
   window.ace = window;
 
   window.onerror = function (message, file, line, col, err) {
     postMessage({
-      type: "error", data: {
+      type: "error",
+      data: {
         message: message,
         data: err && err.data,
         file: file,
@@ -35,7 +35,11 @@
     // normalize plugin requires
     if (moduleName.indexOf("!") !== -1) {
       var chunks = moduleName.split("!");
-      return window.normalizeModule(parentId, chunks[0]) + "!" + window.normalizeModule(parentId, chunks[1]);
+      return (
+        window.normalizeModule(parentId, chunks[0]) +
+        "!" +
+        window.normalizeModule(parentId, chunks[1])
+      );
     }
     // normalize relative requires
     if (moduleName.charAt(0) == ".") {
@@ -44,7 +48,10 @@
 
       while (moduleName.indexOf(".") !== -1 && previous != moduleName) {
         var previous = moduleName;
-        moduleName = moduleName.replace(/^\.\//, "").replace(/\/\.\//, "/").replace(/[^\/]+\/\.\.\//, "");
+        moduleName = moduleName
+          .replace(/^\.\//, "")
+          .replace(/\/\.\//, "/")
+          .replace(/[^\/]+\/\.\.\//, "");
       }
     }
 
@@ -57,7 +64,9 @@
       parentId = null;
     }
     if (!id.charAt)
-      throw new Error("worker.js require() accepts only (parentId, id) as arguments");
+      throw new Error(
+        "worker.js require() accepts only (parentId, id) as arguments"
+      );
 
     id = window.normalizeModule(parentId, id);
 
@@ -70,8 +79,7 @@
       return module.exports;
     }
 
-    if (!window.require.tlns)
-      return console.log("unable to load " + id);
+    if (!window.require.tlns) return console.log("unable to load " + id);
 
     var path = resolveModuleId(id, window.require.tlns);
     if (path.slice(-3) != ".js") path += ".js";
@@ -83,13 +91,17 @@
   };
 
   function resolveModuleId(id, paths) {
-    var testPath = id, tail = "";
+    var testPath = id,
+      tail = "";
     while (testPath) {
       var alias = paths[testPath];
       if (typeof alias == "string") {
         return alias + tail;
       } else if (alias) {
-        return alias.location.replace(/\/*$/, "/") + (tail || alias.main || alias.name);
+        return (
+          alias.location.replace(/\/*$/, "/") +
+          (tail || alias.main || alias.name)
+        );
       } else if (alias === false) {
         return "";
       }
@@ -138,24 +150,26 @@
       exports: {},
       factory: function () {
         var module = this;
-        var returnExports = factory.apply(this, deps.slice(0, factory.length).map(function (dep) {
-          switch (dep) {
-            // Because "require", "exports" and "module" aren't actual
-            // dependencies, we must handle them seperately.
-            case "require":
-              return req;
-            case "exports":
-              return module.exports;
-            case "module":
-              return module;
-            // But for all other dependencies, we can just go ahead and
-            // require them.
-            default:
-              return req(dep);
-          }
-        }));
-        if (returnExports)
-          module.exports = returnExports;
+        var returnExports = factory.apply(
+          this,
+          deps.slice(0, factory.length).map(function (dep) {
+            switch (dep) {
+              // Because "require", "exports" and "module" aren't actual
+              // dependencies, we must handle them seperately.
+              case "require":
+                return req;
+              case "exports":
+                return module.exports;
+              case "module":
+                return module;
+              // But for all other dependencies, we can just go ahead and
+              // require them.
+              default:
+                return req(dep);
+            }
+          })
+        );
+        if (returnExports) module.exports = returnExports;
         return module;
       }
     };
@@ -168,15 +182,12 @@
   };
 
   window.initSender = function initSender() {
-
     var EventEmitter = window.require("ace/lib/event_emitter").EventEmitter;
     var oop = window.require("ace/lib/oop");
 
-    var Sender = function () {
-    };
+    var Sender = function () {};
 
     (function () {
-
       oop.implement(this, EventEmitter);
 
       this.callback = function (data, callbackId) {
@@ -194,26 +205,22 @@
           data: data
         });
       };
-
     }).call(Sender.prototype);
 
     return new Sender();
   };
 
-  var main = window.main = null;
-  var sender = window.sender = null;
+  var main = (window.main = null);
+  var sender = (window.sender = null);
 
   window.onmessage = function (e) {
     var msg = e.data;
     if (msg.event && sender) {
       sender._signal(msg.event, msg.data);
     } else if (msg.command) {
-      if (main[msg.command])
-        main[msg.command].apply(main, msg.args);
-      else if (window[msg.command])
-        window[msg.command].apply(window, msg.args);
-      else
-        throw new Error("Unknown command:" + msg.command);
+      if (main[msg.command]) main[msg.command].apply(main, msg.args);
+      else if (window[msg.command]) window[msg.command].apply(window, msg.args);
+      else throw new Error("Unknown command:" + msg.command);
     } else if (msg.init) {
       window.initBaseUrls(msg.tlns);
       sender = window.sender = window.initSender();
@@ -245,7 +252,6 @@ define("ace/lib/oop", [], function (require, exports, module) {
   exports.implement = function (proto, mixin) {
     exports.mixin(proto, mixin);
   };
-
 });
 
 define("ace/apply_delta", [], function (require, exports, module) {
@@ -257,8 +263,12 @@ define("ace/apply_delta", [], function (require, exports, module) {
   }
 
   function positionInDocument(docLines, position) {
-    return position.row >= 0 && position.row < docLines.length &&
-      position.column >= 0 && position.column <= docLines[position.row].length;
+    return (
+      position.row >= 0 &&
+      position.row < docLines.length &&
+      position.column >= 0 &&
+      position.column <= docLines[position.row].length
+    );
   }
 
   function validateDelta(docLines, delta) {
@@ -273,10 +283,17 @@ define("ace/apply_delta", [], function (require, exports, module) {
       throwDeltaError(delta, "delta.start must be contained in document");
     var end = delta.end;
     if (delta.action == "remove" && !positionInDocument(docLines, end))
-      throwDeltaError(delta, "delta.end must contained in document for 'remove' actions");
+      throwDeltaError(
+        delta,
+        "delta.end must contained in document for 'remove' actions"
+      );
     var numRangeRows = end.row - start.row;
-    var numRangeLastLineChars = (end.column - (numRangeRows == 0 ? start.column : 0));
-    if (numRangeRows != delta.lines.length - 1 || delta.lines[numRangeRows].length != numRangeLastLineChars)
+    var numRangeLastLineChars =
+      end.column - (numRangeRows == 0 ? start.column : 0);
+    if (
+      numRangeRows != delta.lines.length - 1 ||
+      delta.lines[numRangeRows].length != numRangeLastLineChars
+    )
       throwDeltaError(delta, "delta.range must match delta lines");
   }
 
@@ -288,7 +305,10 @@ define("ace/apply_delta", [], function (require, exports, module) {
       case "insert":
         var lines = delta.lines;
         if (lines.length === 1) {
-          docLines[row] = line.substring(0, startColumn) + delta.lines[0] + line.substring(startColumn);
+          docLines[row] =
+            line.substring(0, startColumn) +
+            delta.lines[0] +
+            line.substring(startColumn);
         } else {
           var args = [row, 1].concat(delta.lines);
           docLines.splice.apply(docLines, args);
@@ -300,14 +320,19 @@ define("ace/apply_delta", [], function (require, exports, module) {
         var endColumn = delta.end.column;
         var endRow = delta.end.row;
         if (row === endRow) {
-          docLines[row] = line.substring(0, startColumn) + line.substring(endColumn);
+          docLines[row] =
+            line.substring(0, startColumn) + line.substring(endColumn);
         } else {
-          docLines.splice(row, endRow - row + 1, line.substring(0, startColumn) + docLines[endRow].substring(endColumn));
+          docLines.splice(
+            row,
+            endRow - row + 1,
+            line.substring(0, startColumn) +
+              docLines[endRow].substring(endColumn)
+          );
         }
         break;
     }
   };
-
 });
 
 define("ace/lib/event_emitter", [], function (require, exports, module) {
@@ -319,38 +344,28 @@ define("ace/lib/event_emitter", [], function (require, exports, module) {
   var preventDefault = function () {
     this.defaultPrevented = true;
   };
-  EventEmitter._emit =
-    EventEmitter._dispatchEvent = function (eventName, e) {
-      this._eventRegistry || (this._eventRegistry = {});
-      this._defaultHandlers || (this._defaultHandlers = {});
-      var listeners = this._eventRegistry[eventName] || [];
-      var defaultHandler = this._defaultHandlers[eventName];
-      if (!listeners.length && !defaultHandler)
-        return;
-      if (typeof e != "object" || !e)
-        e = {};
-      if (!e.type)
-        e.type = eventName;
-      if (!e.stopPropagation)
-        e.stopPropagation = stopPropagation;
-      if (!e.preventDefault)
-        e.preventDefault = preventDefault;
-      listeners = listeners.slice();
-      for (var i = 0; i < listeners.length; i++) {
-        listeners[i](e, this);
-        if (e.propagationStopped)
-          break;
-      }
-      if (defaultHandler && !e.defaultPrevented)
-        return defaultHandler(e, this);
-    };
+  EventEmitter._emit = EventEmitter._dispatchEvent = function (eventName, e) {
+    this._eventRegistry || (this._eventRegistry = {});
+    this._defaultHandlers || (this._defaultHandlers = {});
+    var listeners = this._eventRegistry[eventName] || [];
+    var defaultHandler = this._defaultHandlers[eventName];
+    if (!listeners.length && !defaultHandler) return;
+    if (typeof e != "object" || !e) e = {};
+    if (!e.type) e.type = eventName;
+    if (!e.stopPropagation) e.stopPropagation = stopPropagation;
+    if (!e.preventDefault) e.preventDefault = preventDefault;
+    listeners = listeners.slice();
+    for (var i = 0; i < listeners.length; i++) {
+      listeners[i](e, this);
+      if (e.propagationStopped) break;
+    }
+    if (defaultHandler && !e.defaultPrevented) return defaultHandler(e, this);
+  };
   EventEmitter._signal = function (eventName, e) {
     var listeners = (this._eventRegistry || {})[eventName];
-    if (!listeners)
-      return;
+    if (!listeners) return;
     listeners = listeners.slice();
-    for (var i = 0; i < listeners.length; i++)
-      listeners[i](e, this);
+    for (var i = 0; i < listeners.length; i++) listeners[i](e, this);
   };
   EventEmitter.once = function (eventName, callback) {
     var _self = this;
@@ -366,65 +381,56 @@ define("ace/lib/event_emitter", [], function (require, exports, module) {
   };
   EventEmitter.setDefaultHandler = function (eventName, callback) {
     var handlers = this._defaultHandlers;
-    if (!handlers)
-      handlers = this._defaultHandlers = {_disabled_: {}};
+    if (!handlers) handlers = this._defaultHandlers = { _disabled_: {} };
     if (handlers[eventName]) {
       var old = handlers[eventName];
       var disabled = handlers._disabled_[eventName];
-      if (!disabled)
-        handlers._disabled_[eventName] = disabled = [];
+      if (!disabled) handlers._disabled_[eventName] = disabled = [];
       disabled.push(old);
       var i = disabled.indexOf(callback);
-      if (i != -1)
-        disabled.splice(i, 1);
+      if (i != -1) disabled.splice(i, 1);
     }
     handlers[eventName] = callback;
   };
   EventEmitter.removeDefaultHandler = function (eventName, callback) {
     var handlers = this._defaultHandlers;
-    if (!handlers)
-      return;
+    if (!handlers) return;
     var disabled = handlers._disabled_[eventName];
     if (handlers[eventName] == callback) {
-      if (disabled)
-        this.setDefaultHandler(eventName, disabled.pop());
+      if (disabled) this.setDefaultHandler(eventName, disabled.pop());
     } else if (disabled) {
       var i = disabled.indexOf(callback);
-      if (i != -1)
-        disabled.splice(i, 1);
+      if (i != -1) disabled.splice(i, 1);
     }
   };
-  EventEmitter.on =
-    EventEmitter.addEventListener = function (eventName, callback, capturing) {
-      this._eventRegistry = this._eventRegistry || {};
-      var listeners = this._eventRegistry[eventName];
-      if (!listeners)
-        listeners = this._eventRegistry[eventName] = [];
-      if (listeners.indexOf(callback) == -1)
-        listeners[capturing ? "unshift" : "push"](callback);
-      return callback;
-    };
+  EventEmitter.on = EventEmitter.addEventListener = function (
+    eventName,
+    callback,
+    capturing
+  ) {
+    this._eventRegistry = this._eventRegistry || {};
+    var listeners = this._eventRegistry[eventName];
+    if (!listeners) listeners = this._eventRegistry[eventName] = [];
+    if (listeners.indexOf(callback) == -1)
+      listeners[capturing ? "unshift" : "push"](callback);
+    return callback;
+  };
   EventEmitter.off =
     EventEmitter.removeListener =
-      EventEmitter.removeEventListener = function (eventName, callback) {
+    EventEmitter.removeEventListener =
+      function (eventName, callback) {
         this._eventRegistry = this._eventRegistry || {};
         var listeners = this._eventRegistry[eventName];
-        if (!listeners)
-          return;
+        if (!listeners) return;
         var index = listeners.indexOf(callback);
-        if (index !== -1)
-          listeners.splice(index, 1);
+        if (index !== -1) listeners.splice(index, 1);
       };
   EventEmitter.removeAllListeners = function (eventName) {
-    if (!eventName)
-      this._eventRegistry = this._defaultHandlers = undefined;
-    if (this._eventRegistry)
-      this._eventRegistry[eventName] = undefined;
-    if (this._defaultHandlers)
-      this._defaultHandlers[eventName] = undefined;
+    if (!eventName) this._eventRegistry = this._defaultHandlers = undefined;
+    if (this._eventRegistry) this._eventRegistry[eventName] = undefined;
+    if (this._defaultHandlers) this._defaultHandlers[eventName] = undefined;
   };
   exports.EventEmitter = EventEmitter;
-
 });
 
 define("ace/range", [], function (require, exports, module) {
@@ -442,20 +448,33 @@ define("ace/range", [], function (require, exports, module) {
     }
 
     Range.prototype.isEqual = function (range) {
-      return this.start.row === range.start.row &&
+      return (
+        this.start.row === range.start.row &&
         this.end.row === range.end.row &&
         this.start.column === range.start.column &&
-        this.end.column === range.end.column;
+        this.end.column === range.end.column
+      );
     };
     Range.prototype.toString = function () {
-      return ("Range: [" + this.start.row + "/" + this.start.column +
-        "] -> [" + this.end.row + "/" + this.end.column + "]");
+      return (
+        "Range: [" +
+        this.start.row +
+        "/" +
+        this.start.column +
+        "] -> [" +
+        this.end.row +
+        "/" +
+        this.end.column +
+        "]"
+      );
     };
     Range.prototype.contains = function (row, column) {
       return this.compare(row, column) == 0;
     };
     Range.prototype.compareRange = function (range) {
-      var cmp, end = range.end, start = range.start;
+      var cmp,
+        end = range.end,
+        start = range.start;
       cmp = this.compare(end.row, end.column);
       if (cmp == 1) {
         cmp = this.compare(start.row, start.column);
@@ -483,11 +502,13 @@ define("ace/range", [], function (require, exports, module) {
       return this.compare(p.row, p.column);
     };
     Range.prototype.containsRange = function (range) {
-      return this.comparePoint(range.start) == 0 && this.comparePoint(range.end) == 0;
+      return (
+        this.comparePoint(range.start) == 0 && this.comparePoint(range.end) == 0
+      );
     };
     Range.prototype.intersects = function (range) {
       var cmp = this.compareRange(range);
-      return (cmp == -1 || cmp == 0 || cmp == 1);
+      return cmp == -1 || cmp == 0 || cmp == 1;
     };
     Range.prototype.isEnd = function (row, column) {
       return this.end.row == row && this.end.column == column;
@@ -546,17 +567,17 @@ define("ace/range", [], function (require, exports, module) {
     Range.prototype.compare = function (row, column) {
       if (!this.isMultiLine()) {
         if (row === this.start.row) {
-          return column < this.start.column ? -1 : (column > this.end.column ? 1 : 0);
+          return column < this.start.column
+            ? -1
+            : column > this.end.column
+              ? 1
+              : 0;
         }
       }
-      if (row < this.start.row)
-        return -1;
-      if (row > this.end.row)
-        return 1;
-      if (this.start.row === row)
-        return column >= this.start.column ? 0 : -1;
-      if (this.end.row === row)
-        return column <= this.end.column ? 0 : 1;
+      if (row < this.start.row) return -1;
+      if (row > this.end.row) return 1;
+      if (this.start.row === row) return column >= this.start.column ? 0 : -1;
+      if (this.end.row === row) return column <= this.end.column ? 0 : 1;
       return 0;
     };
     Range.prototype.compareStart = function (row, column) {
@@ -583,45 +604,50 @@ define("ace/range", [], function (require, exports, module) {
       }
     };
     Range.prototype.clipRows = function (firstRow, lastRow) {
-      if (this.end.row > lastRow)
-        var end = {row: lastRow + 1, column: 0};
-      else if (this.end.row < firstRow)
-        var end = {row: firstRow, column: 0};
-      if (this.start.row > lastRow)
-        var start = {row: lastRow + 1, column: 0};
+      if (this.end.row > lastRow) var end = { row: lastRow + 1, column: 0 };
+      else if (this.end.row < firstRow) var end = { row: firstRow, column: 0 };
+      if (this.start.row > lastRow) var start = { row: lastRow + 1, column: 0 };
       else if (this.start.row < firstRow)
-        var start = {row: firstRow, column: 0};
+        var start = { row: firstRow, column: 0 };
       return Range.fromPoints(start || this.start, end || this.end);
     };
     Range.prototype.extend = function (row, column) {
       var cmp = this.compare(row, column);
-      if (cmp == 0)
-        return this;
-      else if (cmp == -1)
-        var start = {row: row, column: column};
-      else
-        var end = {row: row, column: column};
+      if (cmp == 0) return this;
+      else if (cmp == -1) var start = { row: row, column: column };
+      else var end = { row: row, column: column };
       return Range.fromPoints(start || this.start, end || this.end);
     };
     Range.prototype.isEmpty = function () {
-      return (this.start.row === this.end.row && this.start.column === this.end.column);
+      return (
+        this.start.row === this.end.row && this.start.column === this.end.column
+      );
     };
     Range.prototype.isMultiLine = function () {
-      return (this.start.row !== this.end.row);
+      return this.start.row !== this.end.row;
     };
     Range.prototype.clone = function () {
       return Range.fromPoints(this.start, this.end);
     };
     Range.prototype.collapseRows = function () {
       if (this.end.column == 0)
-        return new Range(this.start.row, 0, Math.max(this.start.row, this.end.row - 1), 0);
-      else
-        return new Range(this.start.row, 0, this.end.row, 0);
+        return new Range(
+          this.start.row,
+          0,
+          Math.max(this.start.row, this.end.row - 1),
+          0
+        );
+      else return new Range(this.start.row, 0, this.end.row, 0);
     };
     Range.prototype.toScreenRange = function (session) {
       var screenPosStart = session.documentToScreenPosition(this.start);
       var screenPosEnd = session.documentToScreenPosition(this.end);
-      return new Range(screenPosStart.row, screenPosStart.column, screenPosEnd.row, screenPosEnd.column);
+      return new Range(
+        screenPosStart.row,
+        screenPosStart.column,
+        screenPosEnd.row,
+        screenPosEnd.column
+      );
     };
     Range.prototype.moveBy = function (row, column) {
       this.start.row += row;
@@ -630,7 +656,7 @@ define("ace/range", [], function (require, exports, module) {
       this.end.column += column;
     };
     return Range;
-  }());
+  })();
   Range.fromPoints = function (start, end) {
     return new Range(start.row, start.column, end.row, end.column);
   };
@@ -638,7 +664,6 @@ define("ace/range", [], function (require, exports, module) {
     return p1.row - p2.row || p1.column - p2.column;
   };
   exports.Range = Range;
-
 });
 
 define("ace/anchor", [], function (require, exports, module) {
@@ -649,10 +674,8 @@ define("ace/anchor", [], function (require, exports, module) {
     function Anchor(doc, row, column) {
       this.$onChange = this.onChange.bind(this);
       this.attach(doc);
-      if (typeof row != "number")
-        this.setPosition(row.row, row.column);
-      else
-        this.setPosition(row, column);
+      if (typeof row != "number") this.setPosition(row.row, row.column);
+      else this.setPosition(row, column);
     }
 
     Anchor.prototype.getPosition = function () {
@@ -664,9 +687,12 @@ define("ace/anchor", [], function (require, exports, module) {
     Anchor.prototype.onChange = function (delta) {
       if (delta.start.row == delta.end.row && delta.start.row != this.row)
         return;
-      if (delta.start.row > this.row)
-        return;
-      var point = $getTransformedPoint(delta, {row: this.row, column: this.column}, this.$insertRight);
+      if (delta.start.row > this.row) return;
+      var point = $getTransformedPoint(
+        delta,
+        { row: this.row, column: this.column },
+        this.$insertRight
+      );
       this.setPosition(point.row, point.column, true);
     };
     Anchor.prototype.setPosition = function (row, column, noClip) {
@@ -679,8 +705,7 @@ define("ace/anchor", [], function (require, exports, module) {
       } else {
         pos = this.$clipPositionToDocument(row, column);
       }
-      if (this.row == pos.row && this.column == pos.column)
-        return;
+      if (this.row == pos.row && this.column == pos.column) return;
       var old = {
         row: this.row,
         column: this.column
@@ -709,26 +734,32 @@ define("ace/anchor", [], function (require, exports, module) {
         pos.column = 0;
       } else {
         pos.row = row;
-        pos.column = Math.min(this.document.getLine(pos.row).length, Math.max(0, column));
+        pos.column = Math.min(
+          this.document.getLine(pos.row).length,
+          Math.max(0, column)
+        );
       }
-      if (column < 0)
-        pos.column = 0;
+      if (column < 0) pos.column = 0;
       return pos;
     };
     return Anchor;
-  }());
+  })();
   Anchor.prototype.$insertRight = false;
   oop.implement(Anchor.prototype, EventEmitter);
 
   function $pointsInOrder(point1, point2, equalPointsInOrder) {
-    var bColIsAfter = equalPointsInOrder ? point1.column <= point2.column : point1.column < point2.column;
-    return (point1.row < point2.row) || (point1.row == point2.row && bColIsAfter);
+    var bColIsAfter = equalPointsInOrder
+      ? point1.column <= point2.column
+      : point1.column < point2.column;
+    return point1.row < point2.row || (point1.row == point2.row && bColIsAfter);
   }
 
   function $getTransformedPoint(delta, point, moveIfEqual) {
     var deltaIsInsert = delta.action == "insert";
-    var deltaRowShift = (deltaIsInsert ? 1 : -1) * (delta.end.row - delta.start.row);
-    var deltaColShift = (deltaIsInsert ? 1 : -1) * (delta.end.column - delta.start.column);
+    var deltaRowShift =
+      (deltaIsInsert ? 1 : -1) * (delta.end.row - delta.start.row);
+    var deltaColShift =
+      (deltaIsInsert ? 1 : -1) * (delta.end.column - delta.start.column);
     var deltaStart = delta.start;
     var deltaEnd = deltaIsInsert ? deltaStart : delta.end; // Collapse insert range.
     if ($pointsInOrder(point, deltaStart, moveIfEqual)) {
@@ -750,7 +781,6 @@ define("ace/anchor", [], function (require, exports, module) {
   }
 
   exports.Anchor = Anchor;
-
 });
 
 define("ace/document", [], function (require, exports, module) {
@@ -766,16 +796,16 @@ define("ace/document", [], function (require, exports, module) {
       if (textOrLines.length === 0) {
         this.$lines = [""];
       } else if (Array.isArray(textOrLines)) {
-        this.insertMergedLines({row: 0, column: 0}, textOrLines);
+        this.insertMergedLines({ row: 0, column: 0 }, textOrLines);
       } else {
-        this.insert({row: 0, column: 0}, textOrLines);
+        this.insert({ row: 0, column: 0 }, textOrLines);
       }
     }
 
     Document.prototype.setValue = function (text) {
       var len = this.getLength() - 1;
       this.remove(new Range(0, 0, len, this.getLine(len).length));
-      this.insert({row: 0, column: 0}, text || "");
+      this.insert({ row: 0, column: 0 }, text || "");
     };
     Document.prototype.getValue = function () {
       return this.getAllLines().join(this.getNewLineCharacter());
@@ -799,8 +829,7 @@ define("ace/document", [], function (require, exports, module) {
       }
     };
     Document.prototype.setNewLineMode = function (newLineMode) {
-      if (this.$newLineMode === newLineMode)
-        return;
+      if (this.$newLineMode === newLineMode) return;
       this.$newLineMode = newLineMode;
       this._signal("changeNewLineMode");
     };
@@ -808,7 +837,7 @@ define("ace/document", [], function (require, exports, module) {
       return this.$newLineMode;
     };
     Document.prototype.isNewLine = function (text) {
-      return (text == "\r\n" || text == "\r" || text == "\n");
+      return text == "\r\n" || text == "\r" || text == "\n";
     };
     Document.prototype.getLine = function (row) {
       return this.$lines[row] || "";
@@ -828,7 +857,12 @@ define("ace/document", [], function (require, exports, module) {
     Document.prototype.getLinesForRange = function (range) {
       var lines;
       if (range.start.row === range.end.row) {
-        lines = [this.getLine(range.start.row).substring(range.start.column, range.end.column)];
+        lines = [
+          this.getLine(range.start.row).substring(
+            range.start.column,
+            range.end.column
+          )
+        ];
       } else {
         lines = this.getLines(range.start.row, range.end.row);
         lines[0] = (lines[0] || "").substring(range.start.column);
@@ -839,31 +873,39 @@ define("ace/document", [], function (require, exports, module) {
       return lines;
     };
     Document.prototype.insertLines = function (row, lines) {
-      console.warn("Use of document.insertLines is deprecated. Use the insertFullLines method instead.");
+      console.warn(
+        "Use of document.insertLines is deprecated. Use the insertFullLines method instead."
+      );
       return this.insertFullLines(row, lines);
     };
     Document.prototype.removeLines = function (firstRow, lastRow) {
-      console.warn("Use of document.removeLines is deprecated. Use the removeFullLines method instead.");
+      console.warn(
+        "Use of document.removeLines is deprecated. Use the removeFullLines method instead."
+      );
       return this.removeFullLines(firstRow, lastRow);
     };
     Document.prototype.insertNewLine = function (position) {
-      console.warn("Use of document.insertNewLine is deprecated. Use insertMergedLines(position, ['', '']) instead.");
+      console.warn(
+        "Use of document.insertNewLine is deprecated. Use insertMergedLines(position, ['', '']) instead."
+      );
       return this.insertMergedLines(position, ["", ""]);
     };
     Document.prototype.insert = function (position, text) {
-      if (this.getLength() <= 1)
-        this.$detectNewLine(text);
+      if (this.getLength() <= 1) this.$detectNewLine(text);
       return this.insertMergedLines(position, this.$split(text));
     };
     Document.prototype.insertInLine = function (position, text) {
       var start = this.clippedPos(position.row, position.column);
       var end = this.pos(position.row, position.column + text.length);
-      this.applyDelta({
-        start: start,
-        end: end,
-        action: "insert",
-        lines: [text]
-      }, true);
+      this.applyDelta(
+        {
+          start: start,
+          end: end,
+          action: "insert",
+          lines: [text]
+        },
+        true
+      );
       return this.clonePos(end);
     };
     Document.prototype.clippedPos = function (row, column) {
@@ -877,16 +919,15 @@ define("ace/document", [], function (require, exports, module) {
         column = undefined;
       }
       var line = this.getLine(row);
-      if (column == undefined)
-        column = line.length;
+      if (column == undefined) column = line.length;
       column = Math.min(Math.max(column, 0), line.length);
-      return {row: row, column: column};
+      return { row: row, column: column };
     };
     Document.prototype.clonePos = function (pos) {
-      return {row: pos.row, column: pos.column};
+      return { row: pos.row, column: pos.column };
     };
     Document.prototype.pos = function (row, column) {
-      return {row: row, column: column};
+      return { row: row, column: column };
     };
     Document.prototype.$clipPosition = function (position) {
       var length = this.getLength();
@@ -895,7 +936,10 @@ define("ace/document", [], function (require, exports, module) {
         position.column = this.getLine(length - 1).length;
       } else {
         position.row = Math.max(0, position.row);
-        position.column = Math.min(Math.max(position.column, 0), this.getLine(position.row).length);
+        position.column = Math.min(
+          Math.max(position.column, 0),
+          this.getLine(position.row).length
+        );
       }
       return position;
     };
@@ -910,13 +954,15 @@ define("ace/document", [], function (require, exports, module) {
         row--;
         column = this.$lines[row].length;
       }
-      this.insertMergedLines({row: row, column: column}, lines);
+      this.insertMergedLines({ row: row, column: column }, lines);
     };
     Document.prototype.insertMergedLines = function (position, lines) {
       var start = this.clippedPos(position.row, position.column);
       var end = {
         row: start.row + lines.length - 1,
-        column: (lines.length == 1 ? start.column : 0) + lines[lines.length - 1].length
+        column:
+          (lines.length == 1 ? start.column : 0) +
+          lines[lines.length - 1].length
       };
       this.applyDelta({
         start: start,
@@ -933,19 +979,22 @@ define("ace/document", [], function (require, exports, module) {
         start: start,
         end: end,
         action: "remove",
-        lines: this.getLinesForRange({start: start, end: end})
+        lines: this.getLinesForRange({ start: start, end: end })
       });
       return this.clonePos(start);
     };
     Document.prototype.removeInLine = function (row, startColumn, endColumn) {
       var start = this.clippedPos(row, startColumn);
       var end = this.clippedPos(row, endColumn);
-      this.applyDelta({
-        start: start,
-        end: end,
-        action: "remove",
-        lines: this.getLinesForRange({start: start, end: end})
-      }, true);
+      this.applyDelta(
+        {
+          start: start,
+          end: end,
+          action: "remove",
+          lines: this.getLinesForRange({ start: start, end: end })
+        },
+        true
+      );
       return this.clonePos(start);
     };
     Document.prototype.removeFullLines = function (firstRow, lastRow) {
@@ -953,10 +1002,10 @@ define("ace/document", [], function (require, exports, module) {
       lastRow = Math.min(Math.max(0, lastRow), this.getLength() - 1);
       var deleteFirstNewLine = lastRow == this.getLength() - 1 && firstRow > 0;
       var deleteLastNewLine = lastRow < this.getLength() - 1;
-      var startRow = (deleteFirstNewLine ? firstRow - 1 : firstRow);
-      var startCol = (deleteFirstNewLine ? this.getLine(startRow).length : 0);
-      var endRow = (deleteLastNewLine ? lastRow + 1 : lastRow);
-      var endCol = (deleteLastNewLine ? 0 : this.getLine(endRow).length);
+      var startRow = deleteFirstNewLine ? firstRow - 1 : firstRow;
+      var startCol = deleteFirstNewLine ? this.getLine(startRow).length : 0;
+      var endRow = deleteLastNewLine ? lastRow + 1 : lastRow;
+      var endCol = deleteLastNewLine ? 0 : this.getLine(endRow).length;
       var range = new Range(startRow, startCol, endRow, endCol);
       var deletedLines = this.$lines.slice(firstRow, lastRow + 1);
       this.applyDelta({
@@ -980,10 +1029,8 @@ define("ace/document", [], function (require, exports, module) {
     Document.prototype.replace = function (range, text) {
       if (!(range instanceof Range))
         range = Range.fromPoints(range.start, range.end);
-      if (text.length === 0 && range.isEmpty())
-        return range.start;
-      if (text == this.getTextRange(range))
-        return range.end;
+      if (text.length === 0 && range.isEmpty()) return range.start;
+      if (text == this.getTextRange(range)) return range.end;
       this.remove(range);
       var end;
       if (text) {
@@ -1005,8 +1052,11 @@ define("ace/document", [], function (require, exports, module) {
     };
     Document.prototype.applyDelta = function (delta, doNotValidate) {
       var isInsert = delta.action == "insert";
-      if (isInsert ? delta.lines.length <= 1 && !delta.lines[0]
-        : !Range.comparePoints(delta.start, delta.end)) {
+      if (
+        isInsert
+          ? delta.lines.length <= 1 && !delta.lines[0]
+          : !Range.comparePoints(delta.start, delta.end)
+      ) {
         return;
       }
       if (isInsert && delta.lines.length > 20000) {
@@ -1018,8 +1068,12 @@ define("ace/document", [], function (require, exports, module) {
     };
     Document.prototype.$safeApplyDelta = function (delta) {
       var docLength = this.$lines.length;
-      if (delta.action == "remove" && delta.start.row < docLength && delta.end.row < docLength
-        || delta.action == "insert" && delta.start.row <= docLength) {
+      if (
+        (delta.action == "remove" &&
+          delta.start.row < docLength &&
+          delta.end.row < docLength) ||
+        (delta.action == "insert" && delta.start.row <= docLength)
+      ) {
         this.applyDelta(delta);
       }
     };
@@ -1032,12 +1086,15 @@ define("ace/document", [], function (require, exports, module) {
         to += MAX - 1;
         var chunk = lines.slice(from, to);
         chunk.push("");
-        this.applyDelta({
-          start: this.pos(row + from, column),
-          end: this.pos(row + to, column = 0),
-          action: delta.action,
-          lines: chunk
-        }, true);
+        this.applyDelta(
+          {
+            start: this.pos(row + from, column),
+            end: this.pos(row + to, (column = 0)),
+            action: delta.action,
+            lines: chunk
+          },
+          true
+        );
       }
       delta.lines = lines.slice(from);
       delta.start.row = row + from;
@@ -1048,7 +1105,7 @@ define("ace/document", [], function (require, exports, module) {
       this.$safeApplyDelta({
         start: this.clonePos(delta.start),
         end: this.clonePos(delta.end),
-        action: (delta.action == "insert" ? "remove" : "insert"),
+        action: delta.action == "insert" ? "remove" : "insert",
         lines: delta.lines.slice()
       });
     };
@@ -1058,9 +1115,12 @@ define("ace/document", [], function (require, exports, module) {
       for (var i = startRow || 0, l = lines.length; i < l; i++) {
         index -= lines[i].length + newlineLength;
         if (index < 0)
-          return {row: i, column: index + lines[i].length + newlineLength};
+          return { row: i, column: index + lines[i].length + newlineLength };
       }
-      return {row: l - 1, column: index + lines[l - 1].length + newlineLength};
+      return {
+        row: l - 1,
+        column: index + lines[l - 1].length + newlineLength
+      };
     };
     Document.prototype.positionToIndex = function (pos, startRow) {
       var lines = this.$lines || this.getAllLines();
@@ -1075,18 +1135,16 @@ define("ace/document", [], function (require, exports, module) {
       return text.split(/\r\n|\r|\n/);
     };
     return Document;
-  }());
+  })();
   Document.prototype.$autoNewLine = "";
   Document.prototype.$newLineMode = "auto";
   oop.implement(Document.prototype, EventEmitter);
   exports.Document = Document;
-
 });
 
 define("ace/lib/deep_copy", [], function (require, exports, module) {
   exports.deepCopy = function deepCopy(obj) {
-    if (typeof obj !== "object" || !obj)
-      return obj;
+    if (typeof obj !== "object" || !obj) return obj;
     var copy;
     if (Array.isArray(obj)) {
       copy = [];
@@ -1095,14 +1153,11 @@ define("ace/lib/deep_copy", [], function (require, exports, module) {
       }
       return copy;
     }
-    if (Object.prototype.toString.call(obj) !== "[object Object]")
-      return obj;
+    if (Object.prototype.toString.call(obj) !== "[object Object]") return obj;
     copy = {};
-    for (var key in obj)
-      copy[key] = deepCopy(obj[key]);
+    for (var key in obj) copy[key] = deepCopy(obj[key]);
     return copy;
   };
-
 });
 
 define("ace/lib/lang", [], function (require, exports, module) {
@@ -1114,22 +1169,20 @@ define("ace/lib/lang", [], function (require, exports, module) {
     return string.split("").reverse().join("");
   };
   exports.stringRepeat = function (string, count) {
-    var result = '';
+    var result = "";
     while (count > 0) {
-      if (count & 1)
-        result += string;
-      if (count >>= 1)
-        string += string;
+      if (count & 1) result += string;
+      if ((count >>= 1)) string += string;
     }
     return result;
   };
   var trimBeginRegexp = /^\s\s*/;
   var trimEndRegexp = /\s\s*$/;
   exports.stringTrimLeft = function (string) {
-    return string.replace(trimBeginRegexp, '');
+    return string.replace(trimBeginRegexp, "");
   };
   exports.stringTrimRight = function (string) {
-    return string.replace(trimEndRegexp, '');
+    return string.replace(trimEndRegexp, "");
   };
   exports.copyObject = function (obj) {
     var copy = {};
@@ -1143,8 +1196,7 @@ define("ace/lib/lang", [], function (require, exports, module) {
     for (var i = 0, l = array.length; i < l; i++) {
       if (array[i] && typeof array[i] == "object")
         copy[i] = this.copyObject(array[i]);
-      else
-        copy[i] = array[i];
+      else copy[i] = array[i];
     }
     return copy;
   };
@@ -1171,10 +1223,14 @@ define("ace/lib/lang", [], function (require, exports, module) {
     }
   };
   exports.escapeRegExp = function (str) {
-    return str.replace(/([.*+?^${}()|[\]\/\\])/g, '\\$1');
+    return str.replace(/([.*+?^${}()|[\]\/\\])/g, "\\$1");
   };
   exports.escapeHTML = function (str) {
-    return ("" + str).replace(/&/g, "&#38;").replace(/"/g, "&#34;").replace(/'/g, "&#39;").replace(/</g, "&#60;");
+    return ("" + str)
+      .replace(/&/g, "&#38;")
+      .replace(/"/g, "&#34;")
+      .replace(/'/g, "&#39;")
+      .replace(/</g, "&#60;");
   };
   exports.getMatchOffsets = function (string, regExp) {
     var matches = [];
@@ -1243,7 +1299,7 @@ define("ace/lib/lang", [], function (require, exports, module) {
   };
   exports.supportsLookbehind = function () {
     try {
-      new RegExp('(?<=.)');
+      new RegExp("(?<=.)");
     } catch (e) {
       return false;
     }
@@ -1252,7 +1308,6 @@ define("ace/lib/lang", [], function (require, exports, module) {
   exports.skipEmptyMatch = function (line, last, supportsUnicodeFlag) {
     return supportsUnicodeFlag && line.codePointAt(last) > 0xffff ? 2 : 1;
   };
-
 });
 
 define("ace/worker/mirror", [], function (require, exports, module) {
@@ -1261,11 +1316,13 @@ define("ace/worker/mirror", [], function (require, exports, module) {
   var Document = require("../document").Document;
   var lang = require("../lib/lang");
 
-  var Mirror = exports.Mirror = function (sender) {
+  var Mirror = (exports.Mirror = function (sender) {
     this.sender = sender;
-    var doc = this.doc = new Document("");
+    var doc = (this.doc = new Document(""));
 
-    var deferredUpdate = this.deferredUpdate = lang.delayedCall(this.onUpdate.bind(this));
+    var deferredUpdate = (this.deferredUpdate = lang.delayedCall(
+      this.onUpdate.bind(this)
+    ));
 
     var _self = this;
     sender.on("change", function (e) {
@@ -1276,12 +1333,14 @@ define("ace/worker/mirror", [], function (require, exports, module) {
         for (var i = 0; i < data.length; i += 2) {
           var d, err;
           if (Array.isArray(data[i + 1])) {
-            d = {action: "insert", start: data[i], lines: data[i + 1]};
+            d = { action: "insert", start: data[i], lines: data[i + 1] };
           } else {
-            d = {action: "remove", start: data[i], end: data[i + 1]};
+            d = { action: "remove", start: data[i], end: data[i + 1] };
           }
 
-          if ((d.action == "insert" ? d.start : d.end).row >= doc.$lines.length) {
+          if (
+            (d.action == "insert" ? d.start : d.end).row >= doc.$lines.length
+          ) {
             err = new Error("Invalid delta");
             err.data = {
               path: _self.$path,
@@ -1295,14 +1354,12 @@ define("ace/worker/mirror", [], function (require, exports, module) {
           doc.applyDelta(d, true);
         }
       }
-      if (_self.$timeout)
-        return deferredUpdate.schedule(_self.$timeout);
+      if (_self.$timeout) return deferredUpdate.schedule(_self.$timeout);
       _self.onUpdate();
     });
-  };
+  });
 
   (function () {
-
     this.$timeout = 500;
 
     this.setTimeout = function (timeout) {
@@ -1318,13 +1375,10 @@ define("ace/worker/mirror", [], function (require, exports, module) {
       this.sender.callback(this.doc.getValue(), callbackId);
     };
 
-    this.onUpdate = function () {
-    };
+    this.onUpdate = function () {};
 
     this.isPending = function () {
       return this.deferredUpdate.isPending();
     };
-
   }).call(Mirror.prototype);
-
 });

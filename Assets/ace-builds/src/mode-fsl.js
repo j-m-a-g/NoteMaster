@@ -1,72 +1,99 @@
-define("ace/mode/fsl_highlight_rules", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text_highlight_rules"], function (require, exports, module) {
+define("ace/mode/fsl_highlight_rules", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text_highlight_rules"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
   var FSLHighlightRules = function () {
     this.$rules = {
-      start: [{
-        token: "punctuation.definition.comment.mn",
-        regex: /\/\*/,
-        push: [{
+      start: [
+        {
           token: "punctuation.definition.comment.mn",
-          regex: /\*\//,
-          next: "pop"
-        }, {
-          defaultToken: "comment.block.fsl"
-        }]
-      }, {
-        token: "comment.line.fsl",
-        regex: /\/\//,
-        push: [{
+          regex: /\/\*/,
+          push: [
+            {
+              token: "punctuation.definition.comment.mn",
+              regex: /\*\//,
+              next: "pop"
+            },
+            {
+              defaultToken: "comment.block.fsl"
+            }
+          ]
+        },
+        {
           token: "comment.line.fsl",
-          regex: /$/,
-          next: "pop"
-        }, {
-          defaultToken: "comment.line.fsl"
-        }]
-      }, {
-        token: "entity.name.function",
-        regex: /\${/,
-        push: [{
+          regex: /\/\//,
+          push: [
+            {
+              token: "comment.line.fsl",
+              regex: /$/,
+              next: "pop"
+            },
+            {
+              defaultToken: "comment.line.fsl"
+            }
+          ]
+        },
+        {
           token: "entity.name.function",
-          regex: /}/,
-          next: "pop"
-        }, {
-          defaultToken: "keyword.other"
-        }],
-        comment: "js outcalls"
-      }, {
-        token: "constant.numeric",
-        regex: /[0-9]*\.[0-9]*\.[0-9]*/,
-        comment: "semver"
-      }, {
-        token: "constant.language.fslLanguage",
-        regex: "(?:"
-          + "graph_layout|machine_name|machine_author|machine_license|machine_comment|machine_language"
-          + "|machine_version|machine_reference|npm_name|graph_layout|on_init|on_halt|on_end|on_terminate|on_finalize|on_transition"
-          + "|on_action|on_stochastic_action|on_legal|on_main|on_forced|on_validation|on_validation_failure|on_transition_refused|on_forced_transition_refused"
-          + "|on_action_refused|on_enter|on_exit|start_states|end_states|terminal_states|final_states|fsl_version"
-          + ")\\s*:"
-      }, {
-        token: "keyword.control.transition.fslArrow",
-        regex: /<->|<-|->|<=>|=>|<=|<~>|~>|<~|<-=>|<=->|<-~>|<~->|<=~>|<~=>/
-      }, {
-        token: "constant.numeric.fslProbability",
-        regex: /[0-9]+%/,
-        comment: "edge probability annotation"
-      }, {
-        token: "constant.character.fslAction",
-        regex: /\'[^']*\'/,
-        comment: "action annotation"
-      }, {
-        token: "string.quoted.double.fslLabel.doublequoted",
-        regex: /\"[^"]*\"/,
-        comment: "fsl label annotation"
-      }, {
-        token: "entity.name.tag.fslLabel.atom",
-        regex: /[a-zA-Z0-9_.+&()#@!?,]/,
-        comment: "fsl label annotation"
-      }]
+          regex: /\${/,
+          push: [
+            {
+              token: "entity.name.function",
+              regex: /}/,
+              next: "pop"
+            },
+            {
+              defaultToken: "keyword.other"
+            }
+          ],
+          comment: "js outcalls"
+        },
+        {
+          token: "constant.numeric",
+          regex: /[0-9]*\.[0-9]*\.[0-9]*/,
+          comment: "semver"
+        },
+        {
+          token: "constant.language.fslLanguage",
+          regex:
+            "(?:" +
+            "graph_layout|machine_name|machine_author|machine_license|machine_comment|machine_language" +
+            "|machine_version|machine_reference|npm_name|graph_layout|on_init|on_halt|on_end|on_terminate|on_finalize|on_transition" +
+            "|on_action|on_stochastic_action|on_legal|on_main|on_forced|on_validation|on_validation_failure|on_transition_refused|on_forced_transition_refused" +
+            "|on_action_refused|on_enter|on_exit|start_states|end_states|terminal_states|final_states|fsl_version" +
+            ")\\s*:"
+        },
+        {
+          token: "keyword.control.transition.fslArrow",
+          regex: /<->|<-|->|<=>|=>|<=|<~>|~>|<~|<-=>|<=->|<-~>|<~->|<=~>|<~=>/
+        },
+        {
+          token: "constant.numeric.fslProbability",
+          regex: /[0-9]+%/,
+          comment: "edge probability annotation"
+        },
+        {
+          token: "constant.character.fslAction",
+          regex: /\'[^']*\'/,
+          comment: "action annotation"
+        },
+        {
+          token: "string.quoted.double.fslLabel.doublequoted",
+          regex: /\"[^"]*\"/,
+          comment: "fsl label annotation"
+        },
+        {
+          token: "entity.name.tag.fslLabel.atom",
+          regex: /[a-zA-Z0-9_.+&()#@!?,]/,
+          comment: "fsl label annotation"
+        }
+      ]
     };
     this.normalizeRules();
   };
@@ -77,20 +104,36 @@ define("ace/mode/fsl_highlight_rules", ["require", "exports", "module", "ace/lib
   };
   oop.inherits(FSLHighlightRules, TextHighlightRules);
   exports.FSLHighlightRules = FSLHighlightRules;
-
 });
 
-define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop", "ace/range", "ace/mode/folding/fold_mode"], function (require, exports, module) {
+define("ace/mode/folding/cstyle", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/range",
+  "ace/mode/folding/fold_mode"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../../lib/oop");
   var Range = require("../../range").Range;
   var BaseFoldMode = require("./fold_mode").FoldMode;
-  var FoldMode = exports.FoldMode = function (commentRegex) {
+  var FoldMode = (exports.FoldMode = function (commentRegex) {
     if (commentRegex) {
-      this.foldingStartMarker = new RegExp(this.foldingStartMarker.source.replace(/\|[^|]*?$/, "|" + commentRegex.start));
-      this.foldingStopMarker = new RegExp(this.foldingStopMarker.source.replace(/\|[^|]*?$/, "|" + commentRegex.end));
+      this.foldingStartMarker = new RegExp(
+        this.foldingStartMarker.source.replace(
+          /\|[^|]*?$/,
+          "|" + commentRegex.start
+        )
+      );
+      this.foldingStopMarker = new RegExp(
+        this.foldingStopMarker.source.replace(
+          /\|[^|]*?$/,
+          "|" + commentRegex.end
+        )
+      );
     }
-  };
+  });
   oop.inherits(FoldMode, BaseFoldMode);
   (function () {
     this.foldingStartMarker = /([\{\[\(])[^\}\]\)]*$|^\s*(\/\*)/;
@@ -102,15 +145,22 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
     this.getFoldWidget = function (session, foldStyle, row) {
       var line = session.getLine(row);
       if (this.singleLineBlockCommentRe.test(line)) {
-        if (!this.startRegionRe.test(line) && !this.tripleStarBlockCommentRe.test(line))
+        if (
+          !this.startRegionRe.test(line) &&
+          !this.tripleStarBlockCommentRe.test(line)
+        )
           return "";
       }
       var fw = this._getFoldWidgetBase(session, foldStyle, row);
-      if (!fw && this.startRegionRe.test(line))
-        return "start"; // lineCommentRegionStart
+      if (!fw && this.startRegionRe.test(line)) return "start"; // lineCommentRegionStart
       return fw;
     };
-    this.getFoldWidgetRange = function (session, foldStyle, row, forceMultiline) {
+    this.getFoldWidgetRange = function (
+      session,
+      foldStyle,
+      row,
+      forceMultiline
+    ) {
       var line = session.getLine(row);
       if (this.startRegionRe.test(line))
         return this.getCommentRegionBlock(session, line, row);
@@ -123,13 +173,11 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
         if (range && !range.isMultiLine()) {
           if (forceMultiline) {
             range = this.getSectionRange(session, row);
-          } else if (foldStyle != "all")
-            range = null;
+          } else if (foldStyle != "all") range = null;
         }
         return range;
       }
-      if (foldStyle === "markbegin")
-        return;
+      if (foldStyle === "markbegin") return;
       var match = line.match(this.foldingStopMarker);
       if (match) {
         var i = match.index + match[0].length;
@@ -149,10 +197,8 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       while (++row < maxRow) {
         line = session.getLine(row);
         var indent = line.search(/\S/);
-        if (indent === -1)
-          continue;
-        if (startIndent > indent)
-          break;
+        if (indent === -1) continue;
+        if (startIndent > indent) break;
         var subRange = this.getFoldWidgetRange(session, "all", row);
         if (subRange) {
           if (subRange.start.row <= startRow) {
@@ -165,7 +211,12 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
         }
         endRow = row;
       }
-      return new Range(startRow, startColumn, endRow, session.getLine(endRow).length);
+      return new Range(
+        startRow,
+        startColumn,
+        endRow,
+        session.getLine(endRow).length
+      );
     };
     this.getCommentRegionBlock = function (session, line, row) {
       var startColumn = line.search(/\s*$/);
@@ -176,14 +227,10 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       while (++row < maxRow) {
         line = session.getLine(row);
         var m = re.exec(line);
-        if (!m)
-          continue;
-        if (m[1])
-          depth--;
-        else
-          depth++;
-        if (!depth)
-          break;
+        if (!m) continue;
+        if (m[1]) depth--;
+        else depth++;
+        if (!depth) break;
       }
       var endRow = row;
       if (endRow > startRow) {
@@ -191,10 +238,18 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       }
     };
   }).call(FoldMode.prototype);
-
 });
 
-define("ace/mode/fsl", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text", "ace/mode/fsl_highlight_rules", "ace/mode/folding/cstyle"], function (require, exports, module) {/*
+define("ace/mode/fsl", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text",
+  "ace/mode/fsl_highlight_rules",
+  "ace/mode/folding/cstyle"
+], function (require, exports, module) {
+  /*
   THIS FILE WAS AUTOGENERATED BY mode.tmpl.js
 */
   "use strict";
@@ -209,12 +264,11 @@ define("ace/mode/fsl", ["require", "exports", "module", "ace/lib/oop", "ace/mode
   oop.inherits(Mode, TextMode);
   (function () {
     this.lineCommentStart = "//";
-    this.blockComment = {start: "/*", end: "*/"};
+    this.blockComment = { start: "/*", end: "*/" };
     this.$id = "ace/mode/fsl";
     this.snippetFileId = "ace/snippets/fsl";
   }).call(Mode.prototype);
   exports.Mode = Mode;
-
 });
 (function () {
   window.require(["ace/mode/fsl"], function (m) {
@@ -223,4 +277,3 @@ define("ace/mode/fsl", ["require", "exports", "module", "ace/lib/oop", "ace/mode
     }
   });
 })();
-            

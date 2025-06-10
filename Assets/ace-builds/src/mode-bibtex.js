@@ -1,4 +1,10 @@
-define("ace/mode/bibtex_highlight_rules", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text_highlight_rules"], function (require, exports, module) {
+define("ace/mode/bibtex_highlight_rules", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text_highlight_rules"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
@@ -14,17 +20,26 @@ define("ace/mode/bibtex_highlight_rules", ["require", "exports", "module", "ace/
               token: "comment",
               regex: /}/,
               next: "pop"
-            }, {
+            },
+            {
               token: "comment",
               regex: /\{/,
               push: "bibtexComment"
-            }, {
+            },
+            {
               defaultToken: "comment"
             }
           ]
-        }, {
+        },
+        {
           token: [
-            "keyword", "text", "paren.lparen", "text", "variable", "text", "keyword.operator"
+            "keyword",
+            "text",
+            "paren.lparen",
+            "text",
+            "variable",
+            "text",
+            "keyword.operator"
           ],
           regex: /(@String)(\s*)(\{)(\s*)([a-zA-Z]*)(\s*)(=)/,
           push: [
@@ -32,15 +47,24 @@ define("ace/mode/bibtex_highlight_rules", ["require", "exports", "module", "ace/
               token: "paren.rparen",
               regex: /\}/,
               next: "pop"
-            }, {
+            },
+            {
               include: "#misc"
-            }, {
+            },
+            {
               defaultToken: "text"
             }
           ]
-        }, {
+        },
+        {
           token: [
-            "keyword", "text", "paren.lparen", "text", "variable", "text", "keyword.operator"
+            "keyword",
+            "text",
+            "paren.lparen",
+            "text",
+            "variable",
+            "text",
+            "keyword.operator"
           ],
           regex: /(@String)(\s*)(\()(\s*)([a-zA-Z]*)(\s*)(=)/,
           push: [
@@ -48,80 +72,89 @@ define("ace/mode/bibtex_highlight_rules", ["require", "exports", "module", "ace/
               token: "paren.rparen",
               regex: /\)/,
               next: "pop"
-            }, {
+            },
+            {
               include: "#misc"
-            }, {
+            },
+            {
               defaultToken: "text"
             }
           ]
-        }, {
-          token: [
-            "keyword", "text", "paren.lparen"
-          ],
+        },
+        {
+          token: ["keyword", "text", "paren.lparen"],
           regex: /(@preamble)(\s*)(\()/,
           push: [
             {
               token: "paren.rparen",
               regex: /\)/,
               next: "pop"
-            }, {
+            },
+            {
               include: "#misc"
-            }, {
+            },
+            {
               defaultToken: "text"
             }
           ]
-        }, {
-          token: [
-            "keyword", "text", "paren.lparen"
-          ],
+        },
+        {
+          token: ["keyword", "text", "paren.lparen"],
           regex: /(@preamble)(\s*)(\{)/,
           push: [
             {
               token: "paren.rparen",
               regex: /\}/,
               next: "pop"
-            }, {
+            },
+            {
               include: "#misc"
-            }, {
+            },
+            {
               defaultToken: "text"
             }
           ]
-        }, {
-          token: [
-            "keyword", "text", "paren.lparen", "text", "support.class"
-          ],
+        },
+        {
+          token: ["keyword", "text", "paren.lparen", "text", "support.class"],
           regex: /(@[a-zA-Z]+)(\s*)(\{)(\s*)([\w-]+)/,
           push: [
             {
               token: "paren.rparen",
               regex: /\}/,
               next: "pop"
-            }, {
-              token: [
-                "variable", "text", "keyword.operator"
-              ],
-              regex: /([a-zA-Z0-9\!\$\&\*\+\-\.\/\:\;\<\>\?\[\]\^\_\`\|]+)(\s*)(=)/,
+            },
+            {
+              token: ["variable", "text", "keyword.operator"],
+              regex:
+                /([a-zA-Z0-9\!\$\&\*\+\-\.\/\:\;\<\>\?\[\]\^\_\`\|]+)(\s*)(=)/,
               push: [
                 {
                   token: "text",
                   regex: /(?=[,}])/,
                   next: "pop"
-                }, {
+                },
+                {
                   include: "#misc"
-                }, {
+                },
+                {
                   include: "#integer"
-                }, {
+                },
+                {
                   defaultToken: "text"
                 }
               ]
-            }, {
+            },
+            {
               token: "punctuation",
               regex: /,/
-            }, {
+            },
+            {
               defaultToken: "text"
             }
           ]
-        }, {
+        },
+        {
           defaultToken: "comment"
         }
       ],
@@ -136,11 +169,13 @@ define("ace/mode/bibtex_highlight_rules", ["require", "exports", "module", "ace/
           token: "string",
           regex: /"/,
           push: "#string_quotes"
-        }, {
+        },
+        {
           token: "paren.lparen",
           regex: /\{/,
           push: "#string_braces"
-        }, {
+        },
+        {
           token: "keyword.operator",
           regex: /#/
         }
@@ -150,12 +185,15 @@ define("ace/mode/bibtex_highlight_rules", ["require", "exports", "module", "ace/
           token: "paren.rparen",
           regex: /\}/,
           next: "pop"
-        }, {
+        },
+        {
           token: "invalid.illegal",
           regex: /@/
-        }, {
+        },
+        {
           include: "#misc"
-        }, {
+        },
+        {
           defaultToken: "string"
         }
       ],
@@ -164,9 +202,11 @@ define("ace/mode/bibtex_highlight_rules", ["require", "exports", "module", "ace/
           token: "string",
           regex: /"/,
           next: "pop"
-        }, {
+        },
+        {
           include: "#misc"
-        }, {
+        },
+        {
           defaultToken: "string"
         }
       ]
@@ -175,20 +215,36 @@ define("ace/mode/bibtex_highlight_rules", ["require", "exports", "module", "ace/
   };
   oop.inherits(BibTeXHighlightRules, TextHighlightRules);
   exports.BibTeXHighlightRules = BibTeXHighlightRules;
-
 });
 
-define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop", "ace/range", "ace/mode/folding/fold_mode"], function (require, exports, module) {
+define("ace/mode/folding/cstyle", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/range",
+  "ace/mode/folding/fold_mode"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../../lib/oop");
   var Range = require("../../range").Range;
   var BaseFoldMode = require("./fold_mode").FoldMode;
-  var FoldMode = exports.FoldMode = function (commentRegex) {
+  var FoldMode = (exports.FoldMode = function (commentRegex) {
     if (commentRegex) {
-      this.foldingStartMarker = new RegExp(this.foldingStartMarker.source.replace(/\|[^|]*?$/, "|" + commentRegex.start));
-      this.foldingStopMarker = new RegExp(this.foldingStopMarker.source.replace(/\|[^|]*?$/, "|" + commentRegex.end));
+      this.foldingStartMarker = new RegExp(
+        this.foldingStartMarker.source.replace(
+          /\|[^|]*?$/,
+          "|" + commentRegex.start
+        )
+      );
+      this.foldingStopMarker = new RegExp(
+        this.foldingStopMarker.source.replace(
+          /\|[^|]*?$/,
+          "|" + commentRegex.end
+        )
+      );
     }
-  };
+  });
   oop.inherits(FoldMode, BaseFoldMode);
   (function () {
     this.foldingStartMarker = /([\{\[\(])[^\}\]\)]*$|^\s*(\/\*)/;
@@ -200,15 +256,22 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
     this.getFoldWidget = function (session, foldStyle, row) {
       var line = session.getLine(row);
       if (this.singleLineBlockCommentRe.test(line)) {
-        if (!this.startRegionRe.test(line) && !this.tripleStarBlockCommentRe.test(line))
+        if (
+          !this.startRegionRe.test(line) &&
+          !this.tripleStarBlockCommentRe.test(line)
+        )
           return "";
       }
       var fw = this._getFoldWidgetBase(session, foldStyle, row);
-      if (!fw && this.startRegionRe.test(line))
-        return "start"; // lineCommentRegionStart
+      if (!fw && this.startRegionRe.test(line)) return "start"; // lineCommentRegionStart
       return fw;
     };
-    this.getFoldWidgetRange = function (session, foldStyle, row, forceMultiline) {
+    this.getFoldWidgetRange = function (
+      session,
+      foldStyle,
+      row,
+      forceMultiline
+    ) {
       var line = session.getLine(row);
       if (this.startRegionRe.test(line))
         return this.getCommentRegionBlock(session, line, row);
@@ -221,13 +284,11 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
         if (range && !range.isMultiLine()) {
           if (forceMultiline) {
             range = this.getSectionRange(session, row);
-          } else if (foldStyle != "all")
-            range = null;
+          } else if (foldStyle != "all") range = null;
         }
         return range;
       }
-      if (foldStyle === "markbegin")
-        return;
+      if (foldStyle === "markbegin") return;
       var match = line.match(this.foldingStopMarker);
       if (match) {
         var i = match.index + match[0].length;
@@ -247,10 +308,8 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       while (++row < maxRow) {
         line = session.getLine(row);
         var indent = line.search(/\S/);
-        if (indent === -1)
-          continue;
-        if (startIndent > indent)
-          break;
+        if (indent === -1) continue;
+        if (startIndent > indent) break;
         var subRange = this.getFoldWidgetRange(session, "all", row);
         if (subRange) {
           if (subRange.start.row <= startRow) {
@@ -263,7 +322,12 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
         }
         endRow = row;
       }
-      return new Range(startRow, startColumn, endRow, session.getLine(endRow).length);
+      return new Range(
+        startRow,
+        startColumn,
+        endRow,
+        session.getLine(endRow).length
+      );
     };
     this.getCommentRegionBlock = function (session, line, row) {
       var startColumn = line.search(/\s*$/);
@@ -274,14 +338,10 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       while (++row < maxRow) {
         line = session.getLine(row);
         var m = re.exec(line);
-        if (!m)
-          continue;
-        if (m[1])
-          depth--;
-        else
-          depth++;
-        if (!depth)
-          break;
+        if (!m) continue;
+        if (m[1]) depth--;
+        else depth++;
+        if (!depth) break;
       }
       var endRow = row;
       if (endRow > startRow) {
@@ -289,14 +349,22 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       }
     };
   }).call(FoldMode.prototype);
-
 });
 
-define("ace/mode/bibtex", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text", "ace/mode/bibtex_highlight_rules", "ace/mode/folding/cstyle"], function (require, exports, module) {
+define("ace/mode/bibtex", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text",
+  "ace/mode/bibtex_highlight_rules",
+  "ace/mode/folding/cstyle"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextMode = require("./text").Mode;
-  var BibTeXHighlightRules = require("./bibtex_highlight_rules").BibTeXHighlightRules;
+  var BibTeXHighlightRules =
+    require("./bibtex_highlight_rules").BibTeXHighlightRules;
   var FoldMode = require("./folding/cstyle").FoldMode;
   var Mode = function () {
     this.HighlightRules = BibTeXHighlightRules;
@@ -307,7 +375,6 @@ define("ace/mode/bibtex", ["require", "exports", "module", "ace/lib/oop", "ace/m
     this.$id = "ace/mode/bibtex";
   }).call(Mode.prototype);
   exports.Mode = Mode;
-
 });
 (function () {
   window.require(["ace/mode/bibtex"], function (m) {
@@ -316,4 +383,3 @@ define("ace/mode/bibtex", ["require", "exports", "module", "ace/lib/oop", "ace/m
     }
   });
 })();
-            

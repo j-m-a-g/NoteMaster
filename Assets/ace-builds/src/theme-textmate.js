@@ -1,4 +1,10 @@
-define("ace/theme/textmate", ["require", "exports", "module", "ace/theme/textmate-css", "ace/lib/dom"], function (require, exports, module) {
+define("ace/theme/textmate", [
+  "require",
+  "exports",
+  "module",
+  "ace/theme/textmate-css",
+  "ace/lib/dom"
+], function (require, exports, module) {
   "use strict";
   exports.isDark = false;
   exports.cssClass = "ace-tm";
@@ -6,7 +12,6 @@ define("ace/theme/textmate", ["require", "exports", "module", "ace/theme/textmat
   exports.$id = "ace/theme/textmate";
   var dom = require("../lib/dom");
   dom.importCssString(exports.cssText, exports.cssClass, false);
-
 });
 (function () {
   window.require(["ace/theme/textmate"], function (m) {
@@ -15,4 +20,3 @@ define("ace/theme/textmate", ["require", "exports", "module", "ace/theme/textmat
     }
   });
 })();
-            

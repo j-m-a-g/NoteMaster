@@ -1,4 +1,11 @@
-define("ace/ext/textarea", ["require", "exports", "module", "ace/lib/event", "ace/lib/useragent", "ace/ace"], function (require, exports, module) {
+define("ace/ext/textarea", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/event",
+  "ace/lib/useragent",
+  "ace/ace"
+], function (require, exports, module) {
   "use strict";
   var event = require("../lib/event");
   var UA = require("../lib/useragent");
@@ -8,12 +15,12 @@ define("ace/ext/textarea", ["require", "exports", "module", "ace/lib/event", "ac
     var ret = element.style[property];
     if (!ret) {
       if (window.getComputedStyle) {
-        ret = window.getComputedStyle(element, '').getPropertyValue(property);
+        ret = window.getComputedStyle(element, "").getPropertyValue(property);
       } else {
         ret = element.currentStyle[property];
       }
     }
-    if (!ret || ret == 'auto' || ret == 'intrinsic') {
+    if (!ret || ret == "auto" || ret == "intrinsic") {
       ret = container.style[property];
     }
     return ret;
@@ -26,30 +33,33 @@ define("ace/ext/textarea", ["require", "exports", "module", "ace/lib/event", "ac
   }
 
   function setupContainer(element, getValue) {
-    if (element.type != 'textarea') {
+    if (element.type != "textarea") {
       throw new Error("Textarea required!");
     }
     var parentNode = element.parentNode;
-    var container = document.createElement('div');
+    var container = document.createElement("div");
     var resizeEvent = function () {
-      var style = 'position:relative;';
-      [
-        'margin-top', 'margin-left', 'margin-right', 'margin-bottom'
-      ].forEach(function (item) {
-        style += item + ':' +
-          getCSSProperty(element, container, item) + ';';
-      });
-      var width = getCSSProperty(element, container, 'width') || (element.clientWidth + "px");
-      var height = getCSSProperty(element, container, 'height') || (element.clientHeight + "px");
-      style += 'height:' + height + ';width:' + width + ';';
-      style += 'display:inline-block;';
+      var style = "position:relative;";
+      ["margin-top", "margin-left", "margin-right", "margin-bottom"].forEach(
+        function (item) {
+          style += item + ":" + getCSSProperty(element, container, item) + ";";
+        }
+      );
+      var width =
+        getCSSProperty(element, container, "width") ||
+        element.clientWidth + "px";
+      var height =
+        getCSSProperty(element, container, "height") ||
+        element.clientHeight + "px";
+      style += "height:" + height + ";width:" + width + ";";
+      style += "display:inline-block;";
       container.style.cssText = style;
     };
-    event.addListener(window, 'resize', resizeEvent);
+    event.addListener(window, "resize", resizeEvent);
     resizeEvent();
     parentNode.insertBefore(container, element.nextSibling);
     while (parentNode !== document) {
-      if (parentNode.tagName.toUpperCase() === 'FORM') {
+      if (parentNode.tagName.toUpperCase() === "FORM") {
         var oldSumit = parentNode.onsubmit;
         parentNode.onsubmit = function (evt) {
           element.value = getValue();
@@ -70,8 +80,8 @@ define("ace/ext/textarea", ["require", "exports", "module", "ace/lib/event", "ac
     var container = setupContainer(element, function () {
       return session.getValue();
     });
-    element.style.display = 'none';
-    container.style.background = 'white';
+    element.style.display = "none";
+    container.style.background = "white";
     var editorDiv = document.createElement("div");
     applyStyles(editorDiv, {
       top: "0px",
@@ -118,15 +128,15 @@ define("ace/ext/textarea", ["require", "exports", "module", "ace/lib/event", "ac
     var editor = ace.edit(editorDiv);
     session = editor.getSession();
     session.setValue(element.value || element.innerHTML);
-    if (isFocused)
-      editor.focus();
+    if (isFocused) editor.focus();
     container.appendChild(settingOpener);
     setupApi(editor, editorDiv, settingDiv, ace, options);
     setupSettingPanel(settingDiv, settingOpener, editor);
     var state = "";
     event.addListener(settingOpener, "mousemove", function (e) {
       var rect = this.getBoundingClientRect();
-      var x = e.clientX - rect.left, y = e.clientY - rect.top;
+      var x = e.clientX - rect.left,
+        y = e.clientY - rect.top;
       if (x + y < (rect.width + rect.height) / 2) {
         this.style.cursor = "pointer";
         state = "toggle";
@@ -145,12 +155,15 @@ define("ace/ext/textarea", ["require", "exports", "module", "ace/lib/event", "ac
       var rect = container.getBoundingClientRect();
       var startX = rect.width + rect.left - e.clientX;
       var startY = rect.height + rect.top - e.clientY;
-      event.capture(settingOpener, function (e) {
-        container.style.width = e.clientX - rect.left + startX + "px";
-        container.style.height = e.clientY - rect.top + startY + "px";
-        editor.resize();
-      }, function () {
-      });
+      event.capture(
+        settingOpener,
+        function (e) {
+          container.style.width = e.clientX - rect.left + startX + "px";
+          container.style.height = e.clientY - rect.top + startY + "px";
+          editor.resize();
+        },
+        function () {}
+      );
     });
     return editor;
   };
@@ -161,8 +174,7 @@ define("ace/ext/textarea", ["require", "exports", "module", "ace/lib/event", "ac
     }
 
     editor.setDisplaySettings = function (display) {
-      if (display == null)
-        display = settingDiv.style.display == "none";
+      if (display == null) display = settingDiv.style.display == "none";
       if (display) {
         settingDiv.style.display = "block";
         settingDiv.hideButton.focus();
@@ -319,7 +331,13 @@ define("ace/ext/textarea", ["require", "exports", "module", "ace/lib/event", "ac
 
     function renderOption(builder, option, obj, cValue) {
       if (!obj) {
-        builder.push("<input type='checkbox' title='", option, "' ", cValue + "" == "true" ? "checked='true'" : "", "'></input>");
+        builder.push(
+          "<input type='checkbox' title='",
+          option,
+          "' ",
+          cValue + "" == "true" ? "checked='true'" : "",
+          "'></input>"
+        );
         return;
       }
       builder.push("<select title='" + option + "'>");
@@ -336,7 +354,12 @@ define("ace/ext/textarea", ["require", "exports", "module", "ace/lib/event", "ac
     for (var option in exports.defaultOptions) {
       table.push("<tr><td>", desc[option], "</td>");
       table.push("<td>");
-      renderOption(table, option, optionValues[option], editor.getOption(option));
+      renderOption(
+        table,
+        option,
+        optionValues[option],
+        editor.getOption(option)
+      );
       table.push("</td></tr>");
     }
     table.push("</table>");
@@ -350,11 +373,9 @@ define("ace/ext/textarea", ["require", "exports", "module", "ace/lib/event", "ac
       editor.setOption(cb.title, cb.checked);
     };
     var selects = settingDiv.getElementsByTagName("select");
-    for (var i = 0; i < selects.length; i++)
-      selects[i].onchange = onChange;
+    for (var i = 0; i < selects.length; i++) selects[i].onchange = onChange;
     var cbs = settingDiv.getElementsByTagName("input");
-    for (var i = 0; i < cbs.length; i++)
-      cbs[i].onclick = onClick;
+    for (var i = 0; i < cbs.length; i++) cbs[i].onclick = onClick;
     var button = document.createElement("input");
     button.type = "button";
     button.value = "Hide";
@@ -376,7 +397,6 @@ define("ace/ext/textarea", ["require", "exports", "module", "ace/lib/event", "ac
     useSoftTabs: "true",
     showInvisibles: "false"
   };
-
 });
 (function () {
   window.require(["ace/ext/textarea"], function (m) {
@@ -385,4 +405,3 @@ define("ace/ext/textarea", ["require", "exports", "module", "ace/lib/event", "ac
     }
   });
 })();
-            

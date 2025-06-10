@@ -1,9 +1,16 @@
-define("ace/mode/sql_highlight_rules", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text_highlight_rules"], function (require, exports, module) {
+define("ace/mode/sql_highlight_rules", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text_highlight_rules"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
   var SqlHighlightRules = function () {
-    var keywords = ("select|insert|update|delete|from|where|and|or|group|by|order|limit|offset|having|as|case|" +
+    var keywords =
+      "select|insert|update|delete|from|where|and|or|group|by|order|limit|offset|having|as|case|" +
       "when|then|else|end|type|left|right|join|on|outer|desc|asc|union|create|table|primary|key|if|" +
       "foreign|not|references|default|null|inner|cross|natural|database|drop|grant|distinct|is|in|" +
       "all|alter|any|array|at|authorization|between|both|cast|check|collate|column|commit|constraint|" +
@@ -11,73 +18,107 @@ define("ace/mode/sql_highlight_rules", ["require", "exports", "module", "ace/lib
       "exists|external|extract|fetch|filter|for|full|function|global|grouping|intersect|interval|" +
       "into|leading|like|local|no|of|only|out|overlaps|partition|position|range|revoke|rollback|rollup|" +
       "row|rows|session_user|set|some|start|tablesample|time|to|trailing|truncate|unique|unknown|" +
-      "user|using|values|window|with");
-    var builtinConstants = ("true|false");
-    var builtinFunctions = ("avg|count|first|last|max|min|sum|ucase|lcase|mid|len|round|rank|now|format|" +
-      "coalesce|ifnull|isnull|nvl");
-    var dataTypes = ("int|numeric|decimal|date|varchar|char|bigint|float|double|bit|binary|text|set|timestamp|" +
-      "money|real|number|integer|string");
-    var keywordMapper = this.createKeywordMapper({
-      "support.function": builtinFunctions,
-      "keyword": keywords,
-      "constant.language": builtinConstants,
-      "storage.type": dataTypes
-    }, "identifier", true);
+      "user|using|values|window|with";
+    var builtinConstants = "true|false";
+    var builtinFunctions =
+      "avg|count|first|last|max|min|sum|ucase|lcase|mid|len|round|rank|now|format|" +
+      "coalesce|ifnull|isnull|nvl";
+    var dataTypes =
+      "int|numeric|decimal|date|varchar|char|bigint|float|double|bit|binary|text|set|timestamp|" +
+      "money|real|number|integer|string";
+    var keywordMapper = this.createKeywordMapper(
+      {
+        "support.function": builtinFunctions,
+        keyword: keywords,
+        "constant.language": builtinConstants,
+        "storage.type": dataTypes
+      },
+      "identifier",
+      true
+    );
     this.$rules = {
-      "start": [{
-        token: "comment",
-        regex: "--.*$"
-      }, {
-        token: "comment",
-        start: "/\\*",
-        end: "\\*/"
-      }, {
-        token: "string", // " string
-        regex: '".*?"'
-      }, {
-        token: "string", // ' string
-        regex: "'.*?'"
-      }, {
-        token: "string", // ` string (apache drill)
-        regex: "`.*?`"
-      }, {
-        token: "constant.numeric", // float
-        regex: "[+-]?\\d+(?:(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)?\\b"
-      }, {
-        token: keywordMapper,
-        regex: "[a-zA-Z_$][a-zA-Z0-9_$]*\\b"
-      }, {
-        token: "keyword.operator",
-        regex: "\\+|\\-|\\/|\\/\\/|%|<@>|@>|<@|&|\\^|~|<|>|<=|=>|==|!=|<>|="
-      }, {
-        token: "paren.lparen",
-        regex: "[\\(]"
-      }, {
-        token: "paren.rparen",
-        regex: "[\\)]"
-      }, {
-        token: "text",
-        regex: "\\s+"
-      }]
+      start: [
+        {
+          token: "comment",
+          regex: "--.*$"
+        },
+        {
+          token: "comment",
+          start: "/\\*",
+          end: "\\*/"
+        },
+        {
+          token: "string", // " string
+          regex: '".*?"'
+        },
+        {
+          token: "string", // ' string
+          regex: "'.*?'"
+        },
+        {
+          token: "string", // ` string (apache drill)
+          regex: "`.*?`"
+        },
+        {
+          token: "constant.numeric", // float
+          regex: "[+-]?\\d+(?:(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)?\\b"
+        },
+        {
+          token: keywordMapper,
+          regex: "[a-zA-Z_$][a-zA-Z0-9_$]*\\b"
+        },
+        {
+          token: "keyword.operator",
+          regex: "\\+|\\-|\\/|\\/\\/|%|<@>|@>|<@|&|\\^|~|<|>|<=|=>|==|!=|<>|="
+        },
+        {
+          token: "paren.lparen",
+          regex: "[\\(]"
+        },
+        {
+          token: "paren.rparen",
+          regex: "[\\)]"
+        },
+        {
+          token: "text",
+          regex: "\\s+"
+        }
+      ]
     };
     this.normalizeRules();
   };
   oop.inherits(SqlHighlightRules, TextHighlightRules);
   exports.SqlHighlightRules = SqlHighlightRules;
-
 });
 
-define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop", "ace/range", "ace/mode/folding/fold_mode"], function (require, exports, module) {
+define("ace/mode/folding/cstyle", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/range",
+  "ace/mode/folding/fold_mode"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../../lib/oop");
   var Range = require("../../range").Range;
   var BaseFoldMode = require("./fold_mode").FoldMode;
-  var FoldMode = exports.FoldMode = function (commentRegex) {
+  var FoldMode = (exports.FoldMode = function (commentRegex) {
     if (commentRegex) {
-      this.foldingStartMarker = new RegExp(this.foldingStartMarker.source.replace(/\|[^|]*?$/, "|" + commentRegex.start));
-      this.foldingStopMarker = new RegExp(this.foldingStopMarker.source.replace(/\|[^|]*?$/, "|" + commentRegex.end));
+      this.foldingStartMarker = new RegExp(
+        this.foldingStartMarker.source.replace(
+          /\|[^|]*?$/,
+          "|" + commentRegex.start
+        )
+      );
+      this.foldingStopMarker = new RegExp(
+        this.foldingStopMarker.source.replace(
+          /\|[^|]*?$/,
+          "|" + commentRegex.end
+        )
+      );
     }
-  };
+  });
   oop.inherits(FoldMode, BaseFoldMode);
   (function () {
     this.foldingStartMarker = /([\{\[\(])[^\}\]\)]*$|^\s*(\/\*)/;
@@ -89,15 +130,22 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
     this.getFoldWidget = function (session, foldStyle, row) {
       var line = session.getLine(row);
       if (this.singleLineBlockCommentRe.test(line)) {
-        if (!this.startRegionRe.test(line) && !this.tripleStarBlockCommentRe.test(line))
+        if (
+          !this.startRegionRe.test(line) &&
+          !this.tripleStarBlockCommentRe.test(line)
+        )
           return "";
       }
       var fw = this._getFoldWidgetBase(session, foldStyle, row);
-      if (!fw && this.startRegionRe.test(line))
-        return "start"; // lineCommentRegionStart
+      if (!fw && this.startRegionRe.test(line)) return "start"; // lineCommentRegionStart
       return fw;
     };
-    this.getFoldWidgetRange = function (session, foldStyle, row, forceMultiline) {
+    this.getFoldWidgetRange = function (
+      session,
+      foldStyle,
+      row,
+      forceMultiline
+    ) {
       var line = session.getLine(row);
       if (this.startRegionRe.test(line))
         return this.getCommentRegionBlock(session, line, row);
@@ -110,13 +158,11 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
         if (range && !range.isMultiLine()) {
           if (forceMultiline) {
             range = this.getSectionRange(session, row);
-          } else if (foldStyle != "all")
-            range = null;
+          } else if (foldStyle != "all") range = null;
         }
         return range;
       }
-      if (foldStyle === "markbegin")
-        return;
+      if (foldStyle === "markbegin") return;
       var match = line.match(this.foldingStopMarker);
       if (match) {
         var i = match.index + match[0].length;
@@ -136,10 +182,8 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       while (++row < maxRow) {
         line = session.getLine(row);
         var indent = line.search(/\S/);
-        if (indent === -1)
-          continue;
-        if (startIndent > indent)
-          break;
+        if (indent === -1) continue;
+        if (startIndent > indent) break;
         var subRange = this.getFoldWidgetRange(session, "all", row);
         if (subRange) {
           if (subRange.start.row <= startRow) {
@@ -152,7 +196,12 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
         }
         endRow = row;
       }
-      return new Range(startRow, startColumn, endRow, session.getLine(endRow).length);
+      return new Range(
+        startRow,
+        startColumn,
+        endRow,
+        session.getLine(endRow).length
+      );
     };
     this.getCommentRegionBlock = function (session, line, row) {
       var startColumn = line.search(/\s*$/);
@@ -163,14 +212,10 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       while (++row < maxRow) {
         line = session.getLine(row);
         var m = re.exec(line);
-        if (!m)
-          continue;
-        if (m[1])
-          depth--;
-        else
-          depth++;
-        if (!depth)
-          break;
+        if (!m) continue;
+        if (m[1]) depth--;
+        else depth++;
+        if (!depth) break;
       }
       var endRow = row;
       if (endRow > startRow) {
@@ -178,22 +223,32 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       }
     };
   }).call(FoldMode.prototype);
-
 });
 
-define("ace/mode/folding/sql", ["require", "exports", "module", "ace/lib/oop", "ace/mode/folding/cstyle"], function (require, exports, module) {
+define("ace/mode/folding/sql", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/folding/cstyle"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../../lib/oop");
   var BaseFoldMode = require("./cstyle").FoldMode;
-  var FoldMode = exports.FoldMode = function () {
-  };
+  var FoldMode = (exports.FoldMode = function () {});
   oop.inherits(FoldMode, BaseFoldMode);
-  (function () {
-  }).call(FoldMode.prototype);
-
+  (function () {}).call(FoldMode.prototype);
 });
 
-define("ace/mode/sql", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text", "ace/mode/sql_highlight_rules", "ace/mode/folding/sql"], function (require, exports, module) {
+define("ace/mode/sql", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text",
+  "ace/mode/sql_highlight_rules",
+  "ace/mode/folding/sql"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextMode = require("./text").Mode;
@@ -207,12 +262,11 @@ define("ace/mode/sql", ["require", "exports", "module", "ace/lib/oop", "ace/mode
   oop.inherits(Mode, TextMode);
   (function () {
     this.lineCommentStart = "--";
-    this.blockComment = {start: "/*", end: "*/"};
+    this.blockComment = { start: "/*", end: "*/" };
     this.$id = "ace/mode/sql";
     this.snippetFileId = "ace/snippets/sql";
   }).call(Mode.prototype);
   exports.Mode = Mode;
-
 });
 (function () {
   window.require(["ace/mode/sql"], function (m) {
@@ -221,4 +275,3 @@ define("ace/mode/sql", ["require", "exports", "module", "ace/lib/oop", "ace/mode
     }
   });
 })();
-            

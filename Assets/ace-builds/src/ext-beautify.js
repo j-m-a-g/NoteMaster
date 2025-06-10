@@ -1,4 +1,10 @@
-define("ace/ext/beautify", ["require", "exports", "module", "ace/token_iterator"], function (require, exports, module) {// [WIP]
+define("ace/ext/beautify", [
+  "require",
+  "exports",
+  "module",
+  "ace/token_iterator"
+], function (require, exports, module) {
+  // [WIP]
   "use strict";
   var TokenIterator = require("../token_iterator").TokenIterator;
 
@@ -6,8 +12,50 @@ define("ace/ext/beautify", ["require", "exports", "module", "ace/token_iterator"
     return token.type.lastIndexOf(type + ".xml") > -1;
   }
 
-  exports.singletonTags = ["area", "base", "br", "col", "command", "embed", "hr", "html", "img", "input", "keygen", "link", "meta", "param", "source", "track", "wbr"];
-  exports.blockTags = ["article", "aside", "blockquote", "body", "div", "dl", "fieldset", "footer", "form", "head", "header", "html", "nav", "ol", "p", "script", "section", "style", "table", "tbody", "tfoot", "thead", "ul"];
+  exports.singletonTags = [
+    "area",
+    "base",
+    "br",
+    "col",
+    "command",
+    "embed",
+    "hr",
+    "html",
+    "img",
+    "input",
+    "keygen",
+    "link",
+    "meta",
+    "param",
+    "source",
+    "track",
+    "wbr"
+  ];
+  exports.blockTags = [
+    "article",
+    "aside",
+    "blockquote",
+    "body",
+    "div",
+    "dl",
+    "fieldset",
+    "footer",
+    "form",
+    "head",
+    "header",
+    "html",
+    "nav",
+    "ol",
+    "p",
+    "script",
+    "section",
+    "style",
+    "table",
+    "tbody",
+    "tfoot",
+    "thead",
+    "ul"
+  ];
   exports.formatOptions = {
     lineBreaksAfterCommasInCurlyBlock: true
   };
@@ -42,20 +90,18 @@ define("ace/ext/beautify", ["require", "exports", "module", "ace/token_iterator"
     var inTag = false;
     var inCSS = false;
     var inBlock = false;
-    var levels = {0: 0};
+    var levels = { 0: 0 };
     var parents = [];
     var caseBody = false;
     var trimNext = function () {
-      if (nextToken && nextToken.value && nextToken.type !== 'string.regexp')
+      if (nextToken && nextToken.value && nextToken.type !== "string.regexp")
         nextToken.value = nextToken.value.replace(/^\s*/, "");
     };
     var trimLine = function () {
       var end = code.length - 1;
       while (true) {
-        if (end == 0)
-          break;
-        if (code[end] !== " ")
-          break;
+        if (end == 0) break;
+        if (code[end] !== " ") break;
         end = end - 1;
       }
       code = code.slice(0, end + 1);
@@ -71,16 +117,13 @@ define("ace/ext/beautify", ["require", "exports", "module", "ace/token_iterator"
       if (typeof token !== "undefined") {
         value = token.value;
         unindent = 0;
-        inCSS = (tagName === "style" || session.$modeId === "ace/mode/css");
+        inCSS = tagName === "style" || session.$modeId === "ace/mode/css";
         if (is(token, "tag-open")) {
           inTag = true;
-          if (nextToken)
-            inBlock = (blockTags.indexOf(nextToken.value) !== -1);
+          if (nextToken) inBlock = blockTags.indexOf(nextToken.value) !== -1;
           if (value === "</") {
-            if (inBlock && !breakBefore && rowsToAdd < 1)
-              rowsToAdd++;
-            if (inCSS)
-              rowsToAdd = 1;
+            if (inBlock && !breakBefore && rowsToAdd < 1) rowsToAdd++;
+            if (inCSS) rowsToAdd = 1;
             unindent = 1;
             inBlock = false;
           }
@@ -91,24 +134,30 @@ define("ace/ext/beautify", ["require", "exports", "module", "ace/token_iterator"
         } else if (is(token, "comment.end")) {
           inBlock = false;
         }
-        if (!inTag && !rowsToAdd && token.type === "paren.rparen" && token.value.substr(0, 1) === "}") {
+        if (
+          !inTag &&
+          !rowsToAdd &&
+          token.type === "paren.rparen" &&
+          token.value.substr(0, 1) === "}"
+        ) {
           rowsToAdd++;
         }
         if (curRow !== row) {
           rowsToAdd = curRow;
-          if (row)
-            rowsToAdd -= row;
+          if (row) rowsToAdd -= row;
         }
         if (rowsToAdd) {
           trimCode();
-          for (; rowsToAdd > 0; rowsToAdd--)
-            code += "\n";
+          for (; rowsToAdd > 0; rowsToAdd--) code += "\n";
           breakBefore = true;
           if (!is(token, "comment") && !token.type.match(/^(comment|string)$/))
             value = value.trimLeft();
         }
         if (value) {
-          if (token.type === "keyword" && value.match(/^(if|else|elseif|for|foreach|while|switch)$/)) {
+          if (
+            token.type === "keyword" &&
+            value.match(/^(if|else|elseif|for|foreach|while|switch)$/)
+          ) {
             parents[depth] = value;
             trimNext();
             spaceAfter = true;
@@ -123,15 +172,17 @@ define("ace/ext/beautify", ["require", "exports", "module", "ace/token_iterator"
             if (value.substr(-1) === "{") {
               spaceAfter = true;
               indentNextLine = false;
-              if (!inTag)
-                rowsToAdd = 1;
+              if (!inTag) rowsToAdd = 1;
             }
             if (value.substr(0, 1) === "{") {
               spaceBefore = true;
-              if (code.substr(-1) !== '[' && code.trimRight().substr(-1) === '[') {
+              if (
+                code.substr(-1) !== "[" &&
+                code.trimRight().substr(-1) === "["
+              ) {
                 trimCode();
                 spaceBefore = false;
-              } else if (code.trimRight().substr(-1) === ')') {
+              } else if (code.trimRight().substr(-1) === ")") {
                 trimCode();
               } else {
                 trimLine();
@@ -140,85 +191,115 @@ define("ace/ext/beautify", ["require", "exports", "module", "ace/token_iterator"
           } else if (token.type === "paren.rparen") {
             unindent = 1;
             if (value.substr(0, 1) === "}") {
-              if (parents[depth - 1] === 'case')
-                unindent++;
-              if (code.trimRight().substr(-1) === '{') {
+              if (parents[depth - 1] === "case") unindent++;
+              if (code.trimRight().substr(-1) === "{") {
                 trimCode();
               } else {
                 spaceBefore = true;
-                if (inCSS)
-                  rowsToAdd += 2;
+                if (inCSS) rowsToAdd += 2;
               }
             }
             if (value.substr(0, 1) === "]") {
-              if (code.substr(-1) !== '}' && code.trimRight().substr(-1) === '}') {
+              if (
+                code.substr(-1) !== "}" &&
+                code.trimRight().substr(-1) === "}"
+              ) {
                 spaceBefore = false;
                 indent++;
                 trimCode();
               }
             }
             if (value.substr(0, 1) === ")") {
-              if (code.substr(-1) !== '(' && code.trimRight().substr(-1) === '(') {
+              if (
+                code.substr(-1) !== "(" &&
+                code.trimRight().substr(-1) === "("
+              ) {
                 spaceBefore = false;
                 indent++;
                 trimCode();
               }
             }
             trimLine();
-          } else if ((token.type === "keyword.operator" || token.type === "keyword") && value.match(/^(=|==|===|!=|!==|&&|\|\||and|or|xor|\+=|.=|>|>=|<|<=|=>)$/)) {
+          } else if (
+            (token.type === "keyword.operator" || token.type === "keyword") &&
+            value.match(
+              /^(=|==|===|!=|!==|&&|\|\||and|or|xor|\+=|.=|>|>=|<|<=|=>)$/
+            )
+          ) {
             trimCode();
             trimNext();
             spaceBefore = true;
             spaceAfter = true;
-          } else if (token.type === "punctuation.operator" && value === ';') {
+          } else if (token.type === "punctuation.operator" && value === ";") {
             trimCode();
             trimNext();
             spaceAfter = true;
-            if (inCSS)
-              rowsToAdd++;
-          } else if (token.type === "punctuation.operator" && value.match(/^(:|,)$/)) {
+            if (inCSS) rowsToAdd++;
+          } else if (
+            token.type === "punctuation.operator" &&
+            value.match(/^(:|,)$/)
+          ) {
             trimCode();
             trimNext();
-            if (value.match(/^(,)$/) && curlyDepth > 0 && roundDepth === 0 && formatOptions.lineBreaksAfterCommasInCurlyBlock) {
+            if (
+              value.match(/^(,)$/) &&
+              curlyDepth > 0 &&
+              roundDepth === 0 &&
+              formatOptions.lineBreaksAfterCommasInCurlyBlock
+            ) {
               rowsToAdd++;
             } else {
               spaceAfter = true;
               breakBefore = false;
             }
-          } else if (token.type === "support.php_tag" && value === "?>" && !breakBefore) {
+          } else if (
+            token.type === "support.php_tag" &&
+            value === "?>" &&
+            !breakBefore
+          ) {
             trimCode();
             spaceBefore = true;
-          } else if (is(token, "attribute-name") && code.substr(-1).match(/^\s$/)) {
+          } else if (
+            is(token, "attribute-name") &&
+            code.substr(-1).match(/^\s$/)
+          ) {
             spaceBefore = true;
           } else if (is(token, "attribute-equals")) {
             trimLine();
             trimNext();
           } else if (is(token, "tag-close")) {
             trimLine();
-            if (value === "/>")
-              spaceBefore = true;
-          } else if (token.type === "keyword" && value.match(/^(case|default)$/)) {
-            if (caseBody)
-              unindent = 1;
+            if (value === "/>") spaceBefore = true;
+          } else if (
+            token.type === "keyword" &&
+            value.match(/^(case|default)$/)
+          ) {
+            if (caseBody) unindent = 1;
           }
-          if (breakBefore && !(token.type.match(/^(comment)$/) && !value.substr(0, 1).match(/^[/#]$/)) && !(token.type.match(/^(string)$/) && !value.substr(0, 1).match(/^['"@]$/))) {
+          if (
+            breakBefore &&
+            !(
+              token.type.match(/^(comment)$/) &&
+              !value.substr(0, 1).match(/^[/#]$/)
+            ) &&
+            !(
+              token.type.match(/^(string)$/) &&
+              !value.substr(0, 1).match(/^['"@]$/)
+            )
+          ) {
             indent = lastIndent;
             if (depth > lastDepth) {
               indent++;
-              for (i = depth; i > lastDepth; i--)
-                levels[i] = indent;
-            } else if (depth < lastDepth)
-              indent = levels[depth];
+              for (i = depth; i > lastDepth; i--) levels[i] = indent;
+            } else if (depth < lastDepth) indent = levels[depth];
             lastDepth = depth;
             lastIndent = indent;
-            if (unindent)
-              indent -= unindent;
+            if (unindent) indent -= unindent;
             if (indentNextLine && !roundDepth) {
               indent++;
               indentNextLine = false;
             }
-            for (i = 0; i < indent; i++)
-              code += tabString;
+            for (i = 0; i < indent; i++) code += tabString;
           }
           if (token.type === "keyword" && value.match(/^(case|default)$/)) {
             if (caseBody === false) {
@@ -227,7 +308,10 @@ define("ace/ext/beautify", ["require", "exports", "module", "ace/token_iterator"
               caseBody = true;
             }
           } else if (token.type === "keyword" && value.match(/^(break)$/)) {
-            if (parents[depth - 1] && parents[depth - 1].match(/^(case|default)$/)) {
+            if (
+              parents[depth - 1] &&
+              parents[depth - 1].match(/^(case|default)$/)
+            ) {
               depth--;
               caseBody = false;
             }
@@ -237,7 +321,10 @@ define("ace/ext/beautify", ["require", "exports", "module", "ace/token_iterator"
             curlyDepth += (value.match(/\{/g) || []).length;
             depth += value.length;
           }
-          if (token.type === "keyword" && value.match(/^(if|else|elseif|for|while)$/)) {
+          if (
+            token.type === "keyword" &&
+            value.match(/^(if|else|elseif|for|while)$/)
+          ) {
             indentNextLine = true;
             roundDepth = 0;
           } else if (!roundDepth && value.trim() && token.type !== "comment")
@@ -247,29 +334,29 @@ define("ace/ext/beautify", ["require", "exports", "module", "ace/token_iterator"
             curlyDepth -= (value.match(/\}/g) || []).length;
             for (i = 0; i < value.length; i++) {
               depth--;
-              if (value.substr(i, 1) === '}' && parents[depth] === 'case') {
+              if (value.substr(i, 1) === "}" && parents[depth] === "case") {
                 depth--;
               }
             }
           }
-          if (token.type == "text")
-            value = value.replace(/\s+$/, " ");
+          if (token.type == "text") value = value.replace(/\s+$/, " ");
           if (spaceBefore && !breakBefore) {
             trimLine();
-            if (code.substr(-1) !== "\n")
-              code += " ";
+            if (code.substr(-1) !== "\n") code += " ";
           }
           code += value;
-          if (spaceAfter)
-            code += " ";
+          if (spaceAfter) code += " ";
           breakBefore = false;
           spaceBefore = false;
           spaceAfter = false;
-          if ((is(token, "tag-close") && (inBlock || blockTags.indexOf(tagName) !== -1)) || (is(token, "doctype") && value === ">")) {
+          if (
+            (is(token, "tag-close") &&
+              (inBlock || blockTags.indexOf(tagName) !== -1)) ||
+            (is(token, "doctype") && value === ">")
+          ) {
             if (inBlock && nextToken && nextToken.value === "</")
               rowsToAdd = -1;
-            else
-              rowsToAdd = 1;
+            else rowsToAdd = 1;
           }
           if (nextToken && singletonTags.indexOf(nextToken.value) === -1) {
             if (is(token, "tag-open") && value === "</") {
@@ -291,15 +378,16 @@ define("ace/ext/beautify", ["require", "exports", "module", "ace/token_iterator"
     code = code.trim();
     session.doc.setValue(code);
   };
-  exports.commands = [{
-    name: "beautify",
-    description: "Format selection (Beautify)",
-    exec: function (editor) {
-      exports.beautify(editor.session);
-    },
-    bindKey: "Ctrl-Shift-B"
-  }];
-
+  exports.commands = [
+    {
+      name: "beautify",
+      description: "Format selection (Beautify)",
+      exec: function (editor) {
+        exports.beautify(editor.session);
+      },
+      bindKey: "Ctrl-Shift-B"
+    }
+  ];
 });
 (function () {
   window.require(["ace/ext/beautify"], function (m) {
@@ -308,4 +396,3 @@ define("ace/ext/beautify", ["require", "exports", "module", "ace/token_iterator"
     }
   });
 })();
-            

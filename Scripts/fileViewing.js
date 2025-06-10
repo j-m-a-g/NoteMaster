@@ -1,9 +1,9 @@
 const mammothJSOptions = {
   styleMap: [
     "table => table[class='wordDocumentTable']",
-    "comment-reference => sup"
-  ]
-}
+    "comment-reference => sup",
+  ],
+};
 
 function tasksOnceFileOpen(unhiddenView, fileInputObject) {
   // Allows the user to have the option of closing the
@@ -15,10 +15,15 @@ function tasksOnceFileOpen(unhiddenView, fileInputObject) {
   document.getElementById(unhiddenView).hidden = false;
 
   if (document.getElementById(fileInputObject) !== null) {
-    fileName.innerHTML = document.getElementById(fileInputObject).value.replace("C:\\fakepath\\", "");
+    fileName.innerHTML = document
+      .getElementById(fileInputObject)
+      .value.replace("C:\\fakepath\\", "");
 
-    fileSize.innerHTML = ((event.target.files[0].size) / 1048576).toFixed(2) + " MB";
-    fileLastModified.innerHTML = new Date(event.target.files[0].lastModified).toString().slice(0, 21);
+    fileSize.innerHTML =
+      (event.target.files[0].size / 1048576).toFixed(2) + " MB";
+    fileLastModified.innerHTML = new Date(event.target.files[0].lastModified)
+      .toString()
+      .slice(0, 21);
   } else {
     viewerStatusBar.hidden = true;
   }
@@ -99,7 +104,7 @@ function readTextFile() {
   const fileReader = new FileReader();
   fileReader.onload = () => {
     textView.innerHTML = fileReader.result;
-  }
+  };
 
   fileReader.readAsText(event.target.files[0]);
 }
@@ -107,14 +112,19 @@ function readTextFile() {
 function readWordDocument() {
   const fileReader = new FileReader();
   fileReader.onload = (event) => {
-    mammoth.convertToHtml({arrayBuffer: event.target.result}, mammothJSOptions).then((result) => {
-      wordDocumentView.innerHTML = result.value;
-      displaySnackbar('Some formatting may not display correctly');
-    }).catch(() => {
-      throwAppError("The file you are trying to view does not seem like a Word document. Ensure the file extension is correct and try again.");
-      closeCurrentFile();
-    });
-  }
+    mammoth
+      .convertToHtml({ arrayBuffer: event.target.result }, mammothJSOptions)
+      .then((result) => {
+        wordDocumentView.innerHTML = result.value;
+        displaySnackbar("Some formatting may not display correctly");
+      })
+      .catch(() => {
+        throwAppError(
+          "The file you are trying to view does not seem like a Word document. Ensure the file extension is correct and try again.",
+        );
+        closeCurrentFile();
+      });
+  };
 
   fileReader.readAsArrayBuffer(event.target.files[0]);
 }
@@ -123,17 +133,17 @@ function readHTMLNote() {
   const fileReader = new FileReader();
   fileReader.onload = () => {
     anotherNoteViewQuill.clipboard.dangerouslyPasteHTML(fileReader.result);
-  }
+  };
 
   fileReader.readAsText(event.target.files[0]);
-  tasksOnceFileOpen("anotherNoteView", 'anotherNoteFileInput');
+  tasksOnceFileOpen("anotherNoteView", "anotherNoteFileInput");
 }
 
 function viewCodeFile() {
   const fileReader = new FileReader();
   fileReader.onload = () => {
     codeFileViewCodeEditor.session.setValue(fileReader.result);
-  }
+  };
 
   fileReader.readAsText(event.target.files[0]);
   codeFileViewerStatusBar.hidden = false;
@@ -143,14 +153,14 @@ function viewCodeFile() {
 function checkURLInput(URLInputObject) {
   if (document.getElementById(URLInputObject).value === "") {
     displaySnackbar("Please enter a valid URL");
-    return false
+    return false;
   } else {
-    return true
+    return true;
   }
 }
 
 function parseCloudDocumentURL() {
-  if (checkURLInput('URLToCloudFile')) {
+  if (checkURLInput("URLToCloudFile")) {
     if (onedriveOrigin.checked) {
       const ODriveURLArray = URLToCloudFile.value.split("");
       let resultingURL = "";
@@ -158,7 +168,15 @@ function parseCloudDocumentURL() {
       // Removes the URL arguments that come after the path to
       // the document (i.e. after "&action")
       for (let a = 0; a < ODriveURLArray.length; a++) {
-        if (ODriveURLArray[a] === "&" && ODriveURLArray[a + 1] === "a" && ODriveURLArray[a + 2] === "c" && ODriveURLArray[a + 3] === "t" && ODriveURLArray[a + 4] === "i" && ODriveURLArray[a + 5] === "o" && ODriveURLArray[a + 6] === "n") {
+        if (
+          ODriveURLArray[a] === "&" &&
+          ODriveURLArray[a + 1] === "a" &&
+          ODriveURLArray[a + 2] === "c" &&
+          ODriveURLArray[a + 3] === "t" &&
+          ODriveURLArray[a + 4] === "i" &&
+          ODriveURLArray[a + 5] === "o" &&
+          ODriveURLArray[a + 6] === "n"
+        ) {
           while (true) {
             if (a !== ODriveURLArray.length) {
               ODriveURLArray[a] = "";
@@ -177,12 +195,19 @@ function parseCloudDocumentURL() {
       toggleDialog(false, "insertCloudURLDialog", null);
       cloudFileView.src = resultingURL + "&action=embedview";
     } else {
-      const GDriveURLArray = URLToCloudFile.value.replace("https://docs.google.com/", "").replace("https://drive.google.com", "").split("");
+      const GDriveURLArray = URLToCloudFile.value
+        .replace("https://docs.google.com/", "")
+        .replace("https://drive.google.com", "")
+        .split("");
       let documentID = "";
 
       // Parses the URL to retrieve the document ID
       for (let b = 0; b < GDriveURLArray.length; b++) {
-        if (GDriveURLArray[b - 1] === "/" && GDriveURLArray[b] === "d" && GDriveURLArray[b + 1] === "/") {
+        if (
+          GDriveURLArray[b - 1] === "/" &&
+          GDriveURLArray[b] === "d" &&
+          GDriveURLArray[b + 1] === "/"
+        ) {
           while (true) {
             if (GDriveURLArray[b + 2] !== "/") {
               documentID += GDriveURLArray[b];
@@ -200,11 +225,16 @@ function parseCloudDocumentURL() {
       // its original declaration
       if (documentID === "") {
         toggleDialog(false, "insertCloudURLDialog", null);
-        throwAppError("This Google Drive document URL is invalid. Please ensure you are copying the link to it from your browser's address bar and try again.");
+        throwAppError(
+          "This Google Drive document URL is invalid. Please ensure you are copying the link to it from your browser's address bar and try again.",
+        );
         closeCurrentFile();
       } else {
         toggleDialog(false, "insertCloudURLDialog", null);
-        cloudFileView.src = "https://docs.google.com/viewer?srcid=" + documentID.replace("d/", "") + "&pid=explorer&efh=false&a=v&chrome=false&embedded=true";
+        cloudFileView.src =
+          "https://docs.google.com/viewer?srcid=" +
+          documentID.replace("d/", "") +
+          "&pid=explorer&efh=false&a=v&chrome=false&embedded=true";
       }
     }
 
@@ -219,11 +249,13 @@ function verifyIfiFrameInEmbed() {
     customEmbedViewer.innerHTML = embeddedCode.value;
     noFileSelected.hidden = true;
     viewerStatusBar.hidden = true;
-    toggleDialog(false, 'customEmbed', null);
-    toggleViewer(true, 'customEmbedViewer');
+    toggleDialog(false, "customEmbed", null);
+    toggleViewer(true, "customEmbedViewer");
     dynamicallySetHeight();
     tasksOnceFileOpen(null, null);
   } else {
-    throwAppError("The pasted code does not seem to be an iFrame element. Please ensure the content you are trying to embed is within an element of this type.");
+    throwAppError(
+      "The pasted code does not seem to be an iFrame element. Please ensure the content you are trying to embed is within an element of this type.",
+    );
   }
 }

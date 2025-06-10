@@ -1,18 +1,23 @@
-define("ace/mode/folding/coffee", ["require", "exports", "module", "ace/lib/oop", "ace/mode/folding/fold_mode", "ace/range"], function (require, exports, module) {
+define("ace/mode/folding/coffee", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/folding/fold_mode",
+  "ace/range"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../../lib/oop");
   var BaseFoldMode = require("./fold_mode").FoldMode;
   var Range = require("../../range").Range;
-  var FoldMode = exports.FoldMode = function () {
-  };
+  var FoldMode = (exports.FoldMode = function () {});
   oop.inherits(FoldMode, BaseFoldMode);
   (function () {
     this.commentBlock = function (session, row) {
       var re = /\S/;
       var line = session.getLine(row);
       var startLevel = line.search(re);
-      if (startLevel == -1 || line[startLevel] != "#")
-        return;
+      if (startLevel == -1 || line[startLevel] != "#") return;
       var startColumn = line.length;
       var maxRow = session.getLength();
       var startRow = row;
@@ -20,10 +25,8 @@ define("ace/mode/folding/coffee", ["require", "exports", "module", "ace/lib/oop"
       while (++row < maxRow) {
         line = session.getLine(row);
         var level = line.search(re);
-        if (level == -1)
-          continue;
-        if (line[level] != "#")
-          break;
+        if (level == -1) continue;
+        if (line[level] != "#") break;
         endRow = row;
       }
       if (endRow > startRow) {
@@ -33,11 +36,9 @@ define("ace/mode/folding/coffee", ["require", "exports", "module", "ace/lib/oop"
     };
     this.getFoldWidgetRange = function (session, foldStyle, row) {
       var range = this.indentationBlock(session, row);
-      if (range)
-        return range;
+      if (range) return range;
       range = this.commentBlock(session, row);
-      if (range)
-        return range;
+      if (range) return range;
     };
     this.getFoldWidget = function (session, foldStyle, row) {
       var line = session.getLine(row);
@@ -47,16 +48,25 @@ define("ace/mode/folding/coffee", ["require", "exports", "module", "ace/lib/oop"
       var prevIndent = prev.search(/\S/);
       var nextIndent = next.search(/\S/);
       if (indent == -1) {
-        session.foldWidgets[row - 1] = prevIndent != -1 && prevIndent < nextIndent ? "start" : "";
+        session.foldWidgets[row - 1] =
+          prevIndent != -1 && prevIndent < nextIndent ? "start" : "";
         return "";
       }
       if (prevIndent == -1) {
-        if (indent == nextIndent && line[indent] == "#" && next[indent] == "#") {
+        if (
+          indent == nextIndent &&
+          line[indent] == "#" &&
+          next[indent] == "#"
+        ) {
           session.foldWidgets[row - 1] = "";
           session.foldWidgets[row + 1] = "";
           return "start";
         }
-      } else if (prevIndent == indent && line[indent] == "#" && prev[indent] == "#") {
+      } else if (
+        prevIndent == indent &&
+        line[indent] == "#" &&
+        prev[indent] == "#"
+      ) {
         if (session.getLine(row - 2).search(/\S/) == -1) {
           session.foldWidgets[row - 1] = "start";
           session.foldWidgets[row + 1] = "";
@@ -65,24 +75,26 @@ define("ace/mode/folding/coffee", ["require", "exports", "module", "ace/lib/oop"
       }
       if (prevIndent != -1 && prevIndent < indent)
         session.foldWidgets[row - 1] = "start";
-      else
-        session.foldWidgets[row - 1] = "";
-      if (indent < nextIndent)
-        return "start";
-      else
-        return "";
+      else session.foldWidgets[row - 1] = "";
+      if (indent < nextIndent) return "start";
+      else return "";
     };
   }).call(FoldMode.prototype);
-
 });
 
-define("ace/mode/space_highlight_rules", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text_highlight_rules"], function (require, exports, module) {
+define("ace/mode/space_highlight_rules", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text_highlight_rules"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
   var SpaceHighlightRules = function () {
     this.$rules = {
-      "start": [
+      start: [
         {
           token: "empty_line",
           regex: / */,
@@ -94,7 +106,7 @@ define("ace/mode/space_highlight_rules", ["require", "exports", "module", "ace/l
           next: "key"
         }
       ],
-      "key": [
+      key: [
         {
           token: "variable",
           regex: /\S+/
@@ -103,13 +115,14 @@ define("ace/mode/space_highlight_rules", ["require", "exports", "module", "ace/l
           token: "empty_line",
           regex: /$/,
           next: "start"
-        }, {
+        },
+        {
           token: "keyword.operator",
           regex: / /,
           next: "value"
         }
       ],
-      "value": [
+      value: [
         {
           token: "keyword.operator",
           regex: /$/,
@@ -124,15 +137,23 @@ define("ace/mode/space_highlight_rules", ["require", "exports", "module", "ace/l
   };
   oop.inherits(SpaceHighlightRules, TextHighlightRules);
   exports.SpaceHighlightRules = SpaceHighlightRules;
-
 });
 
-define("ace/mode/space", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text", "ace/mode/folding/coffee", "ace/mode/space_highlight_rules"], function (require, exports, module) {
+define("ace/mode/space", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text",
+  "ace/mode/folding/coffee",
+  "ace/mode/space_highlight_rules"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextMode = require("./text").Mode;
   var FoldMode = require("./folding/coffee").FoldMode;
-  var SpaceHighlightRules = require("./space_highlight_rules").SpaceHighlightRules;
+  var SpaceHighlightRules =
+    require("./space_highlight_rules").SpaceHighlightRules;
   var Mode = function () {
     this.HighlightRules = SpaceHighlightRules;
     this.foldingRules = new FoldMode();
@@ -143,7 +164,6 @@ define("ace/mode/space", ["require", "exports", "module", "ace/lib/oop", "ace/mo
     this.$id = "ace/mode/space";
   }).call(Mode.prototype);
   exports.Mode = Mode;
-
 });
 (function () {
   window.require(["ace/mode/space"], function (m) {
@@ -152,4 +172,3 @@ define("ace/mode/space", ["require", "exports", "module", "ace/lib/oop", "ace/mo
     }
   });
 })();
-            

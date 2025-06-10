@@ -1,20 +1,29 @@
-define("ace/ext/rtl", ["require", "exports", "module", "ace/editor", "ace/config"], function (require, exports, module) {
+define("ace/ext/rtl", [
+  "require",
+  "exports",
+  "module",
+  "ace/editor",
+  "ace/config"
+], function (require, exports, module) {
   "use strict";
-  var commands = [{
-    name: "leftToRight",
-    bindKey: {win: "Ctrl-Alt-Shift-L", mac: "Command-Alt-Shift-L"},
-    exec: function (editor) {
-      editor.session.$bidiHandler.setRtlDirection(editor, false);
+  var commands = [
+    {
+      name: "leftToRight",
+      bindKey: { win: "Ctrl-Alt-Shift-L", mac: "Command-Alt-Shift-L" },
+      exec: function (editor) {
+        editor.session.$bidiHandler.setRtlDirection(editor, false);
+      },
+      readOnly: true
     },
-    readOnly: true
-  }, {
-    name: "rightToLeft",
-    bindKey: {win: "Ctrl-Alt-Shift-R", mac: "Command-Alt-Shift-R"},
-    exec: function (editor) {
-      editor.session.$bidiHandler.setRtlDirection(editor, true);
-    },
-    readOnly: true
-  }];
+    {
+      name: "rightToLeft",
+      bindKey: { win: "Ctrl-Alt-Shift-R", mac: "Command-Alt-Shift-R" },
+      exec: function (editor) {
+        editor.session.$bidiHandler.setRtlDirection(editor, true);
+      },
+      readOnly: true
+    }
+  ];
   var Editor = require("../editor").Editor;
   require("../config").defineOptions(Editor.prototype, "editor", {
     rtlText: {
@@ -57,28 +66,39 @@ define("ace/ext/rtl", ["require", "exports", "module", "ace/editor", "ace/config
     if (editor.session.$bidiHandler.isRtlLine(lead.row)) {
       if (lead.column === 0) {
         if (editor.session.$bidiHandler.isMoveLeftOperation && lead.row > 0) {
-          editor.getSelection().moveCursorTo(lead.row - 1, editor.session.getLine(lead.row - 1).length);
+          editor
+            .getSelection()
+            .moveCursorTo(
+              lead.row - 1,
+              editor.session.getLine(lead.row - 1).length
+            );
         } else {
-          if (editor.getSelection().isEmpty())
-            lead.column += 1;
-          else
-            lead.setPosition(lead.row, lead.column + 1);
+          if (editor.getSelection().isEmpty()) lead.column += 1;
+          else lead.setPosition(lead.row, lead.column + 1);
         }
       }
     }
   }
 
   function onCommandEmitted(commadEvent) {
-    commadEvent.editor.session.$bidiHandler.isMoveLeftOperation = /gotoleft|selectleft|backspace|removewordleft/.test(commadEvent.command.name);
+    commadEvent.editor.session.$bidiHandler.isMoveLeftOperation =
+      /gotoleft|selectleft|backspace|removewordleft/.test(
+        commadEvent.command.name
+      );
   }
 
   function onChange(delta, editor) {
     var session = editor.session;
     session.$bidiHandler.currentRow = null;
-    if (session.$bidiHandler.isRtlLine(delta.start.row) && delta.action === 'insert' && delta.lines.length > 1) {
+    if (
+      session.$bidiHandler.isRtlLine(delta.start.row) &&
+      delta.action === "insert" &&
+      delta.lines.length > 1
+    ) {
       for (var row = delta.start.row; row < delta.end.row; row++) {
         if (session.getLine(row + 1).charAt(0) !== session.$bidiHandler.RLE)
-          session.doc.$lines[row + 1] = session.$bidiHandler.RLE + session.getLine(row + 1);
+          session.doc.$lines[row + 1] =
+            session.$bidiHandler.RLE + session.getLine(row + 1);
       }
     }
   }
@@ -87,7 +107,8 @@ define("ace/ext/rtl", ["require", "exports", "module", "ace/editor", "ace/config
     var session = renderer.session;
     var $bidiHandler = session.$bidiHandler;
     var cells = renderer.$textLayer.$lines.cells;
-    var width = renderer.layerConfig.width - renderer.layerConfig.padding + "px";
+    var width =
+      renderer.layerConfig.width - renderer.layerConfig.padding + "px";
     cells.forEach(function (cell) {
       var style = cell.element.style;
       if ($bidiHandler && $bidiHandler.isRtlLine(cell.row)) {
@@ -112,7 +133,6 @@ define("ace/ext/rtl", ["require", "exports", "module", "ace/editor", "ace/config
       style.direction = style.textAlign = style.width = "";
     }
   }
-
 });
 (function () {
   window.require(["ace/ext/rtl"], function (m) {
@@ -121,4 +141,3 @@ define("ace/ext/rtl", ["require", "exports", "module", "ace/editor", "ace/config
     }
   });
 })();
-            

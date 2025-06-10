@@ -1,4 +1,18 @@
-define("ace/snippets", ["require", "exports", "module", "ace/lib/dom", "ace/lib/oop", "ace/lib/event_emitter", "ace/lib/lang", "ace/range", "ace/range_list", "ace/keyboard/hash_handler", "ace/tokenizer", "ace/clipboard", "ace/editor"], function (require, exports, module) {
+define("ace/snippets", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/dom",
+  "ace/lib/oop",
+  "ace/lib/event_emitter",
+  "ace/lib/lang",
+  "ace/range",
+  "ace/range_list",
+  "ace/keyboard/hash_handler",
+  "ace/tokenizer",
+  "ace/clipboard",
+  "ace/editor"
+], function (require, exports, module) {
   "use strict";
   var dom = require("./lib/dom");
   var oop = require("./lib/oop");
@@ -60,27 +74,27 @@ define("ace/snippets", ["require", "exports", "module", "ace/lib/dom", "ace/lib/
     },
     BLOCK_COMMENT_START: function (editor) {
       var mode = editor.session.$mode || {};
-      return mode.blockComment && mode.blockComment.start || "";
+      return (mode.blockComment && mode.blockComment.start) || "";
     },
     BLOCK_COMMENT_END: function (editor) {
       var mode = editor.session.$mode || {};
-      return mode.blockComment && mode.blockComment.end || "";
+      return (mode.blockComment && mode.blockComment.end) || "";
     },
     LINE_COMMENT: function (editor) {
       var mode = editor.session.$mode || {};
       return mode.lineCommentStart || "";
     },
-    CURRENT_YEAR: date.bind(null, {year: "numeric"}),
-    CURRENT_YEAR_SHORT: date.bind(null, {year: "2-digit"}),
-    CURRENT_MONTH: date.bind(null, {month: "numeric"}),
-    CURRENT_MONTH_NAME: date.bind(null, {month: "long"}),
-    CURRENT_MONTH_NAME_SHORT: date.bind(null, {month: "short"}),
-    CURRENT_DATE: date.bind(null, {day: "2-digit"}),
-    CURRENT_DAY_NAME: date.bind(null, {weekday: "long"}),
-    CURRENT_DAY_NAME_SHORT: date.bind(null, {weekday: "short"}),
-    CURRENT_HOUR: date.bind(null, {hour: "2-digit", hour12: false}),
-    CURRENT_MINUTE: date.bind(null, {minute: "2-digit"}),
-    CURRENT_SECOND: date.bind(null, {second: "2-digit"})
+    CURRENT_YEAR: date.bind(null, { year: "numeric" }),
+    CURRENT_YEAR_SHORT: date.bind(null, { year: "2-digit" }),
+    CURRENT_MONTH: date.bind(null, { month: "numeric" }),
+    CURRENT_MONTH_NAME: date.bind(null, { month: "long" }),
+    CURRENT_MONTH_NAME_SHORT: date.bind(null, { month: "short" }),
+    CURRENT_DATE: date.bind(null, { day: "2-digit" }),
+    CURRENT_DAY_NAME: date.bind(null, { weekday: "long" }),
+    CURRENT_DAY_NAME_SHORT: date.bind(null, { weekday: "short" }),
+    CURRENT_HOUR: date.bind(null, { hour: "2-digit", hour12: false }),
+    CURRENT_MINUTE: date.bind(null, { minute: "2-digit" }),
+    CURRENT_SECOND: date.bind(null, { second: "2-digit" })
   };
   VARIABLES.SELECTED_TEXT = VARIABLES.SELECTION;
 
@@ -102,9 +116,8 @@ define("ace/snippets", ["require", "exports", "module", "ace/lib/dom", "ace/lib/
     SnippetManager.prototype.createTokenizer = function () {
       function TabstopToken(str) {
         str = str.substr(1);
-        if (/^\d+$/.test(str))
-          return [{tabstopId: parseInt(str, 10)}];
-        return [{text: str}];
+        if (/^\d+$/.test(str)) return [{ tabstopId: parseInt(str, 10) }];
+        return [{ text: str }];
       }
 
       function escape(ch) {
@@ -125,7 +138,8 @@ define("ace/snippets", ["require", "exports", "module", "ace/lib/dom", "ace/lib/
       SnippetManager["$tokenizer"] = new Tokenizer({
         start: [
           {
-            regex: /\\./, onMatch: function (val, state, stack) {
+            regex: /\\./,
+            onMatch: function (val, state, stack) {
               var ch = val[1];
               if (ch == "}" && stack.length) {
                 val = ch;
@@ -136,139 +150,160 @@ define("ace/snippets", ["require", "exports", "module", "ace/lib/dom", "ace/lib/
             }
           },
           {
-            regex: /}/, onMatch: function (val, state, stack) {
+            regex: /}/,
+            onMatch: function (val, state, stack) {
               return [stack.length ? stack.shift() : val];
             }
           },
-          {regex: /\$(?:\d+|\w+)/, onMatch: TabstopToken},
+          { regex: /\$(?:\d+|\w+)/, onMatch: TabstopToken },
           {
-            regex: /\$\{[\dA-Z_a-z]+/, onMatch: function (str, state, stack) {
+            regex: /\$\{[\dA-Z_a-z]+/,
+            onMatch: function (str, state, stack) {
               var t = TabstopToken(str.substr(1));
               stack.unshift(t[0]);
               return t;
-            }, next: "snippetVar"
+            },
+            next: "snippetVar"
           },
-          {regex: /\n/, token: "newline", merge: false}
+          { regex: /\n/, token: "newline", merge: false }
         ],
         snippetVar: [
           {
-            regex: "\\|" + escape("\\|") + "*\\|", onMatch: function (val, state, stack) {
-              var choices = val.slice(1, -1).replace(/\\[,|\\]|,/g, function (operator) {
-                return operator.length == 2 ? operator[1] : "\x00";
-              }).split("\x00").map(function (value) {
-                return {value: value};
-              });
+            regex: "\\|" + escape("\\|") + "*\\|",
+            onMatch: function (val, state, stack) {
+              var choices = val
+                .slice(1, -1)
+                .replace(/\\[,|\\]|,/g, function (operator) {
+                  return operator.length == 2 ? operator[1] : "\x00";
+                })
+                .split("\x00")
+                .map(function (value) {
+                  return { value: value };
+                });
               stack[0].choices = choices;
               return [choices[0]];
-            }, next: "start"
+            },
+            next: "start"
           },
           formatMatcher,
-          {regex: "([^:}\\\\]|\\\\.)*:?", token: "", next: "start"}
+          { regex: "([^:}\\\\]|\\\\.)*:?", token: "", next: "start" }
         ],
         formatString: [
           {
-            regex: /:/, onMatch: function (val, state, stack) {
+            regex: /:/,
+            onMatch: function (val, state, stack) {
               if (stack.length && stack[0].expectElse) {
                 stack[0].expectElse = false;
-                stack[0].ifEnd = {elseEnd: stack[0]};
+                stack[0].ifEnd = { elseEnd: stack[0] };
                 return [stack[0].ifEnd];
               }
               return ":";
             }
           },
           {
-            regex: /\\./, onMatch: function (val, state, stack) {
+            regex: /\\./,
+            onMatch: function (val, state, stack) {
               var ch = val[1];
-              if (ch == "}" && stack.length)
-                val = ch;
-              else if ("`$\\".indexOf(ch) != -1)
-                val = ch;
-              else if (ch == "n")
-                val = "\n";
-              else if (ch == "t")
-                val = "\t";
+              if (ch == "}" && stack.length) val = ch;
+              else if ("`$\\".indexOf(ch) != -1) val = ch;
+              else if (ch == "n") val = "\n";
+              else if (ch == "t") val = "\t";
               else if ("ulULE".indexOf(ch) != -1)
-                val = {changeCase: ch, local: ch > "a"};
+                val = { changeCase: ch, local: ch > "a" };
               return [val];
             }
           },
           {
-            regex: "/\\w*}", onMatch: function (val, state, stack) {
+            regex: "/\\w*}",
+            onMatch: function (val, state, stack) {
               var next = stack.shift();
-              if (next)
-                next.flag = val.slice(1, -1);
+              if (next) next.flag = val.slice(1, -1);
               this.next = next && next.tabstopId ? "start" : "";
               return [next || val];
-            }, next: "start"
+            },
+            next: "start"
           },
           {
-            regex: /\$(?:\d+|\w+)/, onMatch: function (val, state, stack) {
-              return [{text: val.slice(1)}];
+            regex: /\$(?:\d+|\w+)/,
+            onMatch: function (val, state, stack) {
+              return [{ text: val.slice(1) }];
             }
           },
           {
-            regex: /\${\w+/, onMatch: function (val, state, stack) {
-              var token = {text: val.slice(2)};
+            regex: /\${\w+/,
+            onMatch: function (val, state, stack) {
+              var token = { text: val.slice(2) };
               stack.unshift(token);
               return [token];
-            }, next: "formatStringVar"
+            },
+            next: "formatStringVar"
           },
-          {regex: /\n/, token: "newline", merge: false},
+          { regex: /\n/, token: "newline", merge: false },
           {
-            regex: /}/, onMatch: function (val, state, stack) {
+            regex: /}/,
+            onMatch: function (val, state, stack) {
               var next = stack.shift();
               this.next = next && next.tabstopId ? "start" : "";
               return [next || val];
-            }, next: "start"
+            },
+            next: "start"
           }
         ],
         formatStringVar: [
           {
-            regex: /:\/\w+}/, onMatch: function (val, state, stack) {
+            regex: /:\/\w+}/,
+            onMatch: function (val, state, stack) {
               var ts = stack[0];
               ts.formatFunction = val.slice(2, -1);
               return [stack.shift()];
-            }, next: "formatString"
+            },
+            next: "formatString"
           },
           formatMatcher,
           {
-            regex: /:[\?\-+]?/, onMatch: function (val, state, stack) {
-              if (val[1] == "+")
-                stack[0].ifEnd = stack[0];
-              if (val[1] == "?")
-                stack[0].expectElse = true;
-            }, next: "formatString"
+            regex: /:[\?\-+]?/,
+            onMatch: function (val, state, stack) {
+              if (val[1] == "+") stack[0].ifEnd = stack[0];
+              if (val[1] == "?") stack[0].expectElse = true;
+            },
+            next: "formatString"
           },
-          {regex: "([^:}\\\\]|\\\\.)*:?", token: "", next: "formatString"}
+          { regex: "([^:}\\\\]|\\\\.)*:?", token: "", next: "formatString" }
         ]
       });
       return SnippetManager["$tokenizer"];
     };
     SnippetManager.prototype.tokenizeTmSnippet = function (str, startState) {
-      return this.getTokenizer().getLineTokens(str, startState).tokens.map(function (x) {
-        return x.value || x;
-      });
+      return this.getTokenizer()
+        .getLineTokens(str, startState)
+        .tokens.map(function (x) {
+          return x.value || x;
+        });
     };
-    SnippetManager.prototype.getVariableValue = function (editor, name, indentation) {
-      if (/^\d+$/.test(name))
-        return (this.variables.__ || {})[name] || "";
+    SnippetManager.prototype.getVariableValue = function (
+      editor,
+      name,
+      indentation
+    ) {
+      if (/^\d+$/.test(name)) return (this.variables.__ || {})[name] || "";
       if (/^[A-Z]\d+$/.test(name))
         return (this.variables[name[0] + "__"] || {})[name.substr(1)] || "";
       name = name.replace(/^TM_/, "");
-      if (!this.variables.hasOwnProperty(name))
-        return "";
+      if (!this.variables.hasOwnProperty(name)) return "";
       var value = this.variables[name];
       if (typeof value == "function")
         value = this.variables[name](editor, name, indentation);
       return value == null ? "" : value;
     };
     SnippetManager.prototype.tmStrFormat = function (str, ch, editor) {
-      if (!ch.fmt)
-        return str;
+      if (!ch.fmt) return str;
       var flag = ch.flag || "";
       var re = ch.guard;
       re = new RegExp(re, flag.replace(/[^gim]/g, ""));
-      var fmtTokens = typeof ch.fmt == "string" ? this.tokenizeTmSnippet(ch.fmt, "formatString") : ch.fmt;
+      var fmtTokens =
+        typeof ch.fmt == "string"
+          ? this.tokenizeTmSnippet(ch.fmt, "formatString")
+          : ch.fmt;
       var _self = this;
       var formatted = str.replace(re, function () {
         var oldArgs = _self.variables.__;
@@ -282,10 +317,8 @@ define("ace/snippets", ["require", "exports", "module", "ace/lib/dom", "ace/lib/
             if (ch.changeCase && ch.local) {
               var next = fmtParts[i + 1];
               if (next && typeof next == "string") {
-                if (ch.changeCase == "u")
-                  fmtParts[i] = next[0].toUpperCase();
-                else
-                  fmtParts[i] = next[0].toLowerCase();
+                if (ch.changeCase == "u") fmtParts[i] = next[0].toUpperCase();
+                else fmtParts[i] = next[0].toLowerCase();
                 fmtParts[i + 1] = next.substr(1);
               }
             } else if (ch.changeCase) {
@@ -303,10 +336,8 @@ define("ace/snippets", ["require", "exports", "module", "ace/lib/dom", "ace/lib/
       return formatted;
     };
     SnippetManager.prototype.tmFormatFunction = function (str, ch, editor) {
-      if (ch.formatFunction == "upcase")
-        return str.toUpperCase();
-      if (ch.formatFunction == "downcase")
-        return str.toLowerCase();
+      if (ch.formatFunction == "upcase") return str.toUpperCase();
+      if (ch.formatFunction == "downcase") return str.toLowerCase();
       return str;
     };
     SnippetManager.prototype.resolveVariables = function (snippet, editor) {
@@ -326,20 +357,17 @@ define("ace/snippets", ["require", "exports", "module", "ace/lib/dom", "ace/lib/
           }
           continue;
         }
-        if (!ch)
-          continue;
+        if (!ch) continue;
         afterNewLine = false;
         if (ch.fmtString) {
           var j = snippet.indexOf(ch, i + 1);
-          if (j == -1)
-            j = snippet.length;
+          if (j == -1) j = snippet.length;
           ch.fmt = snippet.slice(i + 1, j);
           i = j;
         }
         if (ch.text) {
           var value = this.getVariableValue(editor, ch.text, indentation) + "";
-          if (ch.fmtString)
-            value = this.tmStrFormat(value, ch, editor);
+          if (ch.fmtString) value = this.tmStrFormat(value, ch, editor);
           if (ch.formatFunction)
             value = this.tmFormatFunction(value, ch, editor);
           if (value && !ch.ifEnd) {
@@ -359,58 +387,77 @@ define("ace/snippets", ["require", "exports", "module", "ace/lib/dom", "ace/lib/
 
       function gotoNext(ch) {
         var i1 = snippet.indexOf(ch, i + 1);
-        if (i1 != -1)
-          i = i1;
+        if (i1 != -1) i = i1;
       }
 
       return result;
     };
-    SnippetManager.prototype.getDisplayTextForSnippet = function (editor, snippetText) {
+    SnippetManager.prototype.getDisplayTextForSnippet = function (
+      editor,
+      snippetText
+    ) {
       var processedSnippet = processSnippetText.call(this, editor, snippetText);
       return processedSnippet.text;
     };
-    SnippetManager.prototype.insertSnippetForSelection = function (editor, snippetText, options) {
+    SnippetManager.prototype.insertSnippetForSelection = function (
+      editor,
+      snippetText,
+      options
+    ) {
       if (options === void 0) {
         options = {};
       }
-      var processedSnippet = processSnippetText.call(this, editor, snippetText, options);
+      var processedSnippet = processSnippetText.call(
+        this,
+        editor,
+        snippetText,
+        options
+      );
       var range = editor.getSelectionRange();
       var end = editor.session.replace(range, processedSnippet.text);
       var tabstopManager = new TabstopManager(editor);
       var selectionId = editor.inVirtualSelectionMode && editor.selection.index;
-      tabstopManager.addTabstops(processedSnippet.tabstops, range.start, end, selectionId);
+      tabstopManager.addTabstops(
+        processedSnippet.tabstops,
+        range.start,
+        end,
+        selectionId
+      );
     };
-    SnippetManager.prototype.insertSnippet = function (editor, snippetText, options) {
+    SnippetManager.prototype.insertSnippet = function (
+      editor,
+      snippetText,
+      options
+    ) {
       if (options === void 0) {
         options = {};
       }
       var self = this;
       if (editor.inVirtualSelectionMode)
         return self.insertSnippetForSelection(editor, snippetText, options);
-      editor.forEachSelection(function () {
-        self.insertSnippetForSelection(editor, snippetText, options);
-      }, null, {keepOrder: true});
-      if (editor.tabstopManager)
-        editor.tabstopManager.tabNext();
+      editor.forEachSelection(
+        function () {
+          self.insertSnippetForSelection(editor, snippetText, options);
+        },
+        null,
+        { keepOrder: true }
+      );
+      if (editor.tabstopManager) editor.tabstopManager.tabNext();
     };
     SnippetManager.prototype.$getScope = function (editor) {
       var scope = editor.session.$mode.$id || "";
       scope = scope.split("/").pop();
       if (scope === "html" || scope === "php") {
-        if (scope === "php" && !editor.session.$mode.inlinePhp)
-          scope = "html";
+        if (scope === "php" && !editor.session.$mode.inlinePhp) scope = "html";
         var c = editor.getCursorPosition();
         var state = editor.session.getState(c.row);
         if (typeof state === "object") {
           state = state[0];
         }
         if (state.substring) {
-          if (state.substring(0, 3) == "js-")
-            scope = "javascript";
-          else if (state.substring(0, 4) == "css-")
-            scope = "css";
-          else if (state.substring(0, 4) == "php-")
-            scope = "php";
+          if (state.substring(0, 3) == "js-") scope = "javascript";
+          else if (state.substring(0, 4) == "css-") scope = "css";
+          else if (state.substring(0, 4) == "php-") scope = "php";
         }
       }
       return scope;
@@ -427,14 +474,20 @@ define("ace/snippets", ["require", "exports", "module", "ace/lib/dom", "ace/lib/
     };
     SnippetManager.prototype.expandWithTab = function (editor, options) {
       var self = this;
-      var result = editor.forEachSelection(function () {
-        return self.expandSnippetForSelection(editor, options);
-      }, null, {keepOrder: true});
-      if (result && editor.tabstopManager)
-        editor.tabstopManager.tabNext();
+      var result = editor.forEachSelection(
+        function () {
+          return self.expandSnippetForSelection(editor, options);
+        },
+        null,
+        { keepOrder: true }
+      );
+      if (result && editor.tabstopManager) editor.tabstopManager.tabNext();
       return result;
     };
-    SnippetManager.prototype.expandSnippetForSelection = function (editor, options) {
+    SnippetManager.prototype.expandSnippetForSelection = function (
+      editor,
+      options
+    ) {
       var cursor = editor.getCursorPosition();
       var line = editor.session.getLine(cursor.row);
       var before = line.substring(0, cursor.column);
@@ -447,26 +500,29 @@ define("ace/snippets", ["require", "exports", "module", "ace/lib/dom", "ace/lib/
           snippet = this.findMatchingSnippet(snippets, before, after);
         return !!snippet;
       }, this);
-      if (!snippet)
-        return false;
-      if (options && options.dryRun)
-        return true;
-      editor.session.doc.removeInLine(cursor.row, cursor.column - snippet.replaceBefore.length, cursor.column + snippet.replaceAfter.length);
+      if (!snippet) return false;
+      if (options && options.dryRun) return true;
+      editor.session.doc.removeInLine(
+        cursor.row,
+        cursor.column - snippet.replaceBefore.length,
+        cursor.column + snippet.replaceAfter.length
+      );
       this.variables.M__ = snippet.matchBefore;
       this.variables.T__ = snippet.matchAfter;
       this.insertSnippetForSelection(editor, snippet.content);
       this.variables.M__ = this.variables.T__ = null;
       return true;
     };
-    SnippetManager.prototype.findMatchingSnippet = function (snippetList, before, after) {
-      for (var i = snippetList.length; i--;) {
+    SnippetManager.prototype.findMatchingSnippet = function (
+      snippetList,
+      before,
+      after
+    ) {
+      for (var i = snippetList.length; i--; ) {
         var s = snippetList[i];
-        if (s.startRe && !s.startRe.test(before))
-          continue;
-        if (s.endRe && !s.endRe.test(after))
-          continue;
-        if (!s.startRe && !s.endRe)
-          continue;
+        if (s.startRe && !s.startRe.test(before)) continue;
+        if (s.endRe && !s.endRe.test(after)) continue;
+        if (!s.startRe && !s.endRe) continue;
         s.matchBefore = s.startRe ? s.startRe.exec(before) : [""];
         s.matchAfter = s.endRe ? s.endRe.exec(after) : [""];
         s.replaceBefore = s.triggerRe ? s.triggerRe.exec(before)[0] : "";
@@ -478,12 +534,10 @@ define("ace/snippets", ["require", "exports", "module", "ace/lib/dom", "ace/lib/
       var snippetMap = this.snippetMap;
       var snippetNameMap = this.snippetNameMap;
       var self = this;
-      if (!snippets)
-        snippets = [];
+      if (!snippets) snippets = [];
 
       function wrapRegexp(src) {
-        if (src && !/^\^?\(.*\)\$?$|^\\b$/.test(src))
-          src = "(?:" + src + ")";
+        if (src && !/^\^?\(.*\)\$?$|^\\b$/.test(src)) src = "(?:" + src + ")";
         return src || "";
       }
 
@@ -492,19 +546,16 @@ define("ace/snippets", ["require", "exports", "module", "ace/lib/dom", "ace/lib/
         guard = wrapRegexp(guard);
         if (opening) {
           re = guard + re;
-          if (re && re[re.length - 1] != "$")
-            re = re + "$";
+          if (re && re[re.length - 1] != "$") re = re + "$";
         } else {
           re = re + guard;
-          if (re && re[0] != "^")
-            re = "^" + re;
+          if (re && re[0] != "^") re = "^" + re;
         }
         return new RegExp(re);
       }
 
       function addSnippet(s) {
-        if (!s.scope)
-          s.scope = scope || "_";
+        if (!s.scope) s.scope = scope || "_";
         scope = s.scope;
         if (!snippetMap[scope]) {
           snippetMap[scope] = [];
@@ -513,22 +564,18 @@ define("ace/snippets", ["require", "exports", "module", "ace/lib/dom", "ace/lib/
         var map = snippetNameMap[scope];
         if (s.name) {
           var old = map[s.name];
-          if (old)
-            self.unregister(old);
+          if (old) self.unregister(old);
           map[s.name] = s;
         }
         snippetMap[scope].push(s);
-        if (s.prefix)
-          s.tabTrigger = s.prefix;
+        if (s.prefix) s.tabTrigger = s.prefix;
         if (!s.content && s.body)
           s.content = Array.isArray(s.body) ? s.body.join("\n") : s.body;
         if (s.tabTrigger && !s.trigger) {
-          if (!s.guard && /^\w/.test(s.tabTrigger))
-            s.guard = "\\b";
+          if (!s.guard && /^\w/.test(s.tabTrigger)) s.guard = "\\b";
           s.trigger = lang.escapeRegExp(s.tabTrigger);
         }
-        if (!s.trigger && !s.guard && !s.endTrigger && !s.endGuard)
-          return;
+        if (!s.trigger && !s.guard && !s.endTrigger && !s.endGuard) return;
         s.startRe = guardedRegexp(s.trigger, s.guard, true);
         s.triggerRe = new RegExp(s.trigger);
         s.endRe = guardedRegexp(s.endTrigger, s.endGuard, true);
@@ -542,7 +589,7 @@ define("ace/snippets", ["require", "exports", "module", "ace/lib/dom", "ace/lib/
           addSnippet(snippets[key]);
         });
       }
-      this._signal("registerSnippets", {scope: scope});
+      this._signal("registerSnippets", { scope: scope });
     };
     SnippetManager.prototype.unregister = function (snippets, scope) {
       var snippetMap = this.snippetMap;
@@ -554,35 +601,33 @@ define("ace/snippets", ["require", "exports", "module", "ace/lib/dom", "ace/lib/
           delete nameMap[s.name];
           var map = snippetMap[s.scope || scope];
           var i = map && map.indexOf(s);
-          if (i >= 0)
-            map.splice(i, 1);
+          if (i >= 0) map.splice(i, 1);
         }
       }
 
-      if (snippets.content)
-        removeSnippet(snippets);
-      else if (Array.isArray(snippets))
-        snippets.forEach(removeSnippet);
+      if (snippets.content) removeSnippet(snippets);
+      else if (Array.isArray(snippets)) snippets.forEach(removeSnippet);
     };
     SnippetManager.prototype.parseSnippetFile = function (str) {
       str = str.replace(/\r/g, "");
-      var list = [], /**@type{Snippet}*/ snippet = {};
+      var list = [],
+        /**@type{Snippet}*/ snippet = {};
       var re = /^#.*|^({[\s\S]*})\s*$|^(\S+) (.*)$|^((?:\n*\t.*)+)/gm;
       var m;
-      while (m = re.exec(str)) {
+      while ((m = re.exec(str))) {
         if (m[1]) {
           try {
             snippet = JSON.parse(m[1]);
             list.push(snippet);
-          } catch (e) {
-          }
+          } catch (e) {}
         }
         if (m[4]) {
           snippet.content = m[4].replace(/^\t/gm, "");
           list.push(snippet);
           snippet = {};
         } else {
-          var key = m[2], val = m[3];
+          var key = m[2],
+            val = m[3];
           if (key == "regex") {
             var guardRe = /\/((?:[^\/\\]|\\.)*)|$/g;
             snippet.guard = guardRe.exec(val)[1];
@@ -591,8 +636,7 @@ define("ace/snippets", ["require", "exports", "module", "ace/lib/dom", "ace/lib/
             snippet.endGuard = guardRe.exec(val)[1];
           } else if (key == "snippet") {
             snippet.tabTrigger = val.match(/^\S*/)[0];
-            if (!snippet.name)
-              snippet.name = val;
+            if (!snippet.name) snippet.name = val;
           } else if (key) {
             snippet[key] = val;
           }
@@ -605,14 +649,13 @@ define("ace/snippets", ["require", "exports", "module", "ace/lib/dom", "ace/lib/
       var snippet;
       this.getActiveScopes(editor).some(function (scope) {
         var snippets = snippetMap[scope];
-        if (snippets)
-          snippet = snippets[name];
+        if (snippets) snippet = snippets[name];
         return !!snippet;
       }, this);
       return snippet;
     };
     return SnippetManager;
-  }());
+  })();
   oop.implement(SnippetManager.prototype, EventEmitter);
   var processSnippetText = function (editor, snippetText, options) {
     if (options === void 0) {
@@ -628,16 +671,13 @@ define("ace/snippets", ["require", "exports", "module", "ace/lib/dom", "ace/lib/
     var tokens = this.tokenizeTmSnippet(snippetText);
     tokens = this.resolveVariables(tokens, editor);
     tokens = tokens.map(function (x) {
-      if (x == "\n" && !options.excludeExtraIndent)
-        return x + indentString;
-      if (typeof x == "string")
-        return x.replace(/\t/g, tabString);
+      if (x == "\n" && !options.excludeExtraIndent) return x + indentString;
+      if (typeof x == "string") return x.replace(/\t/g, tabString);
       return x;
     });
     var tabstops = [];
     tokens.forEach(function (p, i) {
-      if (typeof p != "object")
-        return;
+      if (typeof p != "object") return;
       var id = p.tabstopId;
       var ts = tabstops[id];
       if (!ts) {
@@ -646,14 +686,11 @@ define("ace/snippets", ["require", "exports", "module", "ace/lib/dom", "ace/lib/
         ts.value = "";
         ts.parents = {};
       }
-      if (ts.indexOf(p) !== -1)
-        return;
-      if (p.choices && !ts.choices)
-        ts.choices = p.choices;
+      if (ts.indexOf(p) !== -1) return;
+      if (p.choices && !ts.choices) ts.choices = p.choices;
       ts.push(p);
       var i1 = tokens.indexOf(p, i + 1);
-      if (i1 === -1)
-        return;
+      if (i1 === -1) return;
       var value = tokens.slice(i + 1, i1);
       var isNested = value.some(function (t) {
         return typeof t === "object";
@@ -674,10 +711,9 @@ define("ace/snippets", ["require", "exports", "module", "ace/lib/dom", "ace/lib/
       for (var i = 0; i < val.length; i++) {
         var p = val[i];
         if (typeof p == "object") {
-          if (expanding[p.tabstopId])
-            continue;
+          if (expanding[p.tabstopId]) continue;
           var j = val.lastIndexOf(p, i - 1);
-          p = copy[j] || {tabstopId: p.tabstopId};
+          p = copy[j] || { tabstopId: p.tabstopId };
         }
         copy[i] = p;
       }
@@ -686,8 +722,7 @@ define("ace/snippets", ["require", "exports", "module", "ace/lib/dom", "ace/lib/
 
     for (var i = 0; i < tokens.length; i++) {
       var p = tokens[i];
-      if (typeof p != "object")
-        continue;
+      if (typeof p != "object") continue;
       var id = p.tabstopId;
       var ts = tabstops[id];
       var i1 = tokens.indexOf(p, i + 1);
@@ -702,15 +737,16 @@ define("ace/snippets", ["require", "exports", "module", "ace/lib/dom", "ace/lib/
       }
       expanding[id] = p;
       var value = ts.value;
-      if (typeof value !== "string")
-        value = copyValue(value);
-      else if (p.fmt)
-        value = this.tmStrFormat(value, p, editor);
-      tokens.splice.apply(tokens, [i + 1, Math.max(0, i1 - i)].concat(value, p));
-      if (ts.indexOf(p) === -1)
-        ts.push(p);
+      if (typeof value !== "string") value = copyValue(value);
+      else if (p.fmt) value = this.tmStrFormat(value, p, editor);
+      tokens.splice.apply(
+        tokens,
+        [i + 1, Math.max(0, i1 - i)].concat(value, p)
+      );
+      if (ts.indexOf(p) === -1) ts.push(p);
     }
-    var row = 0, column = 0;
+    var row = 0,
+      column = 0;
     var text = "";
     tokens.forEach(function (t) {
       if (typeof t === "string") {
@@ -718,14 +754,11 @@ define("ace/snippets", ["require", "exports", "module", "ace/lib/dom", "ace/lib/
         if (lines.length > 1) {
           column = lines[lines.length - 1].length;
           row += lines.length - 1;
-        } else
-          column += t.length;
+        } else column += t.length;
         text += t;
       } else if (t) {
-        if (!t.start)
-          t.start = {row: row, column: column};
-        else
-          t.end = {row: row, column: column};
+        if (!t.start) t.start = { row: row, column: column };
+        else t.end = { row: row, column: column };
       }
     });
     return {
@@ -739,11 +772,12 @@ define("ace/snippets", ["require", "exports", "module", "ace/lib/dom", "ace/lib/
       this.index = 0;
       this.ranges = [];
       this.tabstops = [];
-      if (editor.tabstopManager)
-        return editor.tabstopManager;
+      if (editor.tabstopManager) return editor.tabstopManager;
       editor.tabstopManager = this;
       this.$onChange = this.onChange.bind(this);
-      this.$onChangeSelection = lang.delayedCall(this.onChangeSelection.bind(this)).schedule;
+      this.$onChangeSelection = lang.delayedCall(
+        this.onChangeSelection.bind(this)
+      ).schedule;
       this.$onChangeSession = this.onChangeSession.bind(this);
       this.$onAfterExec = this.onAfterExec.bind(this);
       this.attach(editor);
@@ -796,43 +830,47 @@ define("ace/snippets", ["require", "exports", "module", "ace/lib/dom", "ace/lib/
         ts.rangeList.$onChange(delta);
       }
       var session = this.session;
-      if (!this.$inChange && isRemove && session.getLength() == 1 && !session.getValue())
+      if (
+        !this.$inChange &&
+        isRemove &&
+        session.getLength() == 1 &&
+        !session.getValue()
+      )
         this.detach();
     };
     TabstopManager.prototype.updateLinkedFields = function () {
       var ts = this.selectedTabstop;
-      if (!ts || !ts.hasLinkedRanges || !ts.firstNonLinked)
-        return;
+      if (!ts || !ts.hasLinkedRanges || !ts.firstNonLinked) return;
       this.$inChange = true;
       var session = this.session;
       var text = session.getTextRange(ts.firstNonLinked);
       for (var i = 0; i < ts.length; i++) {
         var range = ts[i];
-        if (!range.linked)
-          continue;
+        if (!range.linked) continue;
         var original = range.original;
-        var fmt = exports.snippetManager.tmStrFormat(text, original, this.editor);
+        var fmt = exports.snippetManager.tmStrFormat(
+          text,
+          original,
+          this.editor
+        );
         session.replace(range, fmt);
       }
       this.$inChange = false;
     };
     TabstopManager.prototype.onAfterExec = function (e) {
-      if (e.command && !e.command.readOnly)
-        this.updateLinkedFields();
+      if (e.command && !e.command.readOnly) this.updateLinkedFields();
     };
     TabstopManager.prototype.onChangeSelection = function () {
-      if (!this.editor)
-        return;
+      if (!this.editor) return;
       var lead = this.editor.selection.lead;
       var anchor = this.editor.selection.anchor;
       var isEmpty = this.editor.selection.isEmpty();
       for (var i = 0; i < this.ranges.length; i++) {
-        if (this.ranges[i].linked)
-          continue;
+        if (this.ranges[i].linked) continue;
         var containsLead = this.ranges[i].contains(lead.row, lead.column);
-        var containsAnchor = isEmpty || this.ranges[i].contains(anchor.row, anchor.column);
-        if (containsLead && containsAnchor)
-          return;
+        var containsAnchor =
+          isEmpty || this.ranges[i].contains(anchor.row, anchor.column);
+        if (containsLead && containsAnchor) return;
       }
       this.detach();
     };
@@ -843,8 +881,7 @@ define("ace/snippets", ["require", "exports", "module", "ace/lib/dom", "ace/lib/
       var max = this.tabstops.length;
       var index = this.index + (dir || 1);
       index = Math.min(Math.max(index, 1), max);
-      if (index == max)
-        index = 0;
+      if (index == max) index = 0;
       this.selectTabstop(index);
       this.updateTabstopMarkers();
       if (index === 0) {
@@ -854,22 +891,18 @@ define("ace/snippets", ["require", "exports", "module", "ace/lib/dom", "ace/lib/
     TabstopManager.prototype.selectTabstop = function (index) {
       this.$openTabstops = null;
       var ts = this.tabstops[this.index];
-      if (ts)
-        this.addTabstopMarkers(ts);
+      if (ts) this.addTabstopMarkers(ts);
       this.index = index;
       ts = this.tabstops[this.index];
-      if (!ts || !ts.length)
-        return;
+      if (!ts || !ts.length) return;
       this.selectedTabstop = ts;
       var range = ts.firstNonLinked || ts;
-      if (ts.choices)
-        range.cursor = range.start;
+      if (ts.choices) range.cursor = range.start;
       if (!this.editor.inVirtualSelectionMode) {
         var sel = this.editor.multiSelect;
         sel.toSingleRange(range);
         for (var i = 0; i < ts.length; i++) {
-          if (ts.hasLinkedRanges && ts[i].linked)
-            continue;
+          if (ts.hasLinkedRanges && ts[i].linked) continue;
           sel.addRange(ts[i].clone(), true);
         }
       } else {
@@ -877,12 +910,13 @@ define("ace/snippets", ["require", "exports", "module", "ace/lib/dom", "ace/lib/
       }
       this.editor.keyBinding.addKeyboardHandler(this.keyboardHandler);
       if (this.selectedTabstop && this.selectedTabstop.choices)
-        this.editor.execCommand("startAutocomplete", {matches: this.selectedTabstop.choices});
+        this.editor.execCommand("startAutocomplete", {
+          matches: this.selectedTabstop.choices
+        });
     };
     TabstopManager.prototype.addTabstops = function (tabstops, start, end) {
       var useLink = this.useLink || !this.editor.getOption("enableMultiselect");
-      if (!this.$openTabstops)
-        this.$openTabstops = [];
+      if (!this.$openTabstops) this.$openTabstops = [];
       if (!tabstops[0]) {
         var p = Range.fromPoints(end, end);
         moveRelative(p.start, start);
@@ -893,7 +927,7 @@ define("ace/snippets", ["require", "exports", "module", "ace/lib/dom", "ace/lib/
       var i = this.index;
       var arg = [i + 1, 0];
       var ranges = this.ranges;
-      var snippetId = this.snippetId = (this.snippetId || 0) + 1;
+      var snippetId = (this.snippetId = (this.snippetId || 0) + 1);
       tabstops.forEach(function (ts, index) {
         var dest = this.$openTabstops[index] || ts;
         dest.snippetId = snippetId;
@@ -905,18 +939,14 @@ define("ace/snippets", ["require", "exports", "module", "ace/lib/dom", "ace/lib/
           range.original = p;
           range.tabstop = dest;
           ranges.push(range);
-          if (dest != ts)
-            dest.unshift(range);
-          else
-            dest[i] = range;
+          if (dest != ts) dest.unshift(range);
+          else dest[i] = range;
           if (p.fmtString || (dest.firstNonLinked && useLink)) {
             range.linked = true;
             dest.hasLinkedRanges = true;
-          } else if (!dest.firstNonLinked)
-            dest.firstNonLinked = range;
+          } else if (!dest.firstNonLinked) dest.firstNonLinked = range;
         }
-        if (!dest.firstNonLinked)
-          dest.hasLinkedRanges = false;
+        if (!dest.firstNonLinked) dest.hasLinkedRanges = false;
         if (dest === ts) {
           arg.push(dest);
           this.$openTabstops[index] = dest;
@@ -927,8 +957,7 @@ define("ace/snippets", ["require", "exports", "module", "ace/lib/dom", "ace/lib/
         dest.rangeList.addList(dest);
       }, this);
       if (arg.length > 2) {
-        if (this.tabstops.length)
-          arg.push(arg.splice(2, 1)[0]);
+        if (this.tabstops.length) arg.push(arg.splice(2, 1)[0]);
         this.tabstops.splice.apply(this.tabstops, arg);
       }
     };
@@ -936,7 +965,11 @@ define("ace/snippets", ["require", "exports", "module", "ace/lib/dom", "ace/lib/
       var session = this.session;
       ts.forEach(function (range) {
         if (!range.markerId)
-          range.markerId = session.addMarker(range, "ace_snippet-marker", "text");
+          range.markerId = session.addMarker(
+            range,
+            "ace_snippet-marker",
+            "text"
+          );
       });
     };
     TabstopManager.prototype.removeTabstopMarkers = function (ts) {
@@ -947,44 +980,39 @@ define("ace/snippets", ["require", "exports", "module", "ace/lib/dom", "ace/lib/
       });
     };
     TabstopManager.prototype.updateTabstopMarkers = function () {
-      if (!this.selectedTabstop)
-        return;
+      if (!this.selectedTabstop) return;
       var currentSnippetId = this.selectedTabstop.snippetId;
       if (this.selectedTabstop.index === 0) {
         currentSnippetId--;
       }
       this.tabstops.forEach(function (ts) {
-        if (ts.snippetId === currentSnippetId)
-          this.addTabstopMarkers(ts);
-        else
-          this.removeTabstopMarkers(ts);
+        if (ts.snippetId === currentSnippetId) this.addTabstopMarkers(ts);
+        else this.removeTabstopMarkers(ts);
       }, this);
     };
     TabstopManager.prototype.removeRange = function (range) {
       var i = range.tabstop.indexOf(range);
-      if (i != -1)
-        range.tabstop.splice(i, 1);
+      if (i != -1) range.tabstop.splice(i, 1);
       i = this.ranges.indexOf(range);
-      if (i != -1)
-        this.ranges.splice(i, 1);
+      if (i != -1) this.ranges.splice(i, 1);
       i = range.tabstop.rangeList.ranges.indexOf(range);
-      if (i != -1)
-        range.tabstop.splice(i, 1);
+      if (i != -1) range.tabstop.splice(i, 1);
       this.session.removeMarker(range.markerId);
       if (!range.tabstop.length) {
         i = this.tabstops.indexOf(range.tabstop);
-        if (i != -1)
-          this.tabstops.splice(i, 1);
-        if (!this.tabstops.length)
-          this.detach();
+        if (i != -1) this.tabstops.splice(i, 1);
+        if (!this.tabstops.length) this.detach();
       }
     };
     return TabstopManager;
-  }());
+  })();
   TabstopManager.prototype.keyboardHandler = new HashHandler();
   TabstopManager.prototype.keyboardHandler.bindKeys({
-    "Tab": function (editor) {
-      if (exports.snippetManager && exports.snippetManager.expandWithTab(editor))
+    Tab: function (editor) {
+      if (
+        exports.snippetManager &&
+        exports.snippetManager.expandWithTab(editor)
+      )
         return;
       editor.tabstopManager.tabNext(1);
       editor.renderer.scrollCursorIntoView();
@@ -993,21 +1021,23 @@ define("ace/snippets", ["require", "exports", "module", "ace/lib/dom", "ace/lib/
       editor.tabstopManager.tabNext(-1);
       editor.renderer.scrollCursorIntoView();
     },
-    "Esc": function (editor) {
+    Esc: function (editor) {
       editor.tabstopManager.detach();
     }
   });
   var movePoint = function (point, diff) {
-    if (point.row == 0)
-      point.column += diff.column;
+    if (point.row == 0) point.column += diff.column;
     point.row += diff.row;
   };
   var moveRelative = function (point, start) {
-    if (point.row == start.row)
-      point.column -= start.column;
+    if (point.row == start.row) point.column -= start.column;
     point.row -= start.row;
   };
-  dom.importCssString("\n.ace_snippet-marker {\n    -moz-box-sizing: border-box;\n    box-sizing: border-box;\n    background: rgba(194, 193, 208, 0.09);\n    border: 1px dotted rgba(211, 208, 235, 0.62);\n    position: absolute;\n}", "snippets.css", false);
+  dom.importCssString(
+    "\n.ace_snippet-marker {\n    -moz-box-sizing: border-box;\n    box-sizing: border-box;\n    background: rgba(194, 193, 208, 0.09);\n    border: 1px dotted rgba(211, 208, 235, 0.62);\n    position: absolute;\n}",
+    "snippets.css",
+    false
+  );
   exports.snippetManager = new SnippetManager();
   var Editor = require("./editor").Editor;
   (function () {
@@ -1018,10 +1048,24 @@ define("ace/snippets", ["require", "exports", "module", "ace/lib/dom", "ace/lib/
       return exports.snippetManager.expandWithTab(this, options);
     };
   }).call(Editor.prototype);
-
 });
 
-define("ace/ext/emmet", ["require", "exports", "module", "ace/keyboard/hash_handler", "ace/editor", "ace/snippets", "ace/range", "ace/config", "resources", "resources", "tabStops", "resources", "utils", "actions"], function (require, exports, module) {
+define("ace/ext/emmet", [
+  "require",
+  "exports",
+  "module",
+  "ace/keyboard/hash_handler",
+  "ace/editor",
+  "ace/snippets",
+  "ace/range",
+  "ace/config",
+  "resources",
+  "resources",
+  "tabStops",
+  "resources",
+  "utils",
+  "actions"
+], function (require, exports, module) {
   "use strict";
   var HashHandler = require("../keyboard/hash_handler").HashHandler;
   var Editor = require("../editor").Editor;
@@ -1030,14 +1074,12 @@ define("ace/ext/emmet", ["require", "exports", "module", "ace/keyboard/hash_hand
   var config = require("../config");
   var emmet, emmetPath;
   var AceEmmetEditor = /** @class */ (function () {
-    function AceEmmetEditor() {
-    }
+    function AceEmmetEditor() {}
 
     AceEmmetEditor.prototype.setupContext = function (editor) {
       this.ace = editor;
       this.indentation = editor.session.getTabString();
-      if (!emmet)
-        emmet = window["emmet"];
+      if (!emmet) emmet = window["emmet"];
       var resources = emmet.resources || emmet.require("resources");
       resources.setVariable("indentation", this.indentation);
       this.$syntax = null;
@@ -1062,7 +1104,7 @@ define("ace/ext/emmet", ["require", "exports", "module", "ace/keyboard/hash_hand
       var ace = this.ace;
       var row = ace.getCursorPosition().row;
       var lineLength = ace.session.getLine(row).length;
-      var index = ace.session.doc.positionToIndex({row: row, column: 0});
+      var index = ace.session.doc.positionToIndex({ row: row, column: 0 });
       return {
         start: index,
         end: index + lineLength
@@ -1080,14 +1122,20 @@ define("ace/ext/emmet", ["require", "exports", "module", "ace/keyboard/hash_hand
       var row = this.ace.getCursorPosition().row;
       return this.ace.session.getLine(row);
     };
-    AceEmmetEditor.prototype.replaceContent = function (value, start, end, noIndent) {
-      if (end == null)
-        end = start == null ? this.getContent().length : start;
-      if (start == null)
-        start = 0;
+    AceEmmetEditor.prototype.replaceContent = function (
+      value,
+      start,
+      end,
+      noIndent
+    ) {
+      if (end == null) end = start == null ? this.getContent().length : start;
+      if (start == null) start = 0;
       var editor = this.ace;
       var doc = editor.session.doc;
-      var range = Range.fromPoints(doc.indexToPosition(start), doc.indexToPosition(end));
+      var range = Range.fromPoints(
+        doc.indexToPosition(start),
+        doc.indexToPosition(end)
+      );
       editor.session.remove(range);
       range.end = range.start;
       value = this.$updateTabstops(value);
@@ -1097,20 +1145,16 @@ define("ace/ext/emmet", ["require", "exports", "module", "ace/keyboard/hash_hand
       return this.ace.getValue();
     };
     AceEmmetEditor.prototype.getSyntax = function () {
-      if (this.$syntax)
-        return this.$syntax;
+      if (this.$syntax) return this.$syntax;
       var syntax = this.ace.session.$modeId.split("/").pop();
       if (syntax == "html" || syntax == "php") {
         var cursor = this.ace.getCursorPosition();
         var state = this.ace.session.getState(cursor.row);
-        if (typeof state != "string")
-          state = state[0];
+        if (typeof state != "string") state = state[0];
         if (state) {
           state = state.split("-");
-          if (state.length > 1)
-            syntax = state[0];
-          else if (syntax == "php")
-            syntax = "html";
+          if (state.length > 1) syntax = state[0];
+          else if (syntax == "php") syntax = "html";
         }
       }
       return syntax;
@@ -1126,11 +1170,17 @@ define("ace/ext/emmet", ["require", "exports", "module", "ace/keyboard/hash_hand
         case "html":
           var profile = resources.getVariable("profile");
           if (!profile)
-            profile = this.ace.session.getLines(0, 2).join("").search(/<!DOCTYPE[^>]+XHTML/i) != -1 ? "xhtml" : "html";
+            profile =
+              this.ace.session
+                .getLines(0, 2)
+                .join("")
+                .search(/<!DOCTYPE[^>]+XHTML/i) != -1
+                ? "xhtml"
+                : "html";
           return profile;
         default:
           var mode = this.ace.session.$mode;
-          return mode.emmetConfig && mode.emmetConfig.profile || "xhtml";
+          return (mode.emmetConfig && mode.emmetConfig.profile) || "xhtml";
       }
     };
     AceEmmetEditor.prototype.prompt = function (title) {
@@ -1146,80 +1196,83 @@ define("ace/ext/emmet", ["require", "exports", "module", "ace/keyboard/hash_hand
       var base = 1000;
       var zeroBase = 0;
       var lastZero = null;
-      var ts = emmet.tabStops || emmet.require('tabStops');
+      var ts = emmet.tabStops || emmet.require("tabStops");
       var resources = emmet.resources || emmet.require("resources");
       var settings = resources.getVocabulary("user");
       var tabstopOptions = {
         tabstop: function (data) {
           var group = parseInt(data.group, 10);
           var isZero = group === 0;
-          if (isZero)
-            group = ++zeroBase;
-          else
-            group += base;
+          if (isZero) group = ++zeroBase;
+          else group += base;
           var placeholder = data.placeholder;
           if (placeholder) {
             placeholder = ts.processText(placeholder, tabstopOptions);
           }
-          var result = '${' + group + (placeholder ? ':' + placeholder : '') + '}';
+          var result =
+            "${" + group + (placeholder ? ":" + placeholder : "") + "}";
           if (isZero) {
             lastZero = [data.start, result];
           }
           return result;
         },
         escape: function (ch) {
-          if (ch == '$')
-            return '\\$';
-          if (ch == '\\')
-            return '\\\\';
+          if (ch == "$") return "\\$";
+          if (ch == "\\") return "\\\\";
           return ch;
         }
       };
       value = ts.processText(value, tabstopOptions);
-      if (settings.variables['insert_final_tabstop'] && !/\$\{0\}$/.test(value)) {
-        value += '${0}';
+      if (
+        settings.variables["insert_final_tabstop"] &&
+        !/\$\{0\}$/.test(value)
+      ) {
+        value += "${0}";
       } else if (lastZero) {
-        var common = emmet.utils ? emmet.utils.common : emmet.require('utils');
-        value = common.replaceSubstring(value, '${0}', lastZero[0], lastZero[1]);
+        var common = emmet.utils ? emmet.utils.common : emmet.require("utils");
+        value = common.replaceSubstring(
+          value,
+          "${0}",
+          lastZero[0],
+          lastZero[1]
+        );
       }
       return value;
     };
     return AceEmmetEditor;
-  }());
+  })();
   var keymap = {
-    expand_abbreviation: {"mac": "ctrl+alt+e", "win": "alt+e"},
-    match_pair_outward: {"mac": "ctrl+d", "win": "ctrl+,"},
-    match_pair_inward: {"mac": "ctrl+j", "win": "ctrl+shift+0"},
-    matching_pair: {"mac": "ctrl+alt+j", "win": "alt+j"},
+    expand_abbreviation: { mac: "ctrl+alt+e", win: "alt+e" },
+    match_pair_outward: { mac: "ctrl+d", win: "ctrl+," },
+    match_pair_inward: { mac: "ctrl+j", win: "ctrl+shift+0" },
+    matching_pair: { mac: "ctrl+alt+j", win: "alt+j" },
     next_edit_point: "alt+right",
     prev_edit_point: "alt+left",
-    toggle_comment: {"mac": "command+/", "win": "ctrl+/"},
-    split_join_tag: {"mac": "shift+command+'", "win": "shift+ctrl+`"},
-    remove_tag: {"mac": "command+'", "win": "shift+ctrl+;"},
-    evaluate_math_expression: {"mac": "shift+command+y", "win": "shift+ctrl+y"},
+    toggle_comment: { mac: "command+/", win: "ctrl+/" },
+    split_join_tag: { mac: "shift+command+'", win: "shift+ctrl+`" },
+    remove_tag: { mac: "command+'", win: "shift+ctrl+;" },
+    evaluate_math_expression: { mac: "shift+command+y", win: "shift+ctrl+y" },
     increment_number_by_1: "ctrl+up",
     decrement_number_by_1: "ctrl+down",
     increment_number_by_01: "alt+up",
     decrement_number_by_01: "alt+down",
-    increment_number_by_10: {"mac": "alt+command+up", "win": "shift+alt+up"},
-    decrement_number_by_10: {"mac": "alt+command+down", "win": "shift+alt+down"},
-    select_next_item: {"mac": "shift+command+.", "win": "shift+ctrl+."},
-    select_previous_item: {"mac": "shift+command+,", "win": "shift+ctrl+,"},
-    reflect_css_value: {"mac": "shift+command+r", "win": "shift+ctrl+r"},
-    encode_decode_data_url: {"mac": "shift+ctrl+d", "win": "ctrl+'"},
+    increment_number_by_10: { mac: "alt+command+up", win: "shift+alt+up" },
+    decrement_number_by_10: { mac: "alt+command+down", win: "shift+alt+down" },
+    select_next_item: { mac: "shift+command+.", win: "shift+ctrl+." },
+    select_previous_item: { mac: "shift+command+,", win: "shift+ctrl+," },
+    reflect_css_value: { mac: "shift+command+r", win: "shift+ctrl+r" },
+    encode_decode_data_url: { mac: "shift+ctrl+d", win: "ctrl+'" },
     expand_abbreviation_with_tab: "Tab",
-    wrap_with_abbreviation: {"mac": "shift+ctrl+a", "win": "shift+ctrl+a"}
+    wrap_with_abbreviation: { mac: "shift+ctrl+a", win: "shift+ctrl+a" }
   };
   var editorProxy = new AceEmmetEditor();
   exports.commands = new HashHandler();
   exports.runEmmetCommand = function runEmmetCommand(editor) {
     if (this.action == "expand_abbreviation_with_tab") {
-      if (!editor.selection.isEmpty())
-        return false;
+      if (!editor.selection.isEmpty()) return false;
       var pos = editor.selection.lead;
       var token = editor.session.getTokenAt(pos.row, pos.column);
-      if (token && /\btag\b/.test(token.type))
-        return false;
+      if (token && /\btag\b/.test(token.type)) return false;
     }
     try {
       editorProxy.setupContext(editor);
@@ -1233,8 +1286,7 @@ define("ace/ext/emmet", ["require", "exports", "module", "ace/keyboard/hash_hand
     } catch (e) {
       if (!emmet) {
         var loading = exports.load(runEmmetCommand.bind(this, editor));
-        if (this.action == "expand_abbreviation_with_tab")
-          return false;
+        if (this.action == "expand_abbreviation_with_tab") return false;
         return loading;
       }
       editor._signal("changeStatus", typeof e == "string" ? e : e.message);
@@ -1260,10 +1312,8 @@ define("ace/ext/emmet", ["require", "exports", "module", "ace/keyboard/hash_hand
     }
   };
   exports.isSupportedMode = function (mode) {
-    if (!mode)
-      return false;
-    if (mode.emmetConfig)
-      return true;
+    if (!mode) return false;
+    if (mode.emmetConfig) return true;
     var id = mode.$id || mode;
     return /css|less|scss|sass|stylus|html|php|twig|ejs|handlebars/.test(id);
   };
@@ -1275,22 +1325,17 @@ define("ace/ext/emmet", ["require", "exports", "module", "ace/keyboard/hash_hand
     if (isSupported && mode.$modes) {
       try {
         editorProxy.setupContext(editor);
-        if (/js|php/.test(editorProxy.getSyntax()))
-          isSupported = false;
-      } catch (e) {
-      }
+        if (/js|php/.test(editorProxy.getSyntax())) isSupported = false;
+      } catch (e) {}
     }
     return isSupported;
   };
   var onChangeMode = function (e, target) {
     var editor = target;
-    if (!editor)
-      return;
+    if (!editor) return;
     var enabled = exports.isSupportedMode(editor.session.$mode);
-    if (e.enableEmmet === false)
-      enabled = false;
-    if (enabled)
-      exports.load();
+    if (e.enableEmmet === false) enabled = false;
+    if (enabled) exports.load();
     exports.updateCommands(editor, enabled);
   };
   exports.load = function (cb) {
@@ -1309,18 +1354,15 @@ define("ace/ext/emmet", ["require", "exports", "module", "ace/keyboard/hash_hand
     enableEmmet: {
       set: function (val) {
         this[val ? "on" : "removeListener"]("changeMode", onChangeMode);
-        onChangeMode({enableEmmet: !!val}, this);
+        onChangeMode({ enableEmmet: !!val }, this);
       },
       value: true
     }
   });
   exports.setCore = function (e) {
-    if (typeof e == "string")
-      emmetPath = e;
-    else
-      emmet = e;
+    if (typeof e == "string") emmetPath = e;
+    else emmet = e;
   };
-
 });
 (function () {
   window.require(["ace/ext/emmet"], function (m) {
@@ -1329,4 +1371,3 @@ define("ace/ext/emmet", ["require", "exports", "module", "ace/keyboard/hash_hand
     }
   });
 })();
-            

@@ -1,4 +1,8 @@
-define("ace/ext/themelist", ["require", "exports", "module"], function (require, exports, module) {
+define("ace/ext/themelist", ["require", "exports", "module"], function (
+  require,
+  exports,
+  module
+) {
   /**
    * Generates a list of themes available when ace was built.
    * @fileOverview Generates a list of themes available when ace was built.
@@ -64,7 +68,6 @@ define("ace/ext/themelist", ["require", "exports", "module"], function (require,
     exports.themesByName[name] = theme;
     return theme;
   });
-
 });
 (function () {
   window.require(["ace/ext/themelist"], function (m) {
@@ -73,4 +76,3 @@ define("ace/ext/themelist", ["require", "exports", "module"], function (require,
     }
   });
 })();
-            

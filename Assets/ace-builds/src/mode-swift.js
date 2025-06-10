@@ -1,14 +1,22 @@
-define("ace/mode/doc_comment_highlight_rules", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text_highlight_rules"], function (require, exports, module) {
+define("ace/mode/doc_comment_highlight_rules", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text_highlight_rules"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
   var DocCommentHighlightRules = function () {
     this.$rules = {
-      "start": [
+      start: [
         {
           token: "comment.doc.tag",
           regex: "@\\w+(?=\\s|$)"
-        }, DocCommentHighlightRules.getTagRule(), {
+        },
+        DocCommentHighlightRules.getTagRule(),
+        {
           defaultToken: "comment.doc.body",
           caseInsensitive: true
         }
@@ -37,36 +45,51 @@ define("ace/mode/doc_comment_highlight_rules", ["require", "exports", "module", 
     };
   };
   exports.DocCommentHighlightRules = DocCommentHighlightRules;
-
 });
 
-define("ace/mode/swift_highlight_rules", ["require", "exports", "module", "ace/lib/oop", "ace/lib/lang", "ace/mode/doc_comment_highlight_rules", "ace/mode/text_highlight_rules"], function (require, exports, module) {
+define("ace/mode/swift_highlight_rules", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/lib/lang",
+  "ace/mode/doc_comment_highlight_rules",
+  "ace/mode/text_highlight_rules"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var lang = require("../lib/lang");
-  var DocCommentHighlightRules = require("./doc_comment_highlight_rules").DocCommentHighlightRules;
+  var DocCommentHighlightRules =
+    require("./doc_comment_highlight_rules").DocCommentHighlightRules;
   var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
   var SwiftHighlightRules = function () {
-    var keywordMapper = this.createKeywordMapper({
-      "variable.language": "",
-      "keyword": "__COLUMN__|__FILE__|__FUNCTION__|__LINE__"
-        + "|as|associativity|break|case|class|continue|default|deinit|didSet"
-        + "|do|dynamicType|else|enum|extension|fallthrough|for|func|get|if|import"
-        + "|in|infix|init|inout|is|left|let|let|mutating|new|none|nonmutating"
-        + "|operator|override|postfix|precedence|prefix|protocol|return|right"
-        + "|safe|Self|self|set|struct|subscript|switch|Type|typealias"
-        + "|unowned|unsafe|var|weak|where|while|willSet"
-        + "|convenience|dynamic|final|infix|lazy|mutating|nonmutating|optional|override|postfix"
-        + "|prefix|required|static|guard|defer",
-      "storage.type": "bool|double|Double"
-        + "|extension|float|Float|int|Int|open|internal|fileprivate|private|public|string|String",
-      "constant.language": "false|Infinity|NaN|nil|no|null|null|off|on|super|this|true|undefined|yes",
-      "support.function": ""
-    }, "identifier");
+    var keywordMapper = this.createKeywordMapper(
+      {
+        "variable.language": "",
+        keyword:
+          "__COLUMN__|__FILE__|__FUNCTION__|__LINE__" +
+          "|as|associativity|break|case|class|continue|default|deinit|didSet" +
+          "|do|dynamicType|else|enum|extension|fallthrough|for|func|get|if|import" +
+          "|in|infix|init|inout|is|left|let|let|mutating|new|none|nonmutating" +
+          "|operator|override|postfix|precedence|prefix|protocol|return|right" +
+          "|safe|Self|self|set|struct|subscript|switch|Type|typealias" +
+          "|unowned|unsafe|var|weak|where|while|willSet" +
+          "|convenience|dynamic|final|infix|lazy|mutating|nonmutating|optional|override|postfix" +
+          "|prefix|required|static|guard|defer",
+        "storage.type":
+          "bool|double|Double" +
+          "|extension|float|Float|int|Int|open|internal|fileprivate|private|public|string|String",
+        "constant.language":
+          "false|Infinity|NaN|nil|no|null|null|off|on|super|this|true|undefined|yes",
+        "support.function": ""
+      },
+      "identifier"
+    );
 
     function string(start, options) {
       var nestable = options.nestable || options.interpolation;
-      var interpStart = options.interpolation && options.interpolation.nextState || "start";
+      var interpStart =
+        (options.interpolation && options.interpolation.nextState) || "start";
       var mainRule = {
         regex: start + (options.multiline ? "" : "(?=.)"),
         token: "string.start"
@@ -78,7 +101,9 @@ define("ace/mode/swift_highlight_rules", ["require", "exports", "module", "ace/l
         },
         options.interpolation && {
           token: "paren.quasi.start",
-          regex: lang.escapeRegExp(options.interpolation.lead + options.interpolation.open),
+          regex: lang.escapeRegExp(
+            options.interpolation.lead + options.interpolation.open
+          ),
           push: interpStart
         },
         options.error && {
@@ -89,16 +114,14 @@ define("ace/mode/swift_highlight_rules", ["require", "exports", "module", "ace/l
           regex: start + (options.multiline ? "" : "|$"),
           token: "string.end",
           next: nestable ? "pop" : "start"
-        }, {
+        },
+        {
           defaultToken: "string"
         }
       ].filter(Boolean);
-      if (nestable)
-        mainRule.push = nextState;
-      else
-        mainRule.next = nextState;
-      if (!options.interpolation)
-        return mainRule;
+      if (nestable) mainRule.push = nextState;
+      else mainRule.next = nextState;
+      if (!options.interpolation) return mainRule;
       var open = options.interpolation.open;
       var close = options.interpolation.close;
       var counter = {
@@ -112,8 +135,7 @@ define("ace/mode/swift_highlight_rules", ["require", "exports", "module", "ace/l
           if (val == close && stack.length) {
             stack.shift();
             this.next = stack.shift();
-            if (this.next.indexOf("string") != -1)
-              return "paren.quasi.end";
+            if (this.next.indexOf("string") != -1) return "paren.quasi.end";
           }
           return val == open ? "paren.lparen" : "paren.rparen";
         },
@@ -123,15 +145,16 @@ define("ace/mode/swift_highlight_rules", ["require", "exports", "module", "ace/l
     }
 
     function comments() {
-      return [{
-        token: "comment",
-        regex: /\/\//,
-        next: [
-          DocCommentHighlightRules.getTagRule(),
-          {token: "comment", regex: "$|^", next: "start"},
-          {defaultToken: "comment", caseInsensitive: true}
-        ]
-      },
+      return [
+        {
+          token: "comment",
+          regex: /\/\//,
+          next: [
+            DocCommentHighlightRules.getTagRule(),
+            { token: "comment", regex: "$|^", next: "start" },
+            { defaultToken: "comment", caseInsensitive: true }
+          ]
+        },
         DocCommentHighlightRules.getStartRule("doc-start"),
         {
           token: "comment.start",
@@ -139,9 +162,9 @@ define("ace/mode/swift_highlight_rules", ["require", "exports", "module", "ace/l
           stateName: "nested_comment",
           push: [
             DocCommentHighlightRules.getTagRule(),
-            {token: "comment.start", regex: /\/\*/, push: "nested_comment"},
-            {token: "comment.end", regex: "\\*\\/", next: "pop"},
-            {defaultToken: "comment", caseInsensitive: true}
+            { token: "comment.start", regex: /\/\*/, push: "nested_comment" },
+            { token: "comment.end", regex: "\\*\\/", next: "pop" },
+            { defaultToken: "comment", caseInsensitive: true }
           ]
         }
       ];
@@ -151,13 +174,13 @@ define("ace/mode/swift_highlight_rules", ["require", "exports", "module", "ace/l
       start: [
         string('"""', {
           escape: /\\(?:[0\\tnr"']|u{[a-fA-F1-9]{0,8}})/,
-          interpolation: {lead: "\\", open: "(", close: ")"},
+          interpolation: { lead: "\\", open: "(", close: ")" },
           error: /\\./,
           multiline: true
         }),
         string('"', {
           escape: /\\(?:[0\\tnr"']|u{[a-fA-F1-9]{0,8}})/,
-          interpolation: {lead: "\\", open: "(", close: ")"},
+          interpolation: { lead: "\\", open: "(", close: ")" },
           error: /\\./,
           multiline: false
         }),
@@ -172,45 +195,69 @@ define("ace/mode/swift_highlight_rules", ["require", "exports", "module", "ace/l
         },
         {
           token: "constant.numeric",
-          regex: /[+-]?(?:0(?:b[01]+|o[0-7]+|x[\da-fA-F])|\d+(?:(?:\.\d*)?(?:[PpEe][+-]?\d+)?)\b)/
-        }, {
+          regex:
+            /[+-]?(?:0(?:b[01]+|o[0-7]+|x[\da-fA-F])|\d+(?:(?:\.\d*)?(?:[PpEe][+-]?\d+)?)\b)/
+        },
+        {
           token: "keyword.operator",
-          regex: /--|\+\+|===|==|=|!=|!==|<=|>=|<<=|>>=|>>>=|<>|<|>|!|&&|\|\||\?:|[!$%&*+\-~\/^]=?/,
+          regex:
+            /--|\+\+|===|==|=|!=|!==|<=|>=|<<=|>>=|>>>=|<>|<|>|!|&&|\|\||\?:|[!$%&*+\-~\/^]=?/,
           next: "start"
-        }, {
+        },
+        {
           token: "punctuation.operator",
           regex: /[?:,;.]/,
           next: "start"
-        }, {
+        },
+        {
           token: "paren.lparen",
           regex: /[\[({]/,
           next: "start"
-        }, {
+        },
+        {
           token: "paren.rparen",
           regex: /[\])}]/
         }
       ]
     };
-    this.embedRules(DocCommentHighlightRules, "doc-", [DocCommentHighlightRules.getEndRule("start")]);
+    this.embedRules(DocCommentHighlightRules, "doc-", [
+      DocCommentHighlightRules.getEndRule("start")
+    ]);
     this.normalizeRules();
   };
   oop.inherits(SwiftHighlightRules, TextHighlightRules);
   exports.HighlightRules = SwiftHighlightRules;
   exports.SwiftHighlightRules = SwiftHighlightRules;
-
 });
 
-define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop", "ace/range", "ace/mode/folding/fold_mode"], function (require, exports, module) {
+define("ace/mode/folding/cstyle", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/range",
+  "ace/mode/folding/fold_mode"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../../lib/oop");
   var Range = require("../../range").Range;
   var BaseFoldMode = require("./fold_mode").FoldMode;
-  var FoldMode = exports.FoldMode = function (commentRegex) {
+  var FoldMode = (exports.FoldMode = function (commentRegex) {
     if (commentRegex) {
-      this.foldingStartMarker = new RegExp(this.foldingStartMarker.source.replace(/\|[^|]*?$/, "|" + commentRegex.start));
-      this.foldingStopMarker = new RegExp(this.foldingStopMarker.source.replace(/\|[^|]*?$/, "|" + commentRegex.end));
+      this.foldingStartMarker = new RegExp(
+        this.foldingStartMarker.source.replace(
+          /\|[^|]*?$/,
+          "|" + commentRegex.start
+        )
+      );
+      this.foldingStopMarker = new RegExp(
+        this.foldingStopMarker.source.replace(
+          /\|[^|]*?$/,
+          "|" + commentRegex.end
+        )
+      );
     }
-  };
+  });
   oop.inherits(FoldMode, BaseFoldMode);
   (function () {
     this.foldingStartMarker = /([\{\[\(])[^\}\]\)]*$|^\s*(\/\*)/;
@@ -222,15 +269,22 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
     this.getFoldWidget = function (session, foldStyle, row) {
       var line = session.getLine(row);
       if (this.singleLineBlockCommentRe.test(line)) {
-        if (!this.startRegionRe.test(line) && !this.tripleStarBlockCommentRe.test(line))
+        if (
+          !this.startRegionRe.test(line) &&
+          !this.tripleStarBlockCommentRe.test(line)
+        )
           return "";
       }
       var fw = this._getFoldWidgetBase(session, foldStyle, row);
-      if (!fw && this.startRegionRe.test(line))
-        return "start"; // lineCommentRegionStart
+      if (!fw && this.startRegionRe.test(line)) return "start"; // lineCommentRegionStart
       return fw;
     };
-    this.getFoldWidgetRange = function (session, foldStyle, row, forceMultiline) {
+    this.getFoldWidgetRange = function (
+      session,
+      foldStyle,
+      row,
+      forceMultiline
+    ) {
       var line = session.getLine(row);
       if (this.startRegionRe.test(line))
         return this.getCommentRegionBlock(session, line, row);
@@ -243,13 +297,11 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
         if (range && !range.isMultiLine()) {
           if (forceMultiline) {
             range = this.getSectionRange(session, row);
-          } else if (foldStyle != "all")
-            range = null;
+          } else if (foldStyle != "all") range = null;
         }
         return range;
       }
-      if (foldStyle === "markbegin")
-        return;
+      if (foldStyle === "markbegin") return;
       var match = line.match(this.foldingStopMarker);
       if (match) {
         var i = match.index + match[0].length;
@@ -269,10 +321,8 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       while (++row < maxRow) {
         line = session.getLine(row);
         var indent = line.search(/\S/);
-        if (indent === -1)
-          continue;
-        if (startIndent > indent)
-          break;
+        if (indent === -1) continue;
+        if (startIndent > indent) break;
         var subRange = this.getFoldWidgetRange(session, "all", row);
         if (subRange) {
           if (subRange.start.row <= startRow) {
@@ -285,7 +335,12 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
         }
         endRow = row;
       }
-      return new Range(startRow, startColumn, endRow, session.getLine(endRow).length);
+      return new Range(
+        startRow,
+        startColumn,
+        endRow,
+        session.getLine(endRow).length
+      );
     };
     this.getCommentRegionBlock = function (session, line, row) {
       var startColumn = line.search(/\s*$/);
@@ -296,14 +351,10 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       while (++row < maxRow) {
         line = session.getLine(row);
         var m = re.exec(line);
-        if (!m)
-          continue;
-        if (m[1])
-          depth--;
-        else
-          depth++;
-        if (!depth)
-          break;
+        if (!m) continue;
+        if (m[1]) depth--;
+        else depth++;
+        if (!depth) break;
       }
       var endRow = row;
       if (endRow > startRow) {
@@ -311,10 +362,18 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       }
     };
   }).call(FoldMode.prototype);
-
 });
 
-define("ace/mode/swift", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text", "ace/mode/swift_highlight_rules", "ace/mode/folding/cstyle"], function (require, exports, module) {/*
+define("ace/mode/swift", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text",
+  "ace/mode/swift_highlight_rules",
+  "ace/mode/folding/cstyle"
+], function (require, exports, module) {
+  /*
   THIS FILE WAS AUTOGENERATED BY mode.tmpl.js
 */
   "use strict";
@@ -330,11 +389,10 @@ define("ace/mode/swift", ["require", "exports", "module", "ace/lib/oop", "ace/mo
   oop.inherits(Mode, TextMode);
   (function () {
     this.lineCommentStart = "//";
-    this.blockComment = {start: "/*", end: "*/", nestable: true};
+    this.blockComment = { start: "/*", end: "*/", nestable: true };
     this.$id = "ace/mode/swift";
   }).call(Mode.prototype);
   exports.Mode = Mode;
-
 });
 (function () {
   window.require(["ace/mode/swift"], function (m) {
@@ -343,4 +401,3 @@ define("ace/mode/swift", ["require", "exports", "module", "ace/lib/oop", "ace/mo
     }
   });
 })();
-            

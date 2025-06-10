@@ -1,5 +1,10 @@
-define("ace/snippets/xquery.snippets", ["require", "exports", "module"], function (require, exports, module) {
-  module.exports = 'snippet for\n\
+define("ace/snippets/xquery.snippets", [
+	"require",
+	"exports",
+	"module"
+], function (require, exports, module) {
+	module.exports =
+		'snippet for\n\
 	for \$\${1:item} in \${2:expr}\n\
 snippet return\n\
 	return \${1:expr}\n\
@@ -61,21 +66,23 @@ snippet fn\n\
 snippet module\n\
 	module namespace \${1:ns} = "\${2:http://www.example.com}";\n\
 ';
-
 });
 
-define("ace/snippets/xquery", ["require", "exports", "module", "ace/snippets/xquery.snippets"], function (require, exports, module) {
-  "use strict";
+define("ace/snippets/xquery", [
+	"require",
+	"exports",
+	"module",
+	"ace/snippets/xquery.snippets"
+], function (require, exports, module) {
+	"use strict";
 
-  exports.snippetText = require("./xquery.snippets");
-  exports.scope = "xquery";
-
+	exports.snippetText = require("./xquery.snippets");
+	exports.scope = "xquery";
 });
 (function () {
-  window.require(["ace/snippets/xquery"], function (m) {
-    if (typeof module == "object" && typeof exports == "object" && module) {
-      module.exports = m;
-    }
-  });
+	window.require(["ace/snippets/xquery"], function (m) {
+		if (typeof module == "object" && typeof exports == "object" && module) {
+			module.exports = m;
+		}
+	});
 })();
-            

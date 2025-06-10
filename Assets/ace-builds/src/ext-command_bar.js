@@ -1,27 +1,44 @@
-define("ace/ext/command_bar", ["require", "exports", "module", "ace/tooltip", "ace/lib/event_emitter", "ace/lib/lang", "ace/lib/dom", "ace/lib/oop", "ace/lib/useragent"], function (require, exports, module) {
-  var __values = (this && this.__values) || function (o) {
-    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
-    if (m) return m.call(o);
-    if (o && typeof o.length === "number") return {
-      next: function () {
-        if (o && i >= o.length) o = void 0;
-        return {value: o && o[i++], done: !o};
-      }
+define("ace/ext/command_bar", [
+  "require",
+  "exports",
+  "module",
+  "ace/tooltip",
+  "ace/lib/event_emitter",
+  "ace/lib/lang",
+  "ace/lib/dom",
+  "ace/lib/oop",
+  "ace/lib/useragent"
+], function (require, exports, module) {
+  var __values =
+    (this && this.__values) ||
+    function (o) {
+      var s = typeof Symbol === "function" && Symbol.iterator,
+        m = s && o[s],
+        i = 0;
+      if (m) return m.call(o);
+      if (o && typeof o.length === "number")
+        return {
+          next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+          }
+        };
+      throw new TypeError(
+        s ? "Object is not iterable." : "Symbol.iterator is not defined."
+      );
     };
-    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
-  };
   var Tooltip = require("../tooltip").Tooltip;
   var EventEmitter = require("../lib/event_emitter").EventEmitter;
   var lang = require("../lib/lang");
   var dom = require("../lib/dom");
   var oop = require("../lib/oop");
   var useragent = require("../lib/useragent");
-  var BUTTON_CLASS_NAME = 'command_bar_tooltip_button';
-  var VALUE_CLASS_NAME = 'command_bar_button_value';
-  var CAPTION_CLASS_NAME = 'command_bar_button_caption';
-  var KEYBINDING_CLASS_NAME = 'command_bar_keybinding';
-  var TOOLTIP_CLASS_NAME = 'command_bar_tooltip';
-  var MORE_OPTIONS_BUTTON_ID = 'MoreOptionsButton';
+  var BUTTON_CLASS_NAME = "command_bar_tooltip_button";
+  var VALUE_CLASS_NAME = "command_bar_button_value";
+  var CAPTION_CLASS_NAME = "command_bar_button_caption";
+  var KEYBINDING_CLASS_NAME = "command_bar_keybinding";
+  var TOOLTIP_CLASS_NAME = "command_bar_tooltip";
+  var MORE_OPTIONS_BUTTON_ID = "MoreOptionsButton";
   var defaultDelay = 100;
   var defaultMaxElements = 4;
   var minPosition = function (posA, posB) {
@@ -33,15 +50,15 @@ define("ace/ext/command_bar", ["require", "exports", "module", "ace/tooltip", "a
     return posB;
   };
   var keyDisplayMap = {
-    "Ctrl": {mac: "^"},
-    "Option": {mac: "⌥"},
-    "Command": {mac: "⌘"},
-    "Cmd": {mac: "⌘"},
-    "Shift": "⇧",
-    "Left": "←",
-    "Right": "→",
-    "Up": "↑",
-    "Down": "↓"
+    Ctrl: { mac: "^" },
+    Option: { mac: "⌥" },
+    Command: { mac: "⌘" },
+    Cmd: { mac: "⌘" },
+    Shift: "⇧",
+    Left: "←",
+    Right: "→",
+    Up: "↑",
+    Down: "↓"
   };
   var CommandBarTooltip = /** @class */ (function () {
     function CommandBarTooltip(parentNode, options) {
@@ -50,15 +67,28 @@ define("ace/ext/command_bar", ["require", "exports", "module", "ace/tooltip", "a
       this.parentNode = parentNode;
       this.tooltip = new Tooltip(this.parentNode);
       this.moreOptions = new Tooltip(this.parentNode);
-      this.maxElementsOnTooltip = options.maxElementsOnTooltip || defaultMaxElements;
+      this.maxElementsOnTooltip =
+        options.maxElementsOnTooltip || defaultMaxElements;
       this.$alwaysShow = options.alwaysShow || false;
       this.eventListeners = {};
       this.elements = {};
       this.commands = {};
-      this.tooltipEl = dom.buildDom(['div', {class: TOOLTIP_CLASS_NAME}], this.tooltip.getElement());
-      this.moreOptionsEl = dom.buildDom(['div', {class: TOOLTIP_CLASS_NAME + " tooltip_more_options"}], this.moreOptions.getElement());
-      this.$showTooltipTimer = lang.delayedCall(this.$showTooltip.bind(this), options.showDelay || defaultDelay);
-      this.$hideTooltipTimer = lang.delayedCall(this.$hideTooltip.bind(this), options.hideDelay || defaultDelay);
+      this.tooltipEl = dom.buildDom(
+        ["div", { class: TOOLTIP_CLASS_NAME }],
+        this.tooltip.getElement()
+      );
+      this.moreOptionsEl = dom.buildDom(
+        ["div", { class: TOOLTIP_CLASS_NAME + " tooltip_more_options" }],
+        this.moreOptions.getElement()
+      );
+      this.$showTooltipTimer = lang.delayedCall(
+        this.$showTooltip.bind(this),
+        options.showDelay || defaultDelay
+      );
+      this.$hideTooltipTimer = lang.delayedCall(
+        this.$hideTooltip.bind(this),
+        options.hideDelay || defaultDelay
+      );
       this.$tooltipEnter = this.$tooltipEnter.bind(this);
       this.$onMouseMove = this.$onMouseMove.bind(this);
       this.$onChangeScroll = this.$onChangeScroll.bind(this);
@@ -66,13 +96,21 @@ define("ace/ext/command_bar", ["require", "exports", "module", "ace/tooltip", "a
       this.$scheduleTooltipForHide = this.$scheduleTooltipForHide.bind(this);
       this.$preventMouseEvent = this.$preventMouseEvent.bind(this);
       try {
-        for (var _b = __values(["mousedown", "mouseup", "click"]), _c = _b.next(); !_c.done; _c = _b.next()) {
+        for (
+          var _b = __values(["mousedown", "mouseup", "click"]), _c = _b.next();
+          !_c.done;
+          _c = _b.next()
+        ) {
           var event = _c.value;
-          this.tooltip.getElement().addEventListener(event, this.$preventMouseEvent);
-          this.moreOptions.getElement().addEventListener(event, this.$preventMouseEvent);
+          this.tooltip
+            .getElement()
+            .addEventListener(event, this.$preventMouseEvent);
+          this.moreOptions
+            .getElement()
+            .addEventListener(event, this.$preventMouseEvent);
         }
       } catch (e_1_1) {
-        e_1 = {error: e_1_1};
+        e_1 = { error: e_1_1 };
       } finally {
         try {
           if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
@@ -83,21 +121,25 @@ define("ace/ext/command_bar", ["require", "exports", "module", "ace/tooltip", "a
     }
 
     CommandBarTooltip.prototype.registerCommand = function (id, command) {
-      var registerForMainTooltip = Object.keys(this.commands).length < this.maxElementsOnTooltip;
+      var registerForMainTooltip =
+        Object.keys(this.commands).length < this.maxElementsOnTooltip;
       if (!registerForMainTooltip && !this.elements[MORE_OPTIONS_BUTTON_ID]) {
-        this.$createCommand(MORE_OPTIONS_BUTTON_ID, {
-          name: "···",
-          exec:
-            function () {
+        this.$createCommand(
+          MORE_OPTIONS_BUTTON_ID,
+          {
+            name: "···",
+            exec: function () {
               this.$shouldHideMoreOptions = false;
               this.$setMoreOptionsVisibility(!this.isMoreOptionsShown());
             }.bind(this),
-          type: "checkbox",
-          getValue: function () {
-            return this.isMoreOptionsShown();
-          }.bind(this),
-          enabled: true
-        }, true);
+            type: "checkbox",
+            getValue: function () {
+              return this.isMoreOptionsShown();
+            }.bind(this),
+            enabled: true
+          },
+          true
+        );
       }
       this.$createCommand(id, command, registerForMainTooltip);
       if (this.isShown()) {
@@ -150,7 +192,7 @@ define("ace/ext/command_bar", ["require", "exports", "module", "ace/tooltip", "a
         return;
       }
       var minPos = minPosition(ranges[0].start, ranges[0].end);
-      for (var i = 0, range; range = ranges[i]; i++) {
+      for (var i = 0, range; (range = ranges[i]); i++) {
         minPos = minPosition(minPos, minPosition(range.start, range.end));
       }
       var pos = renderer.$cursorLayer.getPixelPosition(minPos, true);
@@ -160,8 +202,11 @@ define("ace/ext/command_bar", ["require", "exports", "module", "ace/tooltip", "a
       var rect = this.editor.container.getBoundingClientRect();
       pos.top += rect.top - renderer.layerConfig.offset;
       pos.left += rect.left + renderer.gutterWidth - renderer.scrollLeft;
-      var cursorVisible = pos.top >= rect.top && pos.top <= rect.bottom &&
-        pos.left >= rect.left + renderer.gutterWidth && pos.left <= rect.right;
+      var cursorVisible =
+        pos.top >= rect.top &&
+        pos.top <= rect.bottom &&
+        pos.left >= rect.left + renderer.gutterWidth &&
+        pos.left <= rect.right;
       if (!cursorVisible && this.isShown()) {
         this.$hideTooltip();
         return;
@@ -171,8 +216,11 @@ define("ace/ext/command_bar", ["require", "exports", "module", "ace/tooltip", "a
       }
       var top = pos.top - tooltipEl.offsetHeight;
       var left = Math.min(screenWidth - tooltipEl.offsetWidth, pos.left);
-      var tooltipFits = top >= 0 && top + tooltipEl.offsetHeight <= screenHeight &&
-        left >= 0 && left + tooltipEl.offsetWidth <= screenWidth;
+      var tooltipFits =
+        top >= 0 &&
+        top + tooltipEl.offsetHeight <= screenHeight &&
+        left >= 0 &&
+        left + tooltipEl.offsetWidth <= screenWidth;
       if (!tooltipFits) {
         this.$hideTooltip();
         return;
@@ -180,7 +228,8 @@ define("ace/ext/command_bar", ["require", "exports", "module", "ace/tooltip", "a
       this.tooltip.setPosition(left, top);
       if (this.isMoreOptionsShown()) {
         top = top + tooltipEl.offsetHeight;
-        left = this.elements[MORE_OPTIONS_BUTTON_ID].getBoundingClientRect().left;
+        left =
+          this.elements[MORE_OPTIONS_BUTTON_ID].getBoundingClientRect().left;
         var moreOptionsEl = this.moreOptions.getElement();
         var screenHeight = window.innerHeight;
         if (top + moreOptionsEl.offsetHeight > screenHeight) {
@@ -220,19 +269,23 @@ define("ace/ext/command_bar", ["require", "exports", "module", "ace/tooltip", "a
       this.elements = {};
       this.tooltip = this.moreOptions = this.parentNode = null;
     };
-    CommandBarTooltip.prototype.$createCommand = function (id, command, forMainTooltip) {
+    CommandBarTooltip.prototype.$createCommand = function (
+      id,
+      command,
+      forMainTooltip
+    ) {
       var parentEl = forMainTooltip ? this.tooltipEl : this.moreOptionsEl;
       var keyParts = [];
       var bindKey = command.bindKey;
       if (bindKey) {
-        if (typeof bindKey === 'object') {
+        if (typeof bindKey === "object") {
           bindKey = useragent.isMac ? bindKey.mac : bindKey.win;
         }
         bindKey = bindKey.split("|")[0];
         keyParts = bindKey.split("-");
         keyParts = keyParts.map(function (key) {
           if (keyDisplayMap[key]) {
-            if (typeof keyDisplayMap[key] === 'string') {
+            if (typeof keyDisplayMap[key] === "string") {
               return keyDisplayMap[key];
             } else if (useragent.isMac && keyDisplayMap[key].mac) {
               return keyDisplayMap[key].mac;
@@ -244,7 +297,7 @@ define("ace/ext/command_bar", ["require", "exports", "module", "ace/tooltip", "a
       var buttonNode;
       if (forMainTooltip && command.iconCssClass) {
         buttonNode = [
-          'div',
+          "div",
           {
             class: ["ace_icon_svg", command.iconCssClass].join(" "),
             "aria-label": command.name + " (" + command.bindKey + ")"
@@ -252,41 +305,48 @@ define("ace/ext/command_bar", ["require", "exports", "module", "ace/tooltip", "a
         ];
       } else {
         buttonNode = [
-          ['div', {class: VALUE_CLASS_NAME}],
-          ['div', {class: CAPTION_CLASS_NAME}, command.name]
+          ["div", { class: VALUE_CLASS_NAME }],
+          ["div", { class: CAPTION_CLASS_NAME }, command.name]
         ];
         if (keyParts.length) {
           buttonNode.push([
-            'div',
-            {class: KEYBINDING_CLASS_NAME},
+            "div",
+            { class: KEYBINDING_CLASS_NAME },
             keyParts.map(function (keyPart) {
-              return ['div', keyPart];
+              return ["div", keyPart];
             })
           ]);
         }
       }
-      dom.buildDom(['div', {
-        class: [BUTTON_CLASS_NAME, command.cssClass || ""].join(" "),
-        ref: id
-      }, buttonNode], parentEl, this.elements);
+      dom.buildDom(
+        [
+          "div",
+          {
+            class: [BUTTON_CLASS_NAME, command.cssClass || ""].join(" "),
+            ref: id
+          },
+          buttonNode
+        ],
+        parentEl,
+        this.elements
+      );
       this.commands[id] = command;
-      var eventListener =
-        function (e) {
-          if (this.editor) {
-            this.editor.focus();
-          }
-          this.$shouldHideMoreOptions = this.isMoreOptionsShown();
-          if (!this.elements[id].disabled && command.exec) {
-            command.exec(this.editor);
-          }
-          if (this.$shouldHideMoreOptions) {
-            this.$setMoreOptionsVisibility(false);
-          }
-          this.update();
-          e.preventDefault();
-        }.bind(this);
+      var eventListener = function (e) {
+        if (this.editor) {
+          this.editor.focus();
+        }
+        this.$shouldHideMoreOptions = this.isMoreOptionsShown();
+        if (!this.elements[id].disabled && command.exec) {
+          command.exec(this.editor);
+        }
+        if (this.$shouldHideMoreOptions) {
+          this.$setMoreOptionsVisibility(false);
+        }
+        this.update();
+        e.preventDefault();
+      }.bind(this);
       this.eventListeners[id] = eventListener;
-      this.elements[id].addEventListener('click', eventListener.bind(this));
+      this.elements[id].addEventListener("click", eventListener.bind(this));
       this.$updateElement(id);
     };
     CommandBarTooltip.prototype.$setMoreOptionsVisibility = function (visible) {
@@ -309,7 +369,10 @@ define("ace/ext/command_bar", ["require", "exports", "module", "ace/tooltip", "a
     };
     CommandBarTooltip.prototype.$onChangeScroll = function () {
       if (this.editor.renderer && (this.isShown() || this.getAlwaysShow())) {
-        this.editor.renderer.once("afterRender", this.updatePosition.bind(this));
+        this.editor.renderer.once(
+          "afterRender",
+          this.updatePosition.bind(this)
+        );
       }
     };
     CommandBarTooltip.prototype.$onMouseMove = function (e) {
@@ -317,9 +380,14 @@ define("ace/ext/command_bar", ["require", "exports", "module", "ace/tooltip", "a
         return;
       }
       var cursorPosition = this.editor.getCursorPosition();
-      var cursorScreenPosition = this.editor.renderer.textToScreenCoordinates(cursorPosition.row, cursorPosition.column);
+      var cursorScreenPosition = this.editor.renderer.textToScreenCoordinates(
+        cursorPosition.row,
+        cursorPosition.column
+      );
       var lineHeight = this.editor.renderer.lineHeight;
-      var isInCurrentLine = e.clientY >= cursorScreenPosition.pageY && e.clientY < cursorScreenPosition.pageY + lineHeight;
+      var isInCurrentLine =
+        e.clientY >= cursorScreenPosition.pageY &&
+        e.clientY < cursorScreenPosition.pageY + lineHeight;
       if (isInCurrentLine) {
         if (!this.isShown() && !this.$showTooltipTimer.isPending()) {
           this.$showTooltipTimer.delay();
@@ -356,27 +424,46 @@ define("ace/ext/command_bar", ["require", "exports", "module", "ace/tooltip", "a
         this.$hideTooltipTimer.cancel();
       }
     };
-    CommandBarTooltip.prototype.$updateOnHoverHandlers = function (enableHover) {
+    CommandBarTooltip.prototype.$updateOnHoverHandlers = function (
+      enableHover
+    ) {
       var tooltipEl = this.tooltip.getElement();
       var moreOptionsEl = this.moreOptions.getElement();
       if (enableHover) {
         if (this.editor) {
           this.editor.on("mousemove", this.$onMouseMove);
-          this.editor.renderer.getMouseEventTarget().addEventListener("mouseout", this.$scheduleTooltipForHide, true);
+          this.editor.renderer
+            .getMouseEventTarget()
+            .addEventListener("mouseout", this.$scheduleTooltipForHide, true);
         }
-        tooltipEl.addEventListener('mouseenter', this.$tooltipEnter);
-        tooltipEl.addEventListener('mouseleave', this.$scheduleTooltipForHide);
-        moreOptionsEl.addEventListener('mouseenter', this.$tooltipEnter);
-        moreOptionsEl.addEventListener('mouseleave', this.$scheduleTooltipForHide);
+        tooltipEl.addEventListener("mouseenter", this.$tooltipEnter);
+        tooltipEl.addEventListener("mouseleave", this.$scheduleTooltipForHide);
+        moreOptionsEl.addEventListener("mouseenter", this.$tooltipEnter);
+        moreOptionsEl.addEventListener(
+          "mouseleave",
+          this.$scheduleTooltipForHide
+        );
       } else {
         if (this.editor) {
           this.editor.off("mousemove", this.$onMouseMove);
-          this.editor.renderer.getMouseEventTarget().removeEventListener("mouseout", this.$scheduleTooltipForHide, true);
+          this.editor.renderer
+            .getMouseEventTarget()
+            .removeEventListener(
+              "mouseout",
+              this.$scheduleTooltipForHide,
+              true
+            );
         }
-        tooltipEl.removeEventListener('mouseenter', this.$tooltipEnter);
-        tooltipEl.removeEventListener('mouseleave', this.$scheduleTooltipForHide);
-        moreOptionsEl.removeEventListener('mouseenter', this.$tooltipEnter);
-        moreOptionsEl.removeEventListener('mouseleave', this.$scheduleTooltipForHide);
+        tooltipEl.removeEventListener("mouseenter", this.$tooltipEnter);
+        tooltipEl.removeEventListener(
+          "mouseleave",
+          this.$scheduleTooltipForHide
+        );
+        moreOptionsEl.removeEventListener("mouseenter", this.$tooltipEnter);
+        moreOptionsEl.removeEventListener(
+          "mouseleave",
+          this.$scheduleTooltipForHide
+        );
       }
     };
     CommandBarTooltip.prototype.$showTooltip = function () {
@@ -406,14 +493,14 @@ define("ace/ext/command_bar", ["require", "exports", "module", "ace/tooltip", "a
       }
       var el = this.elements[id];
       var commandEnabled = command.enabled;
-      if (typeof commandEnabled === 'function') {
+      if (typeof commandEnabled === "function") {
         commandEnabled = commandEnabled(this.editor);
       }
-      if (typeof command.getValue === 'function') {
+      if (typeof command.getValue === "function") {
         var value = command.getValue(this.editor);
-        if (command.type === 'text') {
+        if (command.type === "text") {
           el.textContent = value;
-        } else if (command.type === 'checkbox') {
+        } else if (command.type === "checkbox") {
           var domCssFn = value ? dom.addCssClass : dom.removeCssClass;
           var isOnTooltip = el.parentElement === this.tooltipEl;
           el.ariaChecked = value;
@@ -436,13 +523,98 @@ define("ace/ext/command_bar", ["require", "exports", "module", "ace/tooltip", "a
       }
     };
     return CommandBarTooltip;
-  }());
+  })();
   oop.implement(CommandBarTooltip.prototype, EventEmitter);
-  dom.importCssString("\n.ace_tooltip.".concat(TOOLTIP_CLASS_NAME, "_wrapper {\n    padding: 0;\n}\n\n.ace_tooltip .").concat(TOOLTIP_CLASS_NAME, " {\n    padding: 1px 5px;\n    display: flex;\n    pointer-events: auto;\n}\n\n.ace_tooltip .").concat(TOOLTIP_CLASS_NAME, ".tooltip_more_options {\n    padding: 1px;\n    flex-direction: column;\n}\n\ndiv.").concat(BUTTON_CLASS_NAME, " {\n    display: inline-flex;\n    cursor: pointer;\n    margin: 1px;\n    border-radius: 2px;\n    padding: 2px 5px;\n    align-items: center;\n}\n\ndiv.").concat(BUTTON_CLASS_NAME, ".ace_selected,\ndiv.").concat(BUTTON_CLASS_NAME, ":hover:not(.ace_disabled) {\n    background-color: rgba(0, 0, 0, 0.1);\n}\n\ndiv.").concat(BUTTON_CLASS_NAME, ".ace_disabled {\n    color: #777;\n    pointer-events: none;\n}\n\ndiv.").concat(BUTTON_CLASS_NAME, " .ace_icon_svg {\n    height: 12px;\n    background-color: #000;\n}\n\ndiv.").concat(BUTTON_CLASS_NAME, ".ace_disabled .ace_icon_svg {\n    background-color: #777;\n}\n\n.").concat(TOOLTIP_CLASS_NAME, ".tooltip_more_options .").concat(BUTTON_CLASS_NAME, " {\n    display: flex;\n}\n\n.").concat(TOOLTIP_CLASS_NAME, ".").concat(VALUE_CLASS_NAME, " {\n    display: none;\n}\n\n.").concat(TOOLTIP_CLASS_NAME, ".tooltip_more_options .").concat(VALUE_CLASS_NAME, " {\n    display: inline-block;\n    width: 12px;\n}\n\n.").concat(CAPTION_CLASS_NAME, " {\n    display: inline-block;\n}\n\n.").concat(KEYBINDING_CLASS_NAME, " {\n    margin: 0 2px;\n    display: inline-block;\n    font-size: 8px;\n}\n\n.").concat(TOOLTIP_CLASS_NAME, ".tooltip_more_options .").concat(KEYBINDING_CLASS_NAME, " {\n    margin-left: auto;\n}\n\n.").concat(KEYBINDING_CLASS_NAME, " div {\n    display: inline-block;\n    min-width: 8px;\n    padding: 2px;\n    margin: 0 1px;\n    border-radius: 2px;\n    background-color: #ccc;\n    text-align: center;\n}\n\n.ace_dark.ace_tooltip .").concat(TOOLTIP_CLASS_NAME, " {\n    background-color: #373737;\n    color: #eee;\n}\n\n.ace_dark div.").concat(BUTTON_CLASS_NAME, ".ace_disabled {\n    color: #979797;\n}\n\n.ace_dark div.").concat(BUTTON_CLASS_NAME, ".ace_selected,\n.ace_dark div.").concat(BUTTON_CLASS_NAME, ":hover:not(.ace_disabled) {\n    background-color: rgba(255, 255, 255, 0.1);\n}\n\n.ace_dark div.").concat(BUTTON_CLASS_NAME, " .ace_icon_svg {\n    background-color: #eee;\n}\n\n.ace_dark div.").concat(BUTTON_CLASS_NAME, ".ace_disabled .ace_icon_svg {\n    background-color: #979797;\n}\n\n.ace_dark .").concat(BUTTON_CLASS_NAME, ".ace_disabled {\n    color: #979797;\n}\n\n.ace_dark .").concat(KEYBINDING_CLASS_NAME, " div {\n    background-color: #575757;\n}\n\n.ace_checkmark::before {\n    content: '\u2713';\n}\n"), "commandbar.css", false);
+  dom.importCssString(
+    "\n.ace_tooltip."
+      .concat(
+        TOOLTIP_CLASS_NAME,
+        "_wrapper {\n    padding: 0;\n}\n\n.ace_tooltip ."
+      )
+      .concat(
+        TOOLTIP_CLASS_NAME,
+        " {\n    padding: 1px 5px;\n    display: flex;\n    pointer-events: auto;\n}\n\n.ace_tooltip ."
+      )
+      .concat(
+        TOOLTIP_CLASS_NAME,
+        ".tooltip_more_options {\n    padding: 1px;\n    flex-direction: column;\n}\n\ndiv."
+      )
+      .concat(
+        BUTTON_CLASS_NAME,
+        " {\n    display: inline-flex;\n    cursor: pointer;\n    margin: 1px;\n    border-radius: 2px;\n    padding: 2px 5px;\n    align-items: center;\n}\n\ndiv."
+      )
+      .concat(BUTTON_CLASS_NAME, ".ace_selected,\ndiv.")
+      .concat(
+        BUTTON_CLASS_NAME,
+        ":hover:not(.ace_disabled) {\n    background-color: rgba(0, 0, 0, 0.1);\n}\n\ndiv."
+      )
+      .concat(
+        BUTTON_CLASS_NAME,
+        ".ace_disabled {\n    color: #777;\n    pointer-events: none;\n}\n\ndiv."
+      )
+      .concat(
+        BUTTON_CLASS_NAME,
+        " .ace_icon_svg {\n    height: 12px;\n    background-color: #000;\n}\n\ndiv."
+      )
+      .concat(
+        BUTTON_CLASS_NAME,
+        ".ace_disabled .ace_icon_svg {\n    background-color: #777;\n}\n\n."
+      )
+      .concat(TOOLTIP_CLASS_NAME, ".tooltip_more_options .")
+      .concat(BUTTON_CLASS_NAME, " {\n    display: flex;\n}\n\n.")
+      .concat(TOOLTIP_CLASS_NAME, ".")
+      .concat(VALUE_CLASS_NAME, " {\n    display: none;\n}\n\n.")
+      .concat(TOOLTIP_CLASS_NAME, ".tooltip_more_options .")
+      .concat(
+        VALUE_CLASS_NAME,
+        " {\n    display: inline-block;\n    width: 12px;\n}\n\n."
+      )
+      .concat(CAPTION_CLASS_NAME, " {\n    display: inline-block;\n}\n\n.")
+      .concat(
+        KEYBINDING_CLASS_NAME,
+        " {\n    margin: 0 2px;\n    display: inline-block;\n    font-size: 8px;\n}\n\n."
+      )
+      .concat(TOOLTIP_CLASS_NAME, ".tooltip_more_options .")
+      .concat(KEYBINDING_CLASS_NAME, " {\n    margin-left: auto;\n}\n\n.")
+      .concat(
+        KEYBINDING_CLASS_NAME,
+        " div {\n    display: inline-block;\n    min-width: 8px;\n    padding: 2px;\n    margin: 0 1px;\n    border-radius: 2px;\n    background-color: #ccc;\n    text-align: center;\n}\n\n.ace_dark.ace_tooltip ."
+      )
+      .concat(
+        TOOLTIP_CLASS_NAME,
+        " {\n    background-color: #373737;\n    color: #eee;\n}\n\n.ace_dark div."
+      )
+      .concat(
+        BUTTON_CLASS_NAME,
+        ".ace_disabled {\n    color: #979797;\n}\n\n.ace_dark div."
+      )
+      .concat(BUTTON_CLASS_NAME, ".ace_selected,\n.ace_dark div.")
+      .concat(
+        BUTTON_CLASS_NAME,
+        ":hover:not(.ace_disabled) {\n    background-color: rgba(255, 255, 255, 0.1);\n}\n\n.ace_dark div."
+      )
+      .concat(
+        BUTTON_CLASS_NAME,
+        " .ace_icon_svg {\n    background-color: #eee;\n}\n\n.ace_dark div."
+      )
+      .concat(
+        BUTTON_CLASS_NAME,
+        ".ace_disabled .ace_icon_svg {\n    background-color: #979797;\n}\n\n.ace_dark ."
+      )
+      .concat(
+        BUTTON_CLASS_NAME,
+        ".ace_disabled {\n    color: #979797;\n}\n\n.ace_dark ."
+      )
+      .concat(
+        KEYBINDING_CLASS_NAME,
+        " div {\n    background-color: #575757;\n}\n\n.ace_checkmark::before {\n    content: '\u2713';\n}\n"
+      ),
+    "commandbar.css",
+    false
+  );
   exports.CommandBarTooltip = CommandBarTooltip;
   exports.TOOLTIP_CLASS_NAME = TOOLTIP_CLASS_NAME;
   exports.BUTTON_CLASS_NAME = BUTTON_CLASS_NAME;
-
 });
 (function () {
   window.require(["ace/ext/command_bar"], function (m) {
@@ -451,4 +623,3 @@ define("ace/ext/command_bar", ["require", "exports", "module", "ace/tooltip", "a
     }
   });
 })();
-            

@@ -1,105 +1,130 @@
-define("ace/mode/maze_highlight_rules", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text_highlight_rules"], function (require, exports, module) {
+define("ace/mode/maze_highlight_rules", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text_highlight_rules"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
   var MazeHighlightRules = function () {
     this.$rules = {
-      start: [{
-        token: "keyword.control",
-        regex: /##|``/,
-        comment: "Wall"
-      }, {
-        token: "entity.name.tag",
-        regex: /\.\./,
-        comment: "Path"
-      }, {
-        token: "keyword.control",
-        regex: /<>/,
-        comment: "Splitter"
-      }, {
-        token: "entity.name.tag",
-        regex: /\*[\*A-Za-z0-9]/,
-        comment: "Signal"
-      }, {
-        token: "constant.numeric",
-        regex: /[0-9]{2}/,
-        comment: "Pause"
-      }, {
-        token: "keyword.control",
-        regex: /\^\^/,
-        comment: "Start"
-      }, {
-        token: "keyword.control",
-        regex: /\(\)/,
-        comment: "Hole"
-      }, {
-        token: "support.function",
-        regex: />>/,
-        comment: "Out"
-      }, {
-        token: "support.function",
-        regex: />\//,
-        comment: "Ln Out"
-      }, {
-        token: "support.function",
-        regex: /<</,
-        comment: "In"
-      }, {
-        token: "keyword.control",
-        regex: /--/,
-        comment: "One use"
-      }, {
-        token: "constant.language",
-        regex: /%[LRUDNlrudn]/,
-        comment: "Direction"
-      }, {
-        token: [
-          "entity.name.function",
-          "keyword.other",
-          "keyword.operator",
-          "keyword.other",
-          "keyword.operator",
-          "constant.numeric",
-          "keyword.operator",
-          "keyword.other",
-          "keyword.operator",
-          "constant.numeric",
-          "string.quoted.double",
-          "string.quoted.single"
-        ],
-        regex: /([A-Za-z][A-Za-z0-9])( *-> *)(?:([-+*\/]=)( *)((?:-)?)([0-9]+)|(=)( *)(?:((?:-)?)([0-9]+)|("[^"]*")|('[^']*')))/,
-        comment: "Assignment function"
-      }, {
-        token: [
-          "entity.name.function",
-          "keyword.other",
-          "keyword.control",
-          "keyword.other",
-          "keyword.operator",
-          "keyword.other",
-          "keyword.operator",
-          "constant.numeric",
-          "entity.name.tag",
-          "keyword.other",
-          "keyword.control",
-          "keyword.other",
-          "constant.language",
-          "keyword.other",
-          "keyword.control",
-          "keyword.other",
-          "constant.language"
-        ],
-        regex: /([A-Za-z][A-Za-z0-9])( *-> *)(IF|if)( *)(?:([<>]=?|==)( *)((?:-)?)([0-9]+)|(\*[\*A-Za-z0-9]))( *)(THEN|then)( *)(%[LRUDNlrudn])(?:( *)(ELSE|else)( *)(%[LRUDNlrudn]))?/,
-        comment: "Equality Function"
-      }, {
-        token: "entity.name.function",
-        regex: /[A-Za-z][A-Za-z0-9]/,
-        comment: "Function cell"
-      }, {
-        token: "comment.line.double-slash",
-        regex: / *\/\/.*/,
-        comment: "Comment"
-      }]
+      start: [
+        {
+          token: "keyword.control",
+          regex: /##|``/,
+          comment: "Wall"
+        },
+        {
+          token: "entity.name.tag",
+          regex: /\.\./,
+          comment: "Path"
+        },
+        {
+          token: "keyword.control",
+          regex: /<>/,
+          comment: "Splitter"
+        },
+        {
+          token: "entity.name.tag",
+          regex: /\*[\*A-Za-z0-9]/,
+          comment: "Signal"
+        },
+        {
+          token: "constant.numeric",
+          regex: /[0-9]{2}/,
+          comment: "Pause"
+        },
+        {
+          token: "keyword.control",
+          regex: /\^\^/,
+          comment: "Start"
+        },
+        {
+          token: "keyword.control",
+          regex: /\(\)/,
+          comment: "Hole"
+        },
+        {
+          token: "support.function",
+          regex: />>/,
+          comment: "Out"
+        },
+        {
+          token: "support.function",
+          regex: />\//,
+          comment: "Ln Out"
+        },
+        {
+          token: "support.function",
+          regex: /<</,
+          comment: "In"
+        },
+        {
+          token: "keyword.control",
+          regex: /--/,
+          comment: "One use"
+        },
+        {
+          token: "constant.language",
+          regex: /%[LRUDNlrudn]/,
+          comment: "Direction"
+        },
+        {
+          token: [
+            "entity.name.function",
+            "keyword.other",
+            "keyword.operator",
+            "keyword.other",
+            "keyword.operator",
+            "constant.numeric",
+            "keyword.operator",
+            "keyword.other",
+            "keyword.operator",
+            "constant.numeric",
+            "string.quoted.double",
+            "string.quoted.single"
+          ],
+          regex:
+            /([A-Za-z][A-Za-z0-9])( *-> *)(?:([-+*\/]=)( *)((?:-)?)([0-9]+)|(=)( *)(?:((?:-)?)([0-9]+)|("[^"]*")|('[^']*')))/,
+          comment: "Assignment function"
+        },
+        {
+          token: [
+            "entity.name.function",
+            "keyword.other",
+            "keyword.control",
+            "keyword.other",
+            "keyword.operator",
+            "keyword.other",
+            "keyword.operator",
+            "constant.numeric",
+            "entity.name.tag",
+            "keyword.other",
+            "keyword.control",
+            "keyword.other",
+            "constant.language",
+            "keyword.other",
+            "keyword.control",
+            "keyword.other",
+            "constant.language"
+          ],
+          regex:
+            /([A-Za-z][A-Za-z0-9])( *-> *)(IF|if)( *)(?:([<>]=?|==)( *)((?:-)?)([0-9]+)|(\*[\*A-Za-z0-9]))( *)(THEN|then)( *)(%[LRUDNlrudn])(?:( *)(ELSE|else)( *)(%[LRUDNlrudn]))?/,
+          comment: "Equality Function"
+        },
+        {
+          token: "entity.name.function",
+          regex: /[A-Za-z][A-Za-z0-9]/,
+          comment: "Function cell"
+        },
+        {
+          token: "comment.line.double-slash",
+          regex: / *\/\/.*/,
+          comment: "Comment"
+        }
+      ]
     };
     this.normalizeRules();
   };
@@ -110,20 +135,36 @@ define("ace/mode/maze_highlight_rules", ["require", "exports", "module", "ace/li
   };
   oop.inherits(MazeHighlightRules, TextHighlightRules);
   exports.MazeHighlightRules = MazeHighlightRules;
-
 });
 
-define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop", "ace/range", "ace/mode/folding/fold_mode"], function (require, exports, module) {
+define("ace/mode/folding/cstyle", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/range",
+  "ace/mode/folding/fold_mode"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../../lib/oop");
   var Range = require("../../range").Range;
   var BaseFoldMode = require("./fold_mode").FoldMode;
-  var FoldMode = exports.FoldMode = function (commentRegex) {
+  var FoldMode = (exports.FoldMode = function (commentRegex) {
     if (commentRegex) {
-      this.foldingStartMarker = new RegExp(this.foldingStartMarker.source.replace(/\|[^|]*?$/, "|" + commentRegex.start));
-      this.foldingStopMarker = new RegExp(this.foldingStopMarker.source.replace(/\|[^|]*?$/, "|" + commentRegex.end));
+      this.foldingStartMarker = new RegExp(
+        this.foldingStartMarker.source.replace(
+          /\|[^|]*?$/,
+          "|" + commentRegex.start
+        )
+      );
+      this.foldingStopMarker = new RegExp(
+        this.foldingStopMarker.source.replace(
+          /\|[^|]*?$/,
+          "|" + commentRegex.end
+        )
+      );
     }
-  };
+  });
   oop.inherits(FoldMode, BaseFoldMode);
   (function () {
     this.foldingStartMarker = /([\{\[\(])[^\}\]\)]*$|^\s*(\/\*)/;
@@ -135,15 +176,22 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
     this.getFoldWidget = function (session, foldStyle, row) {
       var line = session.getLine(row);
       if (this.singleLineBlockCommentRe.test(line)) {
-        if (!this.startRegionRe.test(line) && !this.tripleStarBlockCommentRe.test(line))
+        if (
+          !this.startRegionRe.test(line) &&
+          !this.tripleStarBlockCommentRe.test(line)
+        )
           return "";
       }
       var fw = this._getFoldWidgetBase(session, foldStyle, row);
-      if (!fw && this.startRegionRe.test(line))
-        return "start"; // lineCommentRegionStart
+      if (!fw && this.startRegionRe.test(line)) return "start"; // lineCommentRegionStart
       return fw;
     };
-    this.getFoldWidgetRange = function (session, foldStyle, row, forceMultiline) {
+    this.getFoldWidgetRange = function (
+      session,
+      foldStyle,
+      row,
+      forceMultiline
+    ) {
       var line = session.getLine(row);
       if (this.startRegionRe.test(line))
         return this.getCommentRegionBlock(session, line, row);
@@ -156,13 +204,11 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
         if (range && !range.isMultiLine()) {
           if (forceMultiline) {
             range = this.getSectionRange(session, row);
-          } else if (foldStyle != "all")
-            range = null;
+          } else if (foldStyle != "all") range = null;
         }
         return range;
       }
-      if (foldStyle === "markbegin")
-        return;
+      if (foldStyle === "markbegin") return;
       var match = line.match(this.foldingStopMarker);
       if (match) {
         var i = match.index + match[0].length;
@@ -182,10 +228,8 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       while (++row < maxRow) {
         line = session.getLine(row);
         var indent = line.search(/\S/);
-        if (indent === -1)
-          continue;
-        if (startIndent > indent)
-          break;
+        if (indent === -1) continue;
+        if (startIndent > indent) break;
         var subRange = this.getFoldWidgetRange(session, "all", row);
         if (subRange) {
           if (subRange.start.row <= startRow) {
@@ -198,7 +242,12 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
         }
         endRow = row;
       }
-      return new Range(startRow, startColumn, endRow, session.getLine(endRow).length);
+      return new Range(
+        startRow,
+        startColumn,
+        endRow,
+        session.getLine(endRow).length
+      );
     };
     this.getCommentRegionBlock = function (session, line, row) {
       var startColumn = line.search(/\s*$/);
@@ -209,14 +258,10 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       while (++row < maxRow) {
         line = session.getLine(row);
         var m = re.exec(line);
-        if (!m)
-          continue;
-        if (m[1])
-          depth--;
-        else
-          depth++;
-        if (!depth)
-          break;
+        if (!m) continue;
+        if (m[1]) depth--;
+        else depth++;
+        if (!depth) break;
       }
       var endRow = row;
       if (endRow > startRow) {
@@ -224,10 +269,17 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       }
     };
   }).call(FoldMode.prototype);
-
 });
 
-define("ace/mode/maze", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text", "ace/mode/maze_highlight_rules", "ace/mode/folding/cstyle"], function (require, exports, module) {
+define("ace/mode/maze", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text",
+  "ace/mode/maze_highlight_rules",
+  "ace/mode/folding/cstyle"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextMode = require("./text").Mode;
@@ -245,7 +297,6 @@ define("ace/mode/maze", ["require", "exports", "module", "ace/lib/oop", "ace/mod
     this.snippetFileId = "ace/snippets/maze";
   }).call(Mode.prototype);
   exports.Mode = Mode;
-
 });
 (function () {
   window.require(["ace/mode/maze"], function (m) {
@@ -254,4 +305,3 @@ define("ace/mode/maze", ["require", "exports", "module", "ace/lib/oop", "ace/mod
     }
   });
 })();
-            

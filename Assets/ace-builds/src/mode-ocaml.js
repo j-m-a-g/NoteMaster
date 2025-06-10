@@ -1,15 +1,23 @@
-define("ace/mode/ocaml_highlight_rules", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text_highlight_rules"], function (require, exports, module) {
+define("ace/mode/ocaml_highlight_rules", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text_highlight_rules"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
   var OcamlHighlightRules = function () {
-    var keywords = ("and|as|assert|begin|class|constraint|do|done|downto|else|end|" +
+    var keywords =
+      "and|as|assert|begin|class|constraint|do|done|downto|else|end|" +
       "exception|external|for|fun|function|functor|if|in|include|" +
       "inherit|initializer|lazy|let|match|method|module|mutable|new|" +
       "object|of|open|or|private|rec|sig|struct|then|to|try|type|val|" +
-      "virtual|when|while|with");
-    var builtinConstants = ("true|false");
-    var builtinFunctions = ("abs|abs_big_int|abs_float|abs_num|abstract_tag|accept|access|acos|add|" +
+      "virtual|when|while|with";
+    var builtinConstants = "true|false";
+    var builtinFunctions =
+      "abs|abs_big_int|abs_float|abs_num|abstract_tag|accept|access|acos|add|" +
       "add_available_units|add_big_int|add_buffer|add_channel|add_char|" +
       "add_initializer|add_int_big_int|add_interfaces|add_num|add_string|" +
       "add_substitute|add_substring|alarm|allocated_bytes|allow_only|" +
@@ -187,33 +195,47 @@ define("ace/mode/ocaml_highlight_rules", ["require", "exports", "module", "ace/l
       "Int32|Int64|LargeFile|Lazy|Lexing|List|ListLabels|Make|Map|Marshal|" +
       "MoreLabels|Mutex|Nativeint|Num|Obj|Oo|Parsing|Pervasives|Printexc|" +
       "Printf|Queue|Random|Scanf|Scanning|Set|Sort|Stack|State|StdLabels|Str|" +
-      "Stream|String|StringLabels|Sys|Thread|ThreadUnix|Tk|Unix|UnixLabels|Weak");
-    var keywordMapper = this.createKeywordMapper({
-      "variable.language": "this",
-      "keyword": keywords,
-      "constant.language": builtinConstants,
-      "support.function": builtinFunctions
-    }, "identifier");
+      "Stream|String|StringLabels|Sys|Thread|ThreadUnix|Tk|Unix|UnixLabels|Weak";
+    var keywordMapper = this.createKeywordMapper(
+      {
+        "variable.language": "this",
+        keyword: keywords,
+        "constant.language": builtinConstants,
+        "support.function": builtinFunctions
+      },
+      "identifier"
+    );
     var decimalInteger = "(?:(?:[1-9]\\d*)|(?:0))";
     var octInteger = "(?:0[oO]?[0-7]+)";
     var hexInteger = "(?:0[xX][\\dA-Fa-f]+)";
     var binInteger = "(?:0[bB][01]+)";
-    var integer = "(?:" + decimalInteger + "|" + octInteger + "|" + hexInteger + "|" + binInteger + ")";
+    var integer =
+      "(?:" +
+      decimalInteger +
+      "|" +
+      octInteger +
+      "|" +
+      hexInteger +
+      "|" +
+      binInteger +
+      ")";
     var exponent = "(?:[eE][+-]?\\d+)";
     var fraction = "(?:\\.\\d+)";
     var intPart = "(?:\\d+)";
-    var pointFloat = "(?:(?:" + intPart + "?" + fraction + ")|(?:" + intPart + "\\.))";
-    var exponentFloat = "(?:(?:" + pointFloat + "|" + intPart + ")" + exponent + ")";
+    var pointFloat =
+      "(?:(?:" + intPart + "?" + fraction + ")|(?:" + intPart + "\\.))";
+    var exponentFloat =
+      "(?:(?:" + pointFloat + "|" + intPart + ")" + exponent + ")";
     var floatNumber = "(?:" + exponentFloat + "|" + pointFloat + ")";
     this.$rules = {
-      "start": [
+      start: [
         {
           token: "comment",
-          regex: '\\(\\*.*?\\*\\)\\s*?$'
+          regex: "\\(\\*.*?\\*\\)\\s*?$"
         },
         {
           token: "comment",
-          regex: '\\(\\*.*',
+          regex: "\\(\\*.*",
           next: "comment"
         },
         {
@@ -247,7 +269,8 @@ define("ace/mode/ocaml_highlight_rules", ["require", "exports", "module", "ace/l
         },
         {
           token: "keyword.operator",
-          regex: "\\+\\.|\\-\\.|\\*\\.|\\/\\.|#|;;|\\+|\\-|\\*|\\*\\*\\/|\\/\\/|%|<<|>>|&|\\||\\^|~|<|>|<=|=>|==|!=|<>|<-|="
+          regex:
+            "\\+\\.|\\-\\.|\\*\\.|\\/\\.|#|;;|\\+|\\-|\\*|\\*\\*\\/|\\/\\/|%|<<|>>|&|\\||\\^|~|<|>|<=|=>|==|!=|<>|<-|="
         },
         {
           token: "paren.lparen",
@@ -262,7 +285,7 @@ define("ace/mode/ocaml_highlight_rules", ["require", "exports", "module", "ace/l
           regex: "\\s+"
         }
       ],
-      "comment": [
+      comment: [
         {
           token: "comment", // closing comment
           regex: "\\*\\)",
@@ -272,43 +295,44 @@ define("ace/mode/ocaml_highlight_rules", ["require", "exports", "module", "ace/l
           defaultToken: "comment"
         }
       ],
-      "qstring": [
+      qstring: [
         {
           token: "string",
           regex: '"',
           next: "start"
-        }, {
+        },
+        {
           token: "string",
-          regex: '.+'
+          regex: ".+"
         }
       ]
     };
   };
   oop.inherits(OcamlHighlightRules, TextHighlightRules);
   exports.OcamlHighlightRules = OcamlHighlightRules;
-
 });
 
-define("ace/mode/matching_brace_outdent", ["require", "exports", "module", "ace/range"], function (require, exports, module) {
+define("ace/mode/matching_brace_outdent", [
+  "require",
+  "exports",
+  "module",
+  "ace/range"
+], function (require, exports, module) {
   "use strict";
   var Range = require("../range").Range;
-  var MatchingBraceOutdent = function () {
-  };
+  var MatchingBraceOutdent = function () {};
   (function () {
     this.checkOutdent = function (line, input) {
-      if (!/^\s+$/.test(line))
-        return false;
+      if (!/^\s+$/.test(line)) return false;
       return /^\s*\}/.test(input);
     };
     this.autoOutdent = function (doc, row) {
       var line = doc.getLine(row);
       var match = line.match(/^(\s*\})/);
-      if (!match)
-        return 0;
+      if (!match) return 0;
       var column = match[1].length;
-      var openBracePos = doc.findMatchingBracket({row: row, column: column});
-      if (!openBracePos || openBracePos.row == row)
-        return 0;
+      var openBracePos = doc.findMatchingBracket({ row: row, column: column });
+      if (!openBracePos || openBracePos.row == row) return 0;
       var indent = this.$getIndent(doc.getLine(openBracePos.row));
       doc.replace(new Range(row, 0, row, column - 1), indent);
     };
@@ -317,15 +341,25 @@ define("ace/mode/matching_brace_outdent", ["require", "exports", "module", "ace/
     };
   }).call(MatchingBraceOutdent.prototype);
   exports.MatchingBraceOutdent = MatchingBraceOutdent;
-
 });
 
-define("ace/mode/ocaml", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text", "ace/mode/ocaml_highlight_rules", "ace/mode/matching_brace_outdent", "ace/range"], function (require, exports, module) {
+define("ace/mode/ocaml", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text",
+  "ace/mode/ocaml_highlight_rules",
+  "ace/mode/matching_brace_outdent",
+  "ace/range"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextMode = require("./text").Mode;
-  var OcamlHighlightRules = require("./ocaml_highlight_rules").OcamlHighlightRules;
-  var MatchingBraceOutdent = require("./matching_brace_outdent").MatchingBraceOutdent;
+  var OcamlHighlightRules =
+    require("./ocaml_highlight_rules").OcamlHighlightRules;
+  var MatchingBraceOutdent =
+    require("./matching_brace_outdent").MatchingBraceOutdent;
   var Range = require("../range").Range;
   var Mode = function () {
     this.HighlightRules = OcamlHighlightRules;
@@ -357,8 +391,11 @@ define("ace/mode/ocaml", ["require", "exports", "module", "ace/lib/oop", "ace/mo
     this.getNextLineIndent = function (state, line, tab) {
       var indent = this.$getIndent(line);
       var tokens = this.getTokenizer().getLineTokens(line, state).tokens;
-      if (!(tokens.length && tokens[tokens.length - 1].type === 'comment') &&
-        state === 'start' && indenter.test(line))
+      if (
+        !(tokens.length && tokens[tokens.length - 1].type === "comment") &&
+        state === "start" &&
+        indenter.test(line)
+      )
         indent += tab;
       return indent;
     };
@@ -371,7 +408,6 @@ define("ace/mode/ocaml", ["require", "exports", "module", "ace/lib/oop", "ace/mo
     this.$id = "ace/mode/ocaml";
   }).call(Mode.prototype);
   exports.Mode = Mode;
-
 });
 (function () {
   window.require(["ace/mode/ocaml"], function (m) {
@@ -380,4 +416,3 @@ define("ace/mode/ocaml", ["require", "exports", "module", "ace/lib/oop", "ace/mo
     }
   });
 })();
-            

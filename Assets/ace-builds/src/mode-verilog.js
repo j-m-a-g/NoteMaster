@@ -1,9 +1,16 @@
-define("ace/mode/verilog_highlight_rules", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text_highlight_rules"], function (require, exports, module) {
+define("ace/mode/verilog_highlight_rules", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text_highlight_rules"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
   var VerilogHighlightRules = function () {
-    var keywords = "always|and|assign|automatic|begin|buf|bufif0|bufif1|case|casex|casez|cell|cmos|config|" +
+    var keywords =
+      "always|and|assign|automatic|begin|buf|bufif0|bufif1|case|casex|casez|cell|cmos|config|" +
       "deassign|default|defparam|design|disable|edge|else|end|endcase|endconfig|endfunction|endgenerate|endmodule|" +
       "endprimitive|endspecify|endtable|endtask|event|for|force|forever|fork|function|generate|genvar|highz0|" +
       "highz1|if|ifnone|incdir|include|initial|inout|input|instance|integer|join|large|liblist|library|localparam|" +
@@ -15,71 +22,94 @@ define("ace/mode/verilog_highlight_rules", ["require", "exports", "module", "ace
       "begin|bufif0|bufif1|case|casex|casez|config|else|end|endcase|endconfig|endfunction|" +
       "endgenerate|endmodule|endprimitive|endspecify|endtable|endtask|for|forever|function|generate|if|ifnone|" +
       "macromodule|module|primitive|repeat|specify|table|task|while";
-    var builtinConstants = ("true|false|null");
-    var builtinFunctions = ("count|min|max|avg|sum|rank|now|coalesce|main");
-    var keywordMapper = this.createKeywordMapper({
-      "support.function": builtinFunctions,
-      "keyword": keywords,
-      "constant.language": builtinConstants
-    }, "identifier", true);
+    var builtinConstants = "true|false|null";
+    var builtinFunctions = "count|min|max|avg|sum|rank|now|coalesce|main";
+    var keywordMapper = this.createKeywordMapper(
+      {
+        "support.function": builtinFunctions,
+        keyword: keywords,
+        "constant.language": builtinConstants
+      },
+      "identifier",
+      true
+    );
     this.$rules = {
-      "start": [{
-        token: "comment",
-        regex: "//.*$"
-      }, {
-        token: "comment.start",
-        regex: "/\\*",
-        next: [
-          {token: "comment.end", regex: "\\*/", next: "start"},
-          {defaultToken: "comment"}
-        ]
-      }, {
-        token: "string.start",
-        regex: '"',
-        next: [
-          {
-            token: "constant.language.escape",
-            regex: /\\(?:[ntvfa\\"]|[0-7]{1,3}|\x[a-fA-F\d]{1,2}|)/,
-            consumeLineEnd: true
-          },
-          {token: "string.end", regex: '"|$', next: "start"},
-          {defaultToken: "string"}
-        ]
-      }, {
-        token: "string",
-        regex: "'^[']'"
-      }, {
-        token: "constant.numeric", // float
-        regex: "[+-]?\\d+(?:(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)?\\b"
-      }, {
-        token: keywordMapper,
-        regex: "[a-zA-Z_$][a-zA-Z0-9_$]*\\b"
-      }, {
-        token: "keyword.operator",
-        regex: "\\+|\\-|\\/|\\/\\/|%|<@>|@>|<@|&|\\^|~|<|>|<=|=>|==|!=|<>|="
-      }, {
-        token: "paren.lparen",
-        regex: "[\\(]"
-      }, {
-        token: "paren.rparen",
-        regex: "[\\)]"
-      }, {
-        token: "text",
-        regex: "\\s+"
-      }]
+      start: [
+        {
+          token: "comment",
+          regex: "//.*$"
+        },
+        {
+          token: "comment.start",
+          regex: "/\\*",
+          next: [
+            { token: "comment.end", regex: "\\*/", next: "start" },
+            { defaultToken: "comment" }
+          ]
+        },
+        {
+          token: "string.start",
+          regex: '"',
+          next: [
+            {
+              token: "constant.language.escape",
+              regex: /\\(?:[ntvfa\\"]|[0-7]{1,3}|\x[a-fA-F\d]{1,2}|)/,
+              consumeLineEnd: true
+            },
+            { token: "string.end", regex: '"|$', next: "start" },
+            { defaultToken: "string" }
+          ]
+        },
+        {
+          token: "string",
+          regex: "'^[']'"
+        },
+        {
+          token: "constant.numeric", // float
+          regex: "[+-]?\\d+(?:(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)?\\b"
+        },
+        {
+          token: keywordMapper,
+          regex: "[a-zA-Z_$][a-zA-Z0-9_$]*\\b"
+        },
+        {
+          token: "keyword.operator",
+          regex: "\\+|\\-|\\/|\\/\\/|%|<@>|@>|<@|&|\\^|~|<|>|<=|=>|==|!=|<>|="
+        },
+        {
+          token: "paren.lparen",
+          regex: "[\\(]"
+        },
+        {
+          token: "paren.rparen",
+          regex: "[\\)]"
+        },
+        {
+          token: "text",
+          regex: "\\s+"
+        }
+      ]
     };
     this.normalizeRules();
   };
   oop.inherits(VerilogHighlightRules, TextHighlightRules);
   exports.VerilogHighlightRules = VerilogHighlightRules;
-
 });
 
-define("ace/mode/verilog", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text", "ace/mode/verilog_highlight_rules", "ace/range"], function (require, exports, module) {
+define("ace/mode/verilog", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text",
+  "ace/mode/verilog_highlight_rules",
+  "ace/range"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextMode = require("./text").Mode;
-  var VerilogHighlightRules = require("./verilog_highlight_rules").VerilogHighlightRules;
+  var VerilogHighlightRules =
+    require("./verilog_highlight_rules").VerilogHighlightRules;
   var Range = require("../range").Range;
   var Mode = function () {
     this.HighlightRules = VerilogHighlightRules;
@@ -88,12 +118,11 @@ define("ace/mode/verilog", ["require", "exports", "module", "ace/lib/oop", "ace/
   oop.inherits(Mode, TextMode);
   (function () {
     this.lineCommentStart = "//";
-    this.blockComment = {start: "/*", end: "*/"};
-    this.$quotes = {'"': '"'};
+    this.blockComment = { start: "/*", end: "*/" };
+    this.$quotes = { '"': '"' };
     this.$id = "ace/mode/verilog";
   }).call(Mode.prototype);
   exports.Mode = Mode;
-
 });
 (function () {
   window.require(["ace/mode/verilog"], function (m) {
@@ -102,4 +131,3 @@ define("ace/mode/verilog", ["require", "exports", "module", "ace/lib/oop", "ace/
     }
   });
 })();
-            

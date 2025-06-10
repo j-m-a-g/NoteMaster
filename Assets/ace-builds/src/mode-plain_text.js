@@ -1,4 +1,12 @@
-define("ace/mode/plain_text", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text", "ace/mode/text_highlight_rules", "ace/mode/behaviour"], function (require, exports, module) {
+define("ace/mode/plain_text", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text",
+  "ace/mode/text_highlight_rules",
+  "ace/mode/behaviour"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextMode = require("./text").Mode;
@@ -12,12 +20,11 @@ define("ace/mode/plain_text", ["require", "exports", "module", "ace/lib/oop", "a
   (function () {
     this.type = "text";
     this.getNextLineIndent = function (state, line, tab) {
-      return '';
+      return "";
     };
     this.$id = "ace/mode/plain_text";
   }).call(Mode.prototype);
   exports.Mode = Mode;
-
 });
 (function () {
   window.require(["ace/mode/plain_text"], function (m) {
@@ -26,4 +33,3 @@ define("ace/mode/plain_text", ["require", "exports", "module", "ace/lib/oop", "a
     }
   });
 })();
-            

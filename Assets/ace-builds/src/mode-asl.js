@@ -1,14 +1,22 @@
-define("ace/mode/doc_comment_highlight_rules", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text_highlight_rules"], function (require, exports, module) {
+define("ace/mode/doc_comment_highlight_rules", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text_highlight_rules"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
   var DocCommentHighlightRules = function () {
     this.$rules = {
-      "start": [
+      start: [
         {
           token: "comment.doc.tag",
           regex: "@\\w+(?=\\s|$)"
-        }, DocCommentHighlightRules.getTagRule(), {
+        },
+        DocCommentHighlightRules.getTagRule(),
+        {
           defaultToken: "comment.doc.body",
           caseInsensitive: true
         }
@@ -37,16 +45,24 @@ define("ace/mode/doc_comment_highlight_rules", ["require", "exports", "module", 
     };
   };
   exports.DocCommentHighlightRules = DocCommentHighlightRules;
-
 });
 
-define("ace/mode/asl_highlight_rules", ["require", "exports", "module", "ace/lib/oop", "ace/mode/doc_comment_highlight_rules", "ace/mode/text_highlight_rules"], function (require, exports, module) {
+define("ace/mode/asl_highlight_rules", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/doc_comment_highlight_rules",
+  "ace/mode/text_highlight_rules"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
-  var DocCommentHighlightRules = require("./doc_comment_highlight_rules").DocCommentHighlightRules;
+  var DocCommentHighlightRules =
+    require("./doc_comment_highlight_rules").DocCommentHighlightRules;
   var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
   var ASLHighlightRules = function () {
-    var keywords = ("Default|DefinitionBlock|Device|Method|Else|ElseIf|For|Function|If|Include|Method|Return|" +
+    var keywords =
+      "Default|DefinitionBlock|Device|Method|Else|ElseIf|For|Function|If|Include|Method|Return|" +
       "Scope|Switch|Case|While|Break|BreakPoint|Continue|NoOp|Wait|True|False|" +
       "AccessAs|Acquire|Alias|BankField|Buffer|Concatenate|ConcatenateResTemplate|" +
       "CondRefOf|Connection|CopyObject|CreateBitField|CreateByteField|CreateDWordField|" +
@@ -60,11 +76,13 @@ define("ace/mode/asl_highlight_rules", ["require", "exports", "module", "ace/lib
       "Signal|SizeOf|Sleep|SPISerialBusV2|Stall|StartDependentFn|StartDependentFnNoPri|" +
       "Store|ThermalZone|Timer|ToBCD|ToBuffer|ToDecimalString|ToInteger|ToPLD|ToString|" +
       "ToUUID|UARTSerialBusV2|Unicode|Unload|VendorLong|VendorShort|WordBusNumber|WordIO|" +
-      "WordSpace");
-    var keywordOperators = ("Add|And|Decrement|Divide|Increment|Index|LAnd|LEqual|LGreater|LGreaterEqual|" +
+      "WordSpace";
+    var keywordOperators =
+      "Add|And|Decrement|Divide|Increment|Index|LAnd|LEqual|LGreater|LGreaterEqual|" +
       "LLess|LLessEqual|LNot|LNotEqual|LOr|Mod|Multiply|NAnd|NOr|Not|Or|RefOf|Revision|" +
-      "ShiftLeft|ShiftRight|Subtract|XOr|DerefOf");
-    var flags = ("AttribQuick|AttribSendReceive|AttribByte|AttribBytes|AttribRawBytes|" +
+      "ShiftLeft|ShiftRight|Subtract|XOr|DerefOf";
+    var flags =
+      "AttribQuick|AttribSendReceive|AttribByte|AttribBytes|AttribRawBytes|" +
       "AttribRawProcessBytes|AttribWord|AttribBlock|AttribProcessCall|AttribBlockProcessCall|" +
       "AnyAcc|ByteAcc|WordAcc|DWordAcc|QWordAcc|BufferAcc|" +
       "AddressRangeMemory|AddressRangeReserved|AddressRangeNVS|AddressRangeACPI|" +
@@ -92,24 +110,28 @@ define("ace/mode/asl_highlight_rules", ["require", "exports", "module", "ace/lib
       "Width8Bit|Width16Bit|Width32Bit|Width64Bit|Width128Bit|Width256Bit|" +
       "SparseTranslation|DenseTranslation|TypeTranslation|TypeStatic|" +
       "Preserve|WriteAsOnes|WriteAsZeros|Transfer8|Transfer16|Transfer8_16|" +
-      "ThreeWireMode|FourWireMode");
-    var storageTypes = ("UnknownObj|IntObj|StrObj|BuffObj|PkgObj|FieldUnitObj|DeviceObj|" +
+      "ThreeWireMode|FourWireMode";
+    var storageTypes =
+      "UnknownObj|IntObj|StrObj|BuffObj|PkgObj|FieldUnitObj|DeviceObj|" +
       "EventObj|MethodObj|MutexObj|OpRegionObj|PowerResObj|ProcessorObj|" +
-      "ThermalZoneObj|BuffFieldObj|DDBHandleObj");
-    var builtinConstants = ("__FILE__|__PATH__|__LINE__|__DATE__|__IASL__");
-    var strNumbers = ("One|Ones|Zero");
-    var deprecated = ("Memory24|Processor");
-    var keywordMapper = this.createKeywordMapper({
-      "keyword": keywords,
-      "constant.numeric": strNumbers,
-      "keyword.operator": keywordOperators,
-      "constant.language": builtinConstants,
-      "storage.type": storageTypes,
-      "constant.library": flags,
-      "invalid.deprecated": deprecated
-    }, "identifier");
+      "ThermalZoneObj|BuffFieldObj|DDBHandleObj";
+    var builtinConstants = "__FILE__|__PATH__|__LINE__|__DATE__|__IASL__";
+    var strNumbers = "One|Ones|Zero";
+    var deprecated = "Memory24|Processor";
+    var keywordMapper = this.createKeywordMapper(
+      {
+        keyword: keywords,
+        "constant.numeric": strNumbers,
+        "keyword.operator": keywordOperators,
+        "constant.language": builtinConstants,
+        "storage.type": storageTypes,
+        "constant.library": flags,
+        "invalid.deprecated": deprecated
+      },
+      "identifier"
+    );
     this.$rules = {
-      "start": [
+      start: [
         {
           token: "comment",
           regex: "\\/\\/.*$"
@@ -125,61 +147,75 @@ define("ace/mode/asl_highlight_rules", ["require", "exports", "module", "ace/lib
           token: "comment", // ignored fields / comments
           regex: "\\\[",
           next: "ignoredfield"
-        }, {
+        },
+        {
           token: "variable",
           regex: "\\Local[0-7]|\\Arg[0-6]"
-        }, {
+        },
+        {
           token: "keyword", // pre-compiler directives
-          regex: "#\\s*(?:define|elif|else|endif|error|if|ifdef|ifndef|include|includebuffer|line|pragma|undef|warning)\\b",
+          regex:
+            "#\\s*(?:define|elif|else|endif|error|if|ifdef|ifndef|include|includebuffer|line|pragma|undef|warning)\\b",
           next: "directive"
-        }, {
+        },
+        {
           token: "string", // single line
           regex: '["](?:(?:\\\\.)|(?:[^"\\\\]))*?["]'
-        }, {
+        },
+        {
           token: "constant.character", // single line
           regex: "['](?:(?:\\\\.)|(?:[^'\\\\]))*?[']"
-        }, {
+        },
+        {
           token: "constant.numeric", // hex
           regex: /0[xX][0-9a-fA-F]+\b/
-        }, {
+        },
+        {
           token: "constant.numeric",
           regex: /[0-9]+\b/
-        }, {
+        },
+        {
           token: keywordMapper,
           regex: "[a-zA-Z_$][a-zA-Z0-9_$]*\\b"
-        }, {
+        },
+        {
           token: "keyword.operator",
           regex: /[!\~\*\/%+-<>\^|=&]/
-        }, {
+        },
+        {
           token: "lparen",
           regex: "[[({]"
-        }, {
+        },
+        {
           token: "rparen",
           regex: "[\\])}]"
-        }, {
+        },
+        {
           token: "text",
           regex: "\\s+"
         }
       ],
-      "comment": [
+      comment: [
         {
           token: "comment", // closing comment
           regex: "\\*\\/",
           next: "start"
-        }, {
+        },
+        {
           defaultToken: "comment"
         }
       ],
-      "ignoredfield": [
+      ignoredfield: [
         {
           token: "comment", // closing ignored fields / comments
           regex: "\\\]",
           next: "start"
-        }, {
+        },
+        {
           defaultToken: "comment"
         }
       ],
-      "directive": [
+      directive: [
         {
           token: "constant.other.multiline",
           regex: /\\/
@@ -210,24 +246,42 @@ define("ace/mode/asl_highlight_rules", ["require", "exports", "module", "ace/lib
         }
       ]
     };
-    this.embedRules(DocCommentHighlightRules, "doc-", [DocCommentHighlightRules.getEndRule("start")]);
+    this.embedRules(DocCommentHighlightRules, "doc-", [
+      DocCommentHighlightRules.getEndRule("start")
+    ]);
   };
   oop.inherits(ASLHighlightRules, TextHighlightRules);
   exports.ASLHighlightRules = ASLHighlightRules;
-
 });
 
-define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop", "ace/range", "ace/mode/folding/fold_mode"], function (require, exports, module) {
+define("ace/mode/folding/cstyle", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/range",
+  "ace/mode/folding/fold_mode"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../../lib/oop");
   var Range = require("../../range").Range;
   var BaseFoldMode = require("./fold_mode").FoldMode;
-  var FoldMode = exports.FoldMode = function (commentRegex) {
+  var FoldMode = (exports.FoldMode = function (commentRegex) {
     if (commentRegex) {
-      this.foldingStartMarker = new RegExp(this.foldingStartMarker.source.replace(/\|[^|]*?$/, "|" + commentRegex.start));
-      this.foldingStopMarker = new RegExp(this.foldingStopMarker.source.replace(/\|[^|]*?$/, "|" + commentRegex.end));
+      this.foldingStartMarker = new RegExp(
+        this.foldingStartMarker.source.replace(
+          /\|[^|]*?$/,
+          "|" + commentRegex.start
+        )
+      );
+      this.foldingStopMarker = new RegExp(
+        this.foldingStopMarker.source.replace(
+          /\|[^|]*?$/,
+          "|" + commentRegex.end
+        )
+      );
     }
-  };
+  });
   oop.inherits(FoldMode, BaseFoldMode);
   (function () {
     this.foldingStartMarker = /([\{\[\(])[^\}\]\)]*$|^\s*(\/\*)/;
@@ -239,15 +293,22 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
     this.getFoldWidget = function (session, foldStyle, row) {
       var line = session.getLine(row);
       if (this.singleLineBlockCommentRe.test(line)) {
-        if (!this.startRegionRe.test(line) && !this.tripleStarBlockCommentRe.test(line))
+        if (
+          !this.startRegionRe.test(line) &&
+          !this.tripleStarBlockCommentRe.test(line)
+        )
           return "";
       }
       var fw = this._getFoldWidgetBase(session, foldStyle, row);
-      if (!fw && this.startRegionRe.test(line))
-        return "start"; // lineCommentRegionStart
+      if (!fw && this.startRegionRe.test(line)) return "start"; // lineCommentRegionStart
       return fw;
     };
-    this.getFoldWidgetRange = function (session, foldStyle, row, forceMultiline) {
+    this.getFoldWidgetRange = function (
+      session,
+      foldStyle,
+      row,
+      forceMultiline
+    ) {
       var line = session.getLine(row);
       if (this.startRegionRe.test(line))
         return this.getCommentRegionBlock(session, line, row);
@@ -260,13 +321,11 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
         if (range && !range.isMultiLine()) {
           if (forceMultiline) {
             range = this.getSectionRange(session, row);
-          } else if (foldStyle != "all")
-            range = null;
+          } else if (foldStyle != "all") range = null;
         }
         return range;
       }
-      if (foldStyle === "markbegin")
-        return;
+      if (foldStyle === "markbegin") return;
       var match = line.match(this.foldingStopMarker);
       if (match) {
         var i = match.index + match[0].length;
@@ -286,10 +345,8 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       while (++row < maxRow) {
         line = session.getLine(row);
         var indent = line.search(/\S/);
-        if (indent === -1)
-          continue;
-        if (startIndent > indent)
-          break;
+        if (indent === -1) continue;
+        if (startIndent > indent) break;
         var subRange = this.getFoldWidgetRange(session, "all", row);
         if (subRange) {
           if (subRange.start.row <= startRow) {
@@ -302,7 +359,12 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
         }
         endRow = row;
       }
-      return new Range(startRow, startColumn, endRow, session.getLine(endRow).length);
+      return new Range(
+        startRow,
+        startColumn,
+        endRow,
+        session.getLine(endRow).length
+      );
     };
     this.getCommentRegionBlock = function (session, line, row) {
       var startColumn = line.search(/\s*$/);
@@ -313,14 +375,10 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       while (++row < maxRow) {
         line = session.getLine(row);
         var m = re.exec(line);
-        if (!m)
-          continue;
-        if (m[1])
-          depth--;
-        else
-          depth++;
-        if (!depth)
-          break;
+        if (!m) continue;
+        if (m[1]) depth--;
+        else depth++;
+        if (!depth) break;
       }
       var endRow = row;
       if (endRow > startRow) {
@@ -328,10 +386,17 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       }
     };
   }).call(FoldMode.prototype);
-
 });
 
-define("ace/mode/asl", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text", "ace/mode/asl_highlight_rules", "ace/mode/folding/cstyle"], function (require, exports, module) {
+define("ace/mode/asl", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text",
+  "ace/mode/asl_highlight_rules",
+  "ace/mode/folding/cstyle"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextMode = require("./text").Mode;
@@ -347,7 +412,6 @@ define("ace/mode/asl", ["require", "exports", "module", "ace/lib/oop", "ace/mode
     this.$id = "ace/mode/asl";
   }).call(Mode.prototype);
   exports.Mode = Mode;
-
 });
 (function () {
   window.require(["ace/mode/asl"], function (m) {
@@ -356,4 +420,3 @@ define("ace/mode/asl", ["require", "exports", "module", "ace/lib/oop", "ace/mode
     }
   });
 })();
-            

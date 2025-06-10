@@ -1,12 +1,20 @@
-define("ace/mode/perl_highlight_rules", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text_highlight_rules"], function (require, exports, module) {
+define("ace/mode/perl_highlight_rules", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text_highlight_rules"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
   var PerlHighlightRules = function () {
-    var keywords = ("base|constant|continue|else|elsif|for|foreach|format|goto|if|last|local|my|next|" +
-      "no|package|parent|redo|require|scalar|sub|unless|until|while|use|vars");
-    var buildinConstants = ("ARGV|ENV|INC|SIG");
-    var builtinFunctions = ("getprotobynumber|getprotobyname|getservbyname|gethostbyaddr|" +
+    var keywords =
+      "base|constant|continue|else|elsif|for|foreach|format|goto|if|last|local|my|next|" +
+      "no|package|parent|redo|require|scalar|sub|unless|until|while|use|vars";
+    var buildinConstants = "ARGV|ENV|INC|SIG";
+    var builtinFunctions =
+      "getprotobynumber|getprotobyname|getservbyname|gethostbyaddr|" +
       "gethostbyname|getservbyport|getnetbyaddr|getnetbyname|getsockname|" +
       "getpeername|setpriority|getprotoent|setprotoent|getpriority|" +
       "endprotoent|getservent|setservent|endservent|sethostent|socketpair|" +
@@ -27,82 +35,102 @@ define("ace/mode/perl_highlight_rules", ["require", "exports", "module", "ace/li
       "join|open|tell|pipe|exit|glob|warn|each|bind|sort|pack|eval|push|" +
       "keys|getc|kill|seek|sqrt|send|wait|rand|tied|read|time|exec|recv|" +
       "eof|chr|int|ord|exp|pos|pop|sin|log|abs|oct|hex|tie|cos|vec|END|ref|" +
-      "map|die|uc|lc|do");
-    var keywordMapper = this.createKeywordMapper({
-      "keyword": keywords,
-      "constant.language": buildinConstants,
-      "support.function": builtinFunctions
-    }, "identifier");
+      "map|die|uc|lc|do";
+    var keywordMapper = this.createKeywordMapper(
+      {
+        keyword: keywords,
+        "constant.language": buildinConstants,
+        "support.function": builtinFunctions
+      },
+      "identifier"
+    );
     this.$rules = {
-      "start": [
+      start: [
         {
           token: "comment.doc",
           regex: "^=(?:begin|item)\\b",
           next: "block_comment"
-        }, {
+        },
+        {
           token: "string.regexp",
-          regex: "[/](?:(?:\\[(?:\\\\]|[^\\]])+\\])|(?:\\\\/|[^\\]/]))*[/]\\w*\\s*(?=[).,;]|$)"
-        }, {
+          regex:
+            "[/](?:(?:\\[(?:\\\\]|[^\\]])+\\])|(?:\\\\/|[^\\]/]))*[/]\\w*\\s*(?=[).,;]|$)"
+        },
+        {
           token: "string", // single line
           regex: '["](?:(?:\\\\.)|(?:[^"\\\\]))*?["]'
-        }, {
+        },
+        {
           token: "string", // multi line string start
           regex: '["].*\\\\$',
           next: "qqstring"
-        }, {
+        },
+        {
           token: "string", // single line
           regex: "['](?:(?:\\\\.)|(?:[^'\\\\]))*?[']"
-        }, {
+        },
+        {
           token: "string", // multi line string start
           regex: "['].*\\\\$",
           next: "qstring"
-        }, {
+        },
+        {
           token: "constant.numeric", // hex
           regex: "0x[0-9a-fA-F]+\\b"
-        }, {
+        },
+        {
           token: "constant.numeric", // float
           regex: "[+-]?\\d+(?:(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)?\\b"
-        }, {
+        },
+        {
           token: keywordMapper,
           regex: "[a-zA-Z_$][a-zA-Z0-9_$]*\\b"
-        }, {
+        },
+        {
           token: "keyword.operator",
-          regex: "%#|\\$#|\\.\\.\\.|\\|\\|=|>>=|<<=|<=>|&&=|=>|!~|\\^=|&=|\\|=|\\.=|x=|%=|\\/=|\\*=|\\-=|\\+=|=~|\\*\\*|\\-\\-|\\.\\.|\\|\\||&&|\\+\\+|\\->|!=|==|>=|<=|>>|<<|,|=|\\?\\:|\\^|\\||x|%|\\/|\\*|<|&|\\\\|~|!|>|\\.|\\-|\\+|\\-C|\\-b|\\-S|\\-u|\\-t|\\-p|\\-l|\\-d|\\-f|\\-g|\\-s|\\-z|\\-k|\\-e|\\-O|\\-T|\\-B|\\-M|\\-A|\\-X|\\-W|\\-c|\\-R|\\-o|\\-x|\\-w|\\-r|\\b(?:and|cmp|eq|ge|gt|le|lt|ne|not|or|xor)"
-        }, {
+          regex:
+            "%#|\\$#|\\.\\.\\.|\\|\\|=|>>=|<<=|<=>|&&=|=>|!~|\\^=|&=|\\|=|\\.=|x=|%=|\\/=|\\*=|\\-=|\\+=|=~|\\*\\*|\\-\\-|\\.\\.|\\|\\||&&|\\+\\+|\\->|!=|==|>=|<=|>>|<<|,|=|\\?\\:|\\^|\\||x|%|\\/|\\*|<|&|\\\\|~|!|>|\\.|\\-|\\+|\\-C|\\-b|\\-S|\\-u|\\-t|\\-p|\\-l|\\-d|\\-f|\\-g|\\-s|\\-z|\\-k|\\-e|\\-O|\\-T|\\-B|\\-M|\\-A|\\-X|\\-W|\\-c|\\-R|\\-o|\\-x|\\-w|\\-r|\\b(?:and|cmp|eq|ge|gt|le|lt|ne|not|or|xor)"
+        },
+        {
           token: "comment",
           regex: "#.*$"
-        }, {
+        },
+        {
           token: "lparen",
           regex: "[[({]"
-        }, {
+        },
+        {
           token: "rparen",
           regex: "[\\])}]"
-        }, {
+        },
+        {
           token: "text",
           regex: "\\s+"
         }
       ],
-      "qqstring": [
+      qqstring: [
         {
           token: "string",
           regex: '(?:(?:\\\\.)|(?:[^"\\\\]))*?"',
           next: "start"
-        }, {
+        },
+        {
           token: "string",
-          regex: '.+'
+          regex: ".+"
         }
       ],
-      "qstring": [
+      qstring: [
         {
           token: "string",
           regex: "(?:(?:\\\\.)|(?:[^'\\\\]))*?'",
           next: "start"
-        }, {
+        },
+        {
           token: "string",
-          regex: '.+'
+          regex: ".+"
         }
       ],
-      "block_comment": [
+      block_comment: [
         {
           token: "comment.doc",
           regex: "^=cut\\b",
@@ -116,29 +144,29 @@ define("ace/mode/perl_highlight_rules", ["require", "exports", "module", "ace/li
   };
   oop.inherits(PerlHighlightRules, TextHighlightRules);
   exports.PerlHighlightRules = PerlHighlightRules;
-
 });
 
-define("ace/mode/matching_brace_outdent", ["require", "exports", "module", "ace/range"], function (require, exports, module) {
+define("ace/mode/matching_brace_outdent", [
+  "require",
+  "exports",
+  "module",
+  "ace/range"
+], function (require, exports, module) {
   "use strict";
   var Range = require("../range").Range;
-  var MatchingBraceOutdent = function () {
-  };
+  var MatchingBraceOutdent = function () {};
   (function () {
     this.checkOutdent = function (line, input) {
-      if (!/^\s+$/.test(line))
-        return false;
+      if (!/^\s+$/.test(line)) return false;
       return /^\s*\}/.test(input);
     };
     this.autoOutdent = function (doc, row) {
       var line = doc.getLine(row);
       var match = line.match(/^(\s*\})/);
-      if (!match)
-        return 0;
+      if (!match) return 0;
       var column = match[1].length;
-      var openBracePos = doc.findMatchingBracket({row: row, column: column});
-      if (!openBracePos || openBracePos.row == row)
-        return 0;
+      var openBracePos = doc.findMatchingBracket({ row: row, column: column });
+      if (!openBracePos || openBracePos.row == row) return 0;
       var indent = this.$getIndent(doc.getLine(openBracePos.row));
       doc.replace(new Range(row, 0, row, column - 1), indent);
     };
@@ -147,20 +175,36 @@ define("ace/mode/matching_brace_outdent", ["require", "exports", "module", "ace/
     };
   }).call(MatchingBraceOutdent.prototype);
   exports.MatchingBraceOutdent = MatchingBraceOutdent;
-
 });
 
-define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop", "ace/range", "ace/mode/folding/fold_mode"], function (require, exports, module) {
+define("ace/mode/folding/cstyle", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/range",
+  "ace/mode/folding/fold_mode"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../../lib/oop");
   var Range = require("../../range").Range;
   var BaseFoldMode = require("./fold_mode").FoldMode;
-  var FoldMode = exports.FoldMode = function (commentRegex) {
+  var FoldMode = (exports.FoldMode = function (commentRegex) {
     if (commentRegex) {
-      this.foldingStartMarker = new RegExp(this.foldingStartMarker.source.replace(/\|[^|]*?$/, "|" + commentRegex.start));
-      this.foldingStopMarker = new RegExp(this.foldingStopMarker.source.replace(/\|[^|]*?$/, "|" + commentRegex.end));
+      this.foldingStartMarker = new RegExp(
+        this.foldingStartMarker.source.replace(
+          /\|[^|]*?$/,
+          "|" + commentRegex.start
+        )
+      );
+      this.foldingStopMarker = new RegExp(
+        this.foldingStopMarker.source.replace(
+          /\|[^|]*?$/,
+          "|" + commentRegex.end
+        )
+      );
     }
-  };
+  });
   oop.inherits(FoldMode, BaseFoldMode);
   (function () {
     this.foldingStartMarker = /([\{\[\(])[^\}\]\)]*$|^\s*(\/\*)/;
@@ -172,15 +216,22 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
     this.getFoldWidget = function (session, foldStyle, row) {
       var line = session.getLine(row);
       if (this.singleLineBlockCommentRe.test(line)) {
-        if (!this.startRegionRe.test(line) && !this.tripleStarBlockCommentRe.test(line))
+        if (
+          !this.startRegionRe.test(line) &&
+          !this.tripleStarBlockCommentRe.test(line)
+        )
           return "";
       }
       var fw = this._getFoldWidgetBase(session, foldStyle, row);
-      if (!fw && this.startRegionRe.test(line))
-        return "start"; // lineCommentRegionStart
+      if (!fw && this.startRegionRe.test(line)) return "start"; // lineCommentRegionStart
       return fw;
     };
-    this.getFoldWidgetRange = function (session, foldStyle, row, forceMultiline) {
+    this.getFoldWidgetRange = function (
+      session,
+      foldStyle,
+      row,
+      forceMultiline
+    ) {
       var line = session.getLine(row);
       if (this.startRegionRe.test(line))
         return this.getCommentRegionBlock(session, line, row);
@@ -193,13 +244,11 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
         if (range && !range.isMultiLine()) {
           if (forceMultiline) {
             range = this.getSectionRange(session, row);
-          } else if (foldStyle != "all")
-            range = null;
+          } else if (foldStyle != "all") range = null;
         }
         return range;
       }
-      if (foldStyle === "markbegin")
-        return;
+      if (foldStyle === "markbegin") return;
       var match = line.match(this.foldingStopMarker);
       if (match) {
         var i = match.index + match[0].length;
@@ -219,10 +268,8 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       while (++row < maxRow) {
         line = session.getLine(row);
         var indent = line.search(/\S/);
-        if (indent === -1)
-          continue;
-        if (startIndent > indent)
-          break;
+        if (indent === -1) continue;
+        if (startIndent > indent) break;
         var subRange = this.getFoldWidgetRange(session, "all", row);
         if (subRange) {
           if (subRange.start.row <= startRow) {
@@ -235,7 +282,12 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
         }
         endRow = row;
       }
-      return new Range(startRow, startColumn, endRow, session.getLine(endRow).length);
+      return new Range(
+        startRow,
+        startColumn,
+        endRow,
+        session.getLine(endRow).length
+      );
     };
     this.getCommentRegionBlock = function (session, line, row) {
       var startColumn = line.search(/\s*$/);
@@ -246,14 +298,10 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       while (++row < maxRow) {
         line = session.getLine(row);
         var m = re.exec(line);
-        if (!m)
-          continue;
-        if (m[1])
-          depth--;
-        else
-          depth++;
-        if (!depth)
-          break;
+        if (!m) continue;
+        if (m[1]) depth--;
+        else depth++;
+        if (!depth) break;
       }
       var endRow = row;
       if (endRow > startRow) {
@@ -261,28 +309,40 @@ define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/oop"
       }
     };
   }).call(FoldMode.prototype);
-
 });
 
-define("ace/mode/perl", ["require", "exports", "module", "ace/lib/oop", "ace/mode/text", "ace/mode/perl_highlight_rules", "ace/mode/matching_brace_outdent", "ace/mode/folding/cstyle"], function (require, exports, module) {
+define("ace/mode/perl", [
+  "require",
+  "exports",
+  "module",
+  "ace/lib/oop",
+  "ace/mode/text",
+  "ace/mode/perl_highlight_rules",
+  "ace/mode/matching_brace_outdent",
+  "ace/mode/folding/cstyle"
+], function (require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextMode = require("./text").Mode;
   var PerlHighlightRules = require("./perl_highlight_rules").PerlHighlightRules;
-  var MatchingBraceOutdent = require("./matching_brace_outdent").MatchingBraceOutdent;
+  var MatchingBraceOutdent =
+    require("./matching_brace_outdent").MatchingBraceOutdent;
   var CStyleFoldMode = require("./folding/cstyle").FoldMode;
   var Mode = function () {
     this.HighlightRules = PerlHighlightRules;
     this.$outdent = new MatchingBraceOutdent();
-    this.foldingRules = new CStyleFoldMode({start: "^=(begin|item)\\b", end: "^=(cut)\\b"});
+    this.foldingRules = new CStyleFoldMode({
+      start: "^=(begin|item)\\b",
+      end: "^=(cut)\\b"
+    });
     this.$behaviour = this.$defaultBehaviour;
   };
   oop.inherits(Mode, TextMode);
   (function () {
     this.lineCommentStart = "#";
     this.blockComment = [
-      {start: "=begin", end: "=cut", lineStartOnly: true},
-      {start: "=item", end: "=cut", lineStartOnly: true}
+      { start: "=begin", end: "=cut", lineStartOnly: true },
+      { start: "=item", end: "=cut", lineStartOnly: true }
     ];
     this.getNextLineIndent = function (state, line, tab) {
       var indent = this.$getIndent(line);
@@ -309,7 +369,6 @@ define("ace/mode/perl", ["require", "exports", "module", "ace/lib/oop", "ace/mod
     this.snippetFileId = "ace/snippets/perl";
   }).call(Mode.prototype);
   exports.Mode = Mode;
-
 });
 (function () {
   window.require(["ace/mode/perl"], function (m) {
@@ -318,4 +377,3 @@ define("ace/mode/perl", ["require", "exports", "module", "ace/lib/oop", "ace/mod
     }
   });
 })();
-            
