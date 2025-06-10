@@ -1,8 +1,8 @@
 const mammothJSOptions = {
   styleMap: [
     "table => table[class='wordDocumentTable']",
-    "comment-reference => sup",
-  ],
+    "comment-reference => sup"
+  ]
 };
 
 function tasksOnceFileOpen(unhiddenView, fileInputObject) {
@@ -120,7 +120,7 @@ function readWordDocument() {
       })
       .catch(() => {
         throwAppError(
-          "The file you are trying to view does not seem like a Word document. Ensure the file extension is correct and try again.",
+          "The file you are trying to view does not seem like a Word document. Ensure the file extension is correct and try again."
         );
         closeCurrentFile();
       });
@@ -226,7 +226,7 @@ function parseCloudDocumentURL() {
       if (documentID === "") {
         toggleDialog(false, "insertCloudURLDialog", null);
         throwAppError(
-          "This Google Drive document URL is invalid. Please ensure you are copying the link to it from your browser's address bar and try again.",
+          "This Google Drive document URL is invalid. Please ensure you are copying the link to it from your browser's address bar and try again."
         );
         closeCurrentFile();
       } else {
@@ -255,7 +255,7 @@ function verifyIfiFrameInEmbed() {
     tasksOnceFileOpen(null, null);
   } else {
     throwAppError(
-      "The pasted code does not seem to be an iFrame element. Please ensure the content you are trying to embed is within an element of this type.",
+      "The pasted code does not seem to be an iFrame element. Please ensure the content you are trying to embed is within an element of this type."
     );
   }
 }

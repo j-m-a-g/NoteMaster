@@ -15,46 +15,46 @@ const toolbarOptions = [
     { align: "" },
     { align: "center" },
     { align: "right" },
-    { align: "justify" },
+    { align: "justify" }
   ],
 
-  ["clean"],
+  ["clean"]
 ];
 
 // Note editor on the right side
 const quill = new Quill("#mainEditor", {
   modules: {
-    toolbar: toolbarOptions,
+    toolbar: toolbarOptions
   },
   placeholder: "Start your note-taking here",
-  theme: "snow",
+  theme: "snow"
 });
 
 // Editor on the right side for viewing notes
 const anotherNoteViewQuill = new Quill("#anotherNoteView", {
   readOnly: true,
   modules: {
-    toolbar: null,
+    toolbar: null
   },
-  theme: "snow",
+  theme: "snow"
 });
 
 // Displays the user their Viewing History as a table to be copied
 const copyHistoryQuill = new Quill("#copyHistoryEditor", {
   readOnly: true,
   modules: {
-    toolbar: null,
+    toolbar: null
   },
-  theme: "snow",
+  theme: "snow"
 });
 
 const insertTableQuill = new Quill("#insertTableEditor", {
   readOnly: true,
   modules: {
-    toolbar: null,
+    toolbar: null
   },
   placeholder: "You haven't created a table yet",
-  theme: "snow",
+  theme: "snow"
 });
 
 const noteHTMLCodeEditor = ace.edit("noteHTML");
@@ -92,7 +92,7 @@ function onLoadTasks() {
     initiateNote(false);
     noteName.value = workingURLParameters.get("name");
     quill.clipboard.dangerouslyPasteHTML(
-      decodeURIComponent(workingURLParameters.get("markup")),
+      decodeURIComponent(workingURLParameters.get("markup"))
     );
 
     // Removes the parameters from being displayed in a user's address

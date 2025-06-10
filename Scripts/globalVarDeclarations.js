@@ -1,26 +1,34 @@
-const additionalVideoControls = document.getElementById("additionalVideoControls");
+const additionalVideoControls = document.getElementById(
+	"additionalVideoControls"
+);
 const adjustAppSectionSizes = document.getElementById("adjustAppSectionSizes");
 const adjustedHeight = (window.innerHeight - 34).toString() + "px";
 const anotherNoteFileInput = document.getElementById("anotherNoteFileInput");
 const anotherNoteView = document.getElementById("anotherNoteView");
 const anotherNoteViewer = document.getElementById("anotherNoteViewer");
-const appSectionSizesContainer = document.getElementById("appSectionSizesContainer");
+const appSectionSizesContainer = document.getElementById(
+	"appSectionSizesContainer"
+);
 const appSectionsTable = document.getElementById("appSectionsTable");
 const autoSave = document.getElementById("autoSave");
 const autoSaveCheck = document.getElementById("autoSaveCheck");
 const characterCount = document.getElementById("characterCount");
 const checkedImageSource = "Assets/Images/check_000000.svg";
 const chooseViewer = document.getElementById("chooseViewer");
-const closeFile = document.getElementById("closeFile")
+const closeFile = document.getElementById("closeFile");
 const cloudFileView = document.getElementById("cloudFileView");
 const cloudFileViewer = document.getElementById("cloudFileViewer");
 const codeFileInput = document.getElementById("codeFileInput");
 const codeFileView = document.getElementById("codeFileView");
 const codeFileViewer = document.getElementById("codeFileViewer");
-const codeFileViewerStatusBar = document.getElementById("codeFileViewerStatusBar");
+const codeFileViewerStatusBar = document.getElementById(
+	"codeFileViewerStatusBar"
+);
 const confirmSaveDialog = document.getElementById("confirmSaveDialog");
 const confirmViewerClose = document.getElementById("confirmViewerClose");
-const convertWordToNoteInput = document.getElementById("convertWordToNoteInput");
+const convertWordToNoteInput = document.getElementById(
+	"convertWordToNoteInput"
+);
 const copiedToClipboard = document.getElementById("copiedToClipboard");
 const copiedToClipboardString = "Copied to clipboard";
 const createdTable = document.getElementById("createdTable");
@@ -48,7 +56,7 @@ const lastViewedWebpages = [];
 const localDocuments = document.getElementById("localDocuments");
 const mainEditor = document.getElementById("mainEditor");
 const mainEditorZoom = document.getElementById("mainEditorZoom");
-const noFileSelected = document.getElementById('noFileSelected');
+const noFileSelected = document.getElementById("noFileSelected");
 const noteDownloadLink = document.getElementById("noteDownloadLink");
 const noteEditor = document.getElementById("noteEditor");
 const noteHTML = document.getElementById("noteHTML");
@@ -59,15 +67,19 @@ const onlineDesignViewer = document.getElementById("onlineDesignViewer");
 const onlineDocuments = document.getElementById("onlineDocuments");
 const openNoteFileInput = document.getElementById("openNoteFileInput");
 const pdfFileInput = document.getElementById("pdfFileInput");
-const pdfView = document.getElementById('pdfView');
+const pdfView = document.getElementById("pdfView");
 const pdfViewer = document.getElementById("pdfViewer");
-const programmingLanguageMode = document.getElementById("programmingLanguageMode");
+const programmingLanguageMode = document.getElementById(
+	"programmingLanguageMode"
+);
 const savedForLater = document.getElementById("savedForLater");
 const savedForLaterDetails = document.getElementById("savedForLaterDetails");
 const shareCopyLink = document.getElementById("shareCopyLink");
 const snackbar = document.getElementById("snackbar");
 const snackbarMessage = document.getElementById("snackbarMessage");
-const startFromScratchOptions = document.getElementById("startFromScratchOptions");
+const startFromScratchOptions = document.getElementById(
+	"startFromScratchOptions"
+);
 const tableColumns = document.getElementById("tableColumns");
 const tableRows = document.getElementById("tableRows");
 const textFileInput = document.getElementById("textFileInput");
@@ -91,7 +103,9 @@ const webpageURLBar = document.getElementById("webpageURLBar");
 const webpageView = document.getElementById("webpageView");
 const webpageViewer = document.getElementById("webpageViewer");
 const wordCount = document.getElementById("wordCount");
-const wordDocumentToNoteButton = document.getElementById("wordDocumentToNoteButton");
+const wordDocumentToNoteButton = document.getElementById(
+	"wordDocumentToNoteButton"
+);
 const wordDocumentView = document.getElementById("wordDocumentView");
 const wordDocumentViewer = document.getElementById("wordDocumentViewer");
 const wordFileInput = document.getElementById("wordFileInput");
