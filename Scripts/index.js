@@ -158,7 +158,7 @@ function onLoadTasks() {
       viewingSize.value = localStorage.getItem("viewingSizeValue");
       adjustViewingAndEditorSizes();
     }
-  }, 500);
+  }, 1);
 }
 
 // Sets the height of certain elements dependent on the height
