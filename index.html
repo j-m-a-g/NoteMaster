@@ -370,7 +370,7 @@
       </div>
     </nav>
 
-    <div style="padding-top: 34px">
+    <div style="padding-top: 35px">
       <table id="appSectionsTable" style="width: 100%; height: 100%">
         <tr id="appSectionsTableRow">
           <!-- Editing Panel -->
@@ -379,7 +379,7 @@
               class="reducedIntensity"
               src="Assets/Images/door_open_000000.svg"
             />
-            <h1 style="line-height: 20px">Welcome</h1>
+            <h1>Welcome</h1>
             <details
               id="startFromScratchOptions"
               onclick="savedForLaterDetails.open = false"
@@ -587,7 +587,7 @@
                         onclick="toggleDialog(true, 'writingInsights', null); displayWritingInsights()"
                       >
                         <img
-                          class="reducedIntensity menu"
+                          class="reducedIntensity menu" style="rotate:  180deg"
                           src="Assets/Images/data_alert_000000.svg"
                         />
                       </button>
@@ -1437,11 +1437,8 @@
 
     <div class="saveBeforeClosing" id="appLoad">
       <div class="dialogOverlay" style="margin-top: 15%">
-        <h1>
-          <img style="width: 22px" src="notemasterIcon.svg" />
-          Loading NoteMaster
-        </h1>
-        <h3 class="helperText">Just a moment</h3>
+        <h1>Loading NoteMaster</h1>
+        <h3 class="helperText">Just a moment...</h3>
         <progress id="appLoadProgress"></progress>
       </div>
     </div>
@@ -1464,7 +1461,7 @@
     <div class="saveBeforeClosing" hidden id="confirmViewerClose">
       <div class="dialogOverlay">
         <h1 class="saveBeforeClosing">
-          Are you sure you want to close this viewer?
+          Are You Sure You Want to Close This Viewer?
         </h1>
         <h3 class="saveBeforeClosing helperText">
           By doing this, you will revert your view back to Welcome and be able

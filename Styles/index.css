@@ -40,7 +40,7 @@ h4 {
 }
 
 a {
-  color: blue;
+  color: var(--blueAccent700);
   text-decoration-line: none;
 }
 
@@ -56,7 +56,7 @@ input[type="text"],
 input[type="url"],
 input[type="number"] {
   background-color: white;
-  border-color: var(--lightAccent300);
+  border-color: var(--lightAccent400);
   border-radius: 5px;
   border-style: solid;
   border-width: 1px;
@@ -81,7 +81,7 @@ summary {
   padding: 10px;
   border-radius: 5px;
   border-style: solid;
-  border-color: var(--lightAccent300);
+  border-color: var(--lightAccent400);
   border-width: 1px;
   margin-bottom: 5px;
 }
@@ -99,7 +99,7 @@ select {
   padding: 10px;
   border-radius: 5px;
   border-style: solid;
-  border-color: var(--lightAccent300);
+  border-color: var(--lightAccent400);
 }
 
 select:hover {
@@ -150,7 +150,7 @@ progress::-webkit-progress-value {
   border-right-width: 0;
   border-bottom-width: 1px;
   border-style: solid;
-  border-color: var(--lightAccent300);
+  border-color: var(--lightAccent400);
   background-color: var(--lightAccent100);
 }
 
@@ -174,7 +174,7 @@ button.menu:disabled:hover {
 
 div.menu {
   border-style: solid;
-  border-color: var(--lightAccent300);
+  border-color: var(--lightAccent400);
   border-width: 1px;
   width: 22%;
   background-color: white;
@@ -235,7 +235,7 @@ button.navButton {
   height: fit-content;
   width: 37px;
   border-width: 1px;
-  border-color: var(--lightAccent300);
+  border-color: var(--lightAccent400);
 }
 
 button.navButton:hover {
@@ -263,7 +263,7 @@ button.appSection {
   text-align: left;
   background-color: transparent;
   border-style: solid;
-  border-color: var(--lightAccent300);
+  border-color: var(--lightAccent400);
   border-width: 1px;
   margin-bottom: 5px;
   padding: 10px;
@@ -295,7 +295,7 @@ img.appSection {
   background-color: var(--lightAccent200);
   padding: 10px;
   border-radius: 5px;
-  border-color: var(--lightAccent300);
+  border-color: var(--lightAccent400);
   border-style: solid;
   border-width: 1px;
 }
@@ -306,7 +306,7 @@ div.savedNote {
   display: flex;
   margin-bottom: 5px;
   background-color: var(--lightAccent200);
-  border-color: var(--lightAccent300);
+  border-color: var(--lightAccent400);
   border-style: solid;
   border-width: 1px;
   border-radius: 5px;
@@ -341,7 +341,7 @@ div.savedNotePreview {
   border-radius: 5px;
   margin-bottom: 10px;
   border-style: solid;
-  border-color: var(--lightAccent300);
+  border-color: var(--lightAccent400);
   border-width: 1px;
 }
 
@@ -373,6 +373,9 @@ img.reducedIntensity {
 
 div.dialogOverlay {
   box-shadow: 1px 1px 10px 1px var(--lightAccent400);
+  border-color: var(--blueAccent500);
+  border-style: solid;
+  border-width: 1px;
   padding: 15px;
   position: fixed;
   background-color: white;
@@ -479,7 +482,7 @@ nav.statusBar {
   border-style: solid;
   border-width: 1px;
   font-size: 12px;
-  border-color: var(--lightAccent300);
+  border-color: var(--lightAccent400);
   margin-top: 5px;
   border-radius: 5px;
   background-color: var(--lightAccent200);
@@ -528,7 +531,7 @@ h3.saveBeforeClosing {
 #viewingHistoryTable {
   width: 100%;
   background-color: var(--lightAccent200);
-  border-color: var(--lightAccent300);
+  border-color: var(--lightAccent400);
   border-style: solid;
   border-width: 1px;
   border-radius: 5px;
@@ -555,7 +558,7 @@ button.warningBanner {
   border-style: solid;
   resize: none;
   word-wrap: normal;
-  border-color: var(--lightAccent300);
+  border-color: var(--lightAccent400);
 }
 
 #embeddedCode:focus {
