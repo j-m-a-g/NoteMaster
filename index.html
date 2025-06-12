@@ -31,7 +31,7 @@
     onload="onLoadTasks()"
     onresize="dynamicallySetHeight()"
   >
-    <!-- Global Snackbar -->
+    <!-- Global Snack-bar -->
     <div id="snackbar">
       <img
         class="primaryButton menu navSeparation"
@@ -564,7 +564,10 @@
                 />
                 <span class="helperText" style="font-size: 14px">.htm</span>
               </nav>
-              <div id="mainEditor" oninput="updateStatusBar()"></div>
+              <div
+                id="mainEditor"
+                oninput="updateStatusBar(); saveWritingCounts()"
+              ></div>
               <nav class="statusBar" id="editorStatusBar">
                 <table style="width: 100%">
                   <tr>
@@ -578,7 +581,11 @@
                       <span id="mainEditorZoom"></span>
                     </td>
                     <td>
-                      <button class="warningBanner" title="Writing Insights">
+                      <button
+                        class="warningBanner"
+                        title="Writing Insights"
+                        onclick="toggleDialog(true, 'writingInsights', null); displayWritingInsights()"
+                      >
                         <img
                           class="reducedIntensity menu"
                           src="Assets/Images/data_alert_000000.svg"
@@ -1428,6 +1435,17 @@
       </div>
     </div>
 
+    <div class="saveBeforeClosing" id="appLoad">
+      <div class="dialogOverlay">
+        <h1>
+          <img style="width: 22px" src="notemasterIcon.svg" />
+          Loading NoteMaster
+        </h1>
+        <h3 class="helperText">Just a moment</h3>
+        <progress id="appLoadProgress"></progress>
+      </div>
+    </div>
+
     <div class="saveBeforeClosing" id="mobileSizeIndication" style="z-index: 2">
       <div class="dialogOverlay" style="padding: 20px; text-align: center">
         <img
@@ -1658,6 +1676,7 @@
           OK
         </button>
       </div>
+      <!-- Viewing History -->
       <div class="dialogOverlay" hidden id="viewingHistory" style="height: 75%">
         <h1>Viewing History</h1>
         <h3 class="helperText">
@@ -1683,6 +1702,34 @@
         <br />
         <br />
         <div hidden id="copyHistoryEditor" style="user-select: all"></div>
+      </div>
+      <div class="dialogOverlay" hidden id="writingInsights">
+        <h1>Writing Insights</h1>
+        <table style="width: 100%; border-spacing: 10px">
+          <tr>
+            <td>
+              <h4 style="text-align: center">You Typed</h4>
+              <h1 style="text-align: center" id="totalWordCountDisplay"></h1>
+              <progress id="wordCountVisual"></progress>
+              <h4 style="text-align: center">Total Words</h4>
+            </td>
+            <td>
+              <h4 style="text-align: center">And</h4>
+              <h1
+                id="totalCharacterCountDisplay"
+                style="text-align: center"
+              ></h1>
+              <progress id="characterCountVisual"></progress>
+              <h4 style="text-align: center">Total Characters</h4>
+            </td>
+          </tr>
+        </table>
+        <a
+          class="hyperlinkButton"
+          onclick="toggleDialog(false, 'writingInsights', null)"
+        >
+          Close
+        </a>
       </div>
       <!-- Link to PDF -->
       <div class="dialogOverlay" hidden id="linkToPDF">

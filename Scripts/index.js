@@ -67,65 +67,98 @@ codeFileViewCodeEditor.session.setMode("ace/mode/plain_text");
 codeFileViewCodeEditor.setReadOnly(true);
 codeFileViewCodeEditor.session.setUseWrapMode(true);
 
-function onLoadTasks() {
-  if (
-    localStorage.getItem("noteProgress") !== "<p></p>" &&
-    localStorage.getItem("noteProgress") !== null
-  ) {
-    hideAndShow("createOrOpenContainer", "noteEditor");
-    quill.clipboard.dangerouslyPasteHTML(localStorage.getItem("noteProgress"));
-
-    noteName.value = localStorage.getItem("noteTitle");
-    alterMenuFunctions(false);
+function shiftProgressValue(progressObject, currentValue, maxValue, stepValue) {
+  if (currentValue < maxValue) {
+    document.getElementById(progressObject).value = currentValue;
+    currentValue += stepValue;
+    setTimeout(
+      shiftProgressValue,
+      0.125,
+      progressObject,
+      currentValue,
+      maxValue,
+      stepValue
+    );
   }
+}
 
+function onLoadTasks() {
   dynamicallySetHeight();
   updateStatusBar();
+  appLoadProgress.value = 100;
 
-  // GET STARTED WINDOW
-  if (localStorage.getItem("finishedGetStarted") !== "true") {
-    toggleDialog(true, "gettingStarted", null);
-  }
+  setTimeout(() => {
+    appLoad.hidden = true;
+    if (
+      localStorage.getItem("noteProgress") !== "<p></p>" &&
+      localStorage.getItem("noteProgress") !== null
+    ) {
+      hideAndShow("createOrOpenContainer", "noteEditor");
+      quill.clipboard.dangerouslyPasteHTML(
+        localStorage.getItem("noteProgress")
+      );
 
-  // SHARED NOTE CHECK
-  if (workingURLParameters.has("name") || workingURLParameters.has("markup")) {
-    initiateNote(false);
-    noteName.value = workingURLParameters.get("name");
-    quill.clipboard.dangerouslyPasteHTML(
-      decodeURIComponent(workingURLParameters.get("markup"))
-    );
+      noteName.value = localStorage.getItem("noteTitle");
+      alterMenuFunctions(false);
+    }
 
-    // Removes the parameters from being displayed in a user's address
-    // bar for security reasons
-    history.pushState(null, "", window.location.href.split("?")[0]);
-  }
+    // GET STARTED WINDOW
+    if (localStorage.getItem("finishedGetStarted") !== "true") {
+      toggleDialog(true, "gettingStarted", null);
+    }
 
-  // RETRIEVE SAVED NOTES
-  if (
-    localStorage.getItem("savedNotes") !== null &&
-    localStorage.getItem("savedNotes") !== ""
-  ) {
-    savedForLater.innerHTML = localStorage.getItem("savedNotes");
-    savedForLaterDetails.click();
-    savedForLaterDetails.open = true;
-  }
+    // WRITING INSIGHTS
+    if (localStorage.getItem("totalWordCount") === null) {
+      localStorage.setItem("totalWordCount", "0");
+    }
 
-  // USER PREFERENCES
-  // Auto Save
-  if (localStorage.getItem("autoSaveEnabled") === "true") {
-    autoSave.click();
-  }
+    if (localStorage.getItem("totalCharacterCount") === null) {
+      localStorage.setItem("totalCharacterCount", "0");
+    }
 
-  // Word Wrap
-  if (localStorage.getItem("wordWrapEnabled") === "true") {
-    wordWrap.click();
-  }
+    // SHARED NOTE CHECK
+    if (
+      workingURLParameters.has("name") ||
+      workingURLParameters.has("markup")
+    ) {
+      initiateNote(false);
+      noteName.value = workingURLParameters.get("name");
+      quill.clipboard.dangerouslyPasteHTML(
+        decodeURIComponent(workingURLParameters.get("markup"))
+      );
 
-  // Viewing and Editor Size
-  if (localStorage.getItem("viewingSizeValue") !== null) {
-    viewingSize.value = localStorage.getItem("viewingSizeValue");
-    adjustViewingAndEditorSizes();
-  }
+      // Removes the parameters from being displayed in a user's address
+      // bar for security reasons
+      history.pushState(null, "", window.location.href.split("?")[0]);
+    }
+
+    // RETRIEVE SAVED NOTES
+    if (
+      localStorage.getItem("savedNotes") !== null &&
+      localStorage.getItem("savedNotes") !== ""
+    ) {
+      savedForLater.innerHTML = localStorage.getItem("savedNotes");
+      savedForLaterDetails.click();
+      savedForLaterDetails.open = true;
+    }
+
+    // USER PREFERENCES
+    // Auto Save
+    if (localStorage.getItem("autoSaveEnabled") === "true") {
+      autoSave.click();
+    }
+
+    // Word Wrap
+    if (localStorage.getItem("wordWrapEnabled") === "true") {
+      wordWrap.click();
+    }
+
+    // Viewing and Editor Size
+    if (localStorage.getItem("viewingSizeValue") !== null) {
+      viewingSize.value = localStorage.getItem("viewingSizeValue");
+      adjustViewingAndEditorSizes();
+    }
+  }, 500);
 }
 
 // Sets the height of certain elements dependent on the height

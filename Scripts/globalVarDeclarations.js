@@ -1,3 +1,5 @@
+const addedCharacterCountArray = [];
+const addedWordCountArray = [];
 const additionalVideoControls = document.getElementById(
 	"additionalVideoControls"
 );
@@ -6,6 +8,8 @@ const adjustedHeight = (window.innerHeight - 34).toString() + "px";
 const anotherNoteFileInput = document.getElementById("anotherNoteFileInput");
 const anotherNoteView = document.getElementById("anotherNoteView");
 const anotherNoteViewer = document.getElementById("anotherNoteViewer");
+const appLoad = document.getElementById("appLoad");
+const appLoadProgress = document.getElementById("appLoadProgress");
 const appSectionSizesContainer = document.getElementById(
 	"appSectionSizesContainer"
 );
@@ -13,6 +17,7 @@ const appSectionsTable = document.getElementById("appSectionsTable");
 const autoSave = document.getElementById("autoSave");
 const autoSaveCheck = document.getElementById("autoSaveCheck");
 const characterCount = document.getElementById("characterCount");
+const characterCountVisual = document.getElementById("characterCountVisual");
 const checkedImageSource = "Assets/Images/check_000000.svg";
 const chooseViewer = document.getElementById("chooseViewer");
 const closeFile = document.getElementById("closeFile");
@@ -87,6 +92,10 @@ const textView = document.getElementById("textView");
 const textViewActions = document.getElementById("textViewActions");
 const textViewer = document.getElementById("textViewer");
 const textViewFont = document.getElementById("textViewFont");
+const totalCharacterCountDisplay = document.getElementById(
+	"totalCharacterCountDisplay"
+);
+const totalWordCountDisplay = document.getElementById("totalWordCountDisplay");
 const tubeVideoView = document.getElementById("tubeVideoView");
 const tubeVideoViewer = document.getElementById("tubeVideoViewer");
 const URLToCloudFile = document.getElementById("URLToCloudFile");
@@ -103,6 +112,7 @@ const webpageURLBar = document.getElementById("webpageURLBar");
 const webpageView = document.getElementById("webpageView");
 const webpageViewer = document.getElementById("webpageViewer");
 const wordCount = document.getElementById("wordCount");
+const wordCountVisual = document.getElementById("wordCountVisual");
 const wordDocumentToNoteButton = document.getElementById(
 	"wordDocumentToNoteButton"
 );
@@ -112,6 +122,8 @@ const wordFileInput = document.getElementById("wordFileInput");
 const wordWrap = document.getElementById("wordWrap");
 const wordWrapCheck = document.getElementById("wordWrapCheck");
 const workingURLParameters = new URLSearchParams(window.location.search);
+let addedCharacterCount = 0;
+let addedWordCount = 0;
 let codeFileViewFontSize = 12;
 let convertedFileOutput;
 let isOpeningAnotherNote = false;

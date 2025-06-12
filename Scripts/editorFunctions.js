@@ -273,3 +273,51 @@ function saveNoteForLater() {
   savedForLaterDetails.open = true;
   localStorage.setItem("savedNotes", savedForLater.innerHTML);
 }
+
+function saveWritingCounts() {
+  addedWordCountArray.push(quill.getText().split(/\s+/).length - 1);
+  if (addedWordCountArray.length >= 2) {
+    addedWordCount += Math.abs(addedWordCountArray[1] - addedWordCountArray[0]);
+    addedWordCountArray.splice(0, 1);
+    localStorage.setItem("totalWordCount", addedWordCount);
+  } else {
+    addedWordCount += addedWordCountArray[0];
+  }
+
+  addedCharacterCountArray.push(quill.getLength());
+  if (addedCharacterCountArray.length >= 2) {
+    addedCharacterCount += Math.abs(
+      addedCharacterCountArray[1] - addedCharacterCountArray[0]
+    );
+    addedCharacterCountArray.splice(0, 1);
+    localStorage.setItem("totalCharacterCount", addedCharacterCount);
+  } else {
+    addedCharacterCount += addedCharacterCountArray[0];
+  }
+
+  localStorage.setItem("totalWordCount", addedWordCount);
+  localStorage.setItem("totalCharacterCount", addedCharacterCount);
+}
+
+function displayWritingInsights() {
+  totalWordCountDisplay.innerHTML = localStorage.getItem("totalWordCount");
+  shiftProgressValue(
+    "wordCountVisual",
+    0,
+    localStorage.getItem("totalWordCount"),
+    2
+  );
+  wordCountVisual.max = 10 ** localStorage.getItem("totalWordCount").length;
+
+  totalCharacterCountDisplay.innerHTML = localStorage.getItem(
+    "totalCharacterCount"
+  );
+  shiftProgressValue(
+    "characterCountVisual",
+    0,
+    localStorage.getItem("totalCharacterCount"),
+    10
+  );
+  characterCountVisual.max =
+    10 ** localStorage.getItem("totalCharacterCount").length;
+}
