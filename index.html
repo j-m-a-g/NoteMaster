@@ -76,8 +76,9 @@
         class="menu"
         hidden
         id="fileMenu"
-        onmouseleave="document.getElementById('fileMenu').hidden = true"
-        onmouseover="document.getElementById('fileMenu').hidden = false"
+        onclick="this.hidden = true"
+        onmouseleave="this.hidden = true"
+        onmouseover="this.hidden = false"
         style="margin-left: 75px"
       >
         <button
@@ -192,8 +193,9 @@
         class="menu"
         hidden
         id="insertMenu"
-        onmouseleave="document.getElementById('insertMenu').hidden = true"
-        onmouseover="document.getElementById('insertMenu').hidden = false"
+        onclick="this.hidden = true"
+        onmouseleave="this.hidden = true"
+        onmouseover="this.hidden = false"
         style="margin-left: 120px"
       >
         <button
@@ -245,8 +247,9 @@
         class="menu"
         hidden
         id="viewMenu"
-        onmouseleave="document.getElementById('viewMenu').hidden = true"
-        onmouseover="document.getElementById('viewMenu').hidden = false"
+        onclick="this.hidden = true"
+        onmouseleave="this.hidden = true"
+        onmouseover="this.hidden = false"
         style="margin-left: 178px"
       >
         <button class="menuDropdown" onclick="window.location.reload()">
@@ -318,8 +321,9 @@
         class="menu"
         hidden
         id="settingsMenu"
-        onmouseleave="document.getElementById('settingsMenu').hidden = true"
-        onmouseover="document.getElementById('settingsMenu').hidden = false"
+        onclick="this.hidden = true"
+        onmouseleave="this.hidden = true"
+        onmouseover="this.hidden = false"
         style="margin-left: 231px"
       >
         <button
@@ -353,8 +357,9 @@
         class="menu"
         hidden
         id="helpMenu"
-        onmouseleave="document.getElementById('helpMenu').hidden = true"
-        onmouseover="document.getElementById('helpMenu').hidden = false"
+        onclick="this.hidden = true"
+        onmouseleave="this.hidden = true"
+        onmouseover="this.hidden = false"
         style="margin-left: 303px"
       >
         <button
@@ -587,7 +592,8 @@
                         onclick="toggleDialog(true, 'writingInsights', null); displayWritingInsights()"
                       >
                         <img
-                          class="reducedIntensity menu" style="rotate:  180deg"
+                          class="reducedIntensity menu"
+                          style="rotate: 180deg"
                           src="Assets/Images/data_alert_000000.svg"
                         />
                       </button>
