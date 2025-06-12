@@ -1,5 +1,5 @@
-const addedCharacterCountArray = [];
-const addedWordCountArray = [];
+let addedCharacterCountArray = [];
+let addedWordCountArray = [];
 const additionalVideoControls = document.getElementById(
 	"additionalVideoControls"
 );

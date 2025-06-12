@@ -108,12 +108,20 @@ function onLoadTasks() {
     }
 
     // WRITING INSIGHTS
-    if (localStorage.getItem("totalWordCount") === null) {
-      localStorage.setItem("totalWordCount", "0");
+    if (localStorage.getItem("totalWordCountArray") === null) {
+      addedWordCountArray = [];
+      localStorage.setItem(
+        "totalWordCountArray",
+        JSON.stringify(addedWordCountArray)
+      );
     }
 
-    if (localStorage.getItem("totalCharacterCount") === null) {
-      localStorage.setItem("totalCharacterCount", "0");
+    if (localStorage.getItem("totalCharacterCountArray") === null) {
+      addedCharacterCountArray = [];
+      localStorage.setItem(
+        "totalCharacterCountArray",
+        JSON.stringify(addedCharacterCountArray)
+      );
     }
 
     // SHARED NOTE CHECK

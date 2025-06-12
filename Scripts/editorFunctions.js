@@ -275,6 +275,7 @@ function saveNoteForLater() {
 }
 
 function saveWritingCounts() {
+  addedWordCountArray = JSON.parse(localStorage.getItem("totalWordCountArray"));
   addedWordCountArray.push(quill.getText().split(/\s+/).length - 1);
   if (addedWordCountArray.length >= 2) {
     addedWordCount += Math.abs(addedWordCountArray[1] - addedWordCountArray[0]);
@@ -284,6 +285,9 @@ function saveWritingCounts() {
     addedWordCount += addedWordCountArray[0];
   }
 
+  addedCharacterCountArray = JSON.parse(
+    localStorage.getItem("totalCharacterCountArray")
+  );
   addedCharacterCountArray.push(quill.getLength());
   if (addedCharacterCountArray.length >= 2) {
     addedCharacterCount += Math.abs(
@@ -296,7 +300,15 @@ function saveWritingCounts() {
   }
 
   localStorage.setItem("totalWordCount", addedWordCount);
+  localStorage.setItem(
+    "totalWordCountArray",
+    JSON.stringify(addedWordCountArray)
+  );
   localStorage.setItem("totalCharacterCount", addedCharacterCount);
+  localStorage.setItem(
+    "totalCharacterCountArray",
+    JSON.stringify(addedCharacterCountArray)
+  );
 }
 
 function displayWritingInsights() {
