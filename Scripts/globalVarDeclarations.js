@@ -1,7 +1,29 @@
-let addedCharacterCountArray = [];
-let addedWordCountArray = [];
 const additionalVideoControls = document.getElementById(
 	"additionalVideoControls"
+);
+const appSectionSizesContainer = document.getElementById(
+	"appSectionSizesContainer"
+);
+const codeFileViewerStatusBar = document.getElementById(
+	"codeFileViewerStatusBar"
+);
+const convertWordToNoteInput = document.getElementById(
+	"convertWordToNoteInput"
+);
+const programmingLanguageMode = document.getElementById(
+	"programmingLanguageMode"
+);
+const startFromScratchOptions = document.getElementById(
+	"startFromScratchOptions"
+);
+const totalCharacterCountDisplay = document.getElementById(
+	"totalCharacterCountDisplay"
+);
+const viewerStatusBarIndicator = document.getElementById(
+	"viewerStatusBarIndicator"
+);
+const wordDocumentToNoteButton = document.getElementById(
+	"wordDocumentToNoteButton"
 );
 const adjustAppSectionSizes = document.getElementById("adjustAppSectionSizes");
 const adjustedHeight = (window.innerHeight - 35).toString() + "px";
@@ -10,9 +32,6 @@ const anotherNoteView = document.getElementById("anotherNoteView");
 const anotherNoteViewer = document.getElementById("anotherNoteViewer");
 const appLoad = document.getElementById("appLoad");
 const appLoadProgress = document.getElementById("appLoadProgress");
-const appSectionSizesContainer = document.getElementById(
-	"appSectionSizesContainer"
-);
 const appSectionsTable = document.getElementById("appSectionsTable");
 const autoSave = document.getElementById("autoSave");
 const autoSaveCheck = document.getElementById("autoSaveCheck");
@@ -26,14 +45,8 @@ const cloudFileViewer = document.getElementById("cloudFileViewer");
 const codeFileInput = document.getElementById("codeFileInput");
 const codeFileView = document.getElementById("codeFileView");
 const codeFileViewer = document.getElementById("codeFileViewer");
-const codeFileViewerStatusBar = document.getElementById(
-	"codeFileViewerStatusBar"
-);
 const confirmSaveDialog = document.getElementById("confirmSaveDialog");
 const confirmViewerClose = document.getElementById("confirmViewerClose");
-const convertWordToNoteInput = document.getElementById(
-	"convertWordToNoteInput"
-);
 const copiedToClipboard = document.getElementById("copiedToClipboard");
 const copiedToClipboardString = "Copied to clipboard";
 const createdTable = document.getElementById("createdTable");
@@ -74,17 +87,11 @@ const openNoteFileInput = document.getElementById("openNoteFileInput");
 const pdfFileInput = document.getElementById("pdfFileInput");
 const pdfView = document.getElementById("pdfView");
 const pdfViewer = document.getElementById("pdfViewer");
-const programmingLanguageMode = document.getElementById(
-	"programmingLanguageMode"
-);
 const savedForLater = document.getElementById("savedForLater");
 const savedForLaterDetails = document.getElementById("savedForLaterDetails");
 const shareCopyLink = document.getElementById("shareCopyLink");
 const snackbar = document.getElementById("snackbar");
 const snackbarMessage = document.getElementById("snackbarMessage");
-const startFromScratchOptions = document.getElementById(
-	"startFromScratchOptions"
-);
 const tableColumns = document.getElementById("tableColumns");
 const tableRows = document.getElementById("tableRows");
 const textFileInput = document.getElementById("textFileInput");
@@ -92,9 +99,6 @@ const textView = document.getElementById("textView");
 const textViewActions = document.getElementById("textViewActions");
 const textViewer = document.getElementById("textViewer");
 const textViewFont = document.getElementById("textViewFont");
-const totalCharacterCountDisplay = document.getElementById(
-	"totalCharacterCountDisplay"
-);
 const totalWordCountDisplay = document.getElementById("totalWordCountDisplay");
 const tubeVideoView = document.getElementById("tubeVideoView");
 const tubeVideoViewer = document.getElementById("tubeVideoViewer");
@@ -113,9 +117,6 @@ const webpageView = document.getElementById("webpageView");
 const webpageViewer = document.getElementById("webpageViewer");
 const wordCount = document.getElementById("wordCount");
 const wordCountVisual = document.getElementById("wordCountVisual");
-const wordDocumentToNoteButton = document.getElementById(
-	"wordDocumentToNoteButton"
-);
 const wordDocumentView = document.getElementById("wordDocumentView");
 const wordDocumentViewer = document.getElementById("wordDocumentViewer");
 const wordFileInput = document.getElementById("wordFileInput");
@@ -123,7 +124,9 @@ const wordWrap = document.getElementById("wordWrap");
 const wordWrapCheck = document.getElementById("wordWrapCheck");
 const workingURLParameters = new URLSearchParams(window.location.search);
 let addedCharacterCount = 0;
+let addedCharacterCountArray = [];
 let addedWordCount = 0;
+let addedWordCountArray = [];
 let codeFileViewFontSize = 12;
 let convertedFileOutput;
 let isOpeningAnotherNote = false;

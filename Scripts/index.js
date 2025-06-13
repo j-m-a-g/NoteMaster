@@ -73,7 +73,7 @@ function shiftProgressValue(progressObject, currentValue, maxValue, stepValue) {
     currentValue += stepValue;
     setTimeout(
       shiftProgressValue,
-      0.125,
+      1,
       progressObject,
       currentValue,
       maxValue,

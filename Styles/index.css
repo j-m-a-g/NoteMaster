@@ -123,14 +123,13 @@ progress::-webkit-progress-bar {
 
 progress::-webkit-progress-value {
   background-color: var(--blueAccent500);
-  border-radius: 5px;
 }
 
 #snackbar {
   animation-name: initialFadeIn;
   animation-duration: 0.5s;
   display: none;
-  box-shadow: 1px 1px 5px black;
+  box-shadow: 1px 1px 10px 1px var(--lightAccent400);
   border-radius: 5px;
   padding: 10px;
   background-color: var(--blueAccent700);
@@ -373,7 +372,7 @@ img.reducedIntensity {
 
 div.dialogOverlay {
   box-shadow: 1px 1px 10px 1px var(--lightAccent400);
-  border-color: var(--blueAccent500);
+  border-color: var(--lightAccent400);
   border-style: solid;
   border-width: 1px;
   padding: 15px;
@@ -458,11 +457,11 @@ a.hyperlinkButton:hover {
 
 span.copyOnClick:hover {
   cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: var(--blueAccent50);
 }
 
 span.copyOnClick:active {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: var(--blueAccent100);
 }
 
 #mainEditor {

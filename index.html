@@ -271,6 +271,7 @@
           Adjust <u>P</u>anel Sizes
           <span class="helperText menuDropdown">Alt + P</span>
         </button>
+        <hr class="menuDropdown" />
         <button
           class="menuDropdown"
           disabled
@@ -286,6 +287,18 @@
         <button
           accesskey="h"
           class="menuDropdown"
+          onclick="toggleDialog(true, 'writingInsights', null); displayWritingInsights()"
+        >
+          <img
+            class="reducedIntensity menu"
+            style="rotate: 180deg"
+            src="Assets/Images/data_alert_000000.svg"
+          />
+          Writing Insights
+        </button>
+        <button
+          accesskey="h"
+          class="menuDropdown"
           onclick="toggleDialog(true, 'viewingHistory', null); appendViewingHistory()"
         >
           <img
@@ -294,20 +307,6 @@
           />
           Viewing <u>H</u>History
           <span class="helperText menuDropdown">Alt + H</span>
-        </button>
-        <hr class="menuDropdown" />
-        <button
-          class="menuDropdown"
-          id="wordWrap"
-          onclick="toggleMenuCheck('wordWrapCheck'); if (wordWrapCheck.src.includes(checkedImageSource)) { localStorage.setItem('wordWrapEnabled', 'true'); mainEditor.style.wordBreak = 'break-word' } else { localStorage.setItem('wordWrapEnabled', 'false'); mainEditor.style.wordBreak = 'normal' }"
-          title="May cause layout issues"
-        >
-          <img
-            class="menu"
-            id="wordWrapCheck"
-            src="Assets/Images/check_000000.svg"
-          />
-          Word Wrap
         </button>
       </div>
       <button
@@ -326,6 +325,19 @@
         onmouseover="this.hidden = false"
         style="margin-left: 231px"
       >
+        <button
+          class="menuDropdown"
+          id="wordWrap"
+          onclick="toggleMenuCheck('wordWrapCheck'); if (wordWrapCheck.src.includes(checkedImageSource)) { localStorage.setItem('wordWrapEnabled', 'true'); mainEditor.style.wordBreak = 'break-word' } else { localStorage.setItem('wordWrapEnabled', 'false'); mainEditor.style.wordBreak = 'normal' }"
+          title="May cause layout issues"
+        >
+          <img
+            class="menu"
+            id="wordWrapCheck"
+            src="Assets/Images/check_000000.svg"
+          />
+          Word Wrap
+        </button>
         <button
           class="menuDropdown"
           onclick="throwAppError('Feature has not been implemented yet')"
@@ -1027,58 +1039,79 @@
             </button>
           </td>
           <td class="appSection" hidden id="viewersContainer">
-            <nav
-              class="statusBar"
-              id="viewerStatusBar"
-              style="margin-top: 0; margin-bottom: 5px"
-            >
-              <table style="width: 100%">
-                <tr>
-                  <td style="width: 5%">
-                    <button
-                      class="warningBanner"
-                      onclick="toggleDialog(true,  'viewingHistory', null); appendViewingHistory()"
-                      title="Show viewing history"
-                    >
-                      <img
-                        class="reducedIntensity menu"
-                        src="Assets/Images/history_000000.svg"
-                      />
-                    </button>
-                  </td>
-                  <td>
-                    <span class="helperText">File Name</span>
-                    <span
-                      class="copyOnClick"
-                      id="fileName"
-                      onclick="navigator.clipboard.writeText(this.innerHTML); displaySnackbar(copiedToClipboardString)"
-                      title="Copy the file's name"
-                      >---</span
-                    >
-                  </td>
-                  <td>
-                    <span class="helperText">Size</span>
-                    <span
-                      class="copyOnClick"
-                      id="fileSize"
-                      onclick="navigator.clipboard.writeText(this.innerHTML); displaySnackbar(copiedToClipboardString)"
-                      title="Copy the file's size"
-                      >---</span
-                    >
-                  </td>
-                  <td>
-                    <span class="helperText">Last Modified</span>
-                    <span
-                      class="copyOnClick"
-                      id="fileLastModified"
-                      onclick="navigator.clipboard.writeText(this.innerHTML); displaySnackbar('Copied to clipboard')"
-                      title="Copy the file's last modified date"
-                      >---</span
-                    >
-                  </td>
-                </tr>
-              </table>
-            </nav>
+            <table style="position: fixed; margin-top: -15px">
+              <tr>
+                <td>
+                  <button
+                    class="warningBanner"
+                    id="viewerStatusBarIndicator"
+                    onmouseover="this.hidden = true; viewerStatusBar.hidden = false"
+                  >
+                    <img
+                      class="reducedIntensity menu"
+                      src="Assets/Images/info_000000.svg"
+                    />
+                  </button>
+                </td>
+                <td style="width: 100%">
+                  <nav
+                    onmouseover="this.hidden = false"
+                    onmouseleave="this.hidden = true; viewerStatusBarIndicator.hidden = false"
+                    hidden
+                    class="statusBar"
+                    id="viewerStatusBar"
+                    style="margin-top: 0; margin-bottom: 5px"
+                  >
+                    <table style="width: 100%">
+                      <tr>
+                        <td style="width: 5%">
+                          <button
+                            class="warningBanner"
+                            onclick="toggleDialog(true,  'viewingHistory', null); appendViewingHistory()"
+                            title="Show viewing history"
+                          >
+                            <img
+                              class="reducedIntensity menu"
+                              src="Assets/Images/history_000000.svg"
+                            />
+                          </button>
+                        </td>
+                        <td>
+                          <span class="helperText">File Name</span>
+                          <span
+                            class="copyOnClick"
+                            id="fileName"
+                            onclick="navigator.clipboard.writeText(this.innerHTML); displaySnackbar(copiedToClipboardString)"
+                            title="Copy the file's name"
+                            >---</span
+                          >
+                        </td>
+                        <td>
+                          <span class="helperText">Size</span>
+                          <span
+                            class="copyOnClick"
+                            id="fileSize"
+                            onclick="navigator.clipboard.writeText(this.innerHTML); displaySnackbar(copiedToClipboardString)"
+                            title="Copy the file's size"
+                            >---</span
+                          >
+                        </td>
+                        <td>
+                          <span class="helperText">Last Modified</span>
+                          <span
+                            class="copyOnClick"
+                            id="fileLastModified"
+                            onclick="navigator.clipboard.writeText(this.innerHTML); displaySnackbar('Copied to clipboard')"
+                            title="Copy the file's last modified date"
+                            >---</span
+                          >
+                        </td>
+                      </tr>
+                    </table>
+                  </nav>
+                </td>
+              </tr>
+            </table>
             <div id="noFileSelected" style="margin-top: 15%">
               <img
                 class="reducedIntensity"
@@ -1515,6 +1548,21 @@
             <td style="width: 50%">
               <table style="width: 100%">
                 <tr>
+                  <td>Editor (%)</td>
+                </tr>
+              </table>
+              <input
+                id="editorSize"
+                placeholder="50% (Default)"
+                readonly
+                style="width: 90%; margin-top: 5px"
+                type="number"
+                value="50"
+              />
+            </td>
+            <td style="width: 50%">
+              <table style="width: 100%">
+                <tr>
                   <td>Viewing (%)</td>
                   <td>
                     <a
@@ -1536,26 +1584,11 @@
                 max="68"
                 min="32"
                 oninput="adjustViewingAndEditorSizes()"
-                onkeydown="appSectionSizesContainer.style.backgroundColor = 'rgba(255, 255, 255, 0.5)'"
+                onkeydown="appSectionSizesContainer.style.backgroundColor = 'rgba(255, 255, 255, 0.75)'"
                 onkeyup="setTimeout(() => { appSectionSizesContainer.style.backgroundColor = 'white' }, 2000);"
-                onmousedown="appSectionSizesContainer.style.backgroundColor = 'rgba(255, 255, 255, 0.5)'"
+                onmousedown="appSectionSizesContainer.style.backgroundColor = 'rgba(255, 255, 255, 0.75)'"
                 onmouseup="setTimeout(() => { appSectionSizesContainer.style.backgroundColor = 'white' }, 2000);"
                 placeholder="50% (Default)"
-                style="width: 90%; margin-top: 5px"
-                type="number"
-                value="50"
-              />
-            </td>
-            <td style="width: 50%">
-              <table style="width: 100%">
-                <tr>
-                  <td>Editor (%)</td>
-                </tr>
-              </table>
-              <input
-                id="editorSize"
-                placeholder="50% (Default)"
-                readonly
                 style="width: 90%; margin-top: 5px"
                 type="number"
                 value="50"
@@ -2029,7 +2062,7 @@
         <img src="notemasterIcon.svg" style="width: 48px" />
         <h1>About</h1>
         <p style="line-height: 25px">
-          NoteMaster v25.05.x
+          NoteMaster v25.06.2-alpha-2
           <br />
           Designed and developed by
           <a href="https://github.com/j-m-a-g" target="_blank">J. Maghamez</a>

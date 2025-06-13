@@ -25,7 +25,7 @@ function tasksOnceFileOpen(unhiddenView, fileInputObject) {
       .toString()
       .slice(0, 21);
   } else {
-    viewerStatusBar.hidden = true;
+    viewerStatusBarIndicator.hidden = true;
   }
 
   // Adds the current file to Viewing History
@@ -91,7 +91,7 @@ function closeCurrentFile() {
   closeFile.disabled = true;
   chooseViewer.hidden = false;
   noFileSelected.hidden = false;
-  viewerStatusBar.hidden = false;
+  viewerStatusBarIndicator.hidden = false;
   viewersContainer.hidden = true;
 
   // Resets the state of the status bar
