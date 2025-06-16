@@ -309,7 +309,19 @@ function saveWritingCounts() {
     "totalCharacterCountArray",
     JSON.stringify(addedCharacterCountArray)
   );
+
+  // Check if the user has reached their typing target if set
+  if (localStorage.getItem("storedTypingTarget") !== null) {
+    if (wordsOrCharacters.value === "words" && Number(localStorage.getItem("totalWordCount")) >= Number(localStorage.getItem("storedTypingTarget"))) {
+      displaySnackbar("Typing Target reached");
+      resetTypingTarget.click();
+    } else if (wordsOrCharacters.value === "characters" && Number(localStorage.getItem("totalCharacterCount")) >= Number(localStorage.getItem("storedTypingTarget"))) {
+      displaySnackbar("Typing Target reached");
+      resetTypingTarget.click();
+    }
+  }
 }
+  
 
 function displayWritingInsights() {
   totalWordCountDisplay.innerHTML = localStorage.getItem("totalWordCount");
@@ -345,11 +357,20 @@ function configureTypingGoal(isReset) {
     case true:
       resetTypingTarget.hidden = isReset;
       setTypingTarget.hidden = !isReset;
+      localStorage.setItem("storedTypingTarget", null);
       displaySnackbar("Typing target reset");
       break;
     case false:
       setTypingTarget.hidden = !isReset;
       resetTypingTarget.hidden = isReset;
+      if (typingTarget.hidden) {
+        localStorage.setItem("storedTypingTarget", customTypingTarget.value);
+      } else {
+        localStorage.setItem("storedTypingTarget", typingTarget.value);
+      }
+
+      console.log(localStorage.getItem("storedTypingTarget"));
+
       displaySnackbar("Typing target set");
       break;
   }
