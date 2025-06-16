@@ -4,6 +4,9 @@ const additionalVideoControls = document.getElementById(
 const appSectionSizesContainer = document.getElementById(
 	"appSectionSizesContainer"
 );
+const characterCountVisualMax = document.getElementById(
+	"characterCountVisualMax"
+);
 const codeFileViewerStatusBar = document.getElementById(
 	"codeFileViewerStatusBar"
 );
@@ -87,8 +90,10 @@ const openNoteFileInput = document.getElementById("openNoteFileInput");
 const pdfFileInput = document.getElementById("pdfFileInput");
 const pdfView = document.getElementById("pdfView");
 const pdfViewer = document.getElementById("pdfViewer");
+const resetTypingTarget = document.getElementById("resetTypingTarget");
 const savedForLater = document.getElementById("savedForLater");
 const savedForLaterDetails = document.getElementById("savedForLaterDetails");
+const setTypingTarget = document.getElementById("setTypingTarget");
 const shareCopyLink = document.getElementById("shareCopyLink");
 const snackbar = document.getElementById("snackbar");
 const snackbarMessage = document.getElementById("snackbarMessage");
@@ -102,6 +107,7 @@ const textViewFont = document.getElementById("textViewFont");
 const totalWordCountDisplay = document.getElementById("totalWordCountDisplay");
 const tubeVideoView = document.getElementById("tubeVideoView");
 const tubeVideoViewer = document.getElementById("tubeVideoViewer");
+const typingTarget = document.getElementById("typingTarget");
 const URLToCloudFile = document.getElementById("URLToCloudFile");
 const URLToOnlineDesign = document.getElementById("URLToOnlineDesign");
 const URLToTubeVideo = document.getElementById("URLToTubeVideo");
@@ -117,11 +123,14 @@ const webpageView = document.getElementById("webpageView");
 const webpageViewer = document.getElementById("webpageViewer");
 const wordCount = document.getElementById("wordCount");
 const wordCountVisual = document.getElementById("wordCountVisual");
+const wordCountVisualMax = document.getElementById("wordCountVisualMax");
 const wordDocumentView = document.getElementById("wordDocumentView");
 const wordDocumentViewer = document.getElementById("wordDocumentViewer");
 const wordFileInput = document.getElementById("wordFileInput");
+const wordsOrCharacters = document.getElementById("wordsOrCharacters");
 const wordWrap = document.getElementById("wordWrap");
 const wordWrapCheck = document.getElementById("wordWrapCheck");
+const customTypingTarget = document.getElementById("customTypingTarget");
 const workingURLParameters = new URLSearchParams(window.location.search);
 let addedCharacterCount = 0;
 let addedCharacterCountArray = [];

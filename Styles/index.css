@@ -383,12 +383,17 @@ div.dialogOverlay {
   overflow-y: auto;
   margin-left: 25%;
   margin-right: 25%;
-  margin-top: 5%;
+  margin-top: 4%;
   width: 50%;
   height: fit-content;
   border-radius: 5px;
   animation-name: initialFadeIn;
   animation-duration: 0.25s;
+}
+
+h1.dialogOverlay {
+  padding-left: 5px;
+  padding-top: 8px;
 }
 
 button.primaryButton {

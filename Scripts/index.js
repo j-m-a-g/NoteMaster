@@ -204,31 +204,14 @@ function alterWindowTitle(isNoteClosed) {
 }
 
 function toggleViewer(isShown, currentViewer) {
-  switch (isShown) {
-    case true:
-      document.getElementById(currentViewer).hidden = false;
-      viewersContainer.hidden = false;
-      chooseViewer.hidden = true;
-      break;
-    case false:
-      document.getElementById(currentViewer).hidden = true;
-      viewersContainer.hidden = true;
-      chooseViewer.hidden = false;
-      break;
-  }
+  document.getElementById(currentViewer).hidden = !isShown;
+  viewersContainer.hidden = !isShown;
+  chooseViewer.hidden = isShown;
 }
 
 function toggleDialog(isShown, currentDialog, focusedElement) {
-  switch (isShown) {
-    case true:
-      dialogFocusBackground.hidden = false;
-      document.getElementById(currentDialog).hidden = false;
-      break;
-    case false:
-      dialogFocusBackground.hidden = true;
-      document.getElementById(currentDialog).hidden = true;
-      break;
-  }
+  dialogFocusBackground.hidden = !isShown;
+  document.getElementById(currentDialog).hidden = !isShown;
 
   if (focusedElement !== null) {
     document.getElementById(focusedElement).focus();

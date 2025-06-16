@@ -320,6 +320,7 @@ function displayWritingInsights() {
     2
   );
   wordCountVisual.max = 10 ** localStorage.getItem("totalWordCount").length;
+  wordCountVisualMax.innerHTML = wordCountVisual.max;
 
   totalCharacterCountDisplay.innerHTML = localStorage.getItem(
     "totalCharacterCount"
@@ -332,4 +333,24 @@ function displayWritingInsights() {
   );
   characterCountVisual.max =
     10 ** localStorage.getItem("totalCharacterCount").length;
+  characterCountVisualMax.innerHTML = characterCountVisual.max;
+}
+
+function configureTypingGoal(isReset) {
+  typingTarget.disabled = !isReset;
+  customTypingTarget.disabled = !isReset;
+  wordsOrCharacters.disabled = !isReset;
+
+  switch (isReset) {
+    case true:
+      resetTypingTarget.hidden = isReset;
+      setTypingTarget.hidden = !isReset;
+      displaySnackbar("Typing target reset");
+      break;
+    case false:
+      setTypingTarget.hidden = !isReset;
+      resetTypingTarget.hidden = isReset;
+      displaySnackbar("Typing target set");
+      break;
+  }
 }

@@ -628,196 +628,198 @@
                 On <u>Y</u>our Computer
                 <span class="helperText menuDropdown">Alt + Y</span>
               </summary>
-              <table style="width: 100%">
-                <tr>
-                  <td>
-                    <button
-                      class="appSection"
-                      onclick="pdfFileInput.click(); toggleViewer(true, 'pdfViewer')"
-                    >
-                      <table>
-                        <tr>
-                          <td>
-                            <img
-                              class="appSection"
-                              src="Assets/Images/picture_as_pdf_D16D6A.svg"
-                            />
-                          </td>
-                          <td>
-                            <span class="buttonHeading">PDF</span>
-                            <br />
-                            <input
-                              accept="application/pdf"
-                              hidden
-                              id="pdfFileInput"
-                              onchange="pdfView.src = window.URL.createObjectURL(this.files[0]); tasksOnceFileOpen('pdfView', 'pdfFileInput')"
-                              type="file"
-                            />
-                            <span class="helperText"
-                              >Portable Document Format. .pdf</span
-                            >
-                          </td>
-                        </tr>
-                      </table>
-                    </button>
-                  </td>
-                  <td>
-                    <button
-                      class="appSection"
-                      onclick="imageFileInput.click(); toggleViewer(true, 'imageViewer')"
-                    >
-                      <table>
-                        <tr>
-                          <td>
-                            <img
-                              class="appSection"
-                              src="Assets/Images/image_80A4AE.svg"
-                            />
-                          </td>
-                          <td>
-                            <span class="buttonHeading">Image</span>
-                            <br />
-                            <input
-                              accept="image/*"
-                              hidden
-                              id="imageFileInput"
-                              onchange="imageView.src = window.URL.createObjectURL(this.files[0]); tasksOnceFileOpen('imageView', 'imageFileInput')"
-                              type="file"
-                            />
-                            <span class="helperText"
-                              >e.x: .png, .jpg, .gif, .svg, .webp</span
-                            >
-                          </td>
-                        </tr>
-                      </table>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <button
-                      class="appSection"
-                      onclick="textFileInput.click(); toggleViewer(true, 'textViewer')"
-                    >
-                      <table>
-                        <tr>
-                          <td>
-                            <img
-                              class="appSection"
-                              src="Assets/Images/draft_80A4AE.svg"
-                            />
-                          </td>
-                          <td>
-                            <span class="buttonHeading">Plain Text</span>
-                            <br />
-                            <input
-                              hidden
-                              id="textFileInput"
-                              onchange="readTextFile(); textViewActions.hidden = false; textView.hidden = false; tasksOnceFileOpen('textViewer', 'textFileInput')"
-                              type="file"
-                            />
-                            <span class="helperText"
-                              >View any file in plain text</span
-                            >
-                          </td>
-                        </tr>
-                      </table>
-                    </button>
-                  </td>
-                  <td>
-                    <button
-                      class="appSection"
-                      onclick="videoFileInput.click(); toggleViewer(true, 'videoViewer')"
-                    >
-                      <table>
-                        <tr>
-                          <td>
-                            <img
-                              class="appSection"
-                              src="Assets/Images/play_arrow_8B7DBE.svg"
-                            />
-                          </td>
-                          <td>
-                            <span class="buttonHeading">Audio/Video</span>
-                            <br />
-                            <input
-                              accept="audio/*, video/*"
-                              hidden
-                              id="videoFileInput"
-                              onchange="videoView.src = window.URL.createObjectURL(this.files[0]); tasksOnceFileOpen('videoView', 'videoFileInput'); additionalVideoControls.hidden = false"
-                              type="file"
-                            />
-                            <span class="helperText"
-                              >e.x: .mp3, .wav, .mp4</span
-                            >
-                          </td>
-                        </tr>
-                      </table>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <button
-                      class="appSection"
-                      onclick="wordFileInput.click(); toggleViewer(true, 'wordDocumentViewer')"
-                    >
-                      <table>
-                        <tr>
-                          <td>
-                            <img
-                              class="appSection"
-                              src="Assets/Images/description_789DE5.svg"
-                            />
-                          </td>
-                          <td>
-                            <span class="buttonHeading">Word Document</span>
-                            <br />
-                            <input
-                              accept=".xml, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                              hidden
-                              id="wordFileInput"
-                              onchange="readWordDocument(); tasksOnceFileOpen('wordDocumentView', 'wordFileInput')"
-                              type="file"
-                            />
-                            <span class="helperText">.doc, .docx</span>
-                          </td>
-                        </tr>
-                      </table>
-                    </button>
-                  </td>
-                  <td>
-                    <button
-                      class="appSection"
-                      onclick="codeFileInput.click(); toggleViewer(true, 'codeFileViewer')"
-                    >
-                      <table>
-                        <tr>
-                          <td>
-                            <img
-                              class="appSection"
-                              src="Assets/Images/code_9DC384.svg"
-                            />
-                          </td>
-                          <td>
-                            <span class="buttonHeading">Code File</span>
-                            <br />
-                            <input
-                              hidden
-                              id="codeFileInput"
-                              onchange="viewCodeFile()"
-                              type="file"
-                            />
-                            <span class="helperText"
-                              >e.x: .py, .html, .css, .js</span
-                            >
-                          </td>
-                        </tr>
-                      </table>
-                    </button>
-                  </td>
-                </tr>
-              </table>
+              <div style="height: 226px; overflow-y: auto">
+                <table style="width: 100%">
+                  <tr>
+                    <td>
+                      <button
+                        class="appSection"
+                        onclick="pdfFileInput.click(); toggleViewer(true, 'pdfViewer')"
+                      >
+                        <table>
+                          <tr>
+                            <td>
+                              <img
+                                class="appSection"
+                                src="Assets/Images/picture_as_pdf_D16D6A.svg"
+                              />
+                            </td>
+                            <td>
+                              <span class="buttonHeading">PDF</span>
+                              <br />
+                              <input
+                                accept="application/pdf"
+                                hidden
+                                id="pdfFileInput"
+                                onchange="pdfView.src = window.URL.createObjectURL(this.files[0]); tasksOnceFileOpen('pdfView', 'pdfFileInput')"
+                                type="file"
+                              />
+                              <span class="helperText"
+                                >Portable Document Format. .pdf</span
+                              >
+                            </td>
+                          </tr>
+                        </table>
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        class="appSection"
+                        onclick="imageFileInput.click(); toggleViewer(true, 'imageViewer')"
+                      >
+                        <table>
+                          <tr>
+                            <td>
+                              <img
+                                class="appSection"
+                                src="Assets/Images/image_80A4AE.svg"
+                              />
+                            </td>
+                            <td>
+                              <span class="buttonHeading">Image</span>
+                              <br />
+                              <input
+                                accept="image/*"
+                                hidden
+                                id="imageFileInput"
+                                onchange="imageView.src = window.URL.createObjectURL(this.files[0]); tasksOnceFileOpen('imageView', 'imageFileInput')"
+                                type="file"
+                              />
+                              <span class="helperText"
+                                >e.x: .png, .jpg, .gif, .svg, .webp</span
+                              >
+                            </td>
+                          </tr>
+                        </table>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <button
+                        class="appSection"
+                        onclick="textFileInput.click(); toggleViewer(true, 'textViewer')"
+                      >
+                        <table>
+                          <tr>
+                            <td>
+                              <img
+                                class="appSection"
+                                src="Assets/Images/draft_80A4AE.svg"
+                              />
+                            </td>
+                            <td>
+                              <span class="buttonHeading">Plain Text</span>
+                              <br />
+                              <input
+                                hidden
+                                id="textFileInput"
+                                onchange="readTextFile(); textViewActions.hidden = false; textView.hidden = false; tasksOnceFileOpen('textViewer', 'textFileInput')"
+                                type="file"
+                              />
+                              <span class="helperText"
+                                >View any file in plain text</span
+                              >
+                            </td>
+                          </tr>
+                        </table>
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        class="appSection"
+                        onclick="videoFileInput.click(); toggleViewer(true, 'videoViewer')"
+                      >
+                        <table>
+                          <tr>
+                            <td>
+                              <img
+                                class="appSection"
+                                src="Assets/Images/play_arrow_8B7DBE.svg"
+                              />
+                            </td>
+                            <td>
+                              <span class="buttonHeading">Audio/Video</span>
+                              <br />
+                              <input
+                                accept="audio/*, video/*"
+                                hidden
+                                id="videoFileInput"
+                                onchange="videoView.src = window.URL.createObjectURL(this.files[0]); tasksOnceFileOpen('videoView', 'videoFileInput'); additionalVideoControls.hidden = false"
+                                type="file"
+                              />
+                              <span class="helperText"
+                                >e.x: .mp3, .wav, .mp4</span
+                              >
+                            </td>
+                          </tr>
+                        </table>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <button
+                        class="appSection"
+                        onclick="wordFileInput.click(); toggleViewer(true, 'wordDocumentViewer')"
+                      >
+                        <table>
+                          <tr>
+                            <td>
+                              <img
+                                class="appSection"
+                                src="Assets/Images/description_789DE5.svg"
+                              />
+                            </td>
+                            <td>
+                              <span class="buttonHeading">Word Document</span>
+                              <br />
+                              <input
+                                accept=".xml, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                                hidden
+                                id="wordFileInput"
+                                onchange="readWordDocument(); tasksOnceFileOpen('wordDocumentView', 'wordFileInput')"
+                                type="file"
+                              />
+                              <span class="helperText">.doc, .docx</span>
+                            </td>
+                          </tr>
+                        </table>
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        class="appSection"
+                        onclick="codeFileInput.click(); toggleViewer(true, 'codeFileViewer')"
+                      >
+                        <table>
+                          <tr>
+                            <td>
+                              <img
+                                class="appSection"
+                                src="Assets/Images/code_9DC384.svg"
+                              />
+                            </td>
+                            <td>
+                              <span class="buttonHeading">Code File</span>
+                              <br />
+                              <input
+                                hidden
+                                id="codeFileInput"
+                                onchange="viewCodeFile()"
+                                type="file"
+                              />
+                              <span class="helperText"
+                                >e.x: .py, .html, .css, .js</span
+                              >
+                            </td>
+                          </tr>
+                        </table>
+                      </button>
+                    </td>
+                  </tr>
+                </table>
+              </div>
             </details>
             <details id="onlineDocuments">
               <summary accesskey="l" onclick="localDocuments.open = false">
@@ -828,185 +830,190 @@
                 On<u>l</u>ine
                 <span class="helperText menuDropdown">Alt + L</span>
               </summary>
-              <table style="width: 100%">
-                <tr>
-                  <td>
-                    <button
-                      class="appSection"
-                      onclick="toggleDialog(true, 'linkToPDF', 'URLToPDFInput')"
-                    >
-                      <table>
-                        <tr>
-                          <td>
-                            <img
-                              class="appSection"
-                              src="Assets/Images/picture_as_pdf_D16D6A.svg"
-                            />
-                            <br />
-                            <img
-                              class="reducedIntensity appSection"
-                              src="Assets/Images/link_000000.svg"
-                              style="margin-top: -20px; margin-left: 10px"
-                            />
-                          </td>
-                          <td>
-                            <span class="buttonHeading">Link to a PDF</span>
-                          </td>
-                        </tr>
-                      </table>
-                    </button>
-                  </td>
-                  <td>
-                    <button
-                      class="appSection"
-                      onclick="toggleDialog(true, 'linkToImage', 'URLToImageInput')"
-                    >
-                      <table>
-                        <tr>
-                          <td>
-                            <img
-                              class="appSection"
-                              src="Assets/Images/image_80A4AE.svg"
-                            />
-                            <br />
-                            <img
-                              class="reducedIntensity appSection"
-                              src="Assets/Images/link_000000.svg"
-                              style="margin-top: -20px; margin-left: 10px"
-                            />
-                          </td>
-                          <td>
-                            <span class="buttonHeading">Link to an Image</span>
-                          </td>
-                        </tr>
-                      </table>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <button
-                      class="appSection"
-                      onclick="toggleDialog(true, 'insertCloudURLDialog', 'URLToCloudFile')"
-                    >
-                      <table>
-                        <tr>
-                          <td>
-                            <img
-                              class="appSection"
-                              src="Assets/Images/cloud_7CA7D8.svg"
-                            />
-                          </td>
-                          <td>
-                            <span class="buttonHeading">File in the Cloud</span
-                            ><br />
-                            <span class="helperText"
-                              >Google Drive, OneDrive</span
-                            >
-                          </td>
-                        </tr>
-                      </table>
-                    </button>
-                  </td>
-                  <td>
-                    <button
-                      class="appSection"
-                      onclick="toggleViewer(true, 'webpageViewer'); tasksOnceFileOpen('webpageView', null); noFileSelected.hidden = true; webpageURLBar.focus()"
-                    >
-                      <table>
-                        <tr>
-                          <td>
-                            <img
-                              class="appSection"
-                              src="Assets/Images/language_8B7DBE.svg"
-                            />
-                          </td>
-                          <td>
-                            <span class="buttonHeading">Webpage</span><br />
-                            <span class="helperText"
-                              >Not all websites will work</span
-                            >
-                          </td>
-                        </tr>
-                      </table>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <button
-                      class="appSection"
-                      onclick="toggleDialog(true, 'linkToOnlineDesign', 'URLToOnlineDesign')"
-                    >
-                      <table>
-                        <tr>
-                          <td>
-                            <img
-                              class="appSection"
-                              src="Assets/Images/wall_art_80A4AE.svg"
-                            />
-                          </td>
-                          <td>
-                            <span class="buttonHeading">Canva Design</span
-                            ><br />
-                            <span class="helperText"
-                              >View your online design</span
-                            >
-                          </td>
-                        </tr>
-                      </table>
-                    </button>
-                  </td>
-                  <td>
-                    <button
-                      class="appSection"
-                      onclick="toggleDialog(true, 'linkToTubeVideo', 'URLToTubeVideo')"
-                    >
-                      <table>
-                        <tr>
-                          <td>
-                            <img
-                              class="appSection"
-                              src="Assets/Images/youtube_activity_BB271A.svg"
-                            />
-                          </td>
-                          <td>
-                            <span class="buttonHeading">YouTube Video</span
-                            ><br />
-                            <span class="helperText">youtube.com</span>
-                          </td>
-                        </tr>
-                      </table>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <button
-                      class="appSection"
-                      onclick="toggleDialog(true, 'customEmbed', 'embeddedCode')"
-                    >
-                      <table>
-                        <tr>
-                          <td>
-                            <img
-                              class="reducedIntensity appSection"
-                              src="Assets/Images/frame_source_000000.svg"
-                            />
-                          </td>
-                          <td>
-                            <span class="buttonHeading">Custom Embed</span
-                            ><br />
-                            <span class="helperText"
-                              >Bring your own embedded document</span
-                            >
-                          </td>
-                        </tr>
-                      </table>
-                    </button>
-                  </td>
-                </tr>
-              </table>
+              <div style="height: 226px; overflow-y: auto">
+                <table style="width: 100%">
+                  <tr>
+                    <td>
+                      <button
+                        class="appSection"
+                        onclick="toggleDialog(true, 'linkToPDF', 'URLToPDFInput')"
+                      >
+                        <table>
+                          <tr>
+                            <td>
+                              <img
+                                class="appSection"
+                                src="Assets/Images/picture_as_pdf_D16D6A.svg"
+                              />
+                              <br />
+                              <img
+                                class="reducedIntensity appSection"
+                                src="Assets/Images/link_000000.svg"
+                                style="margin-top: -20px; margin-left: 10px"
+                              />
+                            </td>
+                            <td>
+                              <span class="buttonHeading">Link to a PDF</span>
+                            </td>
+                          </tr>
+                        </table>
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        class="appSection"
+                        onclick="toggleDialog(true, 'linkToImage', 'URLToImageInput')"
+                      >
+                        <table>
+                          <tr>
+                            <td>
+                              <img
+                                class="appSection"
+                                src="Assets/Images/image_80A4AE.svg"
+                              />
+                              <br />
+                              <img
+                                class="reducedIntensity appSection"
+                                src="Assets/Images/link_000000.svg"
+                                style="margin-top: -20px; margin-left: 10px"
+                              />
+                            </td>
+                            <td>
+                              <span class="buttonHeading"
+                                >Link to an Image</span
+                              >
+                            </td>
+                          </tr>
+                        </table>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <button
+                        class="appSection"
+                        onclick="toggleDialog(true, 'insertCloudURLDialog', 'URLToCloudFile')"
+                      >
+                        <table>
+                          <tr>
+                            <td>
+                              <img
+                                class="appSection"
+                                src="Assets/Images/cloud_7CA7D8.svg"
+                              />
+                            </td>
+                            <td>
+                              <span class="buttonHeading"
+                                >File in the Cloud</span
+                              ><br />
+                              <span class="helperText"
+                                >Google Drive, OneDrive</span
+                              >
+                            </td>
+                          </tr>
+                        </table>
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        class="appSection"
+                        onclick="toggleViewer(true, 'webpageViewer'); tasksOnceFileOpen('webpageView', null); noFileSelected.hidden = true; webpageURLBar.focus()"
+                      >
+                        <table>
+                          <tr>
+                            <td>
+                              <img
+                                class="appSection"
+                                src="Assets/Images/language_8B7DBE.svg"
+                              />
+                            </td>
+                            <td>
+                              <span class="buttonHeading">Webpage</span><br />
+                              <span class="helperText"
+                                >Not all websites will work</span
+                              >
+                            </td>
+                          </tr>
+                        </table>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <button
+                        class="appSection"
+                        onclick="toggleDialog(true, 'linkToOnlineDesign', 'URLToOnlineDesign')"
+                      >
+                        <table>
+                          <tr>
+                            <td>
+                              <img
+                                class="appSection"
+                                src="Assets/Images/wall_art_80A4AE.svg"
+                              />
+                            </td>
+                            <td>
+                              <span class="buttonHeading">Canva Design</span
+                              ><br />
+                              <span class="helperText"
+                                >View your online design</span
+                              >
+                            </td>
+                          </tr>
+                        </table>
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        class="appSection"
+                        onclick="toggleDialog(true, 'linkToTubeVideo', 'URLToTubeVideo')"
+                      >
+                        <table>
+                          <tr>
+                            <td>
+                              <img
+                                class="appSection"
+                                src="Assets/Images/youtube_activity_BB271A.svg"
+                              />
+                            </td>
+                            <td>
+                              <span class="buttonHeading">YouTube Video</span
+                              ><br />
+                              <span class="helperText">youtube.com</span>
+                            </td>
+                          </tr>
+                        </table>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <button
+                        class="appSection"
+                        onclick="toggleDialog(true, 'customEmbed', 'embeddedCode')"
+                      >
+                        <table>
+                          <tr>
+                            <td>
+                              <img
+                                class="reducedIntensity appSection"
+                                src="Assets/Images/frame_source_000000.svg"
+                              />
+                            </td>
+                            <td>
+                              <span class="buttonHeading">Custom Embed</span
+                              ><br />
+                              <span class="helperText"
+                                >Bring your own embedded document</span
+                              >
+                            </td>
+                          </tr>
+                        </table>
+                      </button>
+                    </td>
+                  </tr>
+                </table>
+              </div>
             </details>
             <button
               class="appSection"
@@ -1538,7 +1545,20 @@
         id="appSectionSizesContainer"
         style="backdrop-filter: blur(1px); margin-top: 1%"
       >
-        <h1>Adjust Panel Sizes</h1>
+        <table>
+          <tr>
+            <td>
+              <img
+                src="Assets/Images/width_normal_000000.svg"
+                class="reducedIntensity"
+              />
+            </td>
+            <td>
+              <h1 class="dialogOverlay">Adjust Panel Sizes</h1>
+            </td>
+          </tr>
+        </table>
+
         <h3 class="helperText">
           Use your arrow keys or type in a specific value to adjust the size of
           each panel
@@ -1671,8 +1691,17 @@
     <div hidden id="dialogFocusBackground">
       <!-- "Out-of-Box" Experience -->
       <div class="dialogOverlay" hidden id="gettingStarted">
-        <img src="notemasterIcon.svg" style="width: 48px" />
-        <h1>Get Started With NoteMaster!</h1>
+        <img src="Assets/gettingStartedPreview.png" style="width: 100%" />
+        <table>
+          <tr>
+            <td>
+              <img src="notemasterIcon.svg" style="width: 48px" />
+            </td>
+            <td>
+              <h1 class="dialogOverlay">Get Started With NoteMaster!</h1>
+            </td>
+          </tr>
+        </table>
         <h3 class="helperText">A lightweight note-taking app for the web</h3>
         <table style="width: 100%">
           <tr>
@@ -1687,7 +1716,7 @@
             <td>
               <button
                 class="dialogOverlay"
-                onclick="toggleDialog(false, 'gettingStarted', null); launchExample()"
+                onclick="toggleDialog(false, 'gettingStarted', null); localStorage.setItem('finishedGetStarted', 'true'); launchExample()"
               >
                 Launch Example
               </button>
@@ -1714,7 +1743,19 @@
       </div>
       <!-- Viewing History -->
       <div class="dialogOverlay" hidden id="viewingHistory" style="height: 75%">
-        <h1>Viewing History</h1>
+        <table>
+          <tr>
+            <td>
+              <img
+                src="Assets/Images/history_000000.svg"
+                class="reducedIntensity"
+              />
+            </td>
+            <td>
+              <h1 class="dialogOverlay">Viewing History</h1>
+            </td>
+          </tr>
+        </table>
         <h3 class="helperText">
           View, manage, and add the documents you have viewed to your notes
         </h3>
@@ -1740,26 +1781,96 @@
         <div hidden id="copyHistoryEditor" style="user-select: all"></div>
       </div>
       <div class="dialogOverlay" hidden id="writingInsights">
-        <h1>Writing Insights</h1>
-        <table style="width: 100%; border-spacing: 10px">
+        <table>
           <tr>
             <td>
+              <img
+                src="Assets/Images/data_alert_000000.svg"
+                class="reducedIntensity"
+              />
+            </td>
+            <td>
+              <h1 class="dialogOverlay">Writing Insights</h1>
+            </td>
+          </tr>
+        </table>
+        <table style="width: 100%; border-spacing: 10px">
+          <tr>
+            <td style="width: 50%">
               <h4 style="text-align: center">You Typed</h4>
               <h1 style="text-align: center" id="totalWordCountDisplay"></h1>
               <progress id="wordCountVisual"></progress>
+              <table style="width: 100%">
+                <tr>
+                  <td style="width: 90%" class="helperText">0</td>
+                  <td class="helperText" id="wordCountVisualMax"></td>
+                </tr>
+              </table>
               <h4 style="text-align: center">Total Words</h4>
             </td>
-            <td>
-              <h4 style="text-align: center">And</h4>
+            <td style="width: 50%">
+              <h4 style="text-align: center">and</h4>
               <h1
                 id="totalCharacterCountDisplay"
                 style="text-align: center"
               ></h1>
               <progress id="characterCountVisual"></progress>
+              <table style="width: 100%">
+                <tr>
+                  <td style="width: 90%" class="helperText">0</td>
+                  <td class="helperText" id="characterCountVisualMax"></td>
+                </tr>
+              </table>
               <h4 style="text-align: center">Total Characters</h4>
             </td>
           </tr>
         </table>
+        <h3 class="helperText">Typing Target</h3>
+        Set a goal for typing
+        <select
+          id="typingTarget"
+          onchange="if (this.value === 'custom') { this.hidden = true; customTypingTarget.hidden = false }"
+        >
+          <option value="1000">1,000</option>
+          <option value="2000">2,000</option>
+          <option value="4000">4,000</option>
+          <option value="8000">8,000</option>
+          <option value="16000">16,000</option>
+          <option value="32000">32,000</option>
+          <option value="64000">64,000</option>
+          <option value="custom">Custom...</option>
+        </select>
+        <input
+          placeholder="Custom target"
+          hidden
+          id="customTypingTarget"
+          type="number"
+          min="100"
+          value="100"
+        />
+        <select id="wordsOrCharacters">
+          <option>Words</option>
+          <option>Characters</option>
+        </select>
+        <button
+          id="setTypingTarget"
+          class="primaryButton"
+          style="width: fit-content"
+          onclick="configureTypingGoal(false)"
+        >
+          Set
+        </button>
+        <button
+          hidden
+          id="resetTypingTarget"
+          class="dialogOverlay"
+          style="width: fit-content"
+          onclick="configureTypingGoal(true)"
+        >
+          Reset
+        </button>
+        <br />
+        <br />
         <a
           class="hyperlinkButton"
           onclick="toggleDialog(false, 'writingInsights', null)"
@@ -1904,8 +2015,16 @@
         </a>
       </div>
       <div class="dialogOverlay" hidden id="linkToOnlineDesign">
-        <img src="Assets/Images/wall_art_80A4AE.svg" />
-        <h1>Canva Design</h1>
+        <table>
+          <tr>
+            <td>
+              <img src="Assets/Images/wall_art_80A4AE.svg" />
+            </td>
+            <td>
+              <h1 class="dialogOverlay">Canva Design</h1>
+            </td>
+          </tr>
+        </table>
         <h3 class="helperText">
           Paste the URL to your Canva design below from your browser's address
           bar and ensure everyone can view it
@@ -1939,8 +2058,16 @@
       </div>
       <!-- Link to a Video -->
       <div class="dialogOverlay" hidden id="linkToTubeVideo">
-        <img src="Assets/Images/youtube_activity_BB271A.svg" />
-        <h1>YouTube Video</h1>
+        <table>
+          <tr>
+            <td>
+              <img src="Assets/Images/youtube_activity_BB271A.svg" />
+            </td>
+            <td>
+              <h1 class="dialogOverlay">YouTube Video</h1>
+            </td>
+          </tr>
+        </table>
         <h3 class="helperText">Paste the URL to your YouTube video below</h3>
         <table style="width: 100%; margin-bottom: 10px">
           <tr>
@@ -1971,11 +2098,19 @@
       </div>
       <!-- Custom iFrame -->
       <div class="dialogOverlay" hidden id="customEmbed">
-        <img
-          class="reducedIntensity"
-          src="Assets/Images/frame_source_000000.svg"
-        />
-        <h1>Custom Embed</h1>
+        <table>
+          <tr>
+            <td>
+              <img
+                class="reducedIntensity"
+                src="Assets/Images/frame_source_000000.svg"
+              />
+            </td>
+            <td>
+              <h1 class="dialogOverlay">Custom Embed</h1>
+            </td>
+          </tr>
+        </table>
         <h3 class="helperText">
           Paste your own iFrame code to view it in the Viewing Panel
         </h3>
@@ -2003,10 +2138,21 @@
         </a>
       </div>
       <div class="dialogOverlay" hidden id="shareCopyOfNote">
-        <img class="reducedIntensity" src="Assets/Images/share_000000.svg" />
-        <h1>Share a Copy</h1>
+        <table>
+          <tr>
+            <td>
+              <img
+                class="reducedIntensity"
+                src="Assets/Images/share_000000.svg"
+              />
+            </td>
+            <td>
+              <h1 class="dialogOverlay">Share a Copy</h1>
+            </td>
+          </tr>
+        </table>
         <h3 class="helperText">
-          Send a copy of your note another person to view and edit
+          Send a <b>copy</b> of your note to another person for editing
         </h3>
         <input
           id="shareCopyLink"
@@ -2037,7 +2183,20 @@
         id="noteAsHTML"
         style="height: 90%; margin-top: 1%"
       >
-        <h1>Show Note as HTML Markup</h1>
+        <table>
+          <tr>
+            <td>
+              <img
+                src="Assets/Images/integration_instructions_000000.svg"
+                class="reducedIntensity"
+              />
+            </td>
+            <td>
+              <h1 class="dialogOverlay">Show Note as HTML Markup</h1>
+            </td>
+          </tr>
+        </table>
+
         <h3 class="helperText">
           See your note as HTML markup to be used within other applications
         </h3>
