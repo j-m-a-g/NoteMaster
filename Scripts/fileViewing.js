@@ -112,7 +112,7 @@ function readTextFile() {
 function readWordDocument() {
   const fileReader = new FileReader();
   fileReader.onload = (event) => {
-    mammoth
+    mammothPlus
       .convertToHtml({ arrayBuffer: event.target.result }, mammothJSOptions)
       .then((result) => {
         wordDocumentView.innerHTML = result.value;
