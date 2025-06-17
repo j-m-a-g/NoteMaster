@@ -166,6 +166,19 @@ function onLoadTasks() {
       viewingSize.value = localStorage.getItem("viewingSizeValue");
       adjustViewingAndEditorSizes();
     }
+
+    // Typing Target
+    if (localStorage.getItem("storedTypingTarget") !== null) {
+      if (localStorage.getItem("customTarget") === "false") {
+        typingTarget.value = localStorage.getItem("storedTypingTarget");
+      } else if (localStorage.getItem("customTarget") === "true") {
+        typingTarget.hidden = true;
+        customTypingTarget.value = localStorage.getItem("storedTypingTarget");
+      }
+
+      setTypingTarget.click();
+      snackbar.style.display = "none";
+    }
   }, 1);
 }
 
