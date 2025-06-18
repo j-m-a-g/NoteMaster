@@ -470,6 +470,7 @@ span.copyOnClick:active {
 }
 
 #mainEditor {
+  background-color: white;
   height: 60%;
   overflow: auto;
   word-break: break-word;
