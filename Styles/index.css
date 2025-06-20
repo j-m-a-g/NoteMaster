@@ -125,6 +125,12 @@ progress::-webkit-progress-value {
   background-color: var(--blueAccent500);
 }
 
+.intermediateLoading {
+  animation-name: spinProgressIndicator;
+  animation-iteration-count: infinite;
+  animation-duration: 1s;
+}
+
 #snackbar {
   animation-name: initialFadeIn;
   animation-duration: 0.5s;
@@ -157,17 +163,23 @@ button.menu {
   padding: 10px;
   cursor: pointer;
   background-color: transparent;
-  border-style: none;
+  border-style: solid;
+  border-left-width: 0;
+  border-right-width: 0;
+  border-top-width: 0;
+  border-bottom-width: 1px;
+  border-color: transparent;
 }
 
 button.menu:hover {
   background-color: var(--blueAccent50);
+  border-color: var(--blueAccent500);
 }
 
 button.menu:disabled,
 button.menu:disabled:hover {
   opacity: 25%;
-  cursor: default;
+  cursor: not-allowed;
   background-color: transparent;
 }
 
@@ -210,7 +222,7 @@ button.menuDropdown:active {
 }
 
 button.menuDropdown:disabled:hover {
-  cursor: default;
+  cursor: not-allowed;
   background-color: transparent;
 }
 
@@ -391,7 +403,7 @@ div.dialogOverlay {
   animation-duration: 0.25s;
 }
 
-h1.dialogOverlay {
+h2.dialogOverlay {
   padding-left: 5px;
   padding-top: 8px;
 }
@@ -420,8 +432,13 @@ button.primaryButton:active {
   border-color: var(--blueAccent700);
 }
 
+button.primaryButton:disabled {
+  cursor: not-allowed;
+}
+
 img.primaryButton {
   filter: invert(100%);
+  opacity: 90%;
 }
 
 button.dialogOverlay {
@@ -444,6 +461,10 @@ button.dialogOverlay:hover {
 
 button.dialogOverlay:active {
   border-color: var(--blueAccent500);
+}
+
+button.dialogOverlay:disabled {
+  cursor: not-allowed;
 }
 
 a.hyperlinkButton {
@@ -571,6 +592,12 @@ button.warningBanner {
   border-color: var(--blueAccent500);
 }
 
+@media screen and (max-width: 601px) {
+  #mobileSizeIndication {
+    display: initial;
+  }
+}
+
 @keyframes initialFadeIn {
   from {
     opacity: 0;
@@ -581,8 +608,12 @@ button.warningBanner {
   }
 }
 
-@media screen and (max-width: 601px) {
-  #mobileSizeIndication {
-    display: initial;
+@keyframes spinProgressIndicator {
+  from {
+    rotate: 0;
+  }
+
+  to {
+    rotate: 360deg;
   }
 }

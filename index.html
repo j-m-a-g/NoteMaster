@@ -378,6 +378,10 @@
           class="menuDropdown"
           onclick="toggleDialog(true, 'gettingStarted', null)"
         >
+          <img
+            class="reducedIntensity menu"
+            src="Assets/Images/waving_hand_000000.svg"
+          />
           Get Started
         </button>
         <button
@@ -402,7 +406,7 @@
               class="reducedIntensity"
               src="Assets/Images/door_open_000000.svg"
             />
-            <h1>Welcome</h1>
+            <h1 id="userGreeting"></h1>
             <details
               id="startFromScratchOptions"
               onclick="savedForLaterDetails.open = false"
@@ -1487,11 +1491,27 @@
       </div>
     </div>
 
-    <div class="saveBeforeClosing" id="appLoad">
+    <div class="saveBeforeClosing" id="appLoad" style="cursor: wait">
       <div class="dialogOverlay" style="margin-top: 15%">
-        <h1>Loading NoteMaster</h1>
-        <h3 class="helperText">Just a moment...</h3>
-        <progress id="appLoadProgress"></progress>
+        <table>
+          <tr>
+            <td>
+              <img
+                class="reducedIntensity intermediateLoading"
+                src="Assets/Images/progress_activity_000000.svg"
+              />
+            </td>
+            <td>
+              <h2 class="dialogOverlay">
+                Loading NoteMaster
+                <br />
+                <span style="font-size: 0.75em" class="helperText"
+                  >Just a moment...</span
+                >
+              </h2>
+            </td>
+          </tr>
+        </table>
       </div>
     </div>
 
@@ -1501,11 +1521,11 @@
           class="reducedIntensity"
           src="Assets/Images/fit_width_000000.svg"
         />
-        <h1>Looks Like You're Out of Screen Real-Estate!</h1>
-        <h3 class="helperText">
+        <h2>Looks Like You're Out of Screen Space!</h2>
+        <span class="helperText">
           For NoteMaster to be effectively usable, your viewing area must be
           wider than 600 pixels. Please widen your window
-        </h3>
+        </span>
       </div>
     </div>
 
@@ -1560,7 +1580,7 @@
               />
             </td>
             <td>
-              <h1 class="dialogOverlay">Adjust Panel Sizes</h1>
+              <h2 class="dialogOverlay">Adjust Panel Sizes</h2>
             </td>
           </tr>
         </table>
@@ -1628,8 +1648,12 @@
         <button
           class="primaryButton"
           onclick="viewingSize.value = 50; editorSize.value = 50; applyPercentageSizes(); localStorage.setItem('viewingSizeValue', viewingSize.value)"
-          style="width: 20%; margin-left: 5px; margin-top: 5px"
+          style="width: 15%; margin-left: 5px; margin-top: 5px"
         >
+          <img
+            class="primaryButton menu"
+            src="Assets/Images/reset_settings_000000.svg"
+          />
           Reset
         </button>
       </div>
@@ -1704,7 +1728,7 @@
               <img src="notemasterIcon.svg" style="width: 48px" />
             </td>
             <td>
-              <h1 class="dialogOverlay">Get Started With NoteMaster</h1>
+              <h2 class="dialogOverlay">Get Started With NoteMaster</h2>
             </td>
           </tr>
         </table>
@@ -1758,7 +1782,7 @@
               />
             </td>
             <td>
-              <h1 class="dialogOverlay">Viewing History</h1>
+              <h2 class="dialogOverlay">Viewing History</h2>
             </td>
           </tr>
         </table>
@@ -1778,9 +1802,13 @@
         <button
           class="primaryButton"
           onclick="document.getElementById('copyHistoryEditor').hidden = false; copyHistoryQuill.clipboard.dangerouslyPasteHTML(historyTableContainer.innerHTML)"
-          style="width: 20%; margin-left: 5px"
+          style="width: 15%; margin-left: 5px"
         >
-          Copy History
+          <img
+            class="primaryButton menu"
+            src="Assets/Images/content_copy_000000.svg"
+          />
+          Copy
         </button>
         <br />
         <br />
@@ -1796,7 +1824,7 @@
               />
             </td>
             <td>
-              <h1 class="dialogOverlay">Writing Insights</h1>
+              <h2 class="dialogOverlay">Writing Insights</h2>
             </td>
           </tr>
         </table>
@@ -1951,11 +1979,7 @@
         </a>
       </div>
       <!-- Cloud file -->
-      <div
-        class="dialogOverlay"
-        hidden
-        id="insertCloudURLDialog"
-      >
+      <div class="dialogOverlay" hidden id="insertCloudURLDialog">
         <img src="Assets/Images/cloud_7CA7D8.svg" />
         <img src="Assets/Images/article_789DE5.svg" />
         <img src="Assets/Images/dataset_9DC384.svg" />
@@ -2026,7 +2050,7 @@
               <img src="Assets/Images/wall_art_80A4AE.svg" />
             </td>
             <td>
-              <h1 class="dialogOverlay">Canva Design</h1>
+              <h2 class="dialogOverlay">Canva Design</h2>
             </td>
           </tr>
         </table>
@@ -2069,7 +2093,7 @@
               <img src="Assets/Images/youtube_activity_BB271A.svg" />
             </td>
             <td>
-              <h1 class="dialogOverlay">YouTube Video</h1>
+              <h2 class="dialogOverlay">YouTube Video</h2>
             </td>
           </tr>
         </table>
@@ -2112,7 +2136,7 @@
               />
             </td>
             <td>
-              <h1 class="dialogOverlay">Custom Embed</h1>
+              <h2 class="dialogOverlay">Custom Embed</h2>
             </td>
           </tr>
         </table>
@@ -2152,7 +2176,7 @@
               />
             </td>
             <td>
-              <h1 class="dialogOverlay">Share a Copy</h1>
+              <h2 class="dialogOverlay">Share a Copy</h2>
             </td>
           </tr>
         </table>
@@ -2197,7 +2221,7 @@
               />
             </td>
             <td>
-              <h1 class="dialogOverlay">Show Note as HTML Markup</h1>
+              <h2 class="dialogOverlay">Show Note as HTML Markup</h2>
             </td>
           </tr>
         </table>
@@ -2216,15 +2240,19 @@
         <button
           class="primaryButton"
           onclick="navigator.clipboard.writeText(noteHTMLCodeEditor.getValue()); displaySnackbar(copiedToClipboardString)"
-          style="width: 20%; margin-left: 5px"
+          style="width: 15%; margin-left: 5px"
         >
+          <img
+            class="primaryButton menu"
+            src="Assets/Images/content_copy_000000.svg"
+          />
           Copy
         </button>
       </div>
       <div class="dialogOverlay" hidden id="aboutDialog">
         <img class="reducedIntensity" src="Assets/Images/info_000000.svg" />
         <img src="notemasterIcon.svg" style="width: 48px" />
-        <h1>About</h1>
+        <h2>About</h2>
         <p style="line-height: 25px">
           NoteMaster v25.06.2-alpha-2
           <br />

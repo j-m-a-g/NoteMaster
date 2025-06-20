@@ -85,101 +85,104 @@ function shiftProgressValue(progressObject, currentValue, maxValue, stepValue) {
 function onLoadTasks() {
   dynamicallySetHeight();
   updateStatusBar();
-  appLoadProgress.value = 100;
 
-  setTimeout(() => {
-    appLoad.hidden = true;
-    if (
-      localStorage.getItem("noteProgress") !== "<p></p>" &&
-      localStorage.getItem("noteProgress") !== null
-    ) {
-      hideAndShow("createOrOpenContainer", "noteEditor");
-      quill.clipboard.dangerouslyPasteHTML(
-        localStorage.getItem("noteProgress")
-      );
+  if (currentDate.getHours() < 12) {
+    userGreeting.innerHTML = "Good Morning 😎";
+  } else {
+    userGreeting.innerHTML = "Good Evening 🌚";
+  }
 
-      noteName.value = localStorage.getItem("noteTitle");
-      alterMenuFunctions(false);
+  if (
+    localStorage.getItem("noteProgress") !== "<p></p>" &&
+    localStorage.getItem("noteProgress") !== null
+  ) {
+    hideAndShow("createOrOpenContainer", "noteEditor");
+    quill.clipboard.dangerouslyPasteHTML(localStorage.getItem("noteProgress"));
+
+    noteName.value = localStorage.getItem("noteTitle");
+    alterMenuFunctions(false);
+  }
+
+  // GET STARTED WINDOW
+  if (localStorage.getItem("finishedGetStarted") !== "true") {
+    toggleDialog(true, "gettingStarted", null);
+  }
+
+  // WRITING INSIGHTS
+  if (localStorage.getItem("totalWordCountArray") === null) {
+    addedWordCountArray = [];
+    localStorage.setItem(
+      "totalWordCountArray",
+      JSON.stringify(addedWordCountArray)
+    );
+  }
+
+  if (localStorage.getItem("totalCharacterCountArray") === null) {
+    addedCharacterCountArray = [];
+    localStorage.setItem(
+      "totalCharacterCountArray",
+      JSON.stringify(addedCharacterCountArray)
+    );
+  }
+
+  // SHARED NOTE CHECK
+  if (workingURLParameters.has("name") || workingURLParameters.has("markup")) {
+    initiateNote(false);
+    noteName.value = workingURLParameters.get("name");
+    quill.clipboard.dangerouslyPasteHTML(
+      decodeURIComponent(workingURLParameters.get("markup"))
+    );
+
+    // Removes the parameters from being displayed in a user's address
+    // bar for security reasons
+    history.pushState(null, "", window.location.href.split("?")[0]);
+  }
+
+  // RETRIEVE SAVED NOTES
+  if (
+    localStorage.getItem("savedNotes") !== null &&
+    localStorage.getItem("savedNotes") !== ""
+  ) {
+    savedForLater.innerHTML = localStorage.getItem("savedNotes");
+    savedForLaterDetails.click();
+    savedForLaterDetails.open = true;
+  }
+
+  // USER PREFERENCES
+  // Auto Save
+  if (localStorage.getItem("autoSaveEnabled") === "true") {
+    autoSave.click();
+  }
+
+  // Word Wrap
+  if (localStorage.getItem("wordWrapEnabled") === "true") {
+    wordWrap.click();
+  }
+
+  // Viewing and Editor Size
+  if (localStorage.getItem("viewingSizeValue") !== null) {
+    viewingSize.value = localStorage.getItem("viewingSizeValue");
+    adjustViewingAndEditorSizes();
+  }
+
+  // Typing Target
+  if (
+    localStorage.getItem("storedTypingTarget") !== null &&
+    localStorage.getItem("storedTypingTarget") !== ""
+  ) {
+    if (localStorage.getItem("customTarget") === "false") {
+      typingTarget.hidden = false;
+      typingTarget.value = localStorage.getItem("storedTypingTarget");
+    } else if (localStorage.getItem("customTarget") === "true") {
+      customTypingTarget.hidden = false;
+      customTypingTarget.value = localStorage.getItem("storedTypingTarget");
     }
 
-    // GET STARTED WINDOW
-    if (localStorage.getItem("finishedGetStarted") !== "true") {
-      toggleDialog(true, "gettingStarted", null);
-    }
+    setTypingTarget.click();
+    snackbar.style.display = "none";
+  }
 
-    // WRITING INSIGHTS
-    if (localStorage.getItem("totalWordCountArray") === null) {
-      addedWordCountArray = [];
-      localStorage.setItem(
-        "totalWordCountArray",
-        JSON.stringify(addedWordCountArray)
-      );
-    }
-
-    if (localStorage.getItem("totalCharacterCountArray") === null) {
-      addedCharacterCountArray = [];
-      localStorage.setItem(
-        "totalCharacterCountArray",
-        JSON.stringify(addedCharacterCountArray)
-      );
-    }
-
-    // SHARED NOTE CHECK
-    if (
-      workingURLParameters.has("name") ||
-      workingURLParameters.has("markup")
-    ) {
-      initiateNote(false);
-      noteName.value = workingURLParameters.get("name");
-      quill.clipboard.dangerouslyPasteHTML(
-        decodeURIComponent(workingURLParameters.get("markup"))
-      );
-
-      // Removes the parameters from being displayed in a user's address
-      // bar for security reasons
-      history.pushState(null, "", window.location.href.split("?")[0]);
-    }
-
-    // RETRIEVE SAVED NOTES
-    if (
-      localStorage.getItem("savedNotes") !== null &&
-      localStorage.getItem("savedNotes") !== ""
-    ) {
-      savedForLater.innerHTML = localStorage.getItem("savedNotes");
-      savedForLaterDetails.click();
-      savedForLaterDetails.open = true;
-    }
-
-    // USER PREFERENCES
-    // Auto Save
-    if (localStorage.getItem("autoSaveEnabled") === "true") {
-      autoSave.click();
-    }
-
-    // Word Wrap
-    if (localStorage.getItem("wordWrapEnabled") === "true") {
-      wordWrap.click();
-    }
-
-    // Viewing and Editor Size
-    if (localStorage.getItem("viewingSizeValue") !== null) {
-      viewingSize.value = localStorage.getItem("viewingSizeValue");
-      adjustViewingAndEditorSizes();
-    }
-
-    // Typing Target
-    if (localStorage.getItem("storedTypingTarget") !== null) {
-      if (localStorage.getItem("customTarget") === "false") {
-        typingTarget.value = localStorage.getItem("storedTypingTarget");
-      } else if (localStorage.getItem("customTarget") === "true") {
-        typingTarget.hidden = true;
-        customTypingTarget.value = localStorage.getItem("storedTypingTarget");
-      }
-
-      setTypingTarget.click();
-      snackbar.style.display = "none";
-    }
-  }, 1);
+  appLoad.hidden = true;
 }
 
 // Sets the height of certain elements dependent on the height

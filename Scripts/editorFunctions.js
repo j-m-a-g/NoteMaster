@@ -318,17 +318,26 @@ function saveWritingCounts() {
         Number(localStorage.getItem("storedTypingTarget"))
     ) {
       displaySnackbar("Typing Target reached");
-      resetTypingTarget.click();
+      typingTarget.disabled = false;
+      customTypingTarget.disabled = false;
+      wordsOrCharacters.disabled = false;
+      resetTypingTarget.hidden = true;
+      setTypingTarget.hidden = false;
+      localStorage.setItem("storedTypingTarget", null);
+      localStorage.setItem("customTarget", true);
     } else if (
       wordsOrCharacters.value === "characters" &&
       Number(localStorage.getItem("totalCharacterCount")) >=
         Number(localStorage.getItem("storedTypingTarget"))
     ) {
       displaySnackbar("Typing Target reached");
+      typingTarget.disabled = false;
+      customTypingTarget.disabled = false;
+      wordsOrCharacters.disabled = false;
       resetTypingTarget.hidden = true;
       setTypingTarget.hidden = false;
       localStorage.setItem("storedTypingTarget", null);
-      localStorage.setItem("customTarget", isReset);
+      localStorage.setItem("customTarget", true);
     }
   }
 }
@@ -368,13 +377,13 @@ function configureTypingGoal(isReset) {
       resetTypingTarget.hidden = isReset;
       setTypingTarget.hidden = !isReset;
       localStorage.setItem("storedTypingTarget", null);
-      localStorage.setItem("customTarget", isReset);
+      localStorage.setItem("customTarget", !isReset);
       displaySnackbar("Typing target reset");
       break;
     case false:
       setTypingTarget.hidden = !isReset;
       resetTypingTarget.hidden = isReset;
-      if (typingTarget.hidden) {
+      if (typingTarget.hidden === true) {
         localStorage.setItem("storedTypingTarget", customTypingTarget.value);
         localStorage.setItem("customTarget", isReset);
       } else {
