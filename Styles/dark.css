@@ -1,0 +1,55 @@
+:root {
+  --lightAccent000: #262626;
+  --lightAccent100: #262626;
+  --lightAccent200: #434343;
+  --lightAccent300: #555555;
+  --lightAccent400: #555555;
+
+  --blueAccent50: #2239b8;
+  --blueAccent100: #1c5bd8;
+  --blueAccent500: #146dea;
+  --blueAccent600: #0080ff;
+  --blueAccent700: #008eff;
+}
+
+.helperText,
+#snackbarMessage,
+body,
+button.dialogOverlay,
+button.menu,
+button.menuDropdown,
+button.navButton,
+button.primaryButton,
+html,
+input,
+select,
+span.buttonHeading {
+  color: white;
+}
+
+select {
+  background-color: var(--lightAccent000);
+}
+
+button.menuDropdown:disabled {
+  opacity: 25%;
+}
+
+img.menu {
+  filter: invert(100%);
+}
+
+img.reducedIntensity {
+  opacity: 50%;
+  filter: invert(100%);
+}
+
+button.appSection:hover {
+  img.appSection {
+    filter: brightness(100%);
+  }
+}
+
+#dialogFocusBackground {
+  background-color: rgba(0, 0, 0, 0.25);
+}

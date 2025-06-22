@@ -8,6 +8,7 @@
     <link href="Styles/index.css" rel="stylesheet" />
     <link href="Styles/fileViewers.css" rel="stylesheet" />
     <link href="Styles/styleMapStyles.css" rel="stylesheet" />
+    <link id="darkModeStylesheet" rel="stylesheet" />
 
     <link href="notemasterIcon.svg" rel="icon" />
     <link crossorigin="use-credentials" href="manifest.json" rel="manifest" />
@@ -271,6 +272,24 @@
           Adjust <u>P</u>anel Sizes
           <span class="helperText menuDropdown">Alt + P</span>
         </button>
+        <button
+          disabled
+          id="hideEditor"
+          class="menuDropdown"
+          onclick="toggleMenuCheck('hideEditorCheck'); if (hideEditorCheck.src.includes(checkedImageSource)) { noteEditor.hidden = true; viewersContainer.style.width = '100%' } else { noteEditor.hidden = false; applyPercentageSizes() }"
+        >
+          <img id="hideEditorCheck" class="menu" />
+          Hide Editor
+        </button>
+        <button
+          disabled
+          id="hideViewing"
+          class="menuDropdown"
+          onclick="toggleMenuCheck('hideViewingCheck'); if (hideViewingCheck.src.includes(checkedImageSource)) { viewersContainer.hidden = true; noteEditor.style.width = '100%' } else { viewersContainer.hidden = false; applyPercentageSizes() }"
+        >
+          <img id="hideViewingCheck" class="menu" />
+          Hide Viewing
+        </button>
         <hr class="menuDropdown" />
         <button
           class="menuDropdown"
@@ -339,9 +358,11 @@
           Word Wrap
         </button>
         <button
+          id="darkModeToggle"
           class="menuDropdown"
-          onclick="throwAppError('Feature has not been implemented yet')"
+          onclick="toggleMenuCheck('darkModeCheck'); if (darkModeCheck.src.includes(checkedImageSource)) { localStorage.setItem('darkMode', 'true'); darkModeStylesheet.href = 'Styles/dark.css' } else { localStorage.setItem('darkMode', 'false'); darkModeStylesheet.removeAttribute('href') }"
         >
+          <img class="menu" id="darkModeCheck" />
           Dark Mode
         </button>
         <button
@@ -374,6 +395,13 @@
         onmouseover="this.hidden = false"
         style="margin-left: 303px"
       >
+        <button class="menuDropdown" onclick="launchExample()">
+          <img
+            class="reducedIntensity menu"
+            src="Assets/Images/play_lesson_000000.svg"
+          />
+          Launch Example
+        </button>
         <button
           class="menuDropdown"
           onclick="toggleDialog(true, 'gettingStarted', null)"
@@ -441,16 +469,7 @@
                   </tr>
                 </table>
               </button>
-              <span class="helperText" style="margin-left: 5px">
-                Don't know where to start? See an
-                <a class="hyperlinkButton" onclick="launchExample()">example</a>
-              </span>
-              <br />
-              <button
-                class="appSection"
-                onclick="openNoteFileInput.click()"
-                style="margin-top: 7px"
-              >
+              <button class="appSection" onclick="openNoteFileInput.click()">
                 <table>
                   <tr>
                     <td>
@@ -1526,6 +1545,14 @@
           For NoteMaster to be effectively usable, your viewing area must be
           wider than 600 pixels. Please widen your window
         </span>
+        <br />
+        <br />
+        <button
+          class="dialogOverlay"
+          onclick="mobileSizeIndication.style.display = 'none'"
+        >
+          Continue Anyway
+        </button>
       </div>
     </div>
 
@@ -1584,7 +1611,6 @@
             </td>
           </tr>
         </table>
-
         <h3 class="helperText">
           Use your arrow keys or type in a specific value to adjust the size of
           each panel
@@ -1631,9 +1657,9 @@
                 min="32"
                 oninput="adjustViewingAndEditorSizes()"
                 onkeydown="appSectionSizesContainer.style.backgroundColor = 'rgba(255, 255, 255, 0.75)'"
-                onkeyup="setTimeout(() => { appSectionSizesContainer.style.backgroundColor = 'white' }, 2000);"
+                onkeyup="setTimeout(() => { appSectionSizesContainer.style.backgroundColor = 'var(--lightAccent000' }, 2000);"
                 onmousedown="appSectionSizesContainer.style.backgroundColor = 'rgba(255, 255, 255, 0.75)'"
-                onmouseup="setTimeout(() => { appSectionSizesContainer.style.backgroundColor = 'white' }, 2000);"
+                onmouseup="setTimeout(() => { appSectionSizesContainer.style.backgroundColor = 'var(--lightAccent000)' }, 2000);"
                 placeholder="50% (Default)"
                 style="width: 90%; margin-top: 5px"
                 type="number"
@@ -2181,7 +2207,8 @@
           </tr>
         </table>
         <h3 class="helperText">
-          Send a <b>copy</b> of your note to another person for editing
+          Send a <b>copy</b> of your note to another person for editing. If you
+          have images from the web in your note, the link might not work
         </h3>
         <input
           id="shareCopyLink"
@@ -2254,7 +2281,7 @@
         <img src="notemasterIcon.svg" style="width: 48px" />
         <h2>About</h2>
         <p style="line-height: 25px">
-          NoteMaster v25.06.2-alpha-2
+          NoteMaster v25.06.2-alpha-3
           <br />
           Designed and developed by
           <a href="https://github.com/j-m-a-g" target="_blank">J. Maghamez</a>

@@ -50,7 +50,7 @@ iframe {
   width: 100%;
   overflow-x: auto;
   overflow-y: auto;
-  background-color: white;
+  background-color: var(--lightAccent000);
 }
 
 /* Height dynamically set within index.js */

@@ -28,6 +28,8 @@ const viewerStatusBarIndicator = document.getElementById(
 const wordDocumentToNoteButton = document.getElementById(
 	"wordDocumentToNoteButton"
 );
+const hideViewingCheck = document.getElementById("hideViewingCheck");
+const hideEditorCheck = document.getElementById("hideEditorCheck");
 const adjustAppSectionSizes = document.getElementById("adjustAppSectionSizes");
 const adjustedHeight = (window.innerHeight - 35).toString() + "px";
 const anotherNoteFileInput = document.getElementById("anotherNoteFileInput");
@@ -56,6 +58,9 @@ const createOrOpenContainer = document.getElementById("createOrOpenContainer");
 const currentDate = new Date();
 const customEmbedViewer = document.getElementById("customEmbedViewer");
 const customTypingTarget = document.getElementById("customTypingTarget");
+const darkModeCheck = document.getElementById("darkModeCheck");
+const darkModeStylesheet = document.getElementById("darkModeStylesheet");
+const darkModeToggle = document.getElementById("darkModeToggle");
 const dialogFocusBackground = document.getElementById("dialogFocusBackground");
 const downloadConvertedNote = document.getElementById("downloadConvertedNote");
 const editorSize = document.getElementById("editorSize");

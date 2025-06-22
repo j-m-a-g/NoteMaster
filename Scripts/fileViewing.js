@@ -34,6 +34,8 @@ function tasksOnceFileOpen(unhiddenView, fileInputObject) {
   }
 
   fileViewingHistoryTimes.push(get12HourTime());
+
+  document.getElementById("hideViewing").disabled = false;
 }
 
 function closeCurrentFile() {
@@ -98,6 +100,8 @@ function closeCurrentFile() {
   fileName.innerHTML = "---";
   fileSize.innerHTML = "---";
   fileLastModified.innerHTML = "---";
+
+  document.getElementById("hideViewing").disabled = true;
 }
 
 function readTextFile() {
