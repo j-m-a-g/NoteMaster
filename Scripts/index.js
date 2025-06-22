@@ -88,6 +88,8 @@ function onLoadTasks() {
 
   if (currentDate.getHours() < 12) {
     userGreeting.innerHTML = "Good Morning 😎";
+  } else if (currentDate.getHours() >= 12 && currentDate.getHours() < 6) {
+    userGreeting.innerHTML = "Good Afternoon 🌞";
   } else {
     userGreeting.innerHTML = "Good Evening 🌚";
   }
