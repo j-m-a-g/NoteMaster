@@ -13,6 +13,13 @@ const codeFileViewerStatusBar = document.getElementById(
 const convertWordToNoteInput = document.getElementById(
 	"convertWordToNoteInput"
 );
+const customStylesheetImport = document.getElementById(
+	"customStylesheetImport"
+);
+const downloadNotePrefixAndSuffix = [
+	"<div style='word-break: break-word'>",
+	"</div><style>body { font-family: sans-serif } .ql-font-serif { font-family: serif } .ql-font-monospace { font-family: monospace }</>"
+];
 const programmingLanguageMode = document.getElementById(
 	"programmingLanguageMode"
 );
@@ -28,8 +35,6 @@ const viewerStatusBarIndicator = document.getElementById(
 const wordDocumentToNoteButton = document.getElementById(
 	"wordDocumentToNoteButton"
 );
-const hideViewingCheck = document.getElementById("hideViewingCheck");
-const hideEditorCheck = document.getElementById("hideEditorCheck");
 const adjustAppSectionSizes = document.getElementById("adjustAppSectionSizes");
 const adjustedHeight = (window.innerHeight - 35).toString() + "px";
 const anotherNoteFileInput = document.getElementById("anotherNoteFileInput");
@@ -42,10 +47,12 @@ const autoSaveCheck = document.getElementById("autoSaveCheck");
 const characterCount = document.getElementById("characterCount");
 const characterCountVisual = document.getElementById("characterCountVisual");
 const checkedImageSource = "Assets/Images/check_000000.svg";
+const uncheckedImageSource = "Assets/Images/menu_dropdown_placeholder.svg";
 const chooseViewer = document.getElementById("chooseViewer");
 const closeFile = document.getElementById("closeFile");
 const cloudFileView = document.getElementById("cloudFileView");
 const cloudFileViewer = document.getElementById("cloudFileViewer");
+const codeEditorTheme = document.getElementById("codeEditorTheme");
 const codeFileInput = document.getElementById("codeFileInput");
 const codeFileView = document.getElementById("codeFileView");
 const codeFileViewer = document.getElementById("codeFileViewer");
@@ -57,6 +64,7 @@ const createdTable = document.getElementById("createdTable");
 const createOrOpenContainer = document.getElementById("createOrOpenContainer");
 const currentDate = new Date();
 const customEmbedViewer = document.getElementById("customEmbedViewer");
+const customStylesheet = document.getElementById("customStylesheet");
 const customTypingTarget = document.getElementById("customTypingTarget");
 const darkModeCheck = document.getElementById("darkModeCheck");
 const darkModeStylesheet = document.getElementById("darkModeStylesheet");
@@ -64,13 +72,17 @@ const darkModeToggle = document.getElementById("darkModeToggle");
 const dialogFocusBackground = document.getElementById("dialogFocusBackground");
 const downloadConvertedNote = document.getElementById("downloadConvertedNote");
 const editorSize = document.getElementById("editorSize");
+const revertToDefaultStyle = document.getElementById("revertToDefaultStyle");
 const embeddedCode = document.getElementById("embeddedCode");
 const errorMessage = document.getElementById("errorMessage");
 const fileLastModified = document.getElementById("fileLastModified");
 const fileName = document.getElementById("fileName");
+const importOwnStylesheet = document.getElementById("importOwnStylesheet");
 const fileSize = document.getElementById("fileSize");
 const fileViewingHistoryNames = [];
 const fileViewingHistoryTimes = [];
+const hideEditorCheck = document.getElementById("hideEditorCheck");
+const hideViewingCheck = document.getElementById("hideViewingCheck");
 const historyTableContainer = document.getElementById("historyTableContainer");
 const iframes = document.getElementsByTagName("iframe");
 const imageFileInput = document.getElementById("imageFileInput");
@@ -145,4 +157,5 @@ let codeFileViewFontSize = 12;
 let convertedFileOutput;
 let isOpeningAnotherNote = false;
 let mainEditorFontSize = 13;
+let printTitle;
 let textViewFontSize = 14;

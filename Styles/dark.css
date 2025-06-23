@@ -23,8 +23,13 @@ button.primaryButton,
 html,
 input,
 select,
-span.buttonHeading {
+span.buttonHeading,
+textarea {
   color: white;
+}
+
+body {
+  animation: none;
 }
 
 select {
@@ -48,6 +53,11 @@ button.appSection:hover {
   img.appSection {
     filter: brightness(100%);
   }
+}
+
+div.dialogOverlay {
+  box-shadow: 1px 1px 10px 1px var(--lightAccent200);
+  border-color: var(--lightAccent200);
 }
 
 #dialogFocusBackground {

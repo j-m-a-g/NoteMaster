@@ -83,14 +83,32 @@ function doNotSave() {
 function saveNoteProgress() {
   localStorage.setItem("noteProgress", quill.getSemanticHTML());
   localStorage.setItem("noteTitle", document.getElementById("noteName").value);
+  displaySnackbar("Saved note progress!");
 }
 
-function downloadNote() {
+function printNoteOperation() {
+  if (noteName.value === "") {
+    printTitle = "Print - Untitled - NoteMaster";
+  } else {
+    printTitle = "Print - " + noteName.value + " - NoteMaster";
+  }
+
+  const temporaryPrintWindow = window.open("", "_blank", "popup");
+  temporaryPrintWindow.document.write(
+    downloadNotePrefixAndSuffix[0] +
+      quill.getSemanticHTML() +
+      downloadNotePrefixAndSuffix[1]
+  );
+  temporaryPrintWindow.document.close();
+  temporaryPrintWindow.print();
+}
+
+function downloadNoteOperation() {
   const noteFile = new Blob(
     [
-      "<div style='word-break: break-word'>" +
+      downloadNotePrefixAndSuffix[0] +
         quill.getSemanticHTML() +
-        "</div><style>body { font-family: sans-serif } .ql-font-serif { font-family: serif } .ql-font-monospace { font-family: monospace }</>"
+        downloadNotePrefixAndSuffix[1]
     ],
     { type: "text/html" }
   );
@@ -134,9 +152,9 @@ function convertWordToNote() {
 function downloadConversion() {
   const convertedFileOutputBlob = new Blob(
     [
-      "<div style='word-break: break-word'>" +
+      downloadNotePrefixAndSuffix[0] +
         convertedFileOutput.toString() +
-        "</div><style>body { font-family: sans-serif } .ql-font-serif { font-family: serif } .ql-font-monospace { font-family: monospace }</style>"
+        downloadNotePrefixAndSuffix[1]
     ],
     { type: "text/html" }
   );
@@ -254,7 +272,7 @@ function saveNoteForLater() {
   );
   deleteSaved.setAttribute(
     "onclick",
-    "(this.parentNode).parentNode.removeAttribute('onclick'); savedForLater.removeChild((this.parentNode).parentNode); localStorage.setItem('savedNotes', savedForLater.innerHTML)"
+    "(this.parentNode).parentNode.removeAttribute('onclick'); savedForLater.removeChild((this.parentNode).parentNode); localStorage.setItem('savedNotes', savedForLater.innerHTML); displaySnackbar('Note deleted')"
   );
 
   notePreviewContainer.appendChild(notePreview);

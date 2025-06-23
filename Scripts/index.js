@@ -64,6 +64,7 @@ noteHTMLCodeEditor.session.setUseWrapMode(true);
 
 const codeFileViewCodeEditor = ace.edit("codeFileView");
 codeFileViewCodeEditor.session.setMode("ace/mode/plain_text");
+
 codeFileViewCodeEditor.setReadOnly(true);
 codeFileViewCodeEditor.session.setUseWrapMode(true);
 
@@ -172,6 +173,13 @@ function onLoadTasks() {
       wordWrap.click();
     }
 
+    // Code Editor Theme
+    if (localStorage.getItem("selectedCodeEditorTheme") !== null) {
+      codeEditorTheme.value = localStorage.getItem("selectedCodeEditorTheme");
+      noteHTMLCodeEditor.setTheme("ace/theme/" + codeEditorTheme.value);
+      codeFileViewCodeEditor.setTheme("ace/theme/" + codeEditorTheme.value);
+    }
+
     // Viewing and Editor Size
     if (localStorage.getItem("viewingSizeValue") !== null) {
       viewingSize.value = localStorage.getItem("viewingSizeValue");
@@ -256,9 +264,9 @@ function toggleMenuCheck(imageObject) {
       .getElementById(imageObject)
       .src.includes("Assets/Images/check_000000.svg")
   ) {
-    document.getElementById(imageObject).removeAttribute("src");
+    document.getElementById(imageObject).src = uncheckedImageSource;
   } else {
-    document.getElementById(imageObject).src = "Assets/Images/check_000000.svg";
+    document.getElementById(imageObject).src = checkedImageSource;
   }
 }
 
@@ -269,6 +277,7 @@ function alterMenuFunctions(isDisabled) {
   document.getElementById("insertDate").disabled = isDisabled;
   document.getElementById("insertTableButton").disabled = isDisabled;
   document.getElementById("insertTime").disabled = isDisabled;
+  document.getElementById("printNote").disabled = isDisabled;
   document.getElementById("quillRedo").disabled = isDisabled;
   document.getElementById("quillUndo").disabled = isDisabled;
   document.getElementById("save").disabled = isDisabled;
