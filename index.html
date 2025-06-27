@@ -1,18 +1,17 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <meta content="ie=edge" http-equiv="X-UA-Compatible" />
-    <title>NoteMaster</title>
-    <link href="Styles/index.css" rel="stylesheet" />
-    <link href="Styles/fileViewers.css" rel="stylesheet" />
-    <link href="Styles/styleMapStyles.css" rel="stylesheet" />
-    <link id="darkModeStylesheet" rel="stylesheet" />
-    <link id="customStylesheet" rel="stylesheet" />
-
-    <link href="notemasterIcon.svg" rel="icon" />
     <link crossorigin="use-credentials" href="manifest.json" rel="manifest" />
+    <link href="notemasterIcon.svg" rel="icon" />
+    <link href="Styles/fileViewers.css" rel="stylesheet" />
+    <link href="Styles/index.css" rel="stylesheet" />
+    <link href="Styles/styleMapStyles.css" rel="stylesheet" />
+    <link id="customStylesheet" rel="stylesheet" />
+    <link id="darkModeStylesheet" rel="stylesheet" />
+    <meta charset="UTF-8" />
+    <meta content="ie=edge" http-equiv="X-UA-Compatible" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>NoteMaster</title>
 
     <link
       href="https://cdn.jsdelivr.net/npm/quill/dist/quill.snow.min.css"
@@ -20,10 +19,6 @@
     />
     <link
       href="https://cdn.jsdelivr.net/npm/pretty-checkbox/dist/pretty-checkbox.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css"
       rel="stylesheet"
     />
   </head>
@@ -139,7 +134,7 @@
           class="menuDropdown"
           disabled
           id="downloadNote"
-          onclick="downloadNoteOperation()"
+          onclick="downloadNoteOperation(false)"
         >
           <img
             class="reducedIntensity menu"
@@ -147,6 +142,18 @@
           />
           Do<u>w</u>nload Note
           <span class="helperText menuDropdown">Alt + W</span>
+        </button>
+        <button
+          class="menuDropdown"
+          disabled
+          id="downloadAsPlainText"
+          onclick="downloadNoteOperation(true)"
+        >
+          <img
+            class="reducedIntensity menu"
+            src="Assets/Images/menu_dropdown_placeholder.svg"
+          />
+          Download as Plain Text
         </button>
         <button
           class="menuDropdown"
@@ -498,7 +505,7 @@
             hidden
             id="customStylesheetImport"
             type="file"
-            accept="text/stylesheet"
+            accept="text/css"
             onchange="customStylesheet.href = window.URL.createObjectURL(this.files[0]); importOwnStylesheet.disabled = true; revertToDefaultStyle.disabled = false; darkModeCheck.src = uncheckedImageSource"
           />
         </button>
@@ -950,6 +957,35 @@
                     <td>
                       <button
                         class="appSection"
+                        onclick="markdownFileInput.click(); toggleViewer(true, 'markdownFileViewer')"
+                      >
+                        <table>
+                          <tr>
+                            <td>
+                              <img
+                                class="appSection"
+                                src="Assets/Images/markdown_EAC452.svg"
+                              />
+                            </td>
+                            <td>
+                              <span class="buttonHeading">Markdown File</span>
+                              <input
+                                hidden
+                                id="markdownFileInput"
+                                onchange="readMarkdownFile(); tasksOnceFileOpen('markdownFileView', 'markdownFileInput')"
+                                type="file"
+                                accept=".md"
+                              />
+                            </td>
+                          </tr>
+                        </table>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <button
+                        class="appSection"
                         onclick="codeFileInput.click(); toggleViewer(true, 'codeFileViewer')"
                       >
                         <table>
@@ -1347,6 +1383,9 @@
             <div hidden id="wordDocumentViewer">
               <div hidden id="wordDocumentView"></div>
             </div>
+            <div hidden id="markdownFileViewer">
+              <div hidden id="markdownFileView"></div>
+            </div>
             <div hidden id="codeFileViewer">
               <nav class="statusBar" hidden id="codeFileViewerStatusBar">
                 <span class="helperText navSeparation">Syntax</span>
@@ -1601,7 +1640,10 @@
               </button>
             </td>
             <td style="width: 33%">
-              <button class="dialogOverlay" onclick="downloadNoteOperation()">
+              <button
+                class="dialogOverlay"
+                onclick="downloadNoteOperation(false)"
+              >
                 <img
                   class="reducedIntensity menu"
                   src="Assets/Images/download_000000.svg"
@@ -1872,7 +1914,15 @@
         <h3 class="helperText">A lightweight note-taking app for the web</h3>
         <table style="width: 100%">
           <tr>
-            <td style="width: 50%">
+            <td>
+              <div class="pretty p-default p-curve p-thick">
+                <input type="checkbox" oninput="darkModeToggle.click()" />
+                <div class="state p-primary-o">
+                  <label>Enable Dark Mode</label>
+                </div>
+              </div>
+            </td>
+            <td style="width: 33%">
               <button
                 class="dialogOverlay"
                 onclick="toggleDialog(false, 'gettingStarted', null); localStorage.setItem('finishedGetStarted', 'true'); launchExample()"
@@ -1880,7 +1930,7 @@
                 Launch Example
               </button>
             </td>
-            <td style="width: 50%">
+            <td style="width: 33%">
               <button
                 class="primaryButton"
                 onclick="toggleDialog(false, 'gettingStarted', null); localStorage.setItem('finishedGetStarted', 'true')"
@@ -2391,7 +2441,7 @@
         <img src="notemasterIcon.svg" style="width: 48px" />
         <h2>About</h2>
         <p style="line-height: 25px">
-          NoteMaster v25.06.2-alpha-3
+          NoteMaster v25.6.4
           <br />
           Designed and developed by
           <a href="https://github.com/j-m-a-g" target="_blank">J. Maghamez</a>
@@ -2402,14 +2452,7 @@
         <table style="width: 100%">
           <tr>
             <td>
-              <a href="https://quilljs.com" target="_blank">Quill.js</a>
-            </td>
-            <td>
-              <a
-                href="https://github.com/lokesh-coder/pretty-checkbox"
-                target="_blank"
-                >pretty-checkbox</a
-              >
+              <a href="https://ace.c9.io" target="_blank">ace</a>
             </td>
             <td>
               <a href="https://github.com/ihwf/mammoth-plus" target="_blank"
@@ -2417,12 +2460,19 @@
               >
             </td>
             <td>
-              <a href="https://ace.c9.io" target="_blank">ace</a>
+              <a href="https://marked.js.org" target="_blank">Marked</a>
+            </td>
+            <td>
+              <a
+                href="https://lokesh-coder.github.io/pretty-checkbox"
+                target="_blank"
+                >pretty-checkbox</a
+              >
             </td>
           </tr>
           <tr>
             <td>
-              <a href="https://katex.org" target="_blank">KaTex</a>
+              <a href="https://quilljs.com" target="_blank">Quill.js</a>
             </td>
           </tr>
         </table>
@@ -2436,14 +2486,13 @@
       </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/quill/dist/quill.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mammoth-plus/dist/mammoth-plus.min.js"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.js"></script> -->
     <script src="Assets/ace-builds/src/ace.js"></script>
-
-    <script src="Scripts/globalVarDeclarations.js"></script>
-    <script src="Scripts/index.js"></script>
+    <script src="Assets/mammoth-plus/dist/mammoth-plus.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill/dist/quill.min.js"></script>
     <script src="Scripts/editorFunctions.js"></script>
     <script src="Scripts/fileViewing.js"></script>
+    <script src="Scripts/globalVarDeclarations.js"></script>
+    <script src="Scripts/index.js"></script>
   </body>
 </html>

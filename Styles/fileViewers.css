@@ -18,7 +18,7 @@ iframe {
   font-size: 14px;
   height: 430px;
   margin-top: 5px;
-  word-break: break-word;
+  word-wrap: break-word;
   max-width: 100%;
   min-width: 100%;
   overflow-y: auto;
@@ -53,6 +53,23 @@ iframe {
   background-color: var(--lightAccent000);
 }
 
+#markdownFileView {
+  overflow: auto;
+  padding-left: 10px;
+  border-color: var(--lightAccent300);
+  border-radius: 5px;
+  border-style: solid;
+  border-width: 1px;
+  height: 500px;
+  user-select: text;
+  width: 475px;
+  background-color: var(--lightAccent000);
+}
+
+code {
+  color: var(--blueAccent600);
+}
+
 /* Height dynamically set within index.js */
 #codeFileView {
   z-index: 0;
@@ -68,7 +85,7 @@ iframe {
 /* Height dynamically set within index.js */
 #anotherNoteView {
   border-color: var(--lightAccent300);
-  word-break: break-word;
+  word-wrap: break-word;
   overflow: auto;
   user-select: text;
 }

@@ -272,6 +272,7 @@ function toggleMenuCheck(imageObject) {
 
 function alterMenuFunctions(isDisabled) {
   document.getElementById("closeNote").disabled = isDisabled;
+  document.getElementById("downloadAsPlainText").disabled = isDisabled;
   document.getElementById("downloadNote").disabled = isDisabled;
   document.getElementById("hideEditor").disabled = isDisabled;
   document.getElementById("insertDate").disabled = isDisabled;

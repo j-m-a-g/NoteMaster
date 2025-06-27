@@ -39,25 +39,40 @@ function tasksOnceFileOpen(unhiddenView, fileInputObject) {
 
 function closeCurrentFile() {
   // Resets the state of all the file viewers
-  URLToTubeVideo.value = "";
-  tubeVideoView.hidden = true;
-  tubeVideoView.src = "";
-  tubeVideoViewer.hidden = true;
-
+  additionalVideoControls.hidden = true;
   anotherNoteView.hidden = true;
-  anotherNoteViewQuill.setContents();
   anotherNoteViewer.hidden = true;
+  anotherNoteViewQuill.setContents();
+
+  chooseViewer.hidden = false;
+
+  closeFile.disabled = true;
+  cloudFileView.hidden = true;
+  cloudFileView.removeAttribute("src");
+  cloudFileViewer.hidden = true;
+
+  codeFileView.hidden = true;
+  codeFileViewer.hidden = true;
+  codeFileViewerStatusBar.hidden = true;
+
+  customEmbedViewer.hidden = true;
 
   imageView.hidden = true;
-  imageView.src = "";
+  imageView.removeAttribute("src");
   imageViewer.hidden = true;
 
+  markdownFileView.hidden = true;
+  markdownFileView.removeAttribute("src");
+  markdownFileViewer.hidden = true;
+
+  noFileSelected.hidden = false;
+
   onlineDesignView.hidden = true;
-  onlineDesignView.src = "";
+  onlineDesignView.removeAttribute("src");
   onlineDesignViewer.hidden = true;
 
   pdfView.hidden = true;
-  pdfView.src = "";
+  pdfView.removeAttribute("src");
   pdfViewer.hidden = true;
 
   textView.hidden = true;
@@ -65,12 +80,20 @@ function closeCurrentFile() {
   textViewActions.hidden = true;
   textViewer.hidden = true;
 
-  videoView.hidden = true;
-  videoView.src = "";
-  videoViewer.hidden = true;
-  additionalVideoControls.hidden = true;
+  tubeVideoView.hidden = true;
+  tubeVideoView.removeAttribute("src");
+  tubeVideoViewer.hidden = true;
+  URLToTubeVideo.removeAttribute("value");
 
-  webpageURLBar.value = "";
+  videoView.hidden = true;
+  videoView.pause();
+  videoView.removeAttribute("src");
+  videoViewer.hidden = true;
+
+  viewersContainer.hidden = true;
+  viewerStatusBarIndicator.hidden = false;
+
+  webpageURLBar.removeAttribute("value");
   webpageView.hidden = true;
   webpageView.src = "Pages/noWebpageNavigated.html";
   webpageViewer.hidden = true;
@@ -79,28 +102,12 @@ function closeCurrentFile() {
   wordDocumentView.innerHTML = "";
   wordDocumentViewer.hidden = true;
 
-  codeFileViewer.hidden = true;
-  codeFileView.hidden = true;
-  codeFileViewerStatusBar.hidden = true;
-
-  cloudFileView.hidden = true;
-  cloudFileView.src = "";
-  cloudFileViewer.hidden = true;
-
-  customEmbedViewer.hidden = true;
-
-  closeFile.disabled = true;
-  chooseViewer.hidden = false;
-  noFileSelected.hidden = false;
-  viewerStatusBarIndicator.hidden = false;
-  viewersContainer.hidden = true;
-
   // Resets the state of the status bar
   fileName.innerHTML = "---";
   fileSize.innerHTML = "---";
   fileLastModified.innerHTML = "---";
 
-  // Clear the objectURL of the viewed file so it can
+  // TODO: Clear the objectURL of the viewed file so it can
   // be consecutively viewed
 
   document.getElementById("hideViewing").disabled = true;
@@ -133,6 +140,15 @@ function readWordDocument() {
   };
 
   fileReader.readAsArrayBuffer(event.target.files[0]);
+}
+
+function readMarkdownFile() {
+  const fileReader = new FileReader();
+  fileReader.onload = () => {
+    markdownFileView.innerHTML = marked.parse(fileReader.result);
+  };
+
+  fileReader.readAsText(event.target.files[0]);
 }
 
 function readHTMLNote() {

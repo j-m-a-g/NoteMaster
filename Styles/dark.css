@@ -5,11 +5,15 @@
   --lightAccent300: #555555;
   --lightAccent400: #555555;
 
-  --blueAccent50: #2239b8;
-  --blueAccent100: #1c5bd8;
-  --blueAccent500: #146dea;
-  --blueAccent600: #0080ff;
-  --blueAccent700: #008eff;
+  --blueAccent50: #146dea;
+  --blueAccent100: #0080ff;
+  --blueAccent500: #008eff;
+  --blueAccent600: #279fff;
+  --blueAccent700: #56b0ff;
+}
+
+::selection {
+  background-color: #146dea90;
 }
 
 .helperText,
@@ -24,16 +28,16 @@ html,
 input,
 select,
 span.buttonHeading,
-textarea {
+textaread {
   color: white;
-}
-
-body {
-  animation: none;
 }
 
 select {
   background-color: var(--lightAccent000);
+}
+
+progress::-webkit-progress-bar {
+  background-color: var(--lightAccent200);
 }
 
 button.menuDropdown:disabled {

@@ -17,8 +17,8 @@ const customStylesheetImport = document.getElementById(
 	"customStylesheetImport"
 );
 const downloadNotePrefixAndSuffix = [
-	"<div style='word-break: break-word'>",
-	"</div><style>body { font-family: sans-serif } .ql-font-serif { font-family: serif } .ql-font-monospace { font-family: monospace }</>"
+	"<div style='word-wrap: break-word'>",
+	"</div><style>body { font-family: sans-serif } td { word-break: break-word } .ql-font-serif { font-family: serif } .ql-font-monospace { font-family: monospace }</>"
 ];
 const programmingLanguageMode = document.getElementById(
 	"programmingLanguageMode"
@@ -47,7 +47,6 @@ const autoSaveCheck = document.getElementById("autoSaveCheck");
 const characterCount = document.getElementById("characterCount");
 const characterCountVisual = document.getElementById("characterCountVisual");
 const checkedImageSource = "Assets/Images/check_000000.svg";
-const uncheckedImageSource = "Assets/Images/menu_dropdown_placeholder.svg";
 const chooseViewer = document.getElementById("chooseViewer");
 const closeFile = document.getElementById("closeFile");
 const cloudFileView = document.getElementById("cloudFileView");
@@ -72,12 +71,10 @@ const darkModeToggle = document.getElementById("darkModeToggle");
 const dialogFocusBackground = document.getElementById("dialogFocusBackground");
 const downloadConvertedNote = document.getElementById("downloadConvertedNote");
 const editorSize = document.getElementById("editorSize");
-const revertToDefaultStyle = document.getElementById("revertToDefaultStyle");
 const embeddedCode = document.getElementById("embeddedCode");
 const errorMessage = document.getElementById("errorMessage");
 const fileLastModified = document.getElementById("fileLastModified");
 const fileName = document.getElementById("fileName");
-const importOwnStylesheet = document.getElementById("importOwnStylesheet");
 const fileSize = document.getElementById("fileSize");
 const fileViewingHistoryNames = [];
 const fileViewingHistoryTimes = [];
@@ -88,12 +85,15 @@ const iframes = document.getElementsByTagName("iframe");
 const imageFileInput = document.getElementById("imageFileInput");
 const imageView = document.getElementById("imageView");
 const imageViewer = document.getElementById("imageViewer");
+const importOwnStylesheet = document.getElementById("importOwnStylesheet");
 const insertCloudURLDialog = document.getElementById("insertCloudURLDialog");
 const insertTable = document.getElementById("insertTable");
 const lastViewedWebpages = [];
 const localDocuments = document.getElementById("localDocuments");
 const mainEditor = document.getElementById("mainEditor");
 const mainEditorZoom = document.getElementById("mainEditorZoom");
+const markdownFileInput = document.getElementById("markdownFileInput");
+const markdownFileView = document.getElementById("markdownFileView");
 const noFileSelected = document.getElementById("noFileSelected");
 const noteDownloadLink = document.getElementById("noteDownloadLink");
 const noteEditor = document.getElementById("noteEditor");
@@ -108,6 +108,7 @@ const pdfFileInput = document.getElementById("pdfFileInput");
 const pdfView = document.getElementById("pdfView");
 const pdfViewer = document.getElementById("pdfViewer");
 const resetTypingTarget = document.getElementById("resetTypingTarget");
+const revertToDefaultStyle = document.getElementById("revertToDefaultStyle");
 const savedForLater = document.getElementById("savedForLater");
 const savedForLaterDetails = document.getElementById("savedForLaterDetails");
 const setTypingTarget = document.getElementById("setTypingTarget");
@@ -125,6 +126,7 @@ const totalWordCountDisplay = document.getElementById("totalWordCountDisplay");
 const tubeVideoView = document.getElementById("tubeVideoView");
 const tubeVideoViewer = document.getElementById("tubeVideoViewer");
 const typingTarget = document.getElementById("typingTarget");
+const uncheckedImageSource = "Assets/Images/menu_dropdown_placeholder.svg";
 const URLToCloudFile = document.getElementById("URLToCloudFile");
 const URLToOnlineDesign = document.getElementById("URLToOnlineDesign");
 const URLToTubeVideo = document.getElementById("URLToTubeVideo");

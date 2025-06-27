@@ -13,7 +13,7 @@
 }
 
 ::selection {
-  background-color: var(--blueAccent50);
+  background-color: #b9dcff90;
 }
 
 html,
@@ -333,7 +333,7 @@ span.savedNoteTitle {
   overflow: hidden;
   text-overflow: ellipsis;
   font-weight: 500;
-  word-break: break-word;
+  word-wrap: break-word;
 }
 
 div.savedNoteTitle {
@@ -489,7 +489,7 @@ span.copyOnClick:active {
   background-color: var(--lightAccent000);
   height: 60%;
   overflow: auto;
-  word-break: break-word;
+  word-wrap: break-word;
   border-color: var(--lightAccent400);
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
