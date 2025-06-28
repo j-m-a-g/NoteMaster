@@ -92,6 +92,7 @@ function onLoadTasks() {
 
     dynamicallySetHeight();
     updateStatusBar();
+    addUnicodeCharacters();
 
     if (currentDate.getHours() < 12) {
       userGreeting.innerHTML = "Good Morning 😎";
@@ -276,6 +277,7 @@ function alterMenuFunctions(isDisabled) {
   document.getElementById("downloadNote").disabled = isDisabled;
   document.getElementById("hideEditor").disabled = isDisabled;
   document.getElementById("insertDate").disabled = isDisabled;
+  document.getElementById("insertSymbolButton").disabled = isDisabled;
   document.getElementById("insertTableButton").disabled = isDisabled;
   document.getElementById("insertTime").disabled = isDisabled;
   document.getElementById("printNote").disabled = isDisabled;
@@ -401,4 +403,29 @@ function createTable() {
   }
 
   insertTableQuill.clipboard.dangerouslyPasteHTML(tableSourceHTML.innerHTML);
+}
+
+function addUnicodeCharacters() {
+  for (let s = 0; s < symbolList.length; s++) {
+    for (let t = 0; t < symbolList[s].length; t++) {
+      const symbolBox = document.createElement("div");
+      const symbolTitle = document.createElement("h3");
+
+      symbolTitle.style.textAlign = "center";
+      symbolTitle.innerHTML = symbolList[s][0];
+
+      symbolBox.className = "symbolContainer";
+      symbolBox.title = symbolList[s][1];
+      symbolBox.setAttribute(
+        "onclick",
+        "quill.insertText(quill.getSelection(focus), '" +
+          symbolList[s][0] +
+          "')"
+      );
+      symbolBox.appendChild(symbolTitle);
+
+      symbolsDisplay.appendChild(symbolBox);
+      break;
+    }
+  }
 }

@@ -249,6 +249,18 @@
           />
           Current Time <span class="helperText menuDropdown">(h)h:mm</span>
         </button>
+        <button
+          disabled
+          id="insertSymbolButton"
+          class="menuDropdown"
+          onclick="insertSymbol.hidden = false"
+        >
+          <img
+            class="reducedIntensity menu"
+            src="Assets/Images/emoji_symbols_000000.svg"
+          />
+          Symbol
+        </button>
       </div>
       <button
         class="menu"
@@ -345,7 +357,7 @@
             class="reducedIntensity menu"
             src="Assets/Images/history_000000.svg"
           />
-          Viewing <u>H</u>History
+          Viewing <u>H</u>istory
           <span class="helperText menuDropdown">Alt + H</span>
         </button>
       </div>
@@ -567,6 +579,16 @@
             src="Assets/Images/waving_hand_000000.svg"
           />
           Get Started
+        </button>
+        <button
+          class="menuDropdown"
+          onclick="window.open('https://github.com/j-m-a-g/NoteMaster/issues', '_blank')"
+        >
+          <img
+            class="reducedIntensity menu"
+            src="Assets/Images/feedback_000000.svg"
+          />
+          Send Feedback
         </button>
         <button
           class="menuDropdown"
@@ -1611,7 +1633,11 @@
     <!-- Confirm save pop-up -->
     <div class="saveBeforeClosing" hidden id="confirmSaveDialog">
       <div class="dialogOverlay">
-        <h1 class="saveBeforeClosing" id="saveDocumentHeading"></h1>
+        <h2
+          class="saveBeforeClosing"
+          id="saveDocumentHeading"
+          style="text-align: center"
+        ></h2>
         <h3 class="saveBeforeClosing helperText">
           You are continuing onto another task and your current work has not
           been saved
@@ -1712,9 +1738,9 @@
     <!-- Confirmation before closing a viewer -->
     <div class="saveBeforeClosing" hidden id="confirmViewerClose">
       <div class="dialogOverlay">
-        <h1 class="saveBeforeClosing">
+        <h2 class="saveBeforeClosing" style="text-align: center">
           Are You Sure You Want to Close This Viewer?
-        </h1>
+        </h2>
         <h3 class="saveBeforeClosing helperText">
           By doing this, you will revert your view back to Welcome and be able
           to select another document to view
@@ -1840,7 +1866,7 @@
 
     <div class="saveBeforeClosing" hidden id="insertTable">
       <div class="dialogOverlay" style="height: 75%">
-        <h1>Insert a Table</h1>
+        <h2>Insert a Table</h2>
         <h3 class="helperText">
           Select the number of rows and columns you'd like to have and then copy
           the generated table. Note that this cannot be changed later for the
@@ -1893,6 +1919,20 @@
         <div hidden id="tableSourceHTML">
           <table id="createdTable"></table>
         </div>
+      </div>
+    </div>
+
+    <div class="saveBeforeClosing" hidden id="insertSymbol">
+      <div class="dialogOverlay" style="margin-left: 50%">
+        <h2>Insert a Symbol</h2>
+        <h3 class="helperText">
+          Select a special character to insert it in your note at your cursor's
+          current position
+        </h3>
+        <div id="symbolsDisplay"></div>
+        <a class="hyperlinkButton" onclick="insertSymbol.hidden = true"
+          >Close</a
+        >
       </div>
     </div>
 
