@@ -18,7 +18,7 @@ const customStylesheetImport = document.getElementById(
 );
 const downloadNotePrefixAndSuffix = [
 	"<div style='word-wrap: break-word'>",
-	"</div><style>body { font-family: sans-serif } td { word-break: break-word } .ql-font-serif { font-family: serif } .ql-font-monospace { font-family: monospace }</>"
+	"</div><style>body { font-family: sans-serif } td { word-break: break-word } h1, h2, h3, h4, h5, h6 { font-weight: normal } .ql-font-serif { font-family: serif } .ql-font-monospace { font-family: monospace }</style>"
 ];
 const programmingLanguageMode = document.getElementById(
 	"programmingLanguageMode"
@@ -149,7 +149,6 @@ const viewerStatusBarIndicator = document.getElementById(
 const wordDocumentToNoteButton = document.getElementById(
 	"wordDocumentToNoteButton"
 );
-const symbolsDisplay = document.getElementById("symbolsDisplay");
 const adjustAppSectionSizes = document.getElementById("adjustAppSectionSizes");
 const adjustedHeight = (window.innerHeight - 35).toString() + "px";
 const anotherNoteFileInput = document.getElementById("anotherNoteFileInput");
@@ -202,6 +201,7 @@ const imageView = document.getElementById("imageView");
 const imageViewer = document.getElementById("imageViewer");
 const importOwnStylesheet = document.getElementById("importOwnStylesheet");
 const insertCloudURLDialog = document.getElementById("insertCloudURLDialog");
+const insertOnlineImage = document.getElementById("insertOnlineImage");
 const insertSymbol = document.getElementById("insertSymbol");
 const insertTable = document.getElementById("insertTable");
 const lastViewedWebpages = [];
@@ -220,6 +220,9 @@ const onlineDesignView = document.getElementById("onlineDesignView");
 const onlineDesignViewer = document.getElementById("onlineDesignViewer");
 const onlineDocuments = document.getElementById("onlineDocuments");
 const openNoteFileInput = document.getElementById("openNoteFileInput");
+const pageBackgroundColor = document.getElementById("pageBackgroundColor");
+const pageSetupStyle = document.getElementById("pageSetupStyle");
+const pageTextColor = document.getElementById("pageTextColor");
 const pdfFileInput = document.getElementById("pdfFileInput");
 const pdfView = document.getElementById("pdfView");
 const pdfViewer = document.getElementById("pdfViewer");
@@ -231,6 +234,7 @@ const setTypingTarget = document.getElementById("setTypingTarget");
 const shareCopyLink = document.getElementById("shareCopyLink");
 const snackbar = document.getElementById("snackbar");
 const snackbarMessage = document.getElementById("snackbarMessage");
+const symbolsDisplay = document.getElementById("symbolsDisplay");
 const tableColumns = document.getElementById("tableColumns");
 const tableRows = document.getElementById("tableRows");
 const textFileInput = document.getElementById("textFileInput");
@@ -243,8 +247,12 @@ const tubeVideoView = document.getElementById("tubeVideoView");
 const tubeVideoViewer = document.getElementById("tubeVideoViewer");
 const typingTarget = document.getElementById("typingTarget");
 const uncheckedImageSource = "Assets/Images/menu_dropdown_placeholder.svg";
+const insertOnlineImageInput = document.getElementById(
+	"insertOnlineImageInput"
+);
 const URLToCloudFile = document.getElementById("URLToCloudFile");
 const URLToOnlineDesign = document.getElementById("URLToOnlineDesign");
+const URLToPDFInput = document.getElementById("URLToPDFInput");
 const URLToTubeVideo = document.getElementById("URLToTubeVideo");
 const userGreeting = document.getElementById("userGreeting");
 const videoFileInput = document.getElementById("videoFileInput");

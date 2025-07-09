@@ -423,3 +423,146 @@ function configureTypingGoal(isReset) {
       break;
   }
 }
+
+function addDownloadNoteStyle(styleSelector, styleRule) {
+  let downloadNoteSuffix = downloadNotePrefixAndSuffix[1].replace(
+    "</style>",
+    ""
+  );
+  downloadNotePrefixAndSuffix[1] =
+    downloadNoteSuffix + " " + styleSelector + " { " + styleRule + " }";
+}
+
+function applyPageSetup(resetToDefault) {
+  // Resets the state of the <style> tag used for altering
+  // the page's default styling
+  pageSetupStyle.innerHTML = "";
+
+  switch (resetToDefault) {
+    case true:
+      // Headings
+      for (let headingNumber = 0; headingNumber < 7; headingNumber++) {
+        const headingVariable = "heading" + headingNumber;
+        let currentFontSize = 0;
+
+        document.getElementById(headingVariable + "Family").value =
+          "sans-serif";
+        switch (headingNumber) {
+          case 0:
+            currentFontSize = 13;
+            break;
+          case 1:
+            currentFontSize = 26;
+            break;
+          case 2:
+            currentFontSize = 19.5;
+            break;
+          case 3:
+            currentFontSize = 15;
+            break;
+          case 4:
+            currentFontSize = 13;
+            break;
+          case 5:
+            currentFontSize = 10.75;
+            break;
+          case 6:
+            currentFontSize = 8.75;
+            break;
+        }
+
+        document.getElementById(headingVariable + "Size").value =
+          currentFontSize;
+
+        document.getElementById(headingVariable + "Bold").checked = false;
+        document.getElementById(headingVariable + "Italics").checked = false;
+        document.getElementById(headingVariable + "Strike").checked = false;
+      }
+
+      // Page Background and Text Color
+      pageBackgroundColor.value = "#FFFFFF";
+      pageTextColor.value = "#000000";
+
+      mainEditor.removeAttribute("style");
+      break;
+    case false:
+      // Headings
+      for (let headingNumber = 0; headingNumber < 7; headingNumber++) {
+        const headingVariable = "heading" + headingNumber;
+        let headingName = "";
+
+        if (headingNumber === 0) {
+          headingName = "p";
+        } else {
+          headingName = "h" + headingNumber;
+        }
+
+        pageSetupStyle.innerHTML +=
+          "#mainEditor " +
+          headingName +
+          " { font-family: " +
+          document.getElementById(headingVariable + "Family").value +
+          "; font-size: " +
+          document.getElementById(headingVariable + "Size").value +
+          "px } ";
+        addDownloadNoteStyle(
+          headingName,
+          "font-family: " +
+            document.getElementById(headingVariable + "Family").value +
+            "; font-size: " +
+            document.getElementById(headingVariable + "Size").value +
+            "px"
+        );
+
+        if (document.getElementById(headingVariable + "Bold").checked) {
+          pageSetupStyle.innerHTML +=
+            "#mainEditor " + headingName + " { font-weight: bold } ";
+          addDownloadNoteStyle(headingName, "font-weight: bold");
+        } else {
+          pageSetupStyle.innerHTML +=
+            "#mainEditor " + headingName + " { font-weight: normal } ";
+          addDownloadNoteStyle(headingName, "font-weight: normal");
+        }
+
+        if (document.getElementById(headingVariable + "Italics").checked) {
+          pageSetupStyle.innerHTML +=
+            "#mainEditor " + headingName + " { font-style: italic } ";
+          addDownloadNoteStyle(headingName, "font-style: italic");
+        } else {
+          pageSetupStyle.innerHTML +=
+            "#mainEditor " + headingName + " { font-style: normal } ";
+          addDownloadNoteStyle(headingName, "font-style: normal");
+        }
+
+        if (document.getElementById(headingVariable + "Strike").checked) {
+          pageSetupStyle.innerHTML +=
+            "#mainEditor " +
+            headingName +
+            " { text-decoration-line: line-through } ";
+          addDownloadNoteStyle(
+            headingName,
+            "text-decoration-line: line-through"
+          );
+        } else {
+          pageSetupStyle.innerHTML +=
+            "#mainEditor " + headingName + " { text-decoration: none } ";
+          addDownloadNoteStyle(headingName, "text-decoration: none");
+        }
+      }
+
+      // Page Background and Text Color
+      mainEditor.style.backgroundColor = pageBackgroundColor.value;
+      mainEditor.style.color = pageTextColor.value;
+      addDownloadNoteStyle(
+        "html",
+        "background-color: " +
+          pageBackgroundColor.value +
+          "; color: " +
+          pageTextColor.value
+      );
+      break;
+  }
+
+  toggleDialog(false, "pageSetup", null);
+  displaySnackbar("Page setup applied");
+}

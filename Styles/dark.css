@@ -49,7 +49,7 @@ img.menu {
 }
 
 img.reducedIntensity {
-  opacity: 50%;
+  opacity: 75%;
   filter: invert(100%);
 }
 

@@ -35,7 +35,9 @@ h1 {
 
 h2,
 h3,
-h4 {
+h4,
+h5,
+h6 {
   margin-top: 5px;
   font-weight: normal;
 }
@@ -377,7 +379,7 @@ h4.helperText {
 }
 
 img.reducedIntensity {
-  opacity: 25%;
+  opacity: 50%;
 }
 
 div.dialogOverlay {
@@ -437,7 +439,7 @@ button.primaryButton:disabled {
 
 img.primaryButton {
   filter: invert(100%);
-  opacity: 90%;
+  opacity: 75%;
 }
 
 button.dialogOverlay {
@@ -496,6 +498,14 @@ span.copyOnClick:active {
 
 #mainEditor:active {
   border-color: var(--blueAccent500);
+}
+
+input.pageStyle {
+  width: 75%;
+}
+
+select.pageStyle {
+  width: 100%;
 }
 
 nav.statusBar {

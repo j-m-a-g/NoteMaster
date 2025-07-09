@@ -11,6 +11,7 @@
     <meta charset="UTF-8" />
     <meta content="ie=edge" http-equiv="X-UA-Compatible" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <style id="pageSetupStyle"></style>
     <title>NoteMaster</title>
 
     <link
@@ -103,6 +104,30 @@
           <span class="helperText menuDropdown">Alt + O</span>
         </button>
         <button
+          accesskey="p"
+          class="menuDropdown"
+          disabled
+          id="printNote"
+          onclick="printNoteOperation()"
+        >
+          <img
+            class="reducedIntensity menu"
+            src="Assets/Images/print_000000.svg"
+          />
+          <u>P</u>rint Note <span class="helperText menuDropdown">Alt + P</span>
+        </button>
+        <button
+          class="menuDropdown"
+          onclick="toggleDialog(true, 'pageSetup', null)"
+        >
+          <img
+            class="reducedIntensity menu"
+            src="Assets/Images/page_info_000000.svg"
+          />
+          Page Setup
+        </button>
+        <hr class="menuDropdown" />
+        <button
           accesskey="s"
           class="menuDropdown"
           disabled
@@ -115,19 +140,6 @@
           />
           <u>S</u>ave <span class="helperText">(In-Browser)</span>
           <span class="helperText menuDropdown">Alt + S</span>
-        </button>
-        <button
-          accesskey="p"
-          class="menuDropdown"
-          disabled
-          id="printNote"
-          onclick="printNoteOperation()"
-        >
-          <img
-            class="reducedIntensity menu"
-            src="Assets/Images/print_000000.svg"
-          />
-          <u>P</u>rint Note <span class="helperText menuDropdown">Alt + P</span>
         </button>
         <button
           accesskey="w"
@@ -212,6 +224,18 @@
         onmouseover="this.hidden = false"
         style="margin-left: 120px"
       >
+        <button
+          class="menuDropdown"
+          disabled
+          id="insertOnlineImageButton"
+          onclick="insertOnlineImage.hidden = false"
+        >
+          <img
+            class="reducedIntensity menu"
+            src="Assets/Images/add_photo_alternate_000000.svg"
+          />
+          Online Image
+        </button>
         <button
           class="menuDropdown"
           disabled
@@ -1864,6 +1888,34 @@
       </div>
     </div>
 
+    <div class="saveBeforeClosing" hidden id="insertOnlineImage">
+      <div class="dialogOverlay">
+        <h2>Insert an Online Image</h2>
+        <table style="width: 100%; margin-bottom: 5px">
+          <tr>
+            <td>
+              <input
+                id="insertOnlineImageInput"
+                style="width: 94%"
+                type="url"
+                placeholder="Paste the image's URL here"
+              />
+            </td>
+            <td>
+              <button
+                class="primaryButton"
+                onclick="if (checkURLInput('insertOnlineImageInput')) { toggleDialog(false, 'insertOnlineImage', null); quill.clipboard.dangerouslyPasteHTML(quill.getSemanticHTML() + '<img src=\'' + insertOnlineImageInput.value + '\'>') }"
+              >
+                Insert
+              </button>
+            </td>
+          </tr>
+        </table>
+        <a class="hyperlinkButton" onclick="insertOnlineImage.hidden = true"
+          >Close</a
+        >
+      </div>
+    </div>
     <div class="saveBeforeClosing" hidden id="insertTable">
       <div class="dialogOverlay" style="height: 75%">
         <h2>Insert a Table</h2>
@@ -1996,6 +2048,374 @@
           style="width: 100%"
         >
           OK
+        </button>
+      </div>
+      <div class="dialogOverlay" hidden id="pageSetup">
+        <table>
+          <tr>
+            <td>
+              <img
+                src="Assets/Images/page_info_000000.svg"
+                class="reducedIntensity"
+              />
+            </td>
+            <td>
+              <h2 class="dialogOverlay">Page Setup</h2>
+            </td>
+          </tr>
+        </table>
+        <div style="height: 350px; overflow-y: auto; margin-bottom: 10px">
+          <h4 class="helperText">DEFAULT STYLING</h4>
+          <table style="width: 100%">
+            <tr>
+              <td>Background Color</td>
+              <td>
+                <input
+                  id="pageBackgroundColor"
+                  style="border-radius: 5px"
+                  type="color"
+                  value="#FFFFFF"
+                />
+              </td>
+              <td>Text Color</td>
+              <td>
+                <input
+                  style="border-radius: 5px"
+                  type="color"
+                  id="pageTextColor"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td><h1>Heading 1</h1></td>
+              <td>
+                <select class="pageStyle" id="heading1Family">
+                  <option value="sans-serif">Sans Serif</option>
+                  <option value="serif" style="font-family: serif">
+                    Serif
+                  </option>
+                  <option value="monospace" style="font-family: monospace">
+                    Monospace
+                  </option>
+                </select>
+              </td>
+              <td style="width: 20%">
+                <input
+                  id="heading1Size"
+                  class="pageStyle"
+                  type="number"
+                  placeholder="Font Size"
+                  value="26"
+                />
+              </td>
+              <td>
+                <div class="pretty p-default p-curve p-thick">
+                  <input type="checkbox" id="heading1Bold" />
+                  <div class="state p-primary p-primary-o">
+                    <label>Bold</label>
+                  </div>
+                </div>
+                <br />
+                <div class="pretty p-default p-curve p-thick">
+                  <input type="checkbox" id="heading1Italics" />
+                  <div class="state p-primary p-primary-o">
+                    <label>Italic</label>
+                  </div>
+                </div>
+                <br />
+                <div class="pretty p-default p-curve p-thick">
+                  <input type="checkbox" id="heading1Strike" />
+                  <div class="state p-primary p-primary-o">
+                    <label>Strikethrough</label>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><h2>Heading 2</h2></td>
+              <td>
+                <select class="pageStyle" id="heading2Family">
+                  <option value="sans-serif">Sans Serif</option>
+                  <option value="serif" style="font-family: serif">
+                    Serif
+                  </option>
+                  <option value="monospace" style="font-family: monospace">
+                    Monospace
+                  </option>
+                </select>
+              </td>
+              <td>
+                <input
+                  id="heading2Size"
+                  class="pageStyle"
+                  type="number"
+                  placeholder="Font Size"
+                  value="19.5"
+                />
+              </td>
+              <td>
+                <div class="pretty p-default p-curve p-thick">
+                  <input type="checkbox" id="heading2Bold" />
+                  <div class="state p-primary p-primary-o">
+                    <label>Bold</label>
+                  </div>
+                </div>
+                <br />
+                <div class="pretty p-default p-curve p-thick">
+                  <input type="checkbox" id="heading2Italics" />
+                  <div class="state p-primary p-primary-o">
+                    <label>Italic</label>
+                  </div>
+                </div>
+                <br />
+                <div class="pretty p-default p-curve p-thick">
+                  <input type="checkbox" id="heading2Strike" />
+                  <div class="state p-primary p-primary-o">
+                    <label>Strikethrough</label>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><h3>Heading 3</h3></td>
+              <td>
+                <select class="pageStyle" id="heading3Family">
+                  <option value="sans-serif">Sans Serif</option>
+                  <option value="serif" style="font-family: serif">
+                    Serif
+                  </option>
+                  <option value="monospace" style="font-family: monospace">
+                    Monospace
+                  </option>
+                </select>
+              </td>
+              <td>
+                <input
+                  id="heading3Size"
+                  class="pageStyle"
+                  type="number"
+                  placeholder="Font Size"
+                  value="15"
+                />
+              </td>
+              <td>
+                <div class="pretty p-default p-curve p-thick">
+                  <input type="checkbox" id="heading3Bold" />
+                  <div class="state p-primary p-primary-o">
+                    <label>Bold</label>
+                  </div>
+                </div>
+                <br />
+                <div class="pretty p-default p-curve p-thick">
+                  <input type="checkbox" id="heading3Italics" />
+                  <div class="state p-primary p-primary-o">
+                    <label>Italic</label>
+                  </div>
+                </div>
+                <br />
+                <div class="pretty p-default p-curve p-thick">
+                  <input type="checkbox" id="heading3Strike" />
+                  <div class="state p-primary p-primary-o">
+                    <label>Strikethrough</label>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><h4>Heading 4</h4></td>
+              <td>
+                <select class="pageStyle" id="heading4Family">
+                  <option value="sans-serif">Sans Serif</option>
+                  <option value="serif" style="font-family: serif">
+                    Serif
+                  </option>
+                  <option value="monospace" style="font-family: monospace">
+                    Monospace
+                  </option>
+                </select>
+              </td>
+              <td>
+                <input
+                  id="heading4Size"
+                  class="pageStyle"
+                  type="number"
+                  placeholder="Font Size"
+                  value="13"
+                />
+              </td>
+              <td>
+                <div class="pretty p-default p-curve p-thick">
+                  <input type="checkbox" id="heading4Bold" />
+                  <div class="state p-primary p-primary-o">
+                    <label>Bold</label>
+                  </div>
+                </div>
+                <br />
+                <div class="pretty p-default p-curve p-thick">
+                  <input type="checkbox" id="heading4Italics" />
+                  <div class="state p-primary p-primary-o">
+                    <label>Italic</label>
+                  </div>
+                </div>
+                <br />
+                <div class="pretty p-default p-curve p-thick">
+                  <input type="checkbox" id="heading4Strike" />
+                  <div class="state p-primary p-primary-o">
+                    <label>Strikethrough</label>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><p>Normal</p></td>
+              <td>
+                <select class="pageStyle" id="heading0Family">
+                  <option value="sans-serif">Sans Serif</option>
+                  <option value="serif" style="font-family: serif">
+                    Serif
+                  </option>
+                  <option value="monospace" style="font-family: monospace">
+                    Monospace
+                  </option>
+                </select>
+              </td>
+              <td>
+                <input
+                  id="heading0Size"
+                  class="pageStyle"
+                  type="number"
+                  placeholder="Font Size"
+                  value="13"
+                />
+              </td>
+              <td>
+                <div class="pretty p-default p-curve p-thick">
+                  <input type="checkbox" id="heading0Bold" />
+                  <div class="state p-primary p-primary-o">
+                    <label>Bold</label>
+                  </div>
+                </div>
+                <br />
+                <div class="pretty p-default p-curve p-thick">
+                  <input type="checkbox" id="heading0Italics" />
+                  <div class="state p-primary p-primary-o">
+                    <label>Italic</label>
+                  </div>
+                </div>
+                <br />
+                <div class="pretty p-default p-curve p-thick">
+                  <input type="checkbox" id="heading0Strike" />
+                  <div class="state p-primary p-primary-o">
+                    <label>Strikethrough</label>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><h5>Heading 5</h5></td>
+              <td>
+                <select class="pageStyle" id="heading5Family">
+                  <option value="sans-serif">Sans Serif</option>
+                  <option value="serif" style="font-family: serif">
+                    Serif
+                  </option>
+                  <option value="monospace" style="font-family: monospace">
+                    Monospace
+                  </option>
+                </select>
+              </td>
+              <td>
+                <input
+                  id="heading5Size"
+                  class="pageStyle"
+                  type="number"
+                  placeholder="Font Size"
+                  value="10.75"
+                />
+              </td>
+              <td>
+                <div class="pretty p-default p-curve p-thick">
+                  <input type="checkbox" id="heading5Bold" />
+                  <div class="state p-primary p-primary-o">
+                    <label>Bold</label>
+                  </div>
+                </div>
+                <br />
+                <div class="pretty p-default p-curve p-thick">
+                  <input type="checkbox" id="heading5Italics" />
+                  <div class="state p-primary p-primary-o">
+                    <label>Italic</label>
+                  </div>
+                </div>
+                <br />
+                <div class="pretty p-default p-curve p-thick">
+                  <input type="checkbox" id="heading5Strike" />
+                  <div class="state p-primary p-primary-o">
+                    <label>Strikethrough</label>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><h6>Heading 6</h6></td>
+              <td>
+                <select class="pageStyle" id="heading6Family">
+                  <option value="sans-serif">Sans Serif</option>
+                  <option value="serif" style="font-family: serif">
+                    Serif
+                  </option>
+                  <option value="monospace" style="font-family: monospace">
+                    Monospace
+                  </option>
+                </select>
+              </td>
+              <td>
+                <input
+                  id="heading6Size"
+                  class="pageStyle"
+                  type="number"
+                  placeholder="Font Size"
+                  value="8.75"
+                />
+              </td>
+              <td>
+                <div class="pretty p-default p-curve p-thick">
+                  <input type="checkbox" id="heading6Bold" />
+                  <div class="state p-primary p-primary-o">
+                    <label>Bold</label>
+                  </div>
+                </div>
+                <br />
+                <div class="pretty p-default p-curve p-thick">
+                  <input type="checkbox" id="heading6Italics" />
+                  <div class="state p-primary p-primary-o">
+                    <label>Italic</label>
+                  </div>
+                </div>
+                <br />
+                <div class="pretty p-default p-curve p-thick">
+                  <input type="checkbox" id="heading6Strike" />
+                  <div class="state p-primary p-primary-o">
+                    <label>Strikethrough</label>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <button
+          class="primaryButton"
+          style="width: 15%"
+          onclick="applyPageSetup(false)"
+        >
+          Apply
+        </button>
+        <button
+          class="dialogOverlay"
+          style="width: 25%"
+          onclick="applyPageSetup(true)"
+        >
+          Reset to Default
         </button>
       </div>
       <!-- Viewing History -->
@@ -2157,7 +2577,7 @@
             <td>
               <button
                 class="primaryButton"
-                onclick="if (checkURLInput('URLToPDFInput')) { toggleDialog(false, 'linkToPDF', null); pdfView.src = document.getElementById('URLToPDFInput').value; toggleViewer(true, 'pdfViewer'); tasksOnceFileOpen('pdfView', null); addHistoryEntry('URLToPDFInput')}"
+                onclick="if (checkURLInput('URLToPDFInput')) { toggleDialog(false, 'linkToPDF', null); pdfView.src = URLToPDFInput.value; toggleViewer(true, 'pdfViewer'); tasksOnceFileOpen('pdfView', null); addHistoryEntry('URLToPDFInput') }"
               >
                 Open
               </button>
