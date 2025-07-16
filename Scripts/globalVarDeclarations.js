@@ -20,6 +20,12 @@ const downloadNotePrefixAndSuffix = [
 	"<div style='word-wrap: break-word'>",
 	"</div><style>body { font-family: sans-serif } td { word-break: break-word } h1, h2, h3, h4, h5, h6 { font-weight: normal } .ql-font-serif { font-family: serif } .ql-font-monospace { font-family: monospace }</style>"
 ];
+const gettingStartedDarkMode = document.getElementById(
+	"gettingStartedDarkMode"
+);
+const insertOnlineImageInput = document.getElementById(
+	"insertOnlineImageInput"
+);
 const programmingLanguageMode = document.getElementById(
 	"programmingLanguageMode"
 );
@@ -220,6 +226,7 @@ const onlineDesignView = document.getElementById("onlineDesignView");
 const onlineDesignViewer = document.getElementById("onlineDesignViewer");
 const onlineDocuments = document.getElementById("onlineDocuments");
 const openNoteFileInput = document.getElementById("openNoteFileInput");
+const originalDownloadSuffix = downloadNotePrefixAndSuffix[1];
 const pageBackgroundColor = document.getElementById("pageBackgroundColor");
 const pageSetupStyle = document.getElementById("pageSetupStyle");
 const pageTextColor = document.getElementById("pageTextColor");
@@ -247,9 +254,6 @@ const tubeVideoView = document.getElementById("tubeVideoView");
 const tubeVideoViewer = document.getElementById("tubeVideoViewer");
 const typingTarget = document.getElementById("typingTarget");
 const uncheckedImageSource = "Assets/Images/menu_dropdown_placeholder.svg";
-const insertOnlineImageInput = document.getElementById(
-	"insertOnlineImageInput"
-);
 const URLToCloudFile = document.getElementById("URLToCloudFile");
 const URLToOnlineDesign = document.getElementById("URLToOnlineDesign");
 const URLToPDFInput = document.getElementById("URLToPDFInput");

@@ -252,10 +252,10 @@ function get12HourTime() {
   }
 
   // Adds, "AM" or "PM"
-  if (currentDate.getTime() >= 12) {
-    suffix = " PM";
-  } else {
+  if (currentDate.getHours() < 12) {
     suffix = " AM";
+  } else {
+    suffix = " PM";
   }
 
   return hour + ":" + minute + suffix;
@@ -311,6 +311,7 @@ function onLoadTasks() {
     // Dark Mode
     if (localStorage.getItem("darkMode") === "true") {
       darkModeToggle.click();
+      gettingStartedDarkMode.checked = true;
     }
 
     dynamicallySetHeight();
@@ -377,10 +378,7 @@ function onLoadTasks() {
     }
 
     // RETRIEVE SAVED NOTES
-    if (
-      localStorage.getItem("savedNotes") !== null &&
-      localStorage.getItem("savedNotes") !== ""
-    ) {
+    if (localStorage.getItem("savedNotes") !== null) {
       savedForLater.innerHTML = localStorage.getItem("savedNotes");
       savedForLaterDetails.click();
       savedForLaterDetails.open = true;
@@ -411,10 +409,7 @@ function onLoadTasks() {
     }
 
     // Typing Target
-    if (
-      localStorage.getItem("storedTypingTarget") !== null &&
-      localStorage.getItem("storedTypingTarget") !== ""
-    ) {
+    if (localStorage.getItem("storedTypingTarget") !== null) {
       if (localStorage.getItem("customTarget") === "false") {
         typingTarget.hidden = false;
         typingTarget.value = localStorage.getItem("storedTypingTarget");

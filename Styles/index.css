@@ -223,14 +223,20 @@ button.menuDropdown:active {
   background-color: var(--lightAccent300);
 }
 
-button.menuDropdown:disabled:hover {
+button.menuDropdown:disabled {
   cursor: not-allowed;
+}
+
+button.menuDropdown:disabled:hover {
   background-color: transparent;
+  border-color: var(--lightAccent100);
 }
 
 hr.menuDropdown {
   margin-top: 0;
   margin-bottom: 0;
+  border-style: solid;
+  border-color: var(--lightAccent400);
 }
 
 span.menuDropdown {

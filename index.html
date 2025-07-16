@@ -114,7 +114,8 @@
             class="reducedIntensity menu"
             src="Assets/Images/print_000000.svg"
           />
-          <u>P</u>rint Note <span class="helperText menuDropdown">Alt + P</span>
+          <u>P</u>rint Note...
+          <span class="helperText menuDropdown">Alt + P</span>
         </button>
         <button
           class="menuDropdown"
@@ -612,8 +613,9 @@
             class="reducedIntensity menu"
             src="Assets/Images/feedback_000000.svg"
           />
-          Send Feedback
+          Send Feedback...
         </button>
+        <hr class="menuDropdown" />
         <button
           class="menuDropdown"
           onclick="toggleDialog(true, 'aboutDialog', null)"
@@ -1890,7 +1892,19 @@
 
     <div class="saveBeforeClosing" hidden id="insertOnlineImage">
       <div class="dialogOverlay">
-        <h2>Insert an Online Image</h2>
+        <table>
+          <tr>
+            <td>
+              <img
+                src="Assets/Images/add_photo_alternate_000000.svg"
+                class="reducedIntensity"
+              />
+            </td>
+            <td>
+              <h2 class="dialogOverlay">Insert an Online Image</h2>
+            </td>
+          </tr>
+        </table>
         <table style="width: 100%; margin-bottom: 5px">
           <tr>
             <td>
@@ -1918,7 +1932,19 @@
     </div>
     <div class="saveBeforeClosing" hidden id="insertTable">
       <div class="dialogOverlay" style="height: 75%">
-        <h2>Insert a Table</h2>
+        <table>
+          <tr>
+            <td>
+              <img
+                src="Assets/Images/table_000000.svg"
+                class="reducedIntensity"
+              />
+            </td>
+            <td>
+              <h2 class="dialogOverlay">Insert a Table</h2>
+            </td>
+          </tr>
+        </table>
         <h3 class="helperText">
           Select the number of rows and columns you'd like to have and then copy
           the generated table. Note that this cannot be changed later for the
@@ -2008,7 +2034,11 @@
           <tr>
             <td>
               <div class="pretty p-default p-curve p-thick">
-                <input type="checkbox" oninput="darkModeToggle.click()" />
+                <input
+                  type="checkbox"
+                  oninput="darkModeToggle.click()"
+                  id="gettingStartedDarkMode"
+                />
                 <div class="state p-primary-o">
                   <label>Enable Dark Mode</label>
                 </div>
@@ -2950,9 +2980,9 @@
     <script src="Assets/mammoth-plus/dist/mammoth-plus.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/quill/dist/quill.min.js"></script>
-    <script src="Scripts/editorFunctions.js"></script>
-    <script src="Scripts/fileViewing.js"></script>
-    <script src="Scripts/globalVarDeclarations.js"></script>
-    <script src="Scripts/index.js"></script>
+    <script src="Scripts/editorFunctions-min.js"></script>
+    <script src="Scripts/fileViewing-min.js"></script>
+    <script src="Scripts/globalVarDeclarations-min.js"></script>
+    <script src="Scripts/index-min.js"></script>
   </body>
 </html>

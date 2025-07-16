@@ -425,18 +425,20 @@ function configureTypingGoal(isReset) {
 }
 
 function addDownloadNoteStyle(styleSelector, styleRule) {
-  let downloadNoteSuffix = downloadNotePrefixAndSuffix[1].replace(
-    "</style>",
-    ""
-  );
   downloadNotePrefixAndSuffix[1] =
-    downloadNoteSuffix + " " + styleSelector + " { " + styleRule + " }";
+    downloadNotePrefixAndSuffix[1].replace("</style>", "") +
+    " " +
+    styleSelector +
+    " { " +
+    styleRule +
+    " }";
 }
 
 function applyPageSetup(resetToDefault) {
   // Resets the state of the <style> tag used for altering
   // the page's default styling
   pageSetupStyle.innerHTML = "";
+  downloadNotePrefixAndSuffix[1] = originalDownloadSuffix;
 
   switch (resetToDefault) {
     case true:
@@ -484,6 +486,7 @@ function applyPageSetup(resetToDefault) {
       pageTextColor.value = "#000000";
 
       mainEditor.removeAttribute("style");
+      downloadNotePrefixAndSuffix[1] = originalDownloadSuffix;
       break;
     case false:
       // Headings
