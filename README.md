@@ -1,4 +1,4 @@
-<img src="notemasterIcon.svg" style="height: 100px">[]()
+[<img src="notemasterIcon.svg" style="height: 100px">]()
 
 # NoteMaster
 
