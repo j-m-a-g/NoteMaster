@@ -111,7 +111,7 @@ function alterWindowTitle(isNoteClosed) {
       if (noteName.value === "") {
         document.title = "Untitled - NoteMaster";
       } else {
-        document.title = noteName.value + " - NoteMaster";
+        document.title = `${noteName.value} - NoteMaster`;
       }
       break;
   }
@@ -163,10 +163,10 @@ function alterMenuFunctions(isDisabled) {
 }
 
 function applyPercentageSizes() {
-  chooseViewer.style.width = viewingSize.value.toString() + "%";
-  viewersContainer.style.width = viewingSize.value.toString() + "%";
-  createOrOpenContainer.style.width = editorSize.value.toString() + "%";
-  noteEditor.style.width = editorSize.value.toString() + "%";
+  chooseViewer.style.width = `${viewingSize.value}%`;
+  viewersContainer.style.width = `${viewingSize.value}%`;
+  createOrOpenContainer.style.width = `${editorSize.value}%`;
+  noteEditor.style.width = `${editorSize.value}%`;
 }
 
 function adjustViewingAndEditorSizes() {
@@ -294,9 +294,7 @@ function addUnicodeCharacters() {
       symbolBox.title = symbolList[s][1];
       symbolBox.setAttribute(
         "onclick",
-        "quill.insertText(quill.getSelection(focus), '" +
-          symbolList[s][0] +
-          "')"
+        `quill.insertText(quill.getSelection(focus), '${symbolList[s][0]}')`
       );
       symbolBox.appendChild(symbolTitle);
 
@@ -398,8 +396,8 @@ function onLoadTasks() {
     // Code Editor Theme
     if (localStorage.getItem("selectedCodeEditorTheme") !== null) {
       codeEditorTheme.value = localStorage.getItem("selectedCodeEditorTheme");
-      noteHTMLCodeEditor.setTheme("ace/theme/" + codeEditorTheme.value);
-      codeFileViewCodeEditor.setTheme("ace/theme/" + codeEditorTheme.value);
+      noteHTMLCodeEditor.setTheme(`ace/theme/${codeEditorTheme.value}`);
+      codeFileViewCodeEditor.setTheme(`ace/theme/${codeEditorTheme.value}`);
     }
 
     // Viewing and Editor Size

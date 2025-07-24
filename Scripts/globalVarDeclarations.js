@@ -156,7 +156,7 @@ const wordDocumentToNoteButton = document.getElementById(
 	"wordDocumentToNoteButton"
 );
 const adjustAppSectionSizes = document.getElementById("adjustAppSectionSizes");
-const adjustedHeight = (window.innerHeight - 35).toString() + "px";
+const adjustedHeight = `${window.innerHeight - 35}px`;
 const anotherNoteFileInput = document.getElementById("anotherNoteFileInput");
 const anotherNoteView = document.getElementById("anotherNoteView");
 const anotherNoteViewer = document.getElementById("anotherNoteViewer");

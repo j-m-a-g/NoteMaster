@@ -19,8 +19,7 @@ function tasksOnceFileOpen(unhiddenView, fileInputObject) {
       .getElementById(fileInputObject)
       .value.replace("C:\\fakepath\\", "");
 
-    fileSize.innerHTML =
-      (event.target.files[0].size / 1048576).toFixed(2) + " MB";
+    fileSize.innerHTML = `${(event.target.files[0].size / 1048576).toFixed(2)}MB`;
     fileLastModified.innerHTML = new Date(event.target.files[0].lastModified)
       .toString()
       .slice(0, 21);
@@ -215,7 +214,7 @@ function parseCloudDocumentURL() {
       }
 
       toggleDialog(false, "insertCloudURLDialog", null);
-      cloudFileView.src = resultingURL + "&action=embedview";
+      cloudFileView.src = `${resultingURL}&action=embedview`;
     } else {
       const GDriveURLArray = URLToCloudFile.value
         .replace("https://docs.google.com/", "")
@@ -253,10 +252,7 @@ function parseCloudDocumentURL() {
         closeCurrentFile();
       } else {
         toggleDialog(false, "insertCloudURLDialog", null);
-        cloudFileView.src =
-          "https://docs.google.com/viewer?srcid=" +
-          documentID.replace("d/", "") +
-          "&pid=explorer&efh=false&a=v&chrome=false&embedded=true";
+        cloudFileView.src = `https://docs.google.com/viewer?srcid=${documentID.replace("d/", "")}&pid=explorer&efh=false&a=v&chrome=false&embedded=true`;
       }
     }
 

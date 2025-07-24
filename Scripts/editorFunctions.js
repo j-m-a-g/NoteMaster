@@ -31,7 +31,7 @@ function initiateNote(isOpen) {
 function confirmSave() {
   if (noteName.value !== "") {
     document.getElementById("saveDocumentHeading").innerHTML =
-      "Save '" + noteName.value + "'?";
+      `Save '${noteName.value}'?`;
   } else {
     document.getElementById("saveDocumentHeading").innerHTML =
       "Save 'Untitled'?";
@@ -53,7 +53,7 @@ function handleAnotherOpen() {
     isOpeningAnotherNote = true;
     if (noteName.value !== "") {
       document.getElementById("saveDocumentHeading").innerHTML =
-        "Save '" + noteName.value + "'?";
+        `Save '${noteName.value}?'`;
     } else {
       document.getElementById("saveDocumentHeading").innerHTML =
         "Save 'Untitled'?";
@@ -87,17 +87,9 @@ function saveNoteProgress() {
 }
 
 function printNoteOperation() {
-  if (noteName.value === "") {
-    printTitle = "Print - Untitled - NoteMaster";
-  } else {
-    printTitle = "Print - " + noteName.value + " - NoteMaster";
-  }
-
   const temporaryPrintWindow = window.open("", "_blank", "popup");
   temporaryPrintWindow.document.write(
-    downloadNotePrefixAndSuffix[0] +
-      quill.getSemanticHTML() +
-      downloadNotePrefixAndSuffix[1]
+    `${downloadNotePrefixAndSuffix[0]}${quill.getSemanticHTML()}${downloadNotePrefixAndSuffix[1]}`
   );
   temporaryPrintWindow.document.close();
   temporaryPrintWindow.print();
@@ -111,9 +103,7 @@ function downloadNoteOperation(asPlainText) {
   } else {
     noteFile = new Blob(
       [
-        downloadNotePrefixAndSuffix[0] +
-          quill.getSemanticHTML() +
-          downloadNotePrefixAndSuffix[1]
+        `${downloadNotePrefixAndSuffix[0]}${quill.getSemanticHTML()}${downloadNotePrefixAndSuffix[1]}`
       ],
       { type: "text/html" }
     );
@@ -160,9 +150,7 @@ function convertWordToNote() {
 function downloadConversion() {
   const convertedFileOutputBlob = new Blob(
     [
-      downloadNotePrefixAndSuffix[0] +
-        convertedFileOutput.toString() +
-        downloadNotePrefixAndSuffix[1]
+      `${downloadNotePrefixAndSuffix[0]}${convertedFileOutput.toString()}${downloadNotePrefixAndSuffix[1]}`
     ],
     { type: "text/html" }
   );
@@ -192,43 +180,24 @@ function updateStatusBar() {
     characterCount.innerHTML =
       "<span class='helperText'>Characters (Including spaces) </span> <span class='copyOnClick' onclick='navigator.clipboard.writeText(this.innerHTML); displaySnackbar(copiedToClipboardString)'>0</span>";
   } else {
-    characterCount.innerHTML =
-      "<span class='helperText'>Characters (Including spaces) </span> <span class='copyOnClick' onclick='navigator.clipboard.writeText(this.innerHTML); displaySnackbar(copiedToClipboardString)'>" +
-      quill.getLength() +
-      "</span>";
+    characterCount.innerHTML = `<span class='helperText'>Characters (Including spaces) </span> <span class='copyOnClick' onclick='navigator.clipboard.writeText(this.innerHTML); displaySnackbar(copiedToClipboardString)'>${quill.getLength()}</span>`;
   }
 
   if (quill.getText() === "\n") {
     wordCount.innerHTML =
       "<span class='helperText'>Words </span> <span class='copyOnClick' onclick='navigator.clipboard.writeText(this.innerHTML); displaySnackbar(copiedToClipboardString)'>0</span>";
   } else {
-    wordCount.innerHTML =
-      "<span class='helperText'>Words </span> <span class='copyOnClick' onclick='navigator.clipboard.writeText(this.innerHTML); displaySnackbar(copiedToClipboardString)'>" +
-      (quill.getText().split(/\s+/).length - 1) +
-      "</span>";
+    wordCount.innerHTML = `<span class='helperText'>Words </span> <span class='copyOnClick' onclick='navigator.clipboard.writeText(this.innerHTML); displaySnackbar(copiedToClipboardString)'>${quill.getText().split(/\s+/).length - 1}</span>`;
   }
 
-  mainEditorZoom.innerHTML =
-    "<span class='helperText'>Zoom </span>" +
-    Math.floor((mainEditorFontSize / 13) * 100) +
-    "%";
+  mainEditorZoom.innerHTML = `<span class='helperText'>Zoom </span>${Math.floor((mainEditorFontSize / 13) * 100)}%`;
 }
 
 function prepareToShare() {
   const linkParameters = new URLSearchParams(
-    "name=" + noteName.value + "&markup=" + quill.getSemanticHTML()
+    `name=${noteName.value}&markup=${quill.getSemanticHTML()}`
   );
-  shareCopyLink.value =
-    window.location.href +
-    "?" +
-    linkParameters
-      .toString()
-      .replaceAll("&", "%26")
-      .replace("%26", "&")
-      .replace("=", "paramEqual")
-      .replace("=", "paramEqual")
-      .replaceAll("=", "")
-      .replaceAll("paramEqual", "=");
+  shareCopyLink.value = `${window.location.href}?${linkParameters.replaceAll("&", "%26").replace("%26", "&").replace("=", "paramEqual").replace("=", "paramEqual").replaceAll("=", "").replaceAll("paramEqual", "=")}`;
 }
 
 function saveNoteForLater() {
@@ -257,26 +226,14 @@ function saveNoteForLater() {
   noteTitle.title = noteTitle.innerHTML;
 
   noteTitleDate.className = "helperText";
-  noteTitleDate.innerHTML =
-    "Saved " +
-    (currentDate.getMonth() + 1).toString() +
-    "/" +
-    currentDate.getDate().toString() +
-    "/" +
-    currentDate.getFullYear().toString() +
-    " at " +
-    get12HourTime();
+  noteTitleDate.innerHTML = `Saved ${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear()} at ${get12HourTime()}`;
 
   deleteSaved.className = "hyperlinkButton";
   deleteSaved.innerHTML = "Delete";
 
   savedNoteContainer.setAttribute(
     "onclick",
-    "initiateNote(false); quill.clipboard.dangerouslyPasteHTML('" +
-      quill.getSemanticHTML() +
-      "'); noteName.value = '" +
-      noteTitle.innerHTML +
-      "'"
+    `initiateNote(false); quill.clipboard.dangerouslyPasteHTML('${quill.getSemanticHTML()}'); noteName.value = '${noteTitle.innerHTML}'`
   );
   deleteSaved.setAttribute(
     "onclick",
@@ -425,13 +382,7 @@ function configureTypingGoal(isReset) {
 }
 
 function addDownloadNoteStyle(styleSelector, styleRule) {
-  downloadNotePrefixAndSuffix[1] =
-    downloadNotePrefixAndSuffix[1].replace("</style>", "") +
-    " " +
-    styleSelector +
-    " { " +
-    styleRule +
-    " }";
+  downloadNotePrefixAndSuffix[1] = `${downloadNotePrefixAndSuffix[1].replace("</style>", "")} ${styleSelector} { ${styleRule} }`;
 }
 
 function applyPageSetup(resetToDefault) {
@@ -440,130 +391,100 @@ function applyPageSetup(resetToDefault) {
   pageSetupStyle.innerHTML = "";
   downloadNotePrefixAndSuffix[1] = originalDownloadSuffix;
 
-  switch (resetToDefault) {
-    case true:
-      // Headings
-      for (let headingNumber = 0; headingNumber < 7; headingNumber++) {
-        const headingVariable = "heading" + headingNumber;
-        let currentFontSize = 0;
+  if (resetToDefault) {
+    // Headings
+    for (let headingNumber = 0; headingNumber < 7; headingNumber++) {
+      const headingVariable = `heading${headingNumber}`;
+      let currentFontSize = 0;
 
-        document.getElementById(headingVariable + "Family").value =
-          "sans-serif";
-        switch (headingNumber) {
-          case 0:
-            currentFontSize = 13;
-            break;
-          case 1:
-            currentFontSize = 26;
-            break;
-          case 2:
-            currentFontSize = 19.5;
-            break;
-          case 3:
-            currentFontSize = 15;
-            break;
-          case 4:
-            currentFontSize = 13;
-            break;
-          case 5:
-            currentFontSize = 10.75;
-            break;
-          case 6:
-            currentFontSize = 8.75;
-            break;
-        }
-
-        document.getElementById(headingVariable + "Size").value =
-          currentFontSize;
-
-        document.getElementById(headingVariable + "Bold").checked = false;
-        document.getElementById(headingVariable + "Italics").checked = false;
-        document.getElementById(headingVariable + "Strike").checked = false;
+      document.getElementById(`${headingVariable}Family`).value = "sans-serif";
+      switch (headingNumber) {
+        case 0:
+          currentFontSize = 13;
+          break;
+        case 1:
+          currentFontSize = 26;
+          break;
+        case 2:
+          currentFontSize = 19.5;
+          break;
+        case 3:
+          currentFontSize = 15;
+          break;
+        case 4:
+          currentFontSize = 13;
+          break;
+        case 5:
+          currentFontSize = 10.75;
+          break;
+        case 6:
+          currentFontSize = 8.75;
+          break;
       }
 
-      // Page Background and Text Color
-      pageBackgroundColor.value = "#FFFFFF";
-      pageTextColor.value = "#000000";
+      document.getElementById(`${headingVariable}Color`).value = "#000000";
+      document.getElementById(`${headingVariable}Size`).value = currentFontSize;
+      document.getElementById(`${headingVariable}Bold`).checked = false;
+      document.getElementById(`${headingVariable}Italics`).checked = false;
+      document.getElementById(`${headingVariable}Strike`).checked = false;
+    }
 
-      mainEditor.removeAttribute("style");
-      downloadNotePrefixAndSuffix[1] = originalDownloadSuffix;
-      break;
-    case false:
-      // Headings
-      for (let headingNumber = 0; headingNumber < 7; headingNumber++) {
-        const headingVariable = "heading" + headingNumber;
-        let headingName = "";
+    // Page Background and Text Color
+    pageBackgroundColor.value = "#FFFFFF";
+    pageTextColor.value = "#000000";
 
-        if (headingNumber === 0) {
-          headingName = "p";
-        } else {
-          headingName = "h" + headingNumber;
-        }
+    mainEditor.removeAttribute("style");
+    downloadNotePrefixAndSuffix[1] = originalDownloadSuffix;
+  } else {
+    // Headings
+    for (let headingNumber = 0; headingNumber < 7; headingNumber++) {
+      const headingVariable = `heading${headingNumber}`;
+      let headingName = "";
 
-        pageSetupStyle.innerHTML +=
-          "#mainEditor " +
-          headingName +
-          " { font-family: " +
-          document.getElementById(headingVariable + "Family").value +
-          "; font-size: " +
-          document.getElementById(headingVariable + "Size").value +
-          "px } ";
-        addDownloadNoteStyle(
-          headingName,
-          "font-family: " +
-            document.getElementById(headingVariable + "Family").value +
-            "; font-size: " +
-            document.getElementById(headingVariable + "Size").value +
-            "px"
-        );
-
-        if (document.getElementById(headingVariable + "Bold").checked) {
-          pageSetupStyle.innerHTML +=
-            "#mainEditor " + headingName + " { font-weight: bold } ";
-          addDownloadNoteStyle(headingName, "font-weight: bold");
-        } else {
-          pageSetupStyle.innerHTML +=
-            "#mainEditor " + headingName + " { font-weight: normal } ";
-          addDownloadNoteStyle(headingName, "font-weight: normal");
-        }
-
-        if (document.getElementById(headingVariable + "Italics").checked) {
-          pageSetupStyle.innerHTML +=
-            "#mainEditor " + headingName + " { font-style: italic } ";
-          addDownloadNoteStyle(headingName, "font-style: italic");
-        } else {
-          pageSetupStyle.innerHTML +=
-            "#mainEditor " + headingName + " { font-style: normal } ";
-          addDownloadNoteStyle(headingName, "font-style: normal");
-        }
-
-        if (document.getElementById(headingVariable + "Strike").checked) {
-          pageSetupStyle.innerHTML +=
-            "#mainEditor " +
-            headingName +
-            " { text-decoration-line: line-through } ";
-          addDownloadNoteStyle(
-            headingName,
-            "text-decoration-line: line-through"
-          );
-        } else {
-          pageSetupStyle.innerHTML +=
-            "#mainEditor " + headingName + " { text-decoration: none } ";
-          addDownloadNoteStyle(headingName, "text-decoration: none");
-        }
+      if (headingNumber === 0) {
+        headingName = "p";
+      } else {
+        headingName = `h${headingNumber}`;
       }
 
-      // Page Background and Text Color
-      mainEditor.style.backgroundColor = pageBackgroundColor.value;
-      mainEditor.style.color = pageTextColor.value;
+      pageSetupStyle.innerHTML += `#mainEditor ${headingName} { font-family: ${document.getElementById(`${headingVariable}Family`).value}; font-size: ${document.getElementById(`${headingVariable}Size`).value}px; color: ${document.getElementById(`${headingVariable}Color`).value} }`;
       addDownloadNoteStyle(
-        "html",
-        "background-color: " +
-          pageBackgroundColor.value +
-          "; color: " +
-          pageTextColor.value
+        headingName,
+        `font-family: ${document.getElementById(`${headingVariable}Family`).value}; font-size: ${document.getElementById(`${headingVariable}Size`).value}px; color: ${document.getElementById(`${headingVariable}Color`).value}`
       );
-      break;
+
+      if (document.getElementById(`${headingVariable}Bold`).checked) {
+        pageSetupStyle.innerHTML += `#mainEditor ${headingName} { font-weight: bold } `;
+        addDownloadNoteStyle(headingName, "font-weight: bold");
+      } else {
+        pageSetupStyle.innerHTML += `#mainEditor ${headingName} { font-weight: normal } `;
+        addDownloadNoteStyle(headingName, "font-weight: normal");
+      }
+
+      if (document.getElementById(`${headingVariable}Italics`).checked) {
+        pageSetupStyle.innerHTML += `#mainEditor ${headingName} { font-style: italic } `;
+        addDownloadNoteStyle(headingName, "font-style: italic");
+      } else {
+        pageSetupStyle.innerHTML += `#mainEditor ${headingName} { font-style: normal } `;
+        addDownloadNoteStyle(headingName, "font-style: normal");
+      }
+
+      if (document.getElementById(`${headingVariable}Strike`).checked) {
+        pageSetupStyle.innerHTML += `#mainEditor ${headingName} { text-decoration: line-through } `;
+        addDownloadNoteStyle(headingName, "text-decoration-line: line-through");
+      } else {
+        pageSetupStyle.innerHTML += `#mainEditor ${headingName} { text-decoration: none } `;
+        addDownloadNoteStyle(headingName, "text-decoration: none");
+      }
+    }
+
+    // Page Background and Text Color
+    mainEditor.style.backgroundColor = pageBackgroundColor.value;
+    mainEditor.style.color = pageTextColor.value;
+    addDownloadNoteStyle(
+      "html",
+      `background-color: ${pageBackgroundColor.value}; color: ${pageTextColor.value}`
+    );
   }
 
   toggleDialog(false, "pageSetup", null);
