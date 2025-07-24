@@ -197,7 +197,7 @@ function prepareToShare() {
   const linkParameters = new URLSearchParams(
     `name=${noteName.value}&markup=${quill.getSemanticHTML()}`
   );
-  shareCopyLink.value = `${appDomain}? ${linkParameters.toString().replaceAll("&", "%26").replace("%26", "&").replace("=", "paramEqual").replace("=", "paramEqual").replaceAll("=", "").replaceAll("paramEqual", "=")}`;
+  shareCopyLink.value = `${appDomain}?${linkParameters.toString().replaceAll("&", "%26").replace("%26", "&").replace("=", "paramEqual").replace("=", "paramEqual").replaceAll("=", "").replaceAll("paramEqual", "=")}`;
 }
 
 function saveNoteForLater() {
