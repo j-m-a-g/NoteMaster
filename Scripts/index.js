@@ -105,13 +105,13 @@ function hideAndShow(hiddenContainer, shownContainer) {
 function alterWindowTitle(isNoteClosed) {
   switch (isNoteClosed) {
     case true:
-      document.title = "NoteMaster";
+      document.title = appName;
       break;
     case false:
       if (noteName.value === "") {
-        document.title = "Untitled - NoteMaster";
+        document.title = `Untitled - ${appName}`;
       } else {
-        document.title = `${noteName.value} - NoteMaster`;
+        document.title = `${noteName.value} - ${appName}`;
       }
       break;
   }
