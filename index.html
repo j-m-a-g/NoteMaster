@@ -3,9 +3,9 @@
   <head>
     <link crossorigin="use-credentials" href="manifest.json" rel="manifest" />
     <link href="notemasterIcon.svg" rel="icon" />
-    <link href="Styles/fileViewers.css" rel="stylesheet" />
-    <link href="Styles/index.css" rel="stylesheet" />
-    <link href="Styles/styleMapStyles.css" rel="stylesheet" />
+    <link href="css/fileViewers.css" rel="stylesheet" />
+    <link href="css/index.css" rel="stylesheet" />
+    <link href="css/styleMapStyles.css" rel="stylesheet" />
     <link id="customStylesheet" rel="stylesheet" />
     <link id="darkModeStylesheet" rel="stylesheet" />
     <meta charset="UTF-8" />
@@ -33,7 +33,7 @@
     <div id="snackbar">
       <img
         class="primaryButton menu navSeparation"
-        src="Assets/Images/info_000000.svg"
+        src="assets/images/info_000000.svg"
       />
       <span class="navSeparation" id="snackbarMessage"></span>
       <button
@@ -41,7 +41,7 @@
         onclick="snackbar.style.display = 'none'"
         title="Dismiss"
       >
-        <img class="primaryButton menu" src="Assets/Images/close_000000.svg" />
+        <img class="primaryButton menu" src="assets/images/close_000000.svg" />
       </button>
     </div>
     <nav id="appMenu">
@@ -52,7 +52,7 @@
         onclick="quill.history.undo()"
         title="Undo change (Ctrl + Z)"
       >
-        <img class="menu" src="Assets/Images/undo_000000.svg" />
+        <img class="menu" src="assets/images/undo_000000.svg" />
       </button>
       <button
         class="menu"
@@ -61,7 +61,7 @@
         onclick="quill.history.redo()"
         title="Redo change (Ctrl + Y)"
       >
-        <img class="menu" src="Assets/Images/redo_000000.svg" />
+        <img class="menu" src="assets/images/redo_000000.svg" />
       </button>
       <button
         class="menu"
@@ -86,7 +86,7 @@
         >
           <img
             class="reducedIntensity menu"
-            src="Assets/Images/note_add_000000.svg"
+            src="assets/images/note_add_000000.svg"
           />
           <u>N</u>ew <span class="helperText menuDropdown">Alt + N</span>
         </button>
@@ -98,7 +98,7 @@
         >
           <img
             class="reducedIntensity menu"
-            src="Assets/Images/file_open_000000.svg"
+            src="assets/images/file_open_000000.svg"
           />
           <u>O</u>pen Note...
           <span class="helperText menuDropdown">Alt + O</span>
@@ -112,7 +112,7 @@
         >
           <img
             class="reducedIntensity menu"
-            src="Assets/Images/print_000000.svg"
+            src="assets/images/print_000000.svg"
           />
           <u>P</u>rint Note...
           <span class="helperText menuDropdown">Alt + P</span>
@@ -123,7 +123,7 @@
         >
           <img
             class="reducedIntensity menu"
-            src="Assets/Images/page_info_000000.svg"
+            src="assets/images/page_info_000000.svg"
           />
           Page Setup
         </button>
@@ -137,7 +137,7 @@
         >
           <img
             class="reducedIntensity menu"
-            src="Assets/Images/save_000000.svg"
+            src="assets/images/save_000000.svg"
           />
           <u>S</u>ave <span class="helperText">(In-Browser)</span>
           <span class="helperText menuDropdown">Alt + S</span>
@@ -151,7 +151,7 @@
         >
           <img
             class="reducedIntensity menu"
-            src="Assets/Images/download_000000.svg"
+            src="assets/images/download_000000.svg"
           />
           Do<u>w</u>nload Note
           <span class="helperText menuDropdown">Alt + W</span>
@@ -164,7 +164,7 @@
         >
           <img
             class="reducedIntensity menu"
-            src="Assets/Images/menu_dropdown_placeholder.svg"
+            src="assets/images/menu_dropdown_placeholder.svg"
           />
           Download as Plain Text
         </button>
@@ -176,7 +176,7 @@
         >
           <img
             class="reducedIntensity menu"
-            src="Assets/Images/more_time_000000.svg"
+            src="assets/images/more_time_000000.svg"
           />
           Save For Later
         </button>
@@ -190,7 +190,7 @@
         >
           <img
             class="reducedIntensity menu"
-            src="Assets/Images/home_000000.svg"
+            src="assets/images/home_000000.svg"
           />
           Close <u>V</u>iewer
           <span class="helperText menuDropdown">Alt + V</span>
@@ -204,7 +204,7 @@
         >
           <img
             class="reducedIntensity menu"
-            src="Assets/Images/close_000000.svg"
+            src="assets/images/close_000000.svg"
           />
           Close No<u>t</u>e <span class="helperText menuDropdown">Alt + T</span>
         </button>
@@ -233,7 +233,7 @@
         >
           <img
             class="reducedIntensity menu"
-            src="Assets/Images/add_photo_alternate_000000.svg"
+            src="assets/images/add_photo_alternate_000000.svg"
           />
           Online Image
         </button>
@@ -245,7 +245,7 @@
         >
           <img
             class="reducedIntensity menu"
-            src="Assets/Images/table_000000.svg"
+            src="assets/images/table_000000.svg"
           />
           Table
         </button>
@@ -257,7 +257,7 @@
         >
           <img
             class="reducedIntensity menu"
-            src="Assets/Images/today_000000.svg"
+            src="assets/images/today_000000.svg"
           />
           Current Date
           <span class="helperText menuDropdown">m(m)/d(d)/yyyy</span>
@@ -270,7 +270,7 @@
         >
           <img
             class="reducedIntensity menu"
-            src="Assets/Images/schedule_000000.svg"
+            src="assets/images/schedule_000000.svg"
           />
           Current Time <span class="helperText menuDropdown">(h)h:mm</span>
         </button>
@@ -282,7 +282,7 @@
         >
           <img
             class="reducedIntensity menu"
-            src="Assets/Images/emoji_symbols_000000.svg"
+            src="assets/images/emoji_symbols_000000.svg"
           />
           Symbol
         </button>
@@ -306,7 +306,7 @@
         <button class="menuDropdown" onclick="window.location.reload()">
           <img
             class="reducedIntensity menu"
-            src="Assets/Images/refresh_000000.svg"
+            src="assets/images/refresh_000000.svg"
           />
           Refresh <span class="helperText menuDropdown">F5 or Ctrl + R</span>
         </button>
@@ -317,7 +317,7 @@
         >
           <img
             class="reducedIntensity menu"
-            src="Assets/Images/width_normal_000000.svg"
+            src="assets/images/width_normal_000000.svg"
           />
           Adj<u>u</u>st Panel Sizes
           <span class="helperText menuDropdown">Alt + U</span>
@@ -331,7 +331,7 @@
           <img
             id="hideEditorCheck"
             class="menu"
-            src="Assets/Images/menu_dropdown_placeholder.svg"
+            src="assets/images/menu_dropdown_placeholder.svg"
           />
           Hide Editor
         </button>
@@ -344,7 +344,7 @@
           <img
             id="hideViewingCheck"
             class="menu"
-            src="Assets/Images/menu_dropdown_placeholder.svg"
+            src="assets/images/menu_dropdown_placeholder.svg"
           />
           Hide Viewing
         </button>
@@ -357,7 +357,7 @@
         >
           <img
             class="reducedIntensity menu"
-            src="Assets/Images/integration_instructions_000000.svg"
+            src="assets/images/integration_instructions_000000.svg"
           />
           Show Note as HTML Markup
         </button>
@@ -369,7 +369,7 @@
           <img
             class="reducedIntensity menu"
             style="rotate: 180deg"
-            src="Assets/Images/data_alert_000000.svg"
+            src="assets/images/data_alert_000000.svg"
           />
           Writing Insights
         </button>
@@ -380,7 +380,7 @@
         >
           <img
             class="reducedIntensity menu"
-            src="Assets/Images/history_000000.svg"
+            src="assets/images/history_000000.svg"
           />
           Viewing <u>H</u>istory
           <span class="helperText menuDropdown">Alt + H</span>
@@ -419,19 +419,19 @@
           <img
             class="menu"
             id="wordWrapCheck"
-            src="Assets/Images/check_000000.svg"
+            src="assets/images/check_000000.svg"
           />
           Word Wrap
         </button>
         <button
           id="darkModeToggle"
           class="menuDropdown"
-          onclick="toggleMenuCheck('darkModeCheck'); if (darkModeCheck.src.includes(checkedImageSource)) { localStorage.setItem('darkMode', 'true'); darkModeStylesheet.href = 'Styles/dark.css' } else { localStorage.setItem('darkMode', 'false'); darkModeStylesheet.removeAttribute('href') }"
+          onclick="toggleMenuCheck('darkModeCheck'); if (darkModeCheck.src.includes(checkedImageSource)) { localStorage.setItem('darkMode', 'true'); darkModeStylesheet.href = 'css/dark.css' } else { localStorage.setItem('darkMode', 'false'); darkModeStylesheet.removeAttribute('href') }"
         >
           <img
             class="menu"
             id="darkModeCheck"
-            src="Assets/Images/menu_dropdown_placeholder.svg"
+            src="assets/images/menu_dropdown_placeholder.svg"
           />
           Dark Mode
         </button>
@@ -535,7 +535,7 @@
         >
           <img
             class="reducedIntensity menu"
-            src="Assets/Images/css_000000.svg"
+            src="assets/images/css_000000.svg"
           />
           Import Your Own Style Sheet
           <input
@@ -554,7 +554,7 @@
         >
           <img
             class="reducedIntensity menu"
-            src="Assets/Images/menu_dropdown_placeholder.svg"
+            src="assets/images/menu_dropdown_placeholder.svg"
           />
           Revert to Default Style Sheet
         </button>
@@ -564,7 +564,7 @@
         >
           <img
             class="reducedIntensity menu"
-            src="Assets/Images/reset_settings_000000.svg"
+            src="assets/images/reset_settings_000000.svg"
           />
           Clear App Data
           <span class="helperText menuDropdown"
@@ -591,7 +591,7 @@
         <button class="menuDropdown" onclick="launchExample()">
           <img
             class="reducedIntensity menu"
-            src="Assets/Images/play_lesson_000000.svg"
+            src="assets/images/play_lesson_000000.svg"
           />
           Launch Example
         </button>
@@ -601,7 +601,7 @@
         >
           <img
             class="reducedIntensity menu"
-            src="Assets/Images/waving_hand_000000.svg"
+            src="assets/images/waving_hand_000000.svg"
           />
           Get Started
         </button>
@@ -611,7 +611,7 @@
         >
           <img
             class="reducedIntensity menu"
-            src="Assets/Images/feedback_000000.svg"
+            src="assets/images/feedback_000000.svg"
           />
           Send Feedback...
         </button>
@@ -622,7 +622,7 @@
         >
           <img
             class="reducedIntensity menu"
-            src="Assets/Images/info_000000.svg"
+            src="assets/images/info_000000.svg"
           />
           About
         </button>
@@ -636,7 +636,7 @@
           <td class="appSection" id="createOrOpenContainer">
             <img
               class="reducedIntensity"
-              src="Assets/Images/door_open_000000.svg"
+              src="assets/images/door_open_000000.svg"
             />
             <h1 id="userGreeting"></h1>
             <details
@@ -647,7 +647,7 @@
               <summary>
                 <img
                   class="reducedIntensity menu"
-                  src="Assets/Images/cards_star_000000.svg"
+                  src="assets/images/cards_star_000000.svg"
                 />
                 Start From Scratch
               </summary>
@@ -657,7 +657,7 @@
                     <td>
                       <img
                         class="appSection reducedIntensity"
-                        src="Assets/Images/note_add_000000.svg"
+                        src="assets/images/note_add_000000.svg"
                       />
                     </td>
                     <td style="width: 100%">
@@ -679,7 +679,7 @@
                     <td>
                       <img
                         class="appSection reducedIntensity"
-                        src="Assets/Images/file_open_000000.svg"
+                        src="assets/images/file_open_000000.svg"
                       />
                     </td>
                     <td>
@@ -713,7 +713,7 @@
                     <td>
                       <img
                         class="appSection reducedIntensity"
-                        src="Assets/Images/convert_to_text_000000.svg"
+                        src="assets/images/convert_to_text_000000.svg"
                       />
                     </td>
                     <td>
@@ -744,7 +744,7 @@
               >
                 <img
                   class="primaryButton menu"
-                  src="Assets/Images/download_000000.svg"
+                  src="assets/images/download_000000.svg"
                 />
                 Download Converted Note
               </button>
@@ -756,7 +756,7 @@
               <summary>
                 <img
                   class="reducedIntensity menu"
-                  src="Assets/Images/schedule_000000.svg"
+                  src="assets/images/schedule_000000.svg"
                 />
                 Saved for Later
               </summary>
@@ -782,7 +782,7 @@
                 >
                   <img
                     class="reducedIntensity menu"
-                    src="Assets/Images/share_000000.svg"
+                    src="assets/images/share_000000.svg"
                   />
                   Share a Copy
                 </button>
@@ -793,7 +793,7 @@
                 >
                   <img
                     class="reducedIntensity menu"
-                    src="Assets/Images/zoom_in_000000.svg"
+                    src="assets/images/zoom_in_000000.svg"
                   />
                 </button>
                 <button
@@ -803,7 +803,7 @@
                 >
                   <img
                     class="reducedIntensity menu"
-                    src="Assets/Images/zoom_out_000000.svg"
+                    src="assets/images/zoom_out_000000.svg"
                   />
                 </button>
                 <input
@@ -839,7 +839,7 @@
                         <img
                           class="reducedIntensity menu"
                           style="rotate: 180deg"
-                          src="Assets/Images/data_alert_000000.svg"
+                          src="assets/images/data_alert_000000.svg"
                         />
                       </button>
                     </td>
@@ -856,7 +856,7 @@
               <summary accesskey="y" onclick="onlineDocuments.open = false">
                 <img
                   class="reducedIntensity menu"
-                  src="Assets/Images/sync_saved_locally_000000.svg"
+                  src="assets/images/sync_saved_locally_000000.svg"
                 />
                 On <u>Y</u>our Computer
                 <span class="helperText menuDropdown">Alt + Y</span>
@@ -874,7 +874,7 @@
                             <td>
                               <img
                                 class="appSection"
-                                src="Assets/Images/picture_as_pdf_D16D6A.svg"
+                                src="assets/images/picture_as_pdf_D16D6A.svg"
                               />
                             </td>
                             <td>
@@ -901,7 +901,7 @@
                             <td>
                               <img
                                 class="appSection"
-                                src="Assets/Images/image_80A4AE.svg"
+                                src="assets/images/image_80A4AE.svg"
                               />
                             </td>
                             <td>
@@ -930,7 +930,7 @@
                             <td>
                               <img
                                 class="appSection"
-                                src="Assets/Images/draft_80A4AE.svg"
+                                src="assets/images/draft_80A4AE.svg"
                               />
                             </td>
                             <td>
@@ -956,7 +956,7 @@
                             <td>
                               <img
                                 class="appSection"
-                                src="Assets/Images/play_arrow_8B7DBE.svg"
+                                src="assets/images/play_arrow_8B7DBE.svg"
                               />
                             </td>
                             <td>
@@ -985,7 +985,7 @@
                             <td>
                               <img
                                 class="appSection"
-                                src="Assets/Images/description_789DE5.svg"
+                                src="assets/images/description_789DE5.svg"
                               />
                             </td>
                             <td>
@@ -1012,7 +1012,7 @@
                             <td>
                               <img
                                 class="appSection"
-                                src="Assets/Images/markdown_EAC452.svg"
+                                src="assets/images/markdown_EAC452.svg"
                               />
                             </td>
                             <td>
@@ -1041,7 +1041,7 @@
                             <td>
                               <img
                                 class="appSection"
-                                src="Assets/Images/code_9DC384.svg"
+                                src="assets/images/code_9DC384.svg"
                               />
                             </td>
                             <td>
@@ -1065,7 +1065,7 @@
               <summary accesskey="l" onclick="localDocuments.open = false">
                 <img
                   class="reducedIntensity menu"
-                  src="Assets/Images/rss_feed_000000.svg"
+                  src="assets/images/rss_feed_000000.svg"
                 />
                 On<u>l</u>ine
                 <span class="helperText menuDropdown">Alt + L</span>
@@ -1083,12 +1083,12 @@
                             <td>
                               <img
                                 class="appSection"
-                                src="Assets/Images/picture_as_pdf_D16D6A.svg"
+                                src="assets/images/picture_as_pdf_D16D6A.svg"
                               />
                               <br />
                               <img
                                 class="reducedIntensity appSection"
-                                src="Assets/Images/link_000000.svg"
+                                src="assets/images/link_000000.svg"
                                 style="margin-top: -20px; margin-left: 10px"
                               />
                             </td>
@@ -1109,12 +1109,12 @@
                             <td>
                               <img
                                 class="appSection"
-                                src="Assets/Images/image_80A4AE.svg"
+                                src="assets/images/image_80A4AE.svg"
                               />
                               <br />
                               <img
                                 class="reducedIntensity appSection"
-                                src="Assets/Images/link_000000.svg"
+                                src="assets/images/link_000000.svg"
                                 style="margin-top: -20px; margin-left: 10px"
                               />
                             </td>
@@ -1139,7 +1139,7 @@
                             <td>
                               <img
                                 class="appSection"
-                                src="Assets/Images/cloud_7CA7D8.svg"
+                                src="assets/images/cloud_7CA7D8.svg"
                               />
                             </td>
                             <td>
@@ -1161,7 +1161,7 @@
                             <td>
                               <img
                                 class="appSection"
-                                src="Assets/Images/language_8B7DBE.svg"
+                                src="assets/images/language_8B7DBE.svg"
                               />
                             </td>
                             <td>
@@ -1183,7 +1183,7 @@
                             <td>
                               <img
                                 class="appSection"
-                                src="Assets/Images/wall_art_80A4AE.svg"
+                                src="assets/images/wall_art_80A4AE.svg"
                               />
                             </td>
                             <td>
@@ -1203,7 +1203,7 @@
                             <td>
                               <img
                                 class="appSection"
-                                src="Assets/Images/youtube_activity_BB271A.svg"
+                                src="assets/images/youtube_activity_BB271A.svg"
                               />
                             </td>
                             <td>
@@ -1225,7 +1225,7 @@
                             <td>
                               <img
                                 class="reducedIntensity appSection"
-                                src="Assets/Images/frame_source_000000.svg"
+                                src="assets/images/frame_source_000000.svg"
                               />
                             </td>
                             <td>
@@ -1248,7 +1248,7 @@
                   <td>
                     <img
                       class="appSection reducedIntensity"
-                      src="Assets/Images/menu_book_000000.svg"
+                      src="assets/images/menu_book_000000.svg"
                     />
                   </td>
                   <td>
@@ -1280,7 +1280,7 @@
                   >
                     <img
                       class="reducedIntensity menu"
-                      src="Assets/Images/info_000000.svg"
+                      src="assets/images/info_000000.svg"
                     />
                   </button>
                 </td>
@@ -1303,7 +1303,7 @@
                           >
                             <img
                               class="reducedIntensity menu"
-                              src="Assets/Images/history_000000.svg"
+                              src="assets/images/history_000000.svg"
                             />
                           </button>
                         </td>
@@ -1346,7 +1346,7 @@
             <div id="noFileSelected" style="margin-top: 15%">
               <img
                 class="reducedIntensity"
-                src="Assets/Images/file_copy_off_000000.svg"
+                src="assets/images/file_copy_off_000000.svg"
                 style="margin-left: 45%"
               />
               <h2 class="helperText" style="text-align: center">
@@ -1359,7 +1359,7 @@
               >
                 <img
                   class="primaryButton menu"
-                  src="Assets/Images/home_000000.svg"
+                  src="assets/images/home_000000.svg"
                 />
                 Return to Welcome
               </button>
@@ -1388,7 +1388,7 @@
                 >
                   <img
                     class="reducedIntensity menu"
-                    src="Assets/Images/text_increase_000000.svg"
+                    src="assets/images/text_increase_000000.svg"
                   />
                 </button>
                 <button
@@ -1398,7 +1398,7 @@
                 >
                   <img
                     class="reducedIntensity menu"
-                    src="Assets/Images/text_decrease_000000.svg"
+                    src="assets/images/text_decrease_000000.svg"
                   />
                 </button>
                 <button
@@ -1408,7 +1408,7 @@
                 >
                   <img
                     class="reducedIntensity menu"
-                    src="Assets/Images/fullscreen_exit_000000.svg"
+                    src="assets/images/fullscreen_exit_000000.svg"
                   />
                 </button>
               </nav>
@@ -1563,7 +1563,7 @@
                 >
                   <img
                     class="reducedIntensity menu"
-                    src="Assets/Images/text_increase_000000.svg"
+                    src="assets/images/text_increase_000000.svg"
                   />
                 </button>
                 <button
@@ -1573,7 +1573,7 @@
                 >
                   <img
                     class="reducedIntensity menu"
-                    src="Assets/Images/text_decrease_000000.svg"
+                    src="assets/images/text_decrease_000000.svg"
                   />
                 </button>
                 <button
@@ -1583,7 +1583,7 @@
                 >
                   <img
                     class="reducedIntensity menu"
-                    src="Assets/Images/fullscreen_exit_000000.svg"
+                    src="assets/images/fullscreen_exit_000000.svg"
                   />
                 </button>
               </nav>
@@ -1604,7 +1604,7 @@
                       >
                         <img
                           class="reducedIntensity menu"
-                          src="Assets/Images/arrow_back_000000.svg"
+                          src="assets/images/arrow_back_000000.svg"
                         />
                       </button>
                     </td>
@@ -1624,7 +1624,7 @@
                       >
                         <img
                           class="reducedIntensity menu"
-                          src="Assets/Images/search_000000.svg"
+                          src="assets/images/search_000000.svg"
                         />
                       </button>
                     </td>
@@ -1633,7 +1633,7 @@
               </nav>
               <iframe
                 id="webpageView"
-                src="Pages/noWebpageNavigated.html"
+                src="pages/noWebpageNavigated.html"
               ></iframe>
             </div>
             <div hidden id="onlineDesignViewer">
@@ -1677,7 +1677,7 @@
               <button class="dialogOverlay">
                 <img
                   class="reducedIntensity menu"
-                  src="Assets/Images/edit_note_000000.svg"
+                  src="assets/images/edit_note_000000.svg"
                 />
                 Continue Working
               </button>
@@ -1686,7 +1686,7 @@
               <button class="primaryButton" onclick="doNotSave()">
                 <img
                   class="primaryButton menu"
-                  src="Assets/Images/delete_000000.svg"
+                  src="assets/images/delete_000000.svg"
                 />
                 Don't Save
               </button>
@@ -1698,7 +1698,7 @@
               >
                 <img
                   class="reducedIntensity menu"
-                  src="Assets/Images/download_000000.svg"
+                  src="assets/images/download_000000.svg"
                 />
                 Download
               </button>
@@ -1708,7 +1708,7 @@
         <a class="hyperlinkButton" onclick="saveNoteForLater()">
           <img
             class="reducedIntensity menu"
-            src="Assets/Images/more_time_000000.svg"
+            src="assets/images/more_time_000000.svg"
           />
           Save For Later
         </a>
@@ -1722,7 +1722,7 @@
             <td>
               <img
                 class="reducedIntensity intermediateLoading"
-                src="Assets/Images/progress_activity_000000.svg"
+                src="assets/images/progress_activity_000000.svg"
               />
             </td>
             <td>
@@ -1743,7 +1743,7 @@
       <div class="dialogOverlay" style="padding: 20px; text-align: center">
         <img
           class="reducedIntensity"
-          src="Assets/Images/fit_width_000000.svg"
+          src="assets/images/fit_width_000000.svg"
         />
         <h2>Looks Like You're Out of Screen Space!</h2>
         <span class="helperText">
@@ -1790,7 +1790,7 @@
         >
           <img
             class="reducedIntensity menu"
-            src="Assets/Images/history_000000.svg"
+            src="assets/images/history_000000.svg"
           />
           See your Viewing History
         </a>
@@ -1807,7 +1807,7 @@
           <tr>
             <td>
               <img
-                src="Assets/Images/width_normal_000000.svg"
+                src="assets/images/width_normal_000000.svg"
                 class="reducedIntensity"
               />
             </td>
@@ -1883,7 +1883,7 @@
         >
           <img
             class="primaryButton menu"
-            src="Assets/Images/reset_settings_000000.svg"
+            src="assets/images/reset_settings_000000.svg"
           />
           Reset
         </button>
@@ -1896,7 +1896,7 @@
           <tr>
             <td>
               <img
-                src="Assets/Images/add_photo_alternate_000000.svg"
+                src="assets/images/add_photo_alternate_000000.svg"
                 class="reducedIntensity"
               />
             </td>
@@ -1936,7 +1936,7 @@
           <tr>
             <td>
               <img
-                src="Assets/Images/table_000000.svg"
+                src="assets/images/table_000000.svg"
                 class="reducedIntensity"
               />
             </td>
@@ -2018,7 +2018,7 @@
     <div hidden id="dialogFocusBackground">
       <!-- "Out-of-Box" Experience -->
       <div class="dialogOverlay" hidden id="gettingStarted">
-        <img src="Assets/gettingStartedPreview.png" style="width: 100%" />
+        <img src="assets/gettingStartedPreview.png" style="width: 100%" />
         <table>
           <tr>
             <td>
@@ -2085,7 +2085,7 @@
           <tr>
             <td>
               <img
-                src="Assets/Images/page_info_000000.svg"
+                src="assets/images/page_info_000000.svg"
                 class="reducedIntensity"
               />
             </td>
@@ -2503,7 +2503,7 @@
           <tr>
             <td>
               <img
-                src="Assets/Images/history_000000.svg"
+                src="assets/images/history_000000.svg"
                 class="reducedIntensity"
               />
             </td>
@@ -2532,7 +2532,7 @@
         >
           <img
             class="primaryButton menu"
-            src="Assets/Images/content_copy_000000.svg"
+            src="assets/images/content_copy_000000.svg"
           />
           Copy
         </button>
@@ -2545,7 +2545,7 @@
           <tr>
             <td>
               <img
-                src="Assets/Images/data_alert_000000.svg"
+                src="assets/images/data_alert_000000.svg"
                 style="rotate: 180deg"
                 class="reducedIntensity"
               />
@@ -2640,8 +2640,8 @@
       </div>
       <!-- Link to PDF -->
       <div class="dialogOverlay" hidden id="linkToPDF">
-        <img src="Assets/Images/picture_as_pdf_D16D6A.svg" />
-        <img class="reducedIntensity" src="Assets/Images/link_000000.svg" />
+        <img src="assets/images/picture_as_pdf_D16D6A.svg" />
+        <img class="reducedIntensity" src="assets/images/link_000000.svg" />
         <h1>Link to a PDF</h1>
         <h3 class="helperText">Paste the URL to your PDF below</h3>
         <table style="width: 100%; margin-bottom: 10px">
@@ -2673,8 +2673,8 @@
       </div>
       <!-- Link to an Image -->
       <div class="dialogOverlay" hidden id="linkToImage">
-        <img src="Assets/Images/image_80A4AE.svg" />
-        <img class="reducedIntensity" src="Assets/Images/link_000000.svg" />
+        <img src="assets/images/image_80A4AE.svg" />
+        <img class="reducedIntensity" src="assets/images/link_000000.svg" />
         <h1>Link to an Image</h1>
         <h3 class="helperText">Paste the URL to your image below</h3>
         <table style="width: 100%; margin-bottom: 10px">
@@ -2706,10 +2706,10 @@
       </div>
       <!-- Cloud file -->
       <div class="dialogOverlay" hidden id="insertCloudURLDialog">
-        <img src="Assets/Images/cloud_7CA7D8.svg" />
-        <img src="Assets/Images/article_789DE5.svg" />
-        <img src="Assets/Images/dataset_9DC384.svg" />
-        <img src="Assets/Images/insert_chart_D08370.svg" />
+        <img src="assets/images/cloud_7CA7D8.svg" />
+        <img src="assets/images/article_789DE5.svg" />
+        <img src="assets/images/dataset_9DC384.svg" />
+        <img src="assets/images/insert_chart_D08370.svg" />
         <h1>File in the Cloud</h1>
         <h3 class="helperText">
           Paste the URL to your cloud document below from your browser's address
@@ -2773,7 +2773,7 @@
         <table>
           <tr>
             <td>
-              <img src="Assets/Images/wall_art_80A4AE.svg" />
+              <img src="assets/images/wall_art_80A4AE.svg" />
             </td>
             <td>
               <h2 class="dialogOverlay">Canva Design</h2>
@@ -2816,7 +2816,7 @@
         <table>
           <tr>
             <td>
-              <img src="Assets/Images/youtube_activity_BB271A.svg" />
+              <img src="assets/images/youtube_activity_BB271A.svg" />
             </td>
             <td>
               <h2 class="dialogOverlay">YouTube Video</h2>
@@ -2858,7 +2858,7 @@
             <td>
               <img
                 class="reducedIntensity"
-                src="Assets/Images/frame_source_000000.svg"
+                src="assets/images/frame_source_000000.svg"
               />
             </td>
             <td>
@@ -2898,7 +2898,7 @@
             <td>
               <img
                 class="reducedIntensity"
-                src="Assets/Images/share_000000.svg"
+                src="assets/images/share_000000.svg"
               />
             </td>
             <td>
@@ -2929,7 +2929,7 @@
           onclick="navigator.clipboard.writeText(shareCopyLink.value); displaySnackbar('Link copied!')"
           style="width: 20%; margin-left: 10px"
         >
-          <img class="primaryButton menu" src="Assets/Images/link_000000.svg" />
+          <img class="primaryButton menu" src="assets/images/link_000000.svg" />
           Copy Link
         </button>
       </div>
@@ -2943,7 +2943,7 @@
           <tr>
             <td>
               <img
-                src="Assets/Images/integration_instructions_000000.svg"
+                src="assets/images/integration_instructions_000000.svg"
                 class="reducedIntensity"
               />
             </td>
@@ -2971,13 +2971,13 @@
         >
           <img
             class="primaryButton menu"
-            src="Assets/Images/content_copy_000000.svg"
+            src="assets/images/content_copy_000000.svg"
           />
           Copy
         </button>
       </div>
       <div class="dialogOverlay" hidden id="aboutDialog">
-        <img class="reducedIntensity" src="Assets/Images/info_000000.svg" />
+        <img class="reducedIntensity" src="assets/images/info_000000.svg" />
         <img src="notemasterIcon.svg" style="width: 48px" />
         <h2>About</h2>
         <p style="line-height: 25px">
@@ -3026,13 +3026,13 @@
       </div>
     </div>
 
-    <script src="Assets/ace-builds/src-min/ace.js"></script>
-    <script src="Assets/mammoth-plus/dist/mammoth-plus.js"></script>
+    <script src="assets/ace-builds/src-min/ace.js"></script>
+    <script src="assets/mammoth-plus/dist/mammoth-plus.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/quill/dist/quill.min.js"></script>
-    <script src="Scripts/editorFunctions-min.js"></script>
-    <script src="Scripts/fileViewing-min.js"></script>
-    <script src="Scripts/globalVarDeclarations-min.js"></script>
-    <script src="Scripts/index-min.js"></script>
+    <script src="js/editorFunctions-min.js"></script>
+    <script src="js/fileViewing-min.js"></script>
+    <script src="js/globalVarDeclarations-min.js"></script>
+    <script src="js/index-min.js"></script>
   </body>
 </html>
