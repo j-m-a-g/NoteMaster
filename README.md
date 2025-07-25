@@ -4,7 +4,7 @@
 
 A lightweight note-taking app for the web.
 
-### 📃 Features
+## 📃 Features
 
 - Start from scratch and create a new note or open an existing one from your device
 - Format your note with bold text, italics, underlined text, strike-through text, block quotes, lists, headings, text colors, highlights, text alignment, and more
